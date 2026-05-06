@@ -62,13 +62,17 @@ export function ProductCard({
         }}
       >
         {image ? (
+          // Cycle 14X+ (owner): bumped from 85% to 96% — at 85% the gray
+          // surround read as a thick "white border" around every product
+          // image. 96% keeps a thin breathing-room gap so the image
+          // doesn't kiss the card edge but stops looking framed.
           <Image
             src={image}
             alt={fitTitle}
             width={400}
             height={400}
             sizes="(min-width: 768px) 25vw, 50vw"
-            style={{ width: "85%", height: "85%", objectFit: "contain" }}
+            style={{ width: "96%", height: "96%", objectFit: "contain" }}
           />
         ) : (
           <div
