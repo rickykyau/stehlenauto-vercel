@@ -59,6 +59,10 @@ export type CatalogProduct = {
   /** Raw Shopify tags or mock-data tokens we can match for fitment checks. */
   vehicleTags?: string[];
   inventory: number;
+  /** Cycle 14X (owner): when warehouse merch has populated the structured
+   *  custom.fitment_* metafields, this is the parsed table. Absent until a
+   *  product gets metafield values in Shopify Admin. */
+  fitmentTable?: FitmentTable;
 };
 
 export type ProductReview = {
@@ -74,6 +78,44 @@ export type FitmentRow = {
   years: string;
   cab: string;
   fits: boolean;
+  /** Cycle 14X (owner): optional structured columns, populated when the row
+   *  came from real Shopify metafields (custom.fitment_*) instead of being
+   *  derived from the title. Renderer shows columns conditionally. */
+  make?: string;
+  model?: string;
+  bedLength?: string;
+  cabType?: string;
+  trim?: string;
+};
+
+/**
+ * Cycle 14X (owner): structured fitment data sourced from Shopify metafields
+ * under the `custom` namespace. All fields optional — when absent, the PDP
+ * falls back to title-derived rows + descriptive notes.
+ *
+ *   custom.fitment_years         list.single_line_text_field
+ *   custom.fitment_makes         list.single_line_text_field
+ *   custom.fitment_models        list.single_line_text_field
+ *   custom.fitment_notes         multi_line_text_field (HTML allowed)
+ *   custom.fitment_subattributes json
+ */
+export type FitmentTable = {
+  years: string[];
+  makes: string[];
+  models: string[];
+  /** Free-form HTML from the merch team. Pre-sanitized server-side. */
+  notesHtml: string | null;
+  subattributes: FitmentSubattributes;
+};
+
+export type FitmentSubattributes = {
+  bedLengths?: string[];
+  cabTypes?: string[];
+  trims?: string[];
+  doors?: string[];
+  drives?: string[];
+  /** Allow merch to add ad-hoc keys without a code change. */
+  [key: string]: string[] | undefined;
 };
 
 export type SubModelOption = {

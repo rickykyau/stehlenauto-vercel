@@ -108,7 +108,24 @@ export default async function PdpPage({
   // 103 products covered by the merch-team CSV. When present, shown
   // prominently in the buy-box and inside the FITMENT tab so customers
   // see exclusions like "Will Not Fit 2007 Classic Models" before paying.
-  const warehouseNote = await getWarehouseNote(handle);
+  // Cycle 14X (owner): the merch team is migrating these notes off the
+  // CSV and into the Shopify Admin metafield custom.fitment_notes. When
+  // the metafield is populated, prefer it as the canonical source — the
+  // CSV is a one-time backfill, the metafield is the live source of truth.
+  const csvWarehouseNote = await getWarehouseNote(handle);
+  const metafieldNotes = product.fitmentTable?.notesHtml ?? null;
+  const warehouseNote = metafieldNotes
+    ? {
+        verdict: "METAFIELD",
+        notes: metafieldNotes,
+        // The metafield doesn't carry a structured "has_warning" flag, so
+        // we infer one from common exclusion phrasing the merch team uses
+        // in their notes. Better than always-yellow or always-neutral.
+        has_warning: /will\s*not\s*fit|does\s*not\s*fit|exclud(es|ed)|except\b/i.test(
+          metafieldNotes,
+        ),
+      }
+    : csvWarehouseNote;
 
   // Cycle 14f (Mike-6 MAJOR F-8/F-12): a 6.5 ft tonneau on a 2018 F-150 garage
   // (no bed-length saved) was painting GREEN "CONFIRMED FITMENT" — wrong, the

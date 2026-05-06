@@ -44,6 +44,18 @@ export type ProductNode = {
   // Cycle 14L (owner): canonical part number from cb_integration.item_name
   // (e.g. "TC-FRON05-5-HSS"). Verified live in Shopify Admin metafields.
   cbItemName?: { value: string | null } | null;
+  // Cycle 14X (owner): per-product fitment metafields under the "custom"
+  // namespace, populated by the merch team via Shopify Admin. All optional.
+  fitmentYears?: ShopifyMetafieldNode | null;
+  fitmentMakes?: ShopifyMetafieldNode | null;
+  fitmentModels?: ShopifyMetafieldNode | null;
+  fitmentNotes?: ShopifyMetafieldNode | null;
+  fitmentSubattributes?: ShopifyMetafieldNode | null;
+};
+
+export type ShopifyMetafieldNode = {
+  type: string | null;
+  value: string | null;
 };
 
 export type FilterValueNode = {

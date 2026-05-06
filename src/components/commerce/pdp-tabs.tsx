@@ -7,6 +7,7 @@ import { SpecRow } from "@/components/ui/spec-row";
 import { Stars } from "@/components/ui/stars";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
+import { fitmentTableToRows } from "@/lib/fitment/metafields";
 import type { CatalogProduct, FitmentRow, ProductReview } from "@/lib/catalog/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
 
@@ -197,6 +198,17 @@ const SHIPPING_REGIONS: [string, string, string][] = [
 
 const REVIEW_DISTRIBUTION = [78, 16, 4, 1, 1];
 
+// Cycle 14X (owner): friendly labels for the sub-attribute groups merch
+// populates via custom.fitment_subattributes JSON. Unknown keys fall back
+// to the raw key uppercased.
+const SUBATTR_LABELS: Record<string, string> = {
+  bedLengths: "BED LENGTH",
+  cabTypes: "CAB TYPE",
+  trims: "TRIM",
+  doors: "DOORS",
+  drives: "DRIVE",
+};
+
 export function PdpTabs({
   product,
   fitment,
@@ -367,11 +379,22 @@ export function PdpTabs({
               {/* Cycle 14V (owner): when there's no per-product fitment table,
                   derive an honest year-make-model row from the product title
                   instead of telling the customer to "look at the title above". */}
+              {/* Cycle 14X (owner): now sources rows from
+                  product.fitmentTable (custom.fitment_years/makes/models
+                  metafields) when populated. Falls back to the legacy
+                  fitment prop, then to title-derived rows. */}
               {(() => {
+                const metafieldRows: FitmentRow[] = product.fitmentTable
+                  ? fitmentTableToRows(product.fitmentTable).map((r) => ({
+                      ...r,
+                    }))
+                  : [];
                 const rows: FitmentRow[] =
-                  fitment.length > 0
-                    ? fitment
-                    : deriveFitmentRowsFromTitle(product.title);
+                  metafieldRows.length > 0
+                    ? metafieldRows
+                    : fitment.length > 0
+                      ? fitment
+                      : deriveFitmentRowsFromTitle(product.title);
                 if (rows.length === 0) {
                   return (
                     <div
@@ -393,11 +416,92 @@ export function PdpTabs({
                 }
                 return null;
               })()}
+              {/* Cycle 14X (owner): when warehouse merch has populated the
+                  custom.fitment_subattributes JSON metafield (bed_length,
+                  cab_type, trim), surface those as chip rows above the
+                  per-row table so the customer scans them at a glance. */}
+              {product.fitmentTable?.subattributes &&
+                Object.keys(product.fitmentTable.subattributes).length > 0 && (
+                  <div
+                    style={{
+                      marginBottom: 14,
+                      padding: 12,
+                      background: "var(--color-surface)",
+                      border: "1px solid var(--color-border)",
+                      borderRadius: "var(--radius-sm)",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 8,
+                    }}
+                  >
+                    {Object.entries(product.fitmentTable.subattributes).map(
+                      ([key, values]) => {
+                        if (!values || values.length === 0) return null;
+                        const label = SUBATTR_LABELS[key] ?? key.toUpperCase();
+                        return (
+                          <div
+                            key={key}
+                            style={{
+                              display: "flex",
+                              alignItems: "baseline",
+                              gap: 10,
+                              flexWrap: "wrap",
+                            }}
+                          >
+                            <span
+                              className="mono"
+                              style={{
+                                fontSize: 10,
+                                letterSpacing: "0.12em",
+                                color: "var(--color-muted)",
+                                minWidth: 90,
+                              }}
+                            >
+                              {label}
+                            </span>
+                            <span
+                              style={{
+                                display: "flex",
+                                gap: 6,
+                                flexWrap: "wrap",
+                              }}
+                            >
+                              {values.map((v) => (
+                                <span
+                                  key={v}
+                                  style={{
+                                    fontSize: 12,
+                                    padding: "3px 9px",
+                                    border: "1px solid var(--color-border)",
+                                    borderRadius: 999,
+                                    background: "var(--color-background)",
+                                  }}
+                                >
+                                  {v}
+                                </span>
+                              ))}
+                            </span>
+                          </div>
+                        );
+                      },
+                    )}
+                  </div>
+                )}
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {(fitment.length > 0
-                  ? fitment
-                  : deriveFitmentRowsFromTitle(product.title)
-                ).map((row) => (
+                {(() => {
+                  const metafieldRows: FitmentRow[] = product.fitmentTable
+                    ? fitmentTableToRows(product.fitmentTable).map((r) => ({
+                        ...r,
+                      }))
+                    : [];
+                  return (
+                    metafieldRows.length > 0
+                      ? metafieldRows
+                      : fitment.length > 0
+                        ? fitment
+                        : deriveFitmentRowsFromTitle(product.title)
+                  );
+                })().map((row) => (
                   <div
                     key={`${row.years}-${row.cab}`}
                     style={{

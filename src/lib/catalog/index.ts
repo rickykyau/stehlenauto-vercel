@@ -5,6 +5,7 @@ import {
   GET_PRODUCTS_QUERY,
 } from "@/lib/shopify/queries";
 import type { CollectionNode, ProductNode } from "@/lib/shopify/types";
+import { parseFitmentTable } from "@/lib/fitment/metafields";
 import { checkFitment } from "@/lib/fitment/match";
 import {
   BEST_SELLERS,
@@ -162,6 +163,11 @@ function adapt(p: ProductNode): CatalogProduct {
     inventory: p.totalInventory ?? 0,
     description: p.description ?? "",
     descriptionHtml: p.descriptionHtml ?? "",
+    // Cycle 14X (owner): structured fitment table from
+    // custom.fitment_years/makes/models/notes/subattributes when populated.
+    // Returns undefined when none of the metafields are filled in, so the
+    // PDP keeps falling back to title-derived rows.
+    fitmentTable: parseFitmentTable(p) ?? undefined,
   };
 }
 

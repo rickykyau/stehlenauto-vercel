@@ -75,6 +75,43 @@ export const PRODUCT_FRAGMENT = /* GraphQL */ `
     cbItemName: metafield(namespace: "cb_integration", key: "item_name") {
       value
     }
+    # Cycle 14X (owner): structured fitment metafields the warehouse merch
+    # team populates in Shopify Admin. All optional — when absent, the PDP
+    # falls back to title-derived rows. All five fields live under the
+    # default "custom" user namespace.
+    #
+    #   custom.fitment_years         list.single_line_text_field
+    #   custom.fitment_makes         list.single_line_text_field
+    #   custom.fitment_models        list.single_line_text_field
+    #   custom.fitment_notes         multi_line_text_field (HTML allowed)
+    #   custom.fitment_subattributes json
+    #
+    # The list types serialize as a JSON array string in metafield.value, so
+    # the consumer must JSON.parse(value) to get the array. Single-line and
+    # multi-line text are returned as raw strings.
+    fitmentYears: metafield(namespace: "custom", key: "fitment_years") {
+      type
+      value
+    }
+    fitmentMakes: metafield(namespace: "custom", key: "fitment_makes") {
+      type
+      value
+    }
+    fitmentModels: metafield(namespace: "custom", key: "fitment_models") {
+      type
+      value
+    }
+    fitmentNotes: metafield(namespace: "custom", key: "fitment_notes") {
+      type
+      value
+    }
+    fitmentSubattributes: metafield(
+      namespace: "custom"
+      key: "fitment_subattributes"
+    ) {
+      type
+      value
+    }
   }
 `;
 
