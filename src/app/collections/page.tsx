@@ -80,12 +80,15 @@ export default function CollectionsIndexPage() {
               }}
             >
               {cat.image ? (
+                // Cycle 14X+ (owner): padding 10% → 4%, see home page
+                // for the rationale (image kissing card edge feels
+                // worse than a thick white frame around it).
                 <Image
                   src={cat.image}
                   alt={cat.name}
                   fill
                   sizes="(min-width: 768px) 25vw, 50vw"
-                  style={{ objectFit: "contain", padding: "10%" }}
+                  style={{ objectFit: "contain", padding: "4%" }}
                 />
               ) : (
                 <span

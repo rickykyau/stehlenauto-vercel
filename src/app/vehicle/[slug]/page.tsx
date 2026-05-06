@@ -709,12 +709,15 @@ export default async function VehicleHubPage({
                 }}
               >
                 {c.image ? (
+                  // Cycle 14X+ (owner): padding 10% → 4%, same fix as
+                  // home + /collections category tiles — the gray
+                  // surround was reading as a thick white frame.
                   <Image
                     src={c.image}
                     alt={c.name}
                     fill
                     sizes="(min-width: 768px) 25vw, 50vw"
-                    style={{ objectFit: "contain", padding: "10%" }}
+                    style={{ objectFit: "contain", padding: "4%" }}
                   />
                 ) : (
                   <Icons.truck size={36} />

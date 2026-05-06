@@ -671,12 +671,16 @@ export default async function HomePage() {
                 }}
               >
                 {cat.image ? (
+                  // Cycle 14X+ (owner): padding dropped from 10% → 4%.
+                  // Same fix as the product-card grid — the gray
+                  // .product-img-bg surround read as a thick white frame
+                  // around every category photo. 4% keeps a tiny gap.
                   <Image
                     src={cat.image}
                     alt={cat.name}
                     fill
                     sizes="(min-width: 768px) 25vw, 50vw"
-                    style={{ objectFit: "contain", padding: "10%" }}
+                    style={{ objectFit: "contain", padding: "4%" }}
                   />
                 ) : (
                   <span
