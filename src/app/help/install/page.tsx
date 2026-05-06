@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Icons } from "@/components/ui/icons";
+import { howToJsonLd, jsonLdString } from "@/lib/seo/jsonld";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://stehlenauto.com";
 
 export const metadata: Metadata = {
   title: "Install Guides",
@@ -45,9 +49,28 @@ const STEPS = [
   ["5", "Verify torque after 100 miles, then again at 500 miles."],
 ];
 
+// Cycle 14Z post-deploy (Priya F-14 LOW): HowTo schema on the example install
+// (door-frame roof rack) makes the page eligible for Google's "How-to" rich
+// result and AI Overview citations. All step content is statically defined
+// in this file (no user input) → safe to inline.
+const howToHtml = jsonLdString(
+  howToJsonLd(
+    "Install a Door-Frame Mount Roof Rack",
+    "Five-step bolt-on install for a Stehlen door-frame mount roof rack — no drilling required.",
+    STEPS.map(([n, t]) => ({ position: Number(n), text: String(t) })),
+    SITE_URL,
+    "/help/install",
+  ),
+);
+
 export default function InstallGuidePage() {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger -- HowTo, server-built static
+        dangerouslySetInnerHTML={{ __html: howToHtml }}
+      />
       <section
         style={{
           background: "var(--color-surface)",

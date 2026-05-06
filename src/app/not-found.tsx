@@ -98,12 +98,24 @@ export default function NotFound() {
               href={`/collections/${c.slug}`}
               className="btn"
               style={{
+                // Cycle 14Z post-deploy (Mike-O8 F-5 NIT): "BULL GUARDS &
+                // GRILLE GUARDS" was overflowing the tile at 390px and
+                // crowding the adjacent column. Allow wrap, tighten line
+                // height, and ensure the chevron doesn't get pushed out.
                 justifyContent: "space-between",
                 paddingLeft: 14,
                 paddingRight: 14,
+                fontSize: 12,
+                lineHeight: 1.25,
+                minHeight: 48,
+                whiteSpace: "normal",
+                textAlign: "left",
+                gap: 8,
               }}
             >
-              {c.name.toUpperCase()}
+              <span style={{ flex: 1, minWidth: 0 }}>
+                {c.name.toUpperCase()}
+              </span>
               <Icons.arrowR size={12} />
             </Link>
           ))}

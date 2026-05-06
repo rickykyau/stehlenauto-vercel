@@ -18,6 +18,58 @@ export function breadcrumbJsonLd(crumbs: Crumb[], baseUrl: string) {
   };
 }
 
+// Cycle 14Z post-deploy (Priya F-13 MEDIUM): ItemList schema on collection
+// pages makes the product grid eligible for Google's "carousel" rich result
+// (the horizontal-scroll set of products under a category SERP). Each item
+// is a Product with the URL Google will follow back into the catalog.
+export type ItemListEntry = { handle: string; name: string };
+
+export function itemListJsonLd(
+  items: ItemListEntry[],
+  baseUrl: string,
+  listName: string,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: listName,
+    numberOfItems: items.length,
+    itemListElement: items.map((p, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${baseUrl}/products/${p.handle}`,
+      name: p.name,
+    })),
+  };
+}
+
+// Cycle 14Z post-deploy (Priya F-14 LOW): HowTo schema on the install guide
+// is eligible for AI Overview citation + the "How-to" rich result. The
+// torque-spec sequence we already display is exactly the structured-step
+// payload Google's docs ask for.
+export type HowToStep = { position: number; text: string };
+
+export function howToJsonLd(
+  name: string,
+  description: string,
+  steps: HowToStep[],
+  baseUrl: string,
+  pageHref: string,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name,
+    description,
+    url: `${baseUrl}${pageHref}`,
+    step: steps.map((s) => ({
+      "@type": "HowToStep",
+      position: s.position,
+      text: s.text,
+    })),
+  };
+}
+
 export function organizationJsonLd(baseUrl: string) {
   return {
     "@context": "https://schema.org",

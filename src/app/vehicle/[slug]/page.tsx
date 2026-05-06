@@ -9,6 +9,10 @@ import { CATEGORIES, POPULAR_VEHICLES, PRODUCTS } from "@/lib/catalog/mock";
 import { searchProducts } from "@/lib/catalog";
 import { withFitment } from "@/lib/fitment/match";
 import { getCurrentVehicle } from "@/lib/garage/server";
+import { breadcrumbJsonLd, jsonLdString } from "@/lib/seo/jsonld";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://stehlenauto.com";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +49,8 @@ export async function generateMetadata({
   // long-tail "F-150 accessories" search clusters. Without OG/Twitter,
   // shares to truck-owner Reddit / FB groups all collapse to the homepage
   // OG and lose vehicle context.
+  // Cycle 14Z post-deploy (Mike-O8 F-4 NIT): include a real og:image. Hero
+  // JPG is shared until warehouse delivers per-vehicle banner imagery.
   return {
     title,
     description,
@@ -55,11 +61,20 @@ export async function generateMetadata({
       url: `/vehicle/${slug}`,
       type: "website",
       siteName: "Stehlen Auto",
+      images: [
+        {
+          url: "/images/hero-stehlen.jpg",
+          width: 1280,
+          height: 640,
+          alt: `Stehlen Auto — accessories for ${v.make} ${v.model}`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: ["/images/hero-stehlen.jpg"],
     },
   };
 }
@@ -252,8 +267,26 @@ export default async function VehicleHubPage({
     products = PRODUCTS.slice(0, 4);
   }
 
+  // Cycle 14Z post-deploy (Priya F-8 MEDIUM): vehicle hub now emits a
+  // BreadcrumbList JSON-LD so Google can render the breadcrumb in SERP.
+  // Static crumbs derived from server-side params — no user input → no XSS.
+  const breadcrumb = breadcrumbJsonLd(
+    [
+      { name: "Home", href: "/" },
+      { name: "Shop", href: "/collections" },
+      { name: `${make} ${model}`, href: `/vehicle/${slug}` },
+    ],
+    SITE_URL,
+  );
+  const breadcrumbHtml = jsonLdString(breadcrumb);
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger -- BreadcrumbList, server-built
+        dangerouslySetInnerHTML={{ __html: breadcrumbHtml }}
+      />
       {/* HERO */}
       <div
         style={{

@@ -17,7 +17,7 @@ import { MobileFilterDrawer } from "@/components/commerce/mobile-filter-drawer";
 import { Icons } from "@/components/ui/icons";
 import { getCurrentVehicle } from "@/lib/garage/server";
 import { withFitment } from "@/lib/fitment/match";
-import { breadcrumbJsonLd, jsonLdString } from "@/lib/seo/jsonld";
+import { breadcrumbJsonLd, itemListJsonLd, jsonLdString } from "@/lib/seo/jsonld";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://stehlenauto.com";
@@ -58,6 +58,10 @@ export async function generateMetadata({
   // openGraph + twitter blocks. Without them, social/marketplace shares fall
   // back to the layout-level OG (homepage) and look identical for every
   // category — kills CTR from Pinterest/Reddit/Discord truck communities.
+  // Cycle 14Z post-deploy (Mike-O8 F-4 NIT): include a real og:image so
+  // shares show truck imagery instead of a blank card. Hero JPG is the only
+  // landscape brand asset we have; per-collection imagery comes when
+  // warehouse uploads category banners.
   const baseOg = (title: string, description: string, path: string) => ({
     openGraph: {
       title,
@@ -65,11 +69,20 @@ export async function generateMetadata({
       url: path,
       type: "website" as const,
       siteName: "Stehlen Auto",
+      images: [
+        {
+          url: "/images/hero-stehlen.jpg",
+          width: 1280,
+          height: 640,
+          alt: "Stehlen Auto — heavy-duty truck accessories",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image" as const,
       title,
       description,
+      images: ["/images/hero-stehlen.jpg"],
     },
   });
 
@@ -225,6 +238,27 @@ export default async function CollectionPage({
           ),
         }}
       />
+      {/* Cycle 14Z post-deploy (Priya F-13 MEDIUM): ItemList JSON-LD makes
+          this collection eligible for Google's product-carousel rich result.
+          Only emit when there are products on the page so the schema isn't
+          empty when filters return zero hits. */}
+      {collection.products.length > 0 ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: jsonLdString(
+              itemListJsonLd(
+                collection.products.map((p) => ({
+                  handle: p.handle,
+                  name: p.title,
+                })),
+                SITE_URL,
+                collection.title,
+              ),
+            ),
+          }}
+        />
+      ) : null}
       {/* Hero */}
       <section
         style={{
