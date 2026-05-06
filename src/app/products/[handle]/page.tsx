@@ -182,14 +182,31 @@ export default async function PdpPage({
   // "https://stehlenauto-vercel.vercel.apphttps%3A//cdn.shopify.com/..."
   // for Shopify CDN URLs (already absolute). Detect absolute URLs and
   // pass them through unmodified — only encode + prefix for relative paths.
-  const absoluteImage = (() => {
-    if (!product.image) return null;
-    if (/^https?:\/\//i.test(product.image)) return product.image;
-    const encoded = product.image
-      .split("/")
-      .map((seg) => encodeURIComponent(seg))
-      .join("/");
+  const toAbsolute = (src: string): string => {
+    if (/^https?:\/\//i.test(src)) return src;
+    const encoded = src.split("/").map(encodeURIComponent).join("/");
     return `${SITE_URL}${encoded.startsWith("/") ? "" : "/"}${encoded}`;
+  };
+  const absoluteImage = product.image ? toAbsolute(product.image) : null;
+  // Cycle 14X+ (Priya F-7 MEDIUM): Google recommends Product.image be 3+
+  // representative images. Build the array from the full product.images
+  // gallery (Shopify Storefront returns up to 50), deduped + capped at 8
+  // so the JSON-LD payload stays lean.
+  const allAbsoluteImages: string[] = (() => {
+    const seen = new Set<string>();
+    const out: string[] = [];
+    if (absoluteImage) {
+      seen.add(absoluteImage);
+      out.push(absoluteImage);
+    }
+    for (const img of product.images ?? []) {
+      if (!img?.url || out.length >= 8) continue;
+      const abs = toAbsolute(img.url);
+      if (seen.has(abs)) continue;
+      seen.add(abs);
+      out.push(abs);
+    }
+    return out;
   })();
 
   // Cycle 14Z (Priya O-5 HIGH): merchant-listing PDPs without
@@ -200,6 +217,44 @@ export default async function PdpPage({
     const d = new Date();
     return `${d.getUTCFullYear() + 1}-12-31`;
   })();
+  // Cycle 14X+ (Priya F-9 MEDIUM): when warehouse merch has populated the
+  // structured fitment metafields, also surface them as schema.org
+  // additionalProperty[]. Entity grounding for AI Overviews — the same
+  // approach paid out at Wayfair within ~6 weeks for compatibility data.
+  const fitmentAdditionalProperties: Record<string, string>[] = [];
+  if (product.fitmentTable) {
+    const ft = product.fitmentTable;
+    if (ft.years.length > 0) {
+      fitmentAdditionalProperties.push({
+        "@type": "PropertyValue",
+        name: "Fitment Years",
+        value: ft.years.join(", "),
+      });
+    }
+    if (ft.makes.length > 0) {
+      fitmentAdditionalProperties.push({
+        "@type": "PropertyValue",
+        name: "Fitment Make",
+        value: ft.makes.join(", "),
+      });
+    }
+    if (ft.models.length > 0) {
+      fitmentAdditionalProperties.push({
+        "@type": "PropertyValue",
+        name: "Fitment Model",
+        value: ft.models.join(", "),
+      });
+    }
+    for (const [k, v] of Object.entries(ft.subattributes)) {
+      if (!v || v.length === 0) continue;
+      fitmentAdditionalProperties.push({
+        "@type": "PropertyValue",
+        name: k.replace(/([A-Z])/g, " $1").replace(/^./, (c) => c.toUpperCase()).trim(),
+        value: v.join(", "),
+      });
+    }
+  }
+
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org/",
     "@type": "Product",
@@ -207,8 +262,11 @@ export default async function PdpPage({
     description: product.fitTitle,
     sku: product.sku,
     mpn: product.sku,
-    image: absoluteImage ? [absoluteImage] : undefined,
+    image: allAbsoluteImages.length > 0 ? allAbsoluteImages : undefined,
     brand: { "@type": "Brand", name: "Stehlen Auto" },
+    ...(fitmentAdditionalProperties.length > 0
+      ? { additionalProperty: fitmentAdditionalProperties }
+      : {}),
     offers: {
       "@type": "Offer",
       url: `${SITE_URL}/products/${product.handle}`,

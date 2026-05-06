@@ -18,8 +18,27 @@ export const revalidate = 3600;
 // home was relying on Google self-canonicalizing from URL. That works, but
 // leaves a consolidation gap if a `?utm_source=` or trailing-slash variant
 // gets crawled. Explicit is cheap insurance.
+// Cycle 14X+ (Priya F-6 HIGH): every OTHER route emits og:url + og:image,
+// but the home page was inheriting only the partial layout-level OG block.
+// Facebook / LinkedIn / AI scrapers (Perplexity, ChatGPT browse) that hit
+// the homepage saw no image to embed. Google Discover eligibility also
+// requires og:image with min 1200×630.
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
+  openGraph: {
+    url: "/",
+    images: [
+      {
+        url: "/images/hero-stehlen.jpg",
+        width: 1280,
+        height: 640,
+        alt: "Stehlen Auto — Heavy-Duty Vehicle Accessories",
+      },
+    ],
+  },
+  twitter: {
+    images: ["/images/hero-stehlen.jpg"],
+  },
 };
 
 // Cycle 14Z batch 4 (Mike-O4 F-1): TESTIMONIALS removed — was hardcoded
