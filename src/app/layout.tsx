@@ -1,6 +1,24 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Geist_Mono, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { YmmModal } from "@/components/fitment/ymm-modal";
+import { CartDrawer } from "@/components/cart/cart-drawer";
+import { ChatAssistant } from "@/components/chat/chat-assistant";
+import { AnalyticsScripts } from "@/components/analytics/scripts";
+import { PageViewTracker } from "@/components/analytics/page-view-tracker";
+import { IdentifyUser } from "@/components/analytics/identify-user";
+import { getCurrentVehicle } from "@/lib/garage/server";
+import { getCart } from "@/lib/cart/server";
+import { jsonLdString, organizationJsonLd } from "@/lib/seo/jsonld";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://stehlenauto.com";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -56,21 +74,54 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  // Cycle 14Z (Priya O-1 CRITICAL): the previous "Self-canonical fallback"
+  // was poisoning every page that didn't explicitly override — /about,
+  // /help, /collections, /welcome-back all canonicalized to "/", telling
+  // Google those pages were duplicates of home. Removed entirely; per-route
+  // metadata.alternates.canonical is now mandatory for every indexable
+  // route. Pages that don't set one will emit no canonical at all (Google
+  // self-canonicalizes from the URL), which is the correct fallback.
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [vehicle, cart] = await Promise.all([getCurrentVehicle(), getCart()]);
+
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${geistMono.variable} ${jetbrainsMono.variable} h-full`}
-    >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html
+        lang="en"
+        className={`${inter.variable} ${geistMono.variable} ${jetbrainsMono.variable} h-full`}
+      >
+        <body className="min-h-full flex flex-col bg-background text-foreground">
+          {/* Server-built Organization JSON-LD; `<` escaped to neutralize script-breakout. */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: jsonLdString(organizationJsonLd(SITE_URL)),
+            }}
+          />
+          <Header
+            vehicle={vehicle ?? undefined}
+            cartCount={cart?.totalQuantity ?? 0}
+          />
+          <div className="flex-1">{children}</div>
+          <Footer />
+          <YmmModal />
+          <CartDrawer initialCart={cart} vehicle={vehicle ?? undefined} />
+          <ChatAssistant />
+          <AnalyticsScripts />
+          <Suspense fallback={null}>
+            <PageViewTracker />
+          </Suspense>
+          <IdentifyUser />
+          <VercelAnalytics />
+          <SpeedInsights />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

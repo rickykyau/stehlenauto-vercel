@@ -1,0 +1,37 @@
+handle,title,hasAtLeastOne,hasMoreThanOne
+toyota-parts,Toyota Parts,1,1
+ford-parts,Ford Parts,1,1
+chevy-parts,Chevy Parts,1,1
+gmc-parts,GMC Parts,1,1
+dodge-parts,Dodge Parts,1,1
+acura-parts,Acura Parts,1,1
+audi-parts,Audi Parts,1,1
+buick-parts,Buick Parts,1,1
+chrysler-parts,Chrysler Parts,1,1
+honda-parts,Honda Parts,1,1
+hyundai-parts,Hyundai Parts,1,1
+infiniti-parts,Infiniti Parts,1,1
+jeep-parts,Jeep Parts,1,1
+kia-parts,Kia Parts,1,1
+lexus-parts,Lexus Parts,1,1
+lincoln-parts,Lincoln Parts,1,1
+mazda-parts,Mazda Parts,1,1
+mercedes-benz-parts,Mercedes-Benz Parts,1,1
+mercury-parts,Mercury Parts,1,0
+nissan-parts,Nissan Parts,1,1
+pontiac-parts,Pontiac Parts,1,1
+saturn-parts,Saturn Parts,1,1
+subaru-parts,Subaru Parts,1,1
+volkswagen-parts,VW Parts,1,1
+bull-guards-grille-guards,Bull Guards & Grille Guards,1,1
+tonneau-covers,Tonneau Covers,1,1
+trailer-hitches,Trailer Hitches,1,1
+front-grilles,Front Grilles,1,1
+headlights,Headlights,1,1
+truck-bed-mats,Truck Bed Mats,1,1
+floor-mats,Floor Mats,1,1
+running-boards-side-steps,Running Boards & Side Steps,1,1
+roof-racks-baskets,Roof Racks & Baskets,1,1
+chase-racks-sport-bars,Chase Racks & Sport Bars,1,1
+molle-panels,MOLLE Panels,1,1
+under-seat-storage,Under Seat Storage,1,1

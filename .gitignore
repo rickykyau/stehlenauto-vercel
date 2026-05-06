@@ -39,3 +39,22 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.env*.local
+
+# playwright artifacts (run logs, traces) — keep curated screenshots in docs/screenshots/
+.playwright-mcp/
+playwright-report/
+test-results/
+
+# stray screenshots in repo root — should live in docs/screenshots/<bucket>/ instead
+/*.png
+/*.jpg
+/*.jpeg
+/*.yml
+
+# scratch / test artifacts directory
+/tmp/
+
+# design handoff archives — keep the extracted readable files, drop the binary archives
+docs/design-handoffs/**/handoff.gz
+docs/design-handoffs/**/handoff.tar

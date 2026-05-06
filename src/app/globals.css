@@ -43,6 +43,13 @@ body {
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.5;
+  /* Cycle 12 (Mike F-3 follow-up / cycle-11 sweep): the announcement-bar
+   * marquee is `position:absolute width:4064px` inside an `overflow:hidden`
+   * 32px-tall band. Even with the band clipped, mobile browsers report the
+   * absolute child in document scrollWidth, producing 160-200px of
+   * horizontal page scroll. Lock the document to viewport width to prevent
+   * any sideways drag on small screens. */
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "cv11";
@@ -62,6 +69,22 @@ button {
   font-family: inherit;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* ===== Type ===== */
+.mono {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+}
+
 .eyebrow {
   font-family: var(--font-display);
   text-transform: uppercase;
@@ -79,12 +102,662 @@ button {
   font-weight: 500;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  margin: 0;
+/* ===== Buttons ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 18px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-foreground);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    transform 80ms ease;
+  white-space: nowrap;
+}
+.btn:hover {
+  background: var(--color-surface-2);
+  border-color: var(--color-border-2);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn-primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  font-weight: 700;
+}
+.btn-primary:hover {
+  background: color-mix(in oklab, var(--color-primary) 88%, white);
+  border-color: color-mix(in oklab, var(--color-primary) 88%, white);
+}
+.btn-ghost {
+  border-color: transparent;
+}
+.btn-ghost:hover {
+  background: var(--color-surface-2);
+}
+.btn-lg {
+  /* Cycle 14b (Mike F-5): height was the only sizing prop. When the button
+   * is disabled with a class that overrides height (or shrinks via flexbox),
+   * the disabled DOES-NOT-FIT button collapsed to 22px. min-height locks
+   * tap-target accessibility floor. */
+  height: 56px;
+  min-height: 56px;
+  padding: 0 28px;
+  font-size: 13px;
+}
+.btn-sm {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 11px;
+}
+.btn-block {
+  width: 100%;
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===== Inputs ===== */
+.input,
+.select {
+  display: block;
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 120ms ease;
+}
+.input:focus,
+.select:focus {
+  border-color: var(--color-primary);
+}
+.input::placeholder {
+  color: var(--color-muted-2);
+}
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%23a0a0a0' d='M6 8L2 4h8z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.label-eyebrow {
+  display: block;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 10px;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+
+/* ===== Chips ===== */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-foreground);
+  font-family: var(--font-display);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: var(--radius-sm);
+}
+.chip-success {
+  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.08);
+  color: var(--color-success);
+}
+.chip-warn {
+  border-color: rgba(245, 168, 35, 0.35);
+  background: rgba(245, 168, 35, 0.08);
+  color: var(--color-primary);
+}
+
+/* ===== Badge (catalog flags) ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 7px;
+  font-family: var(--font-display);
+  font-size: 9px;
   font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  border-radius: var(--radius-sm);
+}
+.badge-new {
+  background: var(--color-foreground);
+  color: var(--color-background);
+}
+.badge-sale {
+  background: var(--color-destructive);
+  color: var(--color-foreground);
+}
+.badge-best {
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+.badge-fit {
+  background: var(--color-success);
+  color: var(--color-background);
+}
+
+/* ===== Card ===== */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  position: relative;
+}
+
+/* ===== Divider ===== */
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  border: 0;
+  margin: 0;
+}
+
+/* ===== Star rating glyph ===== */
+.stars {
+  color: var(--color-primary);
+  letter-spacing: 1px;
+}
+.stars-muted {
+  color: var(--color-border-2);
+}
+
+/* ===== Container widths ===== */
+.container-x {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+@media (max-width: 768px) {
+  .container-x {
+    padding: 0 16px;
+  }
+}
+
+/* ===== Custom scrollbars (subtle) ===== */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-2);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* ===== Grid hairlines (technical/spec-sheet feel) ===== */
+.hairline-top {
+  border-top: 1px solid var(--color-border);
+}
+.hairline-bottom {
+  border-bottom: 1px solid var(--color-border);
+}
+.hairline-x {
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+}
+
+/* ===== Marquee animation ===== */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  gap: 48px;
+  animation: marquee 50s linear infinite;
+  width: max-content;
+}
+
+/* ===== Skeleton shimmer ===== */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 0%,
+    var(--color-surface-3) 50%,
+    var(--color-surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* ===== Image checkerboard background for placeholders ===== */
+.placeholder-bg {
+  background-color: var(--color-surface-2);
+  background-image:
+    linear-gradient(45deg, var(--color-surface-3) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--color-surface-3) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--color-surface-3) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--color-surface-3) 75%);
+  background-size: 16px 16px;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0;
+}
+
+/* ===== Product image bg (light technical grid) ===== */
+.product-img-bg {
+  background-color: #f4f4f4;
+  background-image:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ===== Animations ===== */
+@keyframes slide-up-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slide-right-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.anim-slide-up {
+  animation: slide-up-in 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-slide-right {
+  animation: slide-right-in 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-fade-in {
+  animation: fade-in 180ms ease;
+}
+
+/* ===== Focus ring ===== */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ===== Mega-menu CSS-only hover (no client JS needed) ===== */
+.mega-trigger > .mega-panel {
+  display: none;
+}
+.mega-trigger:hover > .mega-panel,
+.mega-trigger:focus-within > .mega-panel {
+  display: block;
+}
+.mega-trigger:hover > .mega-trigger-link,
+.mega-trigger:focus-within > .mega-trigger-link {
+  border-bottom-color: var(--color-primary) !important;
+}
+
+/* ===== Product card hover ===== */
+.card:hover {
+  border-color: var(--color-border-2);
+}
+
+/* ===== Hero column responsive (Cycle 10 — owner mobile fix) =====
+ * Mobile (default): full-width column, no wasted space, headline fits.
+ * Desktop (>= 768px): narrower column on the left so the truck-grille
+ * image gets to breathe on the right.
+ */
+.hero-section {
+  min-height: 520px;
+}
+.hero-col {
+  width: 100%;
+  max-width: 480px;
+}
+/* Cycle 12 (iPad Mini sweep): 40% column at 768 breakpoint = ~307px wide,
+ * which broke "BUILT TOUGH" into "BUILT / TOUGH". Use 60% column at the
+ * tablet breakpoint and only switch to the narrower 40% column on real
+ * desktop (1024+). */
+@media (min-width: 768px) {
+  .hero-section {
+    min-height: 600px;
+  }
+  .hero-col {
+    width: 60%;
+    max-width: 560px;
+  }
+}
+@media (min-width: 1280px) {
+  .hero-section {
+    min-height: 640px;
+  }
+  .hero-col {
+    width: 40%;
+    max-width: 480px;
+  }
+}
+/* On narrow viewports the hero background image needs a stronger left-side
+ * darken so headline stays legible; the desktop gradient (only 0-55%) is too
+ * subtle when the text fills the full column. */
+.hero-mobile-darken {
+  display: block;
+}
+@media (min-width: 768px) {
+  .hero-mobile-darken {
+    display: none;
+  }
+}
+
+/* ===== Hero background image position (Cycle 13 — brand-mark visibility) =====
+ * The source JPG is a wide panoramic. The embossed "STEHLEN" panel occupies
+ * roughly the 20-62% horizontal band of the raw image. Default center-center
+ * objectPosition maps the brand mark directly under the left-side content
+ * column + gradient, hiding it.
+ *
+ * Mobile (default): shift right to 68% — portrait crop otherwise lands on the
+ *   left-center where the truck cab sits, not the branded panel.
+ * Tablet 768-1279px: 58% — content column is 60% wide, the mark bleeds into
+ *   the right third of the viewport.
+ * Desktop 1280+: 62% — content column is 40% wide, the full wordmark sits in
+ *   the clear right 52% of the viewport with desert sky framing it.
+ */
+/* Cycle 14U (owner): the source JPG was re-cropped to 1280×559 (was
+ * 1920×839) — right 33% of desert/mountain trimmed off, top + bottom
+ * trimmed proportionally. The STEHLEN wordmark now sits at 47-86% of the
+ * cropped frame (right of center), so default center-center object-position
+ * lands the wordmark in the right half of the viewport at every breakpoint.
+ * No CSS positioning gymnastics needed. */
+.hero-bg-img {
+  object-position: center center;
+}
+
+/* ===== Trust row (Cycle 11 — owner mobile QA) =====
+ * Desktop: 4 columns side-by-side with vertical separator borders.
+ * Mobile: 2 columns; sub-copy gets enough room to not clip mid-word.
+ */
+.trust-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.trust-row .trust-row__cell {
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+.trust-row .trust-row__cell:nth-child(2n) {
+  border-right: 0;
+}
+.trust-row .trust-row__cell:nth-last-child(-n+2) {
+  border-bottom: 0;
+}
+@media (min-width: 768px) {
+  .trust-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .trust-row .trust-row__cell {
+    border-right: 1px solid var(--color-border);
+    border-bottom: 0;
+  }
+  .trust-row .trust-row__cell[data-last="true"] {
+    border-right: 0;
+  }
+  .trust-row .trust-row__cell:nth-child(2n) {
+    border-right: 1px solid var(--color-border);
+  }
+}
+.trust-row--vertical {
+  grid-template-columns: 1fr;
+}
+.trust-row--vertical .trust-row__cell {
+  border-right: 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.trust-row--vertical .trust-row__cell[data-last="true"] {
+  border-bottom: 0;
+}
+
+/* ===== PDP buy-box row (Cycle 11 — owner mobile QA) =====
+ * Mobile: qty + ATC stack vertically (ATC full-width so price text never
+ * clips), wishlist drops below.
+ * Desktop: original side-by-side row.
+ */
+.buy-box-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.buy-box-row > .btn-primary { width: 100%; }
+.buy-box-wishlist { width: 100% !important; }
+@media (min-width: 640px) {
+  .buy-box-row {
+    flex-direction: row;
+  }
+  .buy-box-row > .btn-primary { width: auto; flex: 1; }
+  .buy-box-wishlist { width: 56px !important; }
+}
+
+/* ===== Chat FAB visibility (Cycle 11 — owner mobile QA) =====
+ * Reduced size on narrow viewports (was a 56-60px circle; now 48 on mobile).
+ * Cycle 12 (Mike F-3): also lift z-index lower so sticky CTAs (filter
+ * drawer SHOW button, mobile sticky ATC, cart drawer subtotal) sit ON TOP
+ * instead of being covered by the FAB.
+ */
+@media (max-width: 480px) {
+  /* Cycle 14e (Mike-5 MAJOR): chat FAB on mobile collided with too many
+   * surfaces — bottom-left covered the in-page "VERIFY FITMENT FOR MY
+   * VEHICLE" CTA on PDPs, bottom-right covered sticky filter/cart bars.
+   * No safe-corner exists below 480px. Hide the FAB; mobile customers can
+   * reach the chat via the Help Center link in the footer + nav. The
+   * floating widget remains on tablet+ where there's room. */
+  .chat-fab { display: none !important; }
+}
+
+/* ===== Footer grid (Cycle 14f — Mike-6 MAJOR F-6) =====
+ * Was hardcoded `1.4fr 1fr 1fr 1fr 1fr` and overflowed at 412 px, hiding the
+ * Account / Legal / Warranty links behind the right edge. Stack to 2 cols on
+ * phones (logo+blurb spans both), 3 cols on small tablets, 5 cols on lg+.
+ */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.footer-grid > :first-child {
+  grid-column: 1 / -1;
+}
+@media (min-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 36px;
+  }
+  .footer-grid > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+    gap: 48px;
+  }
+  .footer-grid > :first-child {
+    grid-column: auto;
+  }
+}
+
+/* ===== PDP warehouse fitment note (Cycle 14O — admin CSV) =====
+ * Notes ship as Shopify-style HTML with <br>, <li>, <u>. Render lists with
+ * indented bullets and underline emphasis on attention headers.
+ */
+.warehouse-note ul,
+.warehouse-note ol { margin: 6px 0; padding-left: 18px; }
+.warehouse-note ul { list-style: disc; }
+.warehouse-note li { margin-bottom: 4px; }
+.warehouse-note u { text-decoration: underline; font-weight: 600; }
+.warehouse-note strong, .warehouse-note b { color: var(--color-foreground); }
+.warehouse-note p { margin: 0 0 8px; }
+
+/* ===== PDP FEATURES rendered HTML (Cycle 14f — Mike-6 MAJOR F-7) =====
+ * Shopify descriptions arrive as HTML with <p>, <ul>, <li>, <strong>. Apply
+ * default vertical rhythm + list bullets so each feature reads on its own line
+ * (the cycle-14e plain-text parser was collapsing bullets into a runon).
+ */
+.pdp-features p { margin: 0 0 12px; }
+.pdp-features ul,
+.pdp-features ol { margin: 0 0 12px; padding-left: 20px; }
+.pdp-features ul { list-style: disc; }
+.pdp-features ol { list-style: decimal; }
+.pdp-features li { margin-bottom: 6px; }
+.pdp-features strong, .pdp-features b { color: var(--color-foreground); }
+.pdp-features h3, .pdp-features h4 {
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 20px 0 8px;
+}
+.pdp-features h1, .pdp-features h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 20px 0 8px;
+}
+.pdp-features table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 12px;
+}
+.pdp-features td, .pdp-features th {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 13px;
+  vertical-align: top;
+  text-align: left;
+}
+
+/* ===== Cart line item (Cycle 12 — Mike F-7 BLOCKER) =====
+ * Mobile: 2-col grid (image + body), qty + price stack inside body.
+ * Desktop: 5-col grid like before (image + body + qty + price + remove).
+ */
+.cart-line {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.cart-line .cart-line__qty,
+.cart-line .cart-line__price {
+  margin-top: 10px;
+}
+.cart-line .cart-line__row2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  gap: 12px;
+}
+/* Cycle 14c (Mike-3 BLOCKER): the desktop 5-col grid was kicking in at 768
+ * but doesn't fit until ~1024. iPad Mini saw clipped prices. Push the
+ * desktop layout to lg+ so 768 stays single-column-stack. */
+@media (min-width: 1024px) {
+  .cart-line {
+    grid-template-columns: 96px 1fr auto auto auto;
+    gap: 16px;
+    align-items: center;
+  }
+  .cart-line .cart-line__qty,
+  .cart-line .cart-line__price {
+    margin-top: 0;
+  }
+  .cart-line .cart-line__row2 {
+    display: contents; /* let qty + price + remove become grid columns */
+  }
+}
+
+/* ===== Cart hero typography fluid (Cycle 12 — Mike F-6) =====
+ * "REVIEW YOUR ORDER." was rendering as a 56px headline that took 3 huge
+ * lines on iPhone SE. Clamp it to a fluid range so it sits on 1-2 lines.
+ */
+.cart-hero-h1 {
+  font-size: clamp(28px, 9vw, 56px) !important;
+}
+.footer-headline {
+  font-size: clamp(20px, 6vw, 28px) !important;
+}
+/* Cycle 13 follow-up: shared fluid-h1 utility for any page hero that uses
+ * a fixed-pixel display font (about 96, welcome-back 96, order confirmation
+ * 72, account orders 56, legal 56, help 56, collections 44, returns 44).
+ * Override original inline fontSize so we get clamp() everywhere without
+ * touching each page individually. */
+.display-h1 {
+  font-size: clamp(32px, 10vw, 96px) !important;
+}
+.display-h2 {
+  font-size: clamp(24px, 7vw, 56px) !important;
+}
+.display-h3 {
+  font-size: clamp(22px, 6vw, 44px) !important;
 }

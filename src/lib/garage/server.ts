@@ -1,0 +1,170 @@
+import "server-only";
+import { auth } from "@clerk/nextjs/server";
+import { and, eq } from "drizzle-orm";
+import { db, dbConfigured } from "@/lib/db/client";
+import { subModelAnswers, vehicles } from "@/lib/db/schema";
+import {
+  clearSubModelCookie,
+  clearVehicleCookie,
+  readSubModelCookie,
+  readVehicleCookie,
+  writeSubModelCookie,
+  writeVehicleCookie,
+} from "./cookies";
+import type { SubModelAnswer, Vehicle } from "./types";
+
+function vehicleId(year: string, make: string, model: string) {
+  return `${year}-${make}-${model}`.toLowerCase().replace(/\s+/g, "-");
+}
+
+/**
+ * Returns the customer's primary vehicle.
+ * - Authed: pulls from Neon (primary, or most recent).
+ * - Guest: reads cookie.
+ */
+export async function getCurrentVehicle(): Promise<Vehicle | null> {
+  const { userId } = await auth();
+  if (userId && dbConfigured) {
+    try {
+      const rows = await db()
+        .select()
+        .from(vehicles)
+        .where(eq(vehicles.userId, userId))
+        .orderBy(vehicles.isPrimary, vehicles.createdAt);
+      const primary = rows.find((r) => r.isPrimary) ?? rows[0];
+      if (primary) {
+        return {
+          id: primary.id,
+          year: primary.year,
+          make: primary.make,
+          model: primary.model,
+        };
+      }
+    } catch (err) {
+      console.error("[garage] getCurrentVehicle DB error:", err);
+    }
+  }
+  return await readVehicleCookie();
+}
+
+/**
+ * Saves a vehicle.
+ * - Always writes the cookie (so unauthed → authed handoff is seamless).
+ * - If signed in, also upserts to Neon.
+ */
+export async function saveVehicle(v: {
+  year: string;
+  make: string;
+  model: string;
+}): Promise<Vehicle> {
+  const id = vehicleId(v.year, v.make, v.model);
+  const written = await writeVehicleCookie({ ...v, id });
+
+  const { userId } = await auth();
+  if (userId && dbConfigured) {
+    try {
+      await db()
+        .insert(vehicles)
+        .values({
+          id,
+          userId,
+          year: v.year,
+          make: v.make,
+          model: v.model,
+          isPrimary: true,
+        })
+        .onConflictDoUpdate({
+          target: [vehicles.userId, vehicles.year, vehicles.make, vehicles.model],
+          set: { isPrimary: true },
+        });
+    } catch (err) {
+      console.error("[garage] saveVehicle DB error:", err);
+    }
+  }
+
+  return written;
+}
+
+/**
+ * Cycle 14R (owner): YMM modal RESET button used to wipe local state only —
+ * the saved cookie+DB row stayed, so closing the modal left the garage chip
+ * intact. Now deletes both the vehicle and the sub-model answers everywhere
+ * so RESET truly clears the customer's vehicle context.
+ */
+export async function resetGarage(): Promise<void> {
+  await clearVehicleCookie();
+  await clearSubModelCookie();
+  const { userId } = await auth();
+  if (userId && dbConfigured) {
+    try {
+      await db().delete(vehicles).where(eq(vehicles.userId, userId));
+      await db()
+        .delete(subModelAnswers)
+        .where(eq(subModelAnswers.userId, userId));
+    } catch (err) {
+      console.error("[garage] resetGarage DB error:", err);
+    }
+  }
+}
+
+export async function getSubModelAnswers(
+  vid: string,
+): Promise<SubModelAnswer[]> {
+  const { userId } = await auth();
+  if (userId && dbConfigured) {
+    try {
+      const rows = await db()
+        .select()
+        .from(subModelAnswers)
+        .where(
+          and(
+            eq(subModelAnswers.userId, userId),
+            eq(subModelAnswers.vehicleId, vid),
+          ),
+        );
+      if (rows.length > 0) {
+        return rows.map((r) => ({
+          group: r.group as SubModelAnswer["group"],
+          value: r.value,
+        }));
+      }
+    } catch (err) {
+      console.error("[garage] getSubModelAnswers DB error:", err);
+    }
+  }
+  const all = await readSubModelCookie();
+  return all[vid] ?? [];
+}
+
+export async function saveSubModelAnswers(
+  vid: string,
+  answers: SubModelAnswer[],
+): Promise<void> {
+  await writeSubModelCookie(vid, answers);
+
+  const { userId } = await auth();
+  if (userId && dbConfigured && answers.length > 0) {
+    try {
+      for (const a of answers) {
+        await db()
+          .insert(subModelAnswers)
+          .values({
+            userId,
+            vehicleId: vid,
+            group: a.group,
+            value: a.value,
+          })
+          .onConflictDoUpdate({
+            target: [
+              subModelAnswers.userId,
+              subModelAnswers.vehicleId,
+              subModelAnswers.group,
+            ],
+            set: { value: a.value },
+          });
+      }
+    } catch (err) {
+      console.error("[garage] saveSubModelAnswers DB error:", err);
+    }
+  }
+}
