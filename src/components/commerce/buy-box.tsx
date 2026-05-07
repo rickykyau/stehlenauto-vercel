@@ -122,22 +122,28 @@ export function BuyBox({
 
   const missingStrips = strips.filter((s) => !picks[s.group]);
   // Cycle 5 (Mike): if the part is positively confirmed NOT to fit the
-  // customer's vehicle, do NOT let them add it to cart. Banner above shouts
-  // "DOES NOT FIT" — the button below it cannot still say ADD TO CART.
+  // customer's vehicle, surface a clear warning. Originally hard-disabled
+  // the ATC, but cycle 14X+ (owner): real customers buy parts as gifts,
+  // for friends, for second vehicles not in the garage, or just to have
+  // on hand. Disabling ATC on misfit blocks legitimate revenue. Stehlen's
+  // 30-day fitment guarantee bounds the worst case. Warn loudly (red card
+  // + reason copy + warehouse note + button label change) but allow the
+  // override.
   const explicitMisfit = product.fits === false;
   // Cycle 14Z (Mike-O2 N-1 BLOCKER): out-of-stock products had no guard —
   // tapping ADD TO CART added a qty=0 / $0 ghost line item that polluted
   // the cart through checkout. Block the ATC when inventory is 0.
   const outOfStock = product.inventory <= 0;
-  const canAdd = missingStrips.length === 0 && !explicitMisfit && !outOfStock;
+  const canAdd = missingStrips.length === 0 && !outOfStock;
   const blockedCopy =
     outOfStock
       ? "OUT OF STOCK"
-      : explicitMisfit
-        ? "DOES NOT FIT YOUR VEHICLE"
-        : missingStrips.length > 0
-          ? `SELECT ${missingStrips[0].label}`
-          : null;
+      : missingStrips.length > 0
+        ? `SELECT ${missingStrips[0].label}`
+        : null;
+  // Misfit no longer blocks; the button label changes so the customer
+  // sees they're knowingly buying a non-matching part.
+  const addCtaLabel = explicitMisfit ? "ADD TO CART ANYWAY" : "ADD TO CART";
 
   const persist = async (group: SubModelGroup, value: string) => {
     if (!vehicle?.id) return;
@@ -528,17 +534,22 @@ export function BuyBox({
           type="button"
           onClick={onAdd}
           disabled={adding || !canAdd}
-          // Cycle 14d (Mike-4 MAJOR): disabled state used to stay brand
-          // yellow at opacity 0.6 — customers misread it as a tappable
-          // primary CTA. Switched to a flat grey-disabled when explicitly
-          // misfit so the visual matches the red "DOES NOT FIT" banner.
+          // Cycle 14X+ (owner): misfit no longer disables the button —
+          // gift purchases / multi-vehicle households / friend-of-friend
+          // buying are all real. Style the misfit-allow button as a
+          // SECONDARY (outlined) CTA instead of the primary yellow so
+          // the visual still differs from a clean "fits your truck" ATC.
+          // The "ADD TO CART ANYWAY" label + red card above carry the
+          // warning. Real disable is reserved for OOS + missing-strip.
           className={explicitMisfit ? "btn btn-lg" : "btn btn-primary btn-lg"}
           style={{
             flex: 1,
-            opacity: explicitMisfit ? 1 : !canAdd ? 0.6 : 1,
-            background: explicitMisfit ? "#3a3a3a" : undefined,
-            color: explicitMisfit ? "rgba(255,255,255,0.7)" : undefined,
-            borderColor: explicitMisfit ? "#3a3a3a" : undefined,
+            opacity: !canAdd ? 0.6 : 1,
+            background: explicitMisfit ? "transparent" : undefined,
+            color: explicitMisfit ? "var(--color-foreground)" : undefined,
+            borderColor: explicitMisfit
+              ? "var(--color-border)"
+              : undefined,
             cursor: !canAdd ? "not-allowed" : "pointer",
           }}
         >
@@ -546,7 +557,7 @@ export function BuyBox({
             ? "ADDING…"
             : blockedCopy
               ? blockedCopy
-              : `ADD TO CART · $${(product.price * qty).toFixed(2)}`}
+              : `${addCtaLabel} · $${(product.price * qty).toFixed(2)}`}
         </button>
         <WishlistButton
           product={product}
