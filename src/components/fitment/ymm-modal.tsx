@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
+import { track } from "@/lib/analytics/client";
 import { onOpenYmmModal } from "./ymm-events";
 
 type Step = "year" | "make" | "model";
@@ -154,6 +155,11 @@ export function YmmModal() {
           | null;
         throw new Error(body?.error ?? "Couldn't save vehicle.");
       }
+      track("select_vehicle", {
+        vehicle_year: year,
+        vehicle_make: make,
+        vehicle_model: m,
+      });
       close();
       // Cycle 14N (owner): "Shop by Vehicle" appeared dead because picking
       // a year/make/model just refreshed the home page — the customer was
