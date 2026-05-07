@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
 import type { CatalogProduct } from "@/lib/catalog/types";
@@ -403,21 +402,46 @@ export function BuyBox({
                     (sib) => sib.bedLength === bed,
                   );
                   if (!target) return null;
+                  // Cycle 14X+ post-sync (Sam re-review HIGH): chip-link
+                  // navigation used to fire a plain <Link> with no
+                  // sub-model persist. The destination PDP would then
+                  // render the YELLOW "ONE STEP TO CONFIRM" banner
+                  // because the customer's `bed_length` answer was never
+                  // saved to the garage. Customer would land in a
+                  // dead-end (the destination chip is disabled, so they
+                  // can't tap it to update). Fix: persist bed_length on
+                  // click, THEN navigate. Fire-and-forget; the SSR on
+                  // the destination reads the cookie, which the persist
+                  // updates synchronously enough for the next request.
                   return (
-                    <Link
+                    <button
                       key={opt}
-                      href={`/products/${target.handle}`}
+                      type="button"
                       className="btn btn-sm"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        // Persist the new bed length to the garage
+                        // (best-effort), then hard-navigate so the SSR
+                        // picks up the saved answer. router.push is
+                        // soft-nav and may race the cookie write.
+                        try {
+                          await persist("bed_length", opt);
+                        } catch {
+                          /* ignore — navigation should not block */
+                        }
+                        window.location.href = `/products/${target.handle}`;
+                      }}
                       style={{
                         flex: "1 1 0",
                         background: "transparent",
                         color: "var(--color-foreground)",
                         borderColor: "var(--color-border)",
                         textAlign: "center",
+                        cursor: "pointer",
                       }}
                     >
                       {opt}
-                    </Link>
+                    </button>
                   );
                 }
                 return (

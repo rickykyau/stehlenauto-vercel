@@ -17,13 +17,14 @@ const STICKY_HEIGHT_VAR = "--stehlen-sticky-atc-height";
 export function MobileStickyAtc({ product }: { product: CatalogProduct }) {
   const [visible, setVisible] = useState(false);
   // Cycle 14d (Mike-4 MAJOR): sticky bar used to stay bright yellow + enabled
-  // even on a confirmed misfit PDP, contradicting the main buy-box's red
-  // DOES NOT FIT state. Mirror the same fits===false signal.
+  // even on a confirmed misfit PDP. Cycle 14X+ (owner): hard-disabling on
+  // misfit blocks gift / multi-vehicle purchases. Mirror the buy-box policy:
+  // misfit no longer hard-blocks; it changes the label to "ADD TO CART
+  // ANYWAY" so the customer sees they're knowingly buying a non-fit. Only
+  // out-of-stock keeps the hard disable (can't sell what we don't have).
   const isMisfit = product.fits === false;
-  // Cycle 14Z (Mike-O2 N-1): out-of-stock guard so the sticky bar doesn't
-  // bypass the buy-box's OUT OF STOCK gate.
   const outOfStock = product.inventory <= 0;
-  const blocked = isMisfit || outOfStock;
+  const blocked = outOfStock;
 
   useEffect(() => {
     const onScroll = () => {
@@ -99,19 +100,36 @@ export function MobileStickyAtc({ product }: { product: CatalogProduct }) {
         <button
           type="button"
           onClick={onClick}
-          className={blocked ? "btn" : "btn btn-primary"}
+          className={blocked || isMisfit ? "btn" : "btn btn-primary"}
           disabled={blocked}
           style={{
             flex: 1,
             height: 48,
             minHeight: 44,
-            background: blocked ? "#3a3a3a" : undefined,
-            color: blocked ? "rgba(255,255,255,0.6)" : undefined,
+            // OUT OF STOCK: gray hard-disabled. MISFIT: outlined secondary
+            // (matches desktop "ADD TO CART ANYWAY" treatment — clickable
+            // but visually distinct from a clean primary CTA). FIT:
+            // primary yellow.
+            background: blocked
+              ? "#3a3a3a"
+              : isMisfit
+                ? "transparent"
+                : undefined,
+            color: blocked
+              ? "rgba(255,255,255,0.6)"
+              : isMisfit
+                ? "var(--color-foreground)"
+                : undefined,
+            borderColor: isMisfit ? "var(--color-border)" : undefined,
             cursor: blocked ? "not-allowed" : "pointer",
             fontWeight: 700,
           }}
         >
-          {outOfStock ? "OUT OF STOCK" : isMisfit ? "DOES NOT FIT" : "ADD TO CART"}
+          {outOfStock
+            ? "OUT OF STOCK"
+            : isMisfit
+              ? "ADD TO CART ANYWAY"
+              : "ADD TO CART"}
         </button>
       </div>
     </div>
