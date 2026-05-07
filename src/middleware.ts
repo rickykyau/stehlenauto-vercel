@@ -26,6 +26,10 @@ export default clerkMiddleware(async (auth, req) => {
       url.searchParams.set("redirect_url", req.nextUrl.pathname + req.nextUrl.search);
       return NextResponse.redirect(url);
     }
+    // Per-page owner-role check happens via `requireOwner()` inside the
+    // server component (see /admin/sourcing-gaps/page.tsx for the pattern).
+    // Centralizing in middleware would duplicate that logic and the
+    // existing pages already enforce it correctly.
   }
 });
 
