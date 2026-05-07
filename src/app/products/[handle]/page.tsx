@@ -459,8 +459,11 @@ export default async function PdpPage({
               renders UNCONDITIONALLY when the metafield has engineExclusions —
               not nested inside any specific verdict card. EcoBoost owners
               shopping a bull guard need to see "Will not fit EcoBoost" BEFORE
-              the green ribbon convinces them to add to cart. */}
-          {(product.fitmentTable?.subattributes?.engineExclusions ?? []).length >
+              the green ribbon convinces them to add to cart. Suppressed when
+              productFits === false (Mike-O13 polish: don't show an engine
+              warning on a wrong-make product the buyer can't even add). */}
+          {productWithFit.fits !== false &&
+            (product.fitmentTable?.subattributes?.engineExclusions ?? []).length >
             0 && (
             <div
               style={{

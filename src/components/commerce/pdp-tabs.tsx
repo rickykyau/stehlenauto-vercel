@@ -207,6 +207,13 @@ const SUBATTR_LABELS: Record<string, string> = {
   trims: "TRIM",
   doors: "DOORS",
   drives: "DRIVE",
+  // Cycle 14X+ post-sync (Mike-O13 polish): the new metafield keys were
+  // rendering raw as "ENGINEEXCLUSIONS" / "EXCLUDEDSUBMODELS". Map to
+  // customer-friendly labels.
+  engineExclusions: "ENGINE EXCLUSIONS",
+  boxOptions: "BOX OPTIONS",
+  excludedSubmodels: "EXCLUDED SUB-MODELS",
+  submodels: "SUB-MODELS",
 };
 
 export function PdpTabs({
