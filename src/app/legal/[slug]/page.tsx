@@ -251,6 +251,7 @@ const POLICIES: Record<string, PolicyContent> = {
         body: [
           "Some vehicle thumbnails on our SHOP BY POPULAR VEHICLE grid use public-domain or Creative Commons photography from Wikimedia Commons. We are grateful to the photographers who released their work for reuse, and we link them here per the terms of their licenses.",
           "2022 Toyota Tundra Limited CrewMax — photographer Mr.choppers, CC BY-SA 4.0. Source: commons.wikimedia.org/wiki/File:2022_Toyota_Tundra_Limited_CrewMax_Short_Bed_4x4_with_TRD_Off-Road_Package,_front_left,_11-01-2022.jpg",
+          "2020 Ram 1500 Bighorn — photographer Kevauto, CC BY-SA 4.0. Source: commons.wikimedia.org/wiki/File:2020_Ram_1500_Bighorn,_front_7.8.20.jpg",
           "Nissan Frontier (D41) Pro-4X — photographer Alexander-93, CC BY-SA 4.0. Source: commons.wikimedia.org/wiki/File:Nissan_Frontier_(D41)_Pro-4X_Automesse_Ludwigsburg_2022_1X7A5885.jpg",
           "2019 GMC Sierra 1500 Denali (SIAM 2019) — photographer SsmIntrigue, CC BY-SA 4.0. Source: commons.wikimedia.org/wiki/File:2019_GMC_Sierra_1500_Denali_au_SIAM_2019.jpg",
           "All other vehicle photography on the storefront is owned by Stehlen Auto or shot by our team. CC BY-SA 4.0 license terms: creativecommons.org/licenses/by-sa/4.0/",

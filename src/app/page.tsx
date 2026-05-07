@@ -467,7 +467,7 @@ export default async function HomePage() {
         >
           <div>
             <div className="eyebrow" style={{ marginBottom: 8 }}>
-              01 · BROWSE
+              BROWSE
             </div>
             <h2
               style={{
@@ -619,7 +619,7 @@ export default async function HomePage() {
         >
           <div>
             <div className="eyebrow" style={{ marginBottom: 8 }}>
-              02 · BROWSE
+              BROWSE
             </div>
             <h2
               style={{
