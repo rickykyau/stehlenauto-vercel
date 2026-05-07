@@ -179,6 +179,26 @@ function normalizeSubKey(k: string): string {
     drives: "drives",
     drivetrain: "drives",
     drive_type: "drives",
+    // Cycle 14X+ post-sync: keys our own sync script writes in camelCase.
+    // The lowercased forms must alias back to the canonical UI key, else
+    // the consumer never sees them (engineexclusions → engineExclusions,
+    // boxoptions → boxOptions, excludedsubmodels → excludedSubmodels,
+    // submodels stays the same).
+    submodel: "submodels",
+    submodels: "submodels",
+    engine_exclusion: "engineExclusions",
+    engineexclusion: "engineExclusions",
+    engine_exclusions: "engineExclusions",
+    engineexclusions: "engineExclusions",
+    box: "boxOptions",
+    box_option: "boxOptions",
+    box_options: "boxOptions",
+    boxoption: "boxOptions",
+    boxoptions: "boxOptions",
+    excluded_submodel: "excludedSubmodels",
+    excluded_submodels: "excludedSubmodels",
+    excludedsubmodel: "excludedSubmodels",
+    excludedsubmodels: "excludedSubmodels",
   };
   return aliases[lower] ?? lower;
 }
