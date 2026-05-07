@@ -54,7 +54,12 @@ const STRIPS: Record<SubModelGroup, SubModelStripConfig> = {
   bed_length: {
     group: "bed_length",
     label: "YOUR TRUCK'S BED LENGTH",
-    options: ["5' BED", "5.5' BED", "6.5' BED", "8' BED"],
+    // Cycle 14X+ post-sync (Specialist UX review): added 4.6' (Nissan
+    // Frontier D40 bed-mats use this exact dimension) and 6' (Toyota
+    // Tacoma 6 ft long bed). Without them the sibling-nav chip strip
+    // went blank on those PDPs because the static options didn't match
+    // the catalog's actual bed-length values.
+    options: ["4.6' BED", "5' BED", "5.5' BED", "6' BED", "6.5' BED", "8' BED"],
   },
   cab_type: {
     group: "cab_type",
