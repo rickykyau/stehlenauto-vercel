@@ -13,7 +13,7 @@ import { ChatAssistant } from "@/components/chat/chat-assistant";
 import { AnalyticsScripts } from "@/components/analytics/scripts";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { IdentifyUser } from "@/components/analytics/identify-user";
-import { getCurrentVehicle } from "@/lib/garage/server";
+import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { getCart } from "@/lib/cart/server";
 import { jsonLdString, organizationJsonLd } from "@/lib/seo/jsonld";
 
@@ -102,6 +102,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const [vehicle, cart] = await Promise.all([getCurrentVehicle(), getCart()]);
+  // Cycle 14X+ post-sync (Mike-O14 follow-up): pass sub-model answers
+  // into the drawer so per-line fitment matches the PDP gate.
+  const subModelAnswers = vehicle
+    ? await getSubModelAnswers(vehicle.id ?? "")
+    : [];
 
   return (
     <ClerkProvider>
@@ -124,7 +129,11 @@ export default async function RootLayout({
           <div className="flex-1">{children}</div>
           <Footer />
           <YmmModal />
-          <CartDrawer initialCart={cart} vehicle={vehicle ?? undefined} />
+          <CartDrawer
+            initialCart={cart}
+            vehicle={vehicle ?? undefined}
+            subModelAnswers={subModelAnswers}
+          />
           <ChatAssistant />
           <AnalyticsScripts />
           <Suspense fallback={null}>

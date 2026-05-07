@@ -7,14 +7,17 @@ import { Icons } from "@/components/ui/icons";
 import type { Cart } from "@/lib/cart/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
 import { checkFitment } from "@/lib/fitment/match";
+import type { SubModelAnswer } from "@/lib/garage/types";
 import { onOpenCartDrawer } from "./cart-events";
 
 export function CartDrawer({
   initialCart,
   vehicle,
+  subModelAnswers = [],
 }: {
   initialCart: Cart | null;
   vehicle?: Vehicle;
+  subModelAnswers?: SubModelAnswer[];
 }) {
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState<Cart | null>(initialCart);
@@ -110,9 +113,14 @@ export function CartDrawer({
         checkFitment(
           { title: l.productTitle, fitTitle: l.productTitle, vehicleTags: [] },
           vehicle ?? null,
+          // Cycle 14X+ post-sync (Mike-O14 follow-up): pass sub-model
+          // answers so the drawer fitment matches the PDP gate. Without
+          // this a 5.5'-bed customer with a 6.5' tonneau would get a
+          // soft "fits" verdict in the drawer.
+          subModelAnswers,
         ),
       ),
-    [lines, vehicle],
+    [lines, vehicle, subModelAnswers],
   );
   const allFit = vehicle && fitments.length > 0 && fitments.every((f) => f === true);
   const anyMisfit = vehicle && fitments.some((f) => f === false);
@@ -235,7 +243,7 @@ export function CartDrawer({
             </div>
           ) : (
             <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-              {cart.lines.map((line) => (
+              {cart.lines.map((line, idx) => (
                 <li
                   key={line.id}
                   style={{
@@ -274,6 +282,38 @@ export function CartDrawer({
                     >
                       {line.productTitle}
                     </Link>
+                    {/* Cycle 14X+ post-sync (Mike-O14 follow-up): per-
+                        line fitment chip — drawer was emitting only the
+                        global MIXED FITMENT banner. Match the cart-page
+                        treatment so the buyer can identify which line
+                        is the misfit at a glance. */}
+                    {vehicle && fitments[idx] !== undefined && (
+                      <div
+                        className="mono"
+                        style={{
+                          display: "inline-block",
+                          marginTop: 4,
+                          padding: "1px 6px",
+                          fontSize: 9,
+                          letterSpacing: "0.08em",
+                          borderRadius: "var(--radius-sm)",
+                          background:
+                            fitments[idx] === true
+                              ? "rgba(34,197,94,0.15)"
+                              : "rgba(239,68,68,0.15)",
+                          color:
+                            fitments[idx] === true
+                              ? "var(--color-success)"
+                              : "var(--color-destructive)",
+                          border:
+                            fitments[idx] === true
+                              ? "1px solid rgba(34,197,94,0.4)"
+                              : "1px solid rgba(239,68,68,0.4)",
+                        }}
+                      >
+                        {fitments[idx] === true ? "✓ FITS" : "✗ DOES NOT FIT"}
+                      </div>
+                    )}
                     {line.variantTitle && (
                       <div
                         className="mono"
