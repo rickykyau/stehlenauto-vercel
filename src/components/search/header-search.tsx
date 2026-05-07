@@ -34,6 +34,11 @@ export function HeaderSearch() {
       const urlQ = searchParams.get("q") ?? "";
       setQ(urlQ);
     }
+    // Cycle 14AB (Mike-O14AB N-4): close the typeahead dropdown on every
+    // route change. Without this, typing "tonneau" + Enter lands on
+    // /search?q=tonneau but the dropdown stays mounted on top of the
+    // results, intercepting clicks until the user blurs the input.
+    setOpen(false);
   }, [pathname, searchParams]);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<number | null>(null);

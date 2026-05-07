@@ -84,18 +84,19 @@ export function CartPageClient({
   // Cycle 14Z (Mike-O1 M-1): one-tap empty-cart escape hatch. Forgets the
   // Shopify cart cookie so the next add creates a fresh cart, recovering
   // from a stale shared cart that survived a cookie wipe.
-  // Cycle 14Z batch 2 (Mike-O2 N-4): replaced the native window.confirm()
-  // with inline two-state UI — the EMPTY CART button switches to "TAP
-  // AGAIN TO CONFIRM" for 4s. No native dialog blocking the page.
-  const [emptyConfirm, setEmptyConfirm] = useState(false);
-  const emptyCart = async () => {
-    if (!emptyConfirm) {
-      setEmptyConfirm(true);
-      setTimeout(() => setEmptyConfirm(false), 4000);
-      return;
-    }
+  //
+  // Cycle 14AB (Mike-O14AB F-1 BLOCKER second pass): the inline confirm
+  // row from 14AA still failed Mike's test. Whether it was a Playwright
+  // timing artifact or a real React commit lag, a 2-state button with
+  // hidden first transition is fragile. Replace with a dialog — explicit
+  // accessible confirm element that's unmissable. Single click opens it,
+  // confirm button does the actual delete, cancel closes.
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const requestEmpty = () => {
+    setConfirmOpen(true);
+  };
+  const confirmEmpty = async () => {
     setBusy(true);
-    setEmptyConfirm(false);
     try {
       await fetch("/api/cart", {
         method: "DELETE",
@@ -103,13 +104,10 @@ export function CartPageClient({
         body: JSON.stringify({ lineId: "all" }),
       });
       await reload();
-      // Cycle 14Z (Mike-O2 N-7 + Mike-O3 follow-up): router.refresh wasn't
-      // enough on /cart — the SSR layout didn't repaint the badge.
-      // Live event lets the CartBadgeLive client component patch
-      // instantly without nav.
       window.dispatchEvent(
         new CustomEvent("stehlen:cart:updated", { detail: { count: 0 } }),
       );
+      setConfirmOpen(false);
       router.refresh();
     } finally {
       setBusy(false);
@@ -224,62 +222,24 @@ export function CartPageClient({
               <br />
               YOUR ORDER.
             </h1>
-            {/* Cycle 14AA (Mike-O14AA F-1 BLOCKER): the previous 2-state
-                button — single button that flipped its label to "TAP AGAIN
-                TO CONFIRM" on first click — was invisible to a real
-                customer. Mike clicked, saw "nothing happen," and concluded
-                the button was broken. Replace with an inline confirm row
-                so the next tap target is unmistakable. */}
+            {/* Cycle 14AB (Mike-O14AB F-1 BLOCKER second pass): converted
+                to a modal-dialog pattern. The Empty Cart button just opens
+                the dialog; React no longer needs to swap an entire
+                button-vs-confirm-row in the same flex container. */}
             {lines.length > 0 && (
-              <div style={{ marginTop: 12, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                {!emptyConfirm ? (
-                  <button
-                    type="button"
-                    onClick={emptyCart}
-                    disabled={busy}
-                    className="btn btn-sm"
-                    style={{
-                      color: "var(--color-muted)",
-                    }}
-                  >
-                    EMPTY CART
-                  </button>
-                ) : (
-                  <>
-                    <span
-                      style={{
-                        fontSize: 13,
-                        color: "var(--color-destructive)",
-                        fontWeight: 600,
-                      }}
-                    >
-                      Empty the entire cart?
-                    </span>
-                    <button
-                      type="button"
-                      onClick={emptyCart}
-                      disabled={busy}
-                      className="btn btn-sm"
-                      style={{
-                        background: "var(--color-destructive)",
-                        borderColor: "var(--color-destructive)",
-                        color: "#fff",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {busy ? "EMPTYING…" : "YES, EMPTY"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setEmptyConfirm(false)}
-                      disabled={busy}
-                      className="btn btn-sm"
-                    >
-                      CANCEL
-                    </button>
-                  </>
-                )}
-              </div>
+              <button
+                type="button"
+                onClick={requestEmpty}
+                disabled={busy}
+                data-testid="empty-cart-trigger"
+                className="btn btn-sm"
+                style={{
+                  marginTop: 12,
+                  color: "var(--color-muted)",
+                }}
+              >
+                EMPTY CART
+              </button>
             )}
           </div>
           {vehicle && (
@@ -318,7 +278,14 @@ export function CartPageClient({
                 {anyMisfit
                   ? `MIXED FITMENT — SOME ITEMS DO NOT FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
                   : allFit
-                    ? `ALL ITEMS FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                    /* Cycle 14AB (Mike-O14AB N-2 MAJOR): "ALL ITEMS FIT"
+                       was over-claiming — title-based YMM matched while
+                       Lightning-vs-gas exclusions hadn't been wired into
+                       the row's metadata. Soften to "Likely fits — verify
+                       on each PDP" so the customer trusts the cart, not
+                       a banner that might quietly disagree with the
+                       chat assistant or PDP fitment table. */
+                    ? `LIKELY FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} — DOUBLE-CHECK SUB-MODEL ON EACH PDP`
                     : anyUnknown
                       ? `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} — REVIEW EACH ITEM`
                       : `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
@@ -719,6 +686,83 @@ export function CartPageClient({
           </div>
         </div>
       </div>
+
+      {/* Cycle 14AB: empty-cart confirm modal. Single fixed-position overlay
+          mounted at root of the page so it can't be hidden by any flex /
+          overflow ancestor. Click backdrop or CANCEL to dismiss. */}
+      {confirmOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="empty-cart-title"
+          onClick={() => !busy && setConfirmOpen(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 90,
+            background: "rgba(0,0,0,0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "100%",
+              maxWidth: 420,
+              background: "var(--color-surface)",
+              border: "1px solid var(--color-border)",
+              borderRadius: "var(--radius-lg)",
+              padding: 24,
+              boxShadow: "0 24px 64px rgba(0,0,0,0.6)",
+            }}
+          >
+            <h3
+              id="empty-cart-title"
+              className="mono"
+              style={{
+                fontSize: 12,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "var(--color-destructive)",
+                marginBottom: 8,
+              }}
+            >
+              EMPTY ENTIRE CART?
+            </h3>
+            <p style={{ fontSize: 14, color: "var(--color-foreground)", marginBottom: 20 }}>
+              This removes all {itemCount} item{itemCount === 1 ? "" : "s"} from your cart. This can&apos;t be undone.
+            </p>
+            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+              <button
+                type="button"
+                onClick={() => setConfirmOpen(false)}
+                disabled={busy}
+                className="btn btn-sm"
+              >
+                CANCEL
+              </button>
+              <button
+                type="button"
+                onClick={confirmEmpty}
+                disabled={busy}
+                data-testid="empty-cart-confirm"
+                className="btn btn-sm"
+                style={{
+                  background: "var(--color-destructive)",
+                  borderColor: "var(--color-destructive)",
+                  color: "#fff",
+                  fontWeight: 700,
+                }}
+              >
+                {busy ? "EMPTYING…" : "YES, EMPTY"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

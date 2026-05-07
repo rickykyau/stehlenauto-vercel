@@ -732,31 +732,28 @@ export default async function PdpPage({
                     </div>
                   );
                 })()}
-                {/* Cycle 14X+ post-sync (Mike Product 3): if the warehouse
-                    note explains a known exclusion (e.g. "Will Not Fit
-                    EcoBoost Engine"), surface it in the no-fit card so the
-                    buyer sees the reason without scrolling. */}
+                {/* Cycle 14AB (Mike-O14AB F-6 / round 1 F-15): the
+                    warehouse note used to render here AND in the
+                    standalone WAREHOUSE NOTE block below — same long HTML
+                    twice on every no-fit PDP. Mike read that as
+                    duplicate / sloppy. The standalone block below is the
+                    single source of truth; this card now just points at
+                    it via the link below. */}
                 {warehouseNote?.notes && (
-                  <div
+                  <a
+                    href="#warehouse-note"
+                    className="mono"
                     style={{
-                      fontSize: 12,
-                      color: "var(--color-muted)",
+                      fontSize: 11,
+                      letterSpacing: "0.08em",
+                      color: "var(--color-foreground)",
+                      textDecoration: "underline",
                       marginBottom: 10,
-                      padding: "8px 10px",
-                      background: "rgba(0,0,0,0.04)",
-                      borderRadius: "var(--radius-sm)",
-                      maxHeight: 120,
-                      overflowY: "auto",
+                      display: "inline-block",
                     }}
                   >
-                    <strong style={{ color: "var(--color-foreground)" }}>
-                      Warehouse note:{" "}
-                    </strong>
-                    <span
-                      // eslint-disable-next-line react/no-danger -- warehouseNote.notes is server-built, sanitized in renderShopifyHtml
-                      dangerouslySetInnerHTML={{ __html: warehouseNote.notes }}
-                    />
-                  </div>
+                    READ THE WAREHOUSE FITMENT NOTE BELOW →
+                  </a>
                 )}
                 <Link
                   href={`/vehicle/${vehicle.make.toLowerCase()}-${vehicle.model.toLowerCase().replace(/\s+/g, "-")}`}
@@ -979,6 +976,7 @@ export default async function PdpPage({
               exclusion, neutral surround for plain coverage notes. */}
           {warehouseNote && (
             <div
+              id="warehouse-note"
               style={{
                 marginBottom: 20,
                 padding: 14,
@@ -989,6 +987,7 @@ export default async function PdpPage({
                   ? "1px solid rgba(245,168,35,0.45)"
                   : "1px solid var(--color-border)",
                 borderRadius: "var(--radius-md)",
+                scrollMarginTop: 80,
               }}
             >
               <div
@@ -1047,12 +1046,21 @@ export default async function PdpPage({
                 // depends on warehouse cutoff + carrier transit + customer ZIP,
                 // none of which we have at PDP render. Show an honest band
                 // until the real ZIP/carrier integration lands.
+                // Cycle 14AB (Mike-O14AB N-5): suppress the "ships in 1-2
+                // business days" claim when the product is OOS — Mike saw
+                // "Out of Stock" and "Ships in 1-2 business days" in the same
+                // viewport and called it contradictory.
                 Icon: Icons.shipping,
-                text: (
-                  <>
-                    Free shipping, no minimum · <strong>Ships in 1-2 business days</strong>
-                  </>
-                ),
+                text:
+                  product.inventory > 0 ? (
+                    <>
+                      Free shipping, no minimum · <strong>Ships in 1-2 business days</strong>
+                    </>
+                  ) : (
+                    <>
+                      Free shipping, no minimum · <strong>Ships when restocked</strong>
+                    </>
+                  ),
               },
               {
                 Icon: Icons.return,

@@ -107,11 +107,23 @@ export function CollectionToolbar({
         >
           {vehicle ? (
             <>
+              {/* Cycle 14AB (Mike-O14AB N-1 MAJOR): the toolbar chip used
+                  to render green "FITS 2021 F-150" the instant YMM was
+                  set, even when the page below said "NO EXACT-FIT
+                  MATCHES." Two contradictory signals in the same
+                  viewport. Soften to a neutral-info chip that just states
+                  the filter context — the per-product card badges and the
+                  "SHOW ONLY FITS" toggle do the actual fitment claim. */}
               <span
-                className="chip chip-success"
-                style={{ cursor: "default" }}
+                className="chip"
+                style={{
+                  cursor: "default",
+                  background: "var(--color-surface-2)",
+                  borderColor: "var(--color-border)",
+                  color: "var(--color-foreground)",
+                }}
               >
-                <Icons.check size={10} /> FITS {vehicle.year}{" "}
+                <Icons.truck size={10} /> FILTERING FOR {vehicle.year}{" "}
                 {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()}
               </span>
               {/* Cycle 14j (owner): toggle to filter the grid down to ONLY

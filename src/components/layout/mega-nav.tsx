@@ -1,12 +1,33 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 import { MEGA_SECTIONS, type MegaSection } from "./mega-menu-data";
 
-function MegaPanel({ section }: { section: MegaSection }) {
+/**
+ * Cycle 14AB (Mike-O14AB F-5 + N-3): the previous CSS-only mega menu
+ * (`.mega-trigger:focus-within > .mega-panel { display: block }`) kept
+ * panels visible across page navigations because focus stayed on the
+ * just-clicked link, AND the BlurOnNav workaround from 14AA didn't
+ * reliably close it on Mike's Playwright run. Convert to a stateful
+ * client component:
+ *   - Open on hover (desktop) or click (touch)
+ *   - Close on: pathname change, Escape, outside click, link click inside
+ *   - Single source of truth: `openIndex` state. No CSS focus-within trap.
+ */
+
+function MegaPanel({
+  section,
+  onLinkClick,
+}: {
+  section: MegaSection;
+  onLinkClick: () => void;
+}) {
   const cols = section.columns;
   return (
     <div
-      className="mega-panel"
       style={{
         position: "absolute",
         top: "100%",
@@ -47,7 +68,11 @@ function MegaPanel({ section }: { section: MegaSection }) {
             >
               {col.items.map((it) => (
                 <li key={it.label}>
-                  <Link href={it.href} style={{ fontSize: 13 }}>
+                  <Link
+                    href={it.href}
+                    style={{ fontSize: 13 }}
+                    onClick={onLinkClick}
+                  >
                     {it.label}
                   </Link>
                 </li>
@@ -87,7 +112,11 @@ function MegaPanel({ section }: { section: MegaSection }) {
             >
               {section.feature.body}
             </div>
-            <Link href={section.feature.cta.href} className="btn btn-sm btn-primary">
+            <Link
+              href={section.feature.cta.href}
+              className="btn btn-sm btn-primary"
+              onClick={onLinkClick}
+            >
               {section.feature.cta.label}
             </Link>
           </div>
@@ -98,54 +127,113 @@ function MegaPanel({ section }: { section: MegaSection }) {
 }
 
 export function MegaNav() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const pathname = usePathname();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const closeTimerRef = useRef<number | null>(null);
+
+  // Close whenever the URL changes — guarantees no leak across nav.
+  useEffect(() => {
+    setOpenIndex(null);
+  }, [pathname]);
+
+  // Close on Escape.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenIndex(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Close on click outside the nav.
+  useEffect(() => {
+    if (openIndex === null) return;
+    const onPointer = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setOpenIndex(null);
+      }
+    };
+    window.addEventListener("mousedown", onPointer);
+    return () => window.removeEventListener("mousedown", onPointer);
+  }, [openIndex]);
+
+  const open = (i: number) => {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setOpenIndex(i);
+  };
+
+  const queueClose = () => {
+    if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = window.setTimeout(() => {
+      setOpenIndex(null);
+    }, 120);
+  };
+
   return (
-    <div style={{ borderTop: "1px solid var(--color-border)" }}>
+    <div
+      ref={containerRef}
+      style={{ borderTop: "1px solid var(--color-border)" }}
+    >
       <div
         className="container-x"
         style={{ display: "flex", gap: 0, height: 44, alignItems: "stretch" }}
       >
-        {MEGA_SECTIONS.map((section) => (
-          <div
-            key={section.label}
-            className="mega-trigger"
-            style={{ position: "static" }}
-          >
-            <Link
-              href={section.href}
-              className="mega-trigger-link"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                padding: "0 18px",
-                height: "100%",
-                borderBottom: "2px solid transparent",
-                marginBottom: -1,
-              }}
+        {MEGA_SECTIONS.map((section, i) => {
+          const isOpen = openIndex === i;
+          return (
+            <div
+              key={section.label}
+              style={{ position: "static" }}
+              onMouseEnter={() => open(i)}
+              onMouseLeave={queueClose}
             >
-              <span
-                className="mono"
+              <Link
+                href={section.href}
+                onClick={() => setOpenIndex(null)}
+                onFocus={() => open(i)}
                 style={{
-                  fontSize: 11,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  fontWeight: 500,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "0 18px",
+                  height: "100%",
+                  borderBottom: isOpen
+                    ? "2px solid var(--color-primary)"
+                    : "2px solid transparent",
+                  marginBottom: -1,
                 }}
+                aria-expanded={isOpen}
               >
-                {section.label}
-              </span>
-              <Icons.chevDown size={10} />
-            </Link>
-            <MegaPanel section={section} />
-          </div>
-        ))}
+                <span
+                  className="mono"
+                  style={{
+                    fontSize: 11,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    fontWeight: 500,
+                  }}
+                >
+                  {section.label}
+                </span>
+                <Icons.chevDown size={10} />
+              </Link>
+              {isOpen && (
+                <MegaPanel
+                  section={section}
+                  onLinkClick={() => setOpenIndex(null)}
+                />
+              )}
+            </div>
+          );
+        })}
         <div style={{ flex: 1 }} />
-        {/* Cycle 6 (Mike): SALE + NEW ARRIVALS used to link to
-            /collections/sale and /collections/new — neither collection exists
-            in Shopify (verified via Storefront API), so customers landed on
-            the friendly empty-state. Hidden until the merch team creates real
-            collections. To re-enable, restore the <Link>s once
-            collection.handle == "sale" / "new" exists. */}
       </div>
     </div>
   );
