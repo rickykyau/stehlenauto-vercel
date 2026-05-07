@@ -171,7 +171,7 @@ export function BuyBox({
     void persist(group, value);
   };
 
-  const onAdd = async () => {
+  const onAdd = async (opts?: { redirectToCheckout?: boolean }) => {
     setAdding(true);
     setPersistError(null);
     try {
@@ -217,6 +217,15 @@ export function BuyBox({
           },
         ],
       });
+      // Cycle 14X+ post-sync (Sam re-review M-4): "BUY NOW WITH AFFIRM"
+      // skips the cart drawer and goes straight to Shopify checkout, where
+      // Affirm is one of the payment methods. Plain ATC opens the drawer
+      // as before.
+      const checkoutUrl = okData?.cart?.checkoutUrl as string | undefined;
+      if (opts?.redirectToCheckout && checkoutUrl) {
+        window.location.href = checkoutUrl;
+        return;
+      }
       window.dispatchEvent(new CustomEvent("stehlen:cart:open"));
       // Cycle 14R + 14Z (Mike-O3 N-7): emit live event for the header
       // CartBadgeLive client component so the count updates instantly
@@ -320,15 +329,25 @@ export function BuyBox({
                   }}
                 >
                   <strong style={{ color: "var(--color-destructive)" }}>
-                    Why is {saved} highlighted?
+                    Your saved {friendlyType}: {saved}
                   </strong>{" "}
-                  We saved that as your truck&apos;s {friendlyType} from a
-                  previous product — the chip is your truck&apos;s spec, not a
-                  variant of this cover. <strong>This cover only fits a{" "}
-                  {productSpec} {friendlyType}.</strong> If your truck
-                  actually has a {productSpec} {friendlyType}, tap{" "}
-                  <strong>{productSpec} {friendlyType.toUpperCase()}</strong>{" "}
-                  below to update.
+                  doesn&apos;t match this product (this one fits{" "}
+                  <strong>{productSpec} {friendlyType}</strong>).{" "}
+                  {bedLengthSiblings && s.group === "bed_length" ? (
+                    <>
+                      Use the chips below to switch to the matching product
+                      for your truck, or tap <strong>ADD TO CART ANYWAY</strong>{" "}
+                      if you&apos;re buying for a different vehicle.
+                    </>
+                  ) : (
+                    <>
+                      If your truck actually has a {productSpec}{" "}
+                      {friendlyType}, this is the right product — your saved
+                      spec will update on add-to-cart. Otherwise, tap{" "}
+                      <strong>ADD TO CART ANYWAY</strong> if you&apos;re
+                      buying for a different vehicle.
+                    </>
+                  )}
                 </div>
               );
             }
@@ -556,7 +575,7 @@ export function BuyBox({
         </div>
         <button
           type="button"
-          onClick={onAdd}
+          onClick={() => onAdd()}
           disabled={adding || !canAdd}
           // Cycle 14X+ (owner): misfit no longer disables the button —
           // gift purchases / multi-vehicle households / friend-of-friend
@@ -591,11 +610,15 @@ export function BuyBox({
       </div>
       {/* Cycle 14c (Mike-3 F-5): used to stay enabled on confirmed-misfit
           PDPs — customer could Affirm-finance a non-fitting part. Gate it
-          on the same canAdd flag the primary ATC uses. */}
+          on the same canAdd flag the primary ATC uses.
+          Cycle 14X+ post-sync (Sam re-review M-4): button had no onClick,
+          dead UI on every PDP. Wired to ATC + auto-redirect to Shopify
+          hosted checkout where Affirm is a payment method. */}
       <button
         type="button"
+        onClick={() => onAdd({ redirectToCheckout: true })}
+        disabled={adding || !canAdd}
         className="btn btn-block"
-        disabled={!canAdd}
         style={{
           background: "transparent",
           borderColor: "var(--color-border-2)",
@@ -603,7 +626,7 @@ export function BuyBox({
           cursor: !canAdd ? "not-allowed" : "pointer",
         }}
       >
-        BUY NOW WITH AFFIRM
+        {adding ? "ADDING…" : "BUY NOW WITH AFFIRM"}
       </button>
 
       {persistError && (

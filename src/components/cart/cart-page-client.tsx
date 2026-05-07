@@ -8,13 +8,16 @@ import { Icons } from "@/components/ui/icons";
 import type { Cart } from "@/lib/cart/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
 import { checkFitment } from "@/lib/fitment/match";
+import type { SubModelAnswer } from "@/lib/garage/types";
 
 export function CartPageClient({
   initialCart,
   vehicle,
+  subModelAnswers = [],
 }: {
   initialCart: Cart | null;
   vehicle?: Vehicle;
+  subModelAnswers?: SubModelAnswer[];
 }) {
   const router = useRouter();
   const [cart, setCart] = useState<Cart | null>(initialCart);
@@ -130,9 +133,14 @@ export function CartPageClient({
         checkFitment(
           { title: l.productTitle, fitTitle: l.productTitle, vehicleTags: [] },
           vehicle ?? null,
+          // Cycle 14X+ post-sync (Sam re-review M-6): pass sub-model
+          // answers so cart fitment status matches the PDP gate. A
+          // 5.5'-bed customer with a 6.5' tonneau in cart now correctly
+          // shows MIXED FITMENT, not green ALL ITEMS FIT.
+          subModelAnswers,
         ),
       ),
-    [lines, vehicle],
+    [lines, vehicle, subModelAnswers],
   );
   const allFit = vehicle && fitments.length > 0 && fitments.every((f) => f === true);
   const anyMisfit = vehicle && fitments.some((f) => f === false);

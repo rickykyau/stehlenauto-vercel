@@ -141,6 +141,44 @@ export default async function OrderConfirmationPage({
         </div>
       </div>
 
+      {/* Cycle 14X+ post-sync (Sam re-review L-7): when "ADD TO CART
+          ANYWAY" is allowed on misfit, customers might end up with an
+          order that doesn't match their saved garage vehicle (gift,
+          second vehicle, etc.). Add a polite fitment-guarantee callout
+          on every confirmation so misfit-purchase customers (and anyone
+          else) sees the path to a free return if needed. */}
+      <div
+        className="container-x"
+        style={{ paddingTop: 32, paddingBottom: 0 }}
+      >
+        <div
+          style={{
+            padding: "14px 18px",
+            background: "var(--color-surface)",
+            border: "1px solid var(--color-border)",
+            borderRadius: "var(--radius-md)",
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+          }}
+        >
+          <div style={{ color: "var(--color-primary)", flexShrink: 0 }}>
+            <Icons.shield size={20} sw={2} />
+          </div>
+          <div style={{ fontSize: 13, lineHeight: 1.55 }}>
+            <strong>Fitment guaranteed.</strong> If something doesn&apos;t bolt
+            on as listed — or you ordered for a different vehicle — return it
+            free within 30 days. We cover the FedEx label.{" "}
+            <Link
+              href="/legal/fitment-guarantee"
+              style={{ color: "var(--color-primary)" }}
+            >
+              See policy →
+            </Link>
+          </div>
+        </div>
+      </div>
+
       <div
         className="container-x"
         style={{ paddingTop: 56, paddingBottom: 64 }}
