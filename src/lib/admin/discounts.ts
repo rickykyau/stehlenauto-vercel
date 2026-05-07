@@ -210,6 +210,194 @@ export type CreateDiscountInput = {
   minimumSubtotal?: number; // dollars; 0 = no minimum
 };
 
+/**
+ * Cycle 14X+ post-sync (admin promo features): bulk code generation.
+ * Generates N codes that share the same discount config (title +
+ * activation + value), each with a unique code value built from a
+ * prefix and a cryptographic-quality random suffix. Use case: friend-
+ * referral drops, Black Friday personalized codes via Klaviyo, etc.
+ */
+export type BulkGenerateInput = Omit<CreateDiscountInput, "code"> & {
+  prefix: string;       // e.g. "WELCOME-" or "F150-"
+  suffixLength?: number; // default 6, max 12
+  count: number;         // 1..1000
+};
+
+export type BulkGenerateResult =
+  | { codes: string[]; created: number; failed: { code: string; error: string }[] }
+  | { error: string };
+
+function randomSuffix(len: number): string {
+  // Avoid O/0/I/1 ambiguity for printed codes.
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let out = "";
+  for (let i = 0; i < len; i++) {
+    out += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  return out;
+}
+
+export async function bulkGenerateCodes(
+  input: BulkGenerateInput,
+): Promise<BulkGenerateResult> {
+  const count = Math.min(1000, Math.max(1, Math.floor(input.count)));
+  const suffixLength = Math.min(12, Math.max(4, input.suffixLength ?? 6));
+  const prefix = input.prefix.trim().toUpperCase().replace(/\s+/g, "");
+  if (!prefix) return { error: "prefix required for bulk generation" };
+  if (input.activation !== "code") {
+    return { error: "Bulk generation requires activation=code" };
+  }
+
+  const generated: string[] = [];
+  const failed: { code: string; error: string }[] = [];
+  for (let i = 0; i < count; i++) {
+    const code = `${prefix}${randomSuffix(suffixLength)}`;
+    const single: CreateDiscountInput = {
+      ...input,
+      code,
+      // Per-customer = false on bulk single-use codes is the wrong default;
+      // set the usageLimit to 1 to make each code single-use.
+      usageLimit: 1,
+      appliesOncePerCustomer: input.appliesOncePerCustomer ?? false,
+    };
+    const result = await createDiscount(single);
+    if ("error" in result) {
+      failed.push({ code, error: result.error });
+    } else {
+      generated.push(code);
+    }
+    // Small delay every 10 requests to keep us under Shopify Admin's
+    // 40-points/sec REST limit (GraphQL mutations cost ~10 points each).
+    if (i % 10 === 9) await new Promise((r) => setTimeout(r, 250));
+  }
+  return { codes: generated, created: generated.length, failed };
+}
+
+/**
+ * Cycle 14X+ post-sync (admin promo features): preset starting points.
+ * Owner picks a preset on /admin/discounts/new, the form pre-fills with
+ * Stehlen's playbook defaults. Saves keystrokes and standardizes the
+ * marketing taxonomy (titles, codes, durations).
+ */
+export type DiscountPreset = {
+  id: string;
+  label: string;
+  blurb: string;
+  defaults: Partial<CreateDiscountInput> & { prefix?: string };
+};
+
+export const DISCOUNT_PRESETS: DiscountPreset[] = [
+  {
+    id: "welcome-new",
+    label: "Welcome new customer (15% off)",
+    blurb:
+      "First-time customer 15% off — capture the first purchase + email opt-in.",
+    defaults: {
+      title: "Welcome — first order 15%",
+      activation: "code",
+      code: "WELCOME15",
+      value: "percentage",
+      percentage: 0.15,
+      appliesOncePerCustomer: true,
+      minimumSubtotal: 0,
+    },
+  },
+  {
+    id: "returning-customer",
+    label: "Returning customer (10% off)",
+    blurb:
+      "Same SKU, lower price — 10% to customers coming back direct from eBay/Amazon.",
+    defaults: {
+      title: "Returning customer 10%",
+      activation: "code",
+      code: "WELCOME10",
+      value: "percentage",
+      percentage: 0.1,
+      appliesOncePerCustomer: true,
+    },
+  },
+  {
+    id: "birthday",
+    label: "Birthday gift ($25 off)",
+    blurb:
+      "$25 off any order. Pair with a Klaviyo birthday flow for a personalized lift.",
+    defaults: {
+      title: "Birthday — $25 off",
+      activation: "code",
+      value: "fixed_amount",
+      fixedAmount: 25,
+      minimumSubtotal: 50,
+      appliesOncePerCustomer: true,
+    },
+  },
+  {
+    id: "referral",
+    label: "Friend referral (20% off)",
+    blurb:
+      "20% off for a friend. Bulk-generate codes so each referral is uniquely tracked.",
+    defaults: {
+      title: "Friend referral — 20%",
+      activation: "code",
+      value: "percentage",
+      percentage: 0.2,
+      appliesOncePerCustomer: true,
+      prefix: "FRIEND-",
+    },
+  },
+  {
+    id: "blackfriday",
+    label: "Sitewide sale (25% automatic)",
+    blurb:
+      "Automatic 25% sitewide — no code, applies at checkout. Schedule a window.",
+    defaults: {
+      title: "Black Friday — 25% sitewide",
+      activation: "automatic",
+      value: "percentage",
+      percentage: 0.25,
+    },
+  },
+  {
+    id: "free-shipping",
+    label: "Free shipping (any order)",
+    blurb:
+      "Free shipping over a minimum subtotal — punch through the free-ship threshold barrier.",
+    defaults: {
+      title: "Free shipping promotion",
+      activation: "code",
+      code: "SHIPSTEHLEN",
+      value: "free_shipping",
+    },
+  },
+  {
+    id: "service-recovery",
+    label: "Service recovery ($50 off)",
+    blurb:
+      "Customer support goodwill: $50 off for the customer who got the wrong part.",
+    defaults: {
+      title: "Service recovery — $50",
+      activation: "code",
+      value: "fixed_amount",
+      fixedAmount: 50,
+      appliesOncePerCustomer: true,
+      prefix: "SORRY-",
+    },
+  },
+  {
+    id: "vehicle-targeted",
+    label: "Vehicle-targeted bulk (10% off)",
+    blurb:
+      'Bulk codes prefixed with the vehicle (e.g. "F150-X8K2AB") for a vehicle-segmented Klaviyo blast.',
+    defaults: {
+      title: "Vehicle-targeted 10%",
+      activation: "code",
+      value: "percentage",
+      percentage: 0.1,
+      appliesOncePerCustomer: true,
+      prefix: "F150-",
+    },
+  },
+];
+
 const DISCOUNT_CODE_BASIC_CREATE = /* GraphQL */ `
   mutation DiscountCodeBasicCreate($basicCodeDiscount: DiscountCodeBasicInput!) {
     discountCodeBasicCreate(basicCodeDiscount: $basicCodeDiscount) {

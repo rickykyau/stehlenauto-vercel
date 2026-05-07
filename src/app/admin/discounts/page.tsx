@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { listDiscounts } from "@/lib/admin/discounts";
 import { requireOwner } from "@/lib/admin/guard";
+import { CopyButton, DeleteButton } from "./row-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -92,13 +93,14 @@ export default async function AdminDiscountsPage({
                 <Th>STATUS</Th>
                 <Th>STARTS</Th>
                 <Th>ENDS</Th>
+                <Th>ACTIONS</Th>
               </tr>
             </thead>
             <tbody>
               {result.discounts.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={8}
                     style={{
                       padding: 24,
                       textAlign: "center",
@@ -119,17 +121,20 @@ export default async function AdminDiscountsPage({
                     </Td>
                     <Td>
                       {d.code ? (
-                        <span
-                          className="mono"
-                          style={{
-                            fontSize: 12,
-                            background: "var(--color-surface-2)",
-                            padding: "2px 8px",
-                            borderRadius: "var(--radius-sm)",
-                          }}
-                        >
-                          {d.code}
-                        </span>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <span
+                            className="mono"
+                            style={{
+                              fontSize: 12,
+                              background: "var(--color-surface-2)",
+                              padding: "2px 8px",
+                              borderRadius: "var(--radius-sm)",
+                            }}
+                          >
+                            {d.code}
+                          </span>
+                          <CopyButton code={d.code} />
+                        </div>
                       ) : (
                         <span style={{ fontSize: 11, color: "var(--color-muted)" }}>
                           AUTO
@@ -150,6 +155,13 @@ export default async function AdminDiscountsPage({
                     </Td>
                     <Td>
                       {d.endsAt ? new Date(d.endsAt).toLocaleDateString() : "—"}
+                    </Td>
+                    <Td>
+                      <DeleteButton
+                        id={d.id}
+                        kind={d.code ? "code" : "automatic"}
+                        title={d.title}
+                      />
                     </Td>
                   </tr>
                 ))
