@@ -240,6 +240,36 @@ const POLICIES: Record<string, PolicyContent> = {
       },
     ],
   },
+  credits: {
+    title: "Image Credits",
+    description:
+      "Attribution for third-party photography used on the Stehlen storefront.",
+    updated: "May 2026",
+    sections: [
+      {
+        heading: "Vehicle reference photography",
+        body: [
+          "Some vehicle thumbnails on our SHOP BY POPULAR VEHICLE grid use public-domain or Creative Commons photography from Wikimedia Commons. We are grateful to the photographers who released their work for reuse, and we link them here per the terms of their licenses.",
+          "2022 Toyota Tundra Limited CrewMax — photographer Mr.choppers, CC BY-SA 4.0. Source: commons.wikimedia.org/wiki/File:2022_Toyota_Tundra_Limited_CrewMax_Short_Bed_4x4_with_TRD_Off-Road_Package,_front_left,_11-01-2022.jpg",
+          "Nissan Frontier (D41) Pro-4X — photographer Alexander-93, CC BY-SA 4.0. Source: commons.wikimedia.org/wiki/File:Nissan_Frontier_(D41)_Pro-4X_Automesse_Ludwigsburg_2022_1X7A5885.jpg",
+          "2019 GMC Sierra 1500 Denali (SIAM 2019) — photographer SsmIntrigue, CC BY-SA 4.0. Source: commons.wikimedia.org/wiki/File:2019_GMC_Sierra_1500_Denali_au_SIAM_2019.jpg",
+          "All other vehicle photography on the storefront is owned by Stehlen Auto or shot by our team. CC BY-SA 4.0 license terms: creativecommons.org/licenses/by-sa/4.0/",
+        ],
+      },
+      {
+        heading: "Product photography",
+        body: [
+          "All product photography on /products and /collections pages is the property of Stehlen Auto and our manufacturing partners. Reuse without permission is prohibited.",
+        ],
+      },
+      {
+        heading: "Reporting an issue",
+        body: [
+          "If you believe we've used your image without proper attribution, please email credits@stehlenauto.com and we will resolve it within 1 business day.",
+        ],
+      },
+    ],
+  },
 };
 
 export function generateStaticParams() {

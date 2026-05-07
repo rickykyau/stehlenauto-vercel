@@ -10,15 +10,18 @@ export const revalidate = 3600;
 
 // Cycle 14X+ (partner feedback): map of popular-vehicle slugs to the
 // latest-generation photo in /public/images/vehicle-gens. Slugs match the
-// vehicle hub URL pattern. When a slug isn't in the map, the card falls
-// back to the truck silhouette icon. Add a row here when warehouse drops
-// a new gen photo (Tundra, Sierra, Frontier still pending).
+// vehicle hub URL pattern. Now covers all 8 popular vehicles — the three
+// trailing rows (Tundra, Sierra, Frontier) use Wikimedia Commons photos
+// under CC-BY-SA; attribution lives in /legal/credits per the license.
 const POPULAR_VEHICLE_PHOTOS: Record<string, string> = {
   "ford-f-150": "/images/vehicle-gens/ford-f-150-p702.jpg",
   "chevrolet-silverado": "/images/vehicle-gens/chevrolet-silverado-t1xx.jpg",
   "ram-1500": "/images/vehicle-gens/ram-1500-dt.jpg",
   "toyota-tacoma": "/images/vehicle-gens/toyota-tacoma-n400.jpg",
   "jeep-wrangler": "/images/vehicle-gens/jeep-wrangler-jl.jpg",
+  "toyota-tundra": "/images/vehicle-gens/toyota-tundra-3rd-gen.jpg",
+  "gmc-sierra": "/images/vehicle-gens/gmc-sierra-t1xx.jpg",
+  "nissan-frontier": "/images/vehicle-gens/nissan-frontier-d41.jpg",
 };
 
 // Cycle 14Z (Priya F-16 LOW): every other route now sets an explicit canonical;

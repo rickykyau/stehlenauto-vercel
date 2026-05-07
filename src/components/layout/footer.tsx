@@ -41,6 +41,7 @@ const LINK_COLS = [
       { label: "CCPA", href: "/legal/ccpa" },
       { label: "Prop 65", href: "/legal/prop-65" },
       { label: "Accessibility", href: "/legal/accessibility" },
+      { label: "Image Credits", href: "/legal/credits" },
     ],
   },
 ];
