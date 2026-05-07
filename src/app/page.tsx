@@ -1,18 +1,25 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  getBestSellers,
-  getCategories,
-  getPopularVehicles,
-  getRecentlyViewed,
-} from "@/lib/catalog";
-import { ProductCard } from "@/components/commerce/product-card";
+import { getCategories, getPopularVehicles } from "@/lib/catalog";
 import { TrustRow } from "@/components/ui/trust-row";
 import { Icons } from "@/components/ui/icons";
 import { YmmButton } from "@/components/fitment/ymm-button";
 
 export const revalidate = 3600;
+
+// Cycle 14X+ (partner feedback): map of popular-vehicle slugs to the
+// latest-generation photo in /public/images/vehicle-gens. Slugs match the
+// vehicle hub URL pattern. When a slug isn't in the map, the card falls
+// back to the truck silhouette icon. Add a row here when warehouse drops
+// a new gen photo (Tundra, Sierra, Frontier still pending).
+const POPULAR_VEHICLE_PHOTOS: Record<string, string> = {
+  "ford-f-150": "/images/vehicle-gens/ford-f-150-p702.jpg",
+  "chevrolet-silverado": "/images/vehicle-gens/chevrolet-silverado-t1xx.jpg",
+  "ram-1500": "/images/vehicle-gens/ram-1500-dt.jpg",
+  "toyota-tacoma": "/images/vehicle-gens/toyota-tacoma-n400.jpg",
+  "jeep-wrangler": "/images/vehicle-gens/jeep-wrangler-jl.jpg",
+};
 
 // Cycle 14Z (Priya F-16 LOW): every other route now sets an explicit canonical;
 // home was relying on Google self-canonicalizing from URL. That works, but
@@ -47,10 +54,6 @@ export const metadata: Metadata = {
 // testimonials when verified review data (Okendo / Junip) is wired.
 
 export default async function HomePage() {
-  const [bestSellers, recentlyViewed] = await Promise.all([
-    getBestSellers(4),
-    getRecentlyViewed(4),
-  ]);
   const categories = getCategories();
   const popularVehicles = getPopularVehicles();
 
@@ -198,133 +201,14 @@ export default async function HomePage() {
               your vehicle.
             </p>
 
-            {/* Inline YMM */}
-            <div
-              style={{
-                marginTop: 32,
-                background: "rgba(20,20,20,0.85)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                borderRadius: "var(--radius-lg)",
-                padding: 16,
-                maxWidth: 580,
-                boxShadow: "0 24px 64px rgba(0,0,0,0.6)",
-                backdropFilter: "blur(16px)",
-                WebkitBackdropFilter: "blur(16px)",
-                position: "relative",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  top: -1,
-                  left: -1,
-                  right: -1,
-                  height: 2,
-                  background:
-                    "linear-gradient(90deg, transparent 0%, var(--color-primary) 50%, transparent 100%)",
-                }}
-              />
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: 10,
-                  flexWrap: "wrap",
-                  gap: 6,
-                }}
-              >
-                <div
-                  className="eyebrow"
-                  style={{
-                    fontSize: 11,
-                    marginBottom: 0,
-                    color: "rgba(255,255,255,0.6)",
-                  }}
-                >
-                  SHOP BY VEHICLE
-                </div>
-                <span
-                  className="mono"
-                  style={{
-                    fontSize: 10,
-                    color: "rgba(255,255,255,0.5)",
-                    letterSpacing: "0.1em",
-                  }}
-                >
-                  FITMENT GUARANTEED
-                </span>
-              </div>
-              <div
-                className="grid grid-cols-2 md:grid-cols-[1fr_1fr_1fr_auto]"
-                style={{ gap: 8 }}
-              >
-                <YmmButton
-                  className="select"
-                  style={{
-                    height: 48,
-                    display: "flex",
-                    alignItems: "center",
-                    color: "var(--color-muted-2)",
-                    cursor: "pointer",
-                  }}
-                  ariaLabel="Pick a year"
-                >
-                  YEAR
-                </YmmButton>
-                <YmmButton
-                  className="select"
-                  style={{
-                    height: 48,
-                    display: "flex",
-                    alignItems: "center",
-                    color: "var(--color-muted-2)",
-                    cursor: "pointer",
-                  }}
-                  ariaLabel="Pick a make"
-                >
-                  MAKE
-                </YmmButton>
-                <YmmButton
-                  className="select col-span-2 md:col-span-1"
-                  style={{
-                    height: 48,
-                    display: "flex",
-                    alignItems: "center",
-                    color: "var(--color-muted-2)",
-                    cursor: "pointer",
-                  }}
-                  ariaLabel="Pick a model"
-                >
-                  MODEL
-                </YmmButton>
-                <YmmButton
-                  className="btn btn-primary col-span-2 md:col-span-1"
-                  style={{ height: 48, minWidth: 140, cursor: "pointer" }}
-                  ariaLabel="Open vehicle picker"
-                >
-                  GET STARTED <Icons.arrowR size={14} />
-                </YmmButton>
-              </div>
-              <div
-                style={{
-                  marginTop: 12,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  color: "rgba(255,255,255,0.65)",
-                  fontSize: 12,
-                }}
-              >
-                <Icons.shield size={13} /> Or{" "}
-                <Link
-                  href="/collections"
-                  style={{ color: "var(--color-primary)" }}
-                >
-                  browse universal-fit accessories →
-                </Link>
-              </div>
-            </div>
+            {/* Cycle 14X+ (partner feedback): the inline YMM card inside
+                the hero was redundant with the yellow "FIND PARTS FOR
+                YOUR RIDE" YMM band immediately below the hero, and the
+                YEAR / MAKE / MODEL chips looked like text inputs but
+                were modal-trigger buttons — partners reported it as
+                "the search box is not working." Removed entirely; the
+                yellow band on the next section is the single source of
+                truth for inline YMM on the home page. */}
 
             {/* Trust micro-row */}
             <div
@@ -515,54 +399,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Best sellers */}
-      <section className="container-x" style={{ paddingTop: 64, paddingBottom: 32 }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "baseline",
-            marginBottom: 24,
-          }}
-        >
-          <div>
-            <div className="eyebrow" style={{ marginBottom: 8 }}>
-              01 · TOP RATED
-            </div>
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: 32,
-                textTransform: "uppercase",
-                letterSpacing: "-0.01em",
-              }}
-            >
-              BEST SELLERS THIS MONTH
-            </h2>
-          </div>
-          <Link
-            href="/collections/best-sellers"
-            className="mono"
-            style={{
-              fontSize: 12,
-              color: "var(--color-muted)",
-              letterSpacing: "0.08em",
-              whiteSpace: "nowrap",
-              flexShrink: 0,
-            }}
-          >
-            SHOP ALL →
-          </Link>
-        </div>
-        <div
-          className="grid grid-cols-2 md:grid-cols-4"
-          style={{ gap: 16 }}
-        >
-          {bestSellers.map((p) => (
-            <ProductCard key={p.sku} product={p} />
-          ))}
-        </div>
-      </section>
+      {/* Cycle 14X+ (partner feedback): the BEST SELLERS THIS MONTH grid
+          used to live here as the 01 section. Partners want the lead
+          slot to be SHOP BY CATEGORY (browse-first), with a feature-
+          items video clip eventually replacing this. Removed for now;
+          add back as a video block when the warehouse delivers footage. */}
 
       {/* Reactivation banner */}
       <section
@@ -623,7 +464,7 @@ export default async function HomePage() {
         >
           <div>
             <div className="eyebrow" style={{ marginBottom: 8 }}>
-              02 · BROWSE
+              01 · BROWSE
             </div>
             <h2
               style={{
@@ -775,7 +616,7 @@ export default async function HomePage() {
         >
           <div>
             <div className="eyebrow" style={{ marginBottom: 8 }}>
-              03 · BROWSE
+              02 · BROWSE
             </div>
             <h2
               style={{
@@ -806,170 +647,109 @@ export default async function HomePage() {
           className="grid grid-cols-2 md:grid-cols-4"
           style={{ gap: 8 }}
         >
-          {popularVehicles.map((v) => (
+          {popularVehicles.map((v) => {
+            // Cycle 14X+ (partner feedback): popular-vehicle cards used to
+            // be text-only. Map make+model → latest-gen photo from
+            // /public/images/vehicle-gens (the same shots the /vehicle/[slug]
+            // hub uses) so customers visually pick their truck. When a make
+            // doesn't yet have a gen photo (Tundra/Sierra/Frontier today),
+            // fall back to the truck silhouette icon.
+            const slug = `${v.make.toLowerCase()}-${v.model.toLowerCase().replace(/\s+/g, "-")}`;
+            const photo = POPULAR_VEHICLE_PHOTOS[slug] ?? null;
+            return (
             <Link
               key={`${v.make}-${v.model}`}
-              href={`/vehicle/${v.make.toLowerCase()}-${v.model.toLowerCase().replace(/\s+/g, "-")}`}
+              href={`/vehicle/${slug}`}
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 6,
-                padding: 16,
                 background: "var(--color-surface)",
                 border: "1px solid var(--color-border)",
                 borderRadius: "var(--radius-md)",
+                overflow: "hidden",
               }}
             >
               <div
-                className="mono"
+                className="product-img-bg"
                 style={{
-                  fontSize: 10,
-                  color: "var(--color-muted)",
-                  letterSpacing: "0.1em",
+                  position: "relative",
+                  aspectRatio: "1.6",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  overflow: "hidden",
                 }}
               >
-                {v.make.toUpperCase()}
-              </div>
-              <div style={{ fontSize: 18, fontWeight: 600 }}>{v.model}</div>
-              <div style={{ fontSize: 11, color: "var(--color-muted)" }}>
-                {v.years}
+                {photo ? (
+                  <Image
+                    src={photo}
+                    alt={`${v.make} ${v.model}`}
+                    fill
+                    sizes="(min-width: 768px) 25vw, 50vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                ) : (
+                  <div style={{ color: "var(--color-muted)" }}>
+                    <Icons.truck size={36} sw={1.5} />
+                  </div>
+                )}
               </div>
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginTop: 4,
+                  flexDirection: "column",
+                  gap: 4,
+                  padding: 14,
                 }}
               >
-                {/* Cycle 11 (owner mobile QA): used to be `{v.count} PARTS`
-                    — direct violation of CLAUDE.md "Don't disclose product /
-                    fitment counts." Replaced with action verb so the tile
-                    still has a CTA on the right side. */}
-                <span
-                  className="mono"
-                  style={{
-                    fontSize: 10,
-                    color: "var(--color-primary)",
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  SHOP &rarr;
-                </span>
-                <Icons.arrowR size={12} />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Cycle 14Z batch 4 (Mike-O4 F-1): the previous social-proof section
-          rendered "★ 4.7 / 5 · VERIFIED REVIEWS" with three hardcoded
-          fake testimonials ("MIKE R. · 2019 F-150" etc.) — fabricated
-          social proof on the highest-traffic page, FTC risk if launched.
-          Replaced with an honest "WHY STEHLEN" trust section that points
-          to verifiable facts (warranty, guarantee, drilling-free, since
-          2015) instead of fake reviews. Re-enable a real testimonials rail
-          ONLY when Okendo / Junip / verified review data is wired in
-          phase 5. */}
-      <section
-        style={{
-          background: "var(--color-surface)",
-          borderTop: "1px solid var(--color-border)",
-          borderBottom: "1px solid var(--color-border)",
-        }}
-      >
-        <div className="container-x" style={{ paddingTop: 64, paddingBottom: 64 }}>
-          <div style={{ textAlign: "center", marginBottom: 40 }}>
-            <div
-              className="eyebrow"
-              style={{ marginBottom: 12, color: "var(--color-primary)" }}
-            >
-              SHIPPING DIRECT FROM CA · NV · TX SINCE 2015
-            </div>
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: 32,
-                textTransform: "uppercase",
-              }}
-            >
-              BUILT BY DRIVERS,
-              <br />
-              FOR DRIVERS.
-            </h2>
-          </div>
-          <div
-            className="grid grid-cols-1 md:grid-cols-3"
-            style={{ gap: 16 }}
-          >
-            {[
-              {
-                Icon: Icons.shield,
-                head: "FITMENT GUARANTEE",
-                body: "Backed by a money-back fitment promise. If a part doesn't bolt on as listed, we cover the return shipping and refund 100%.",
-              },
-              {
-                Icon: Icons.truck,
-                head: "DRILLING-FREE INSTALL",
-                body: "Every Stehlen part is bolt-on with included hardware and torque-spec card. If a product requires drilling, the listing says so up top.",
-              },
-              {
-                Icon: Icons.return,
-                head: "DIRECT FROM THE BRAND",
-                body: "Same SKUs we shipped on eBay since 2015 — now direct, with lower prices and same-day handling Mon–Fri from CA, NV, TX warehouses.",
-              },
-            ].map((c) => (
-              <div
-                key={c.head}
-                style={{
-                  background: "var(--color-background)",
-                  border: "1px solid var(--color-border)",
-                  padding: 24,
-                  borderRadius: "var(--radius-md)",
-                }}
-              >
-                <div style={{ color: "var(--color-primary)", marginBottom: 12 }}>
-                  <c.Icon size={22} />
-                </div>
                 <div
                   className="mono"
                   style={{
-                    fontSize: 11,
-                    letterSpacing: "0.12em",
-                    fontWeight: 700,
-                    marginBottom: 8,
+                    fontSize: 10,
+                    color: "var(--color-muted)",
+                    letterSpacing: "0.1em",
                   }}
                 >
-                  {c.head}
+                  {v.make.toUpperCase()}
                 </div>
-                <p style={{ fontSize: 14, lineHeight: 1.55, color: "var(--color-muted)" }}>
-                  {c.body}
-                </p>
+                <div style={{ fontSize: 18, fontWeight: 600 }}>{v.model}</div>
+                <div style={{ fontSize: 11, color: "var(--color-muted)" }}>
+                  {v.years}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 4,
+                  }}
+                >
+                  <span
+                    className="mono"
+                    style={{
+                      fontSize: 10,
+                      color: "var(--color-primary)",
+                      letterSpacing: "0.08em",
+                    }}
+                  >
+                    SHOP &rarr;
+                  </span>
+                  <Icons.arrowR size={12} />
+                </div>
               </div>
-            ))}
-          </div>
+            </Link>
+          );
+          })}
         </div>
       </section>
 
-      {/* Cycle 14Z (Mike-O1 M-9): "RECENTLY VIEWED" was lying — the data
-          source is Shopify UPDATED_AT (recently updated/restocked SKUs),
-          not per-customer browsing history. A guest landing on home would
-          see the same 4 products as everyone else under a label that
-          implied personalization. Rename to be honest about what it is. */}
-      <section className="container-x" style={{ paddingTop: 64, paddingBottom: 64 }}>
-        <div className="eyebrow" style={{ marginBottom: 16 }}>
-          JUST RESTOCKED
-        </div>
-        <div
-          className="grid grid-cols-2 md:grid-cols-4"
-          style={{ gap: 16 }}
-        >
-          {recentlyViewed.map((p) => (
-            <ProductCard key={p.sku} product={p} />
-          ))}
-        </div>
-      </section>
+      {/* Cycle 14X+ (partner feedback): removed the "BUILT BY DRIVERS,
+          FOR DRIVERS" trust grid AND the "JUST RESTOCKED" product rail.
+          The trust messages those cards carried (fitment guarantee,
+          drilling-free install, ships from CA/NV/TX) are already covered
+          by the TrustRow above and the footer. The JUST RESTOCKED rail
+          duplicated catalog discovery from the SHOP BY CATEGORY grid
+          higher on the page. */}
     </main>
   );
 }

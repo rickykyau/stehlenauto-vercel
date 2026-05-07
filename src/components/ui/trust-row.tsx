@@ -49,17 +49,34 @@ export function TrustRow({
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 12,
-            padding: condensed ? "14px 18px" : "20px 24px",
+            gap: 14,
+            padding: condensed ? "14px 18px" : "22px 24px",
           }}
         >
-          <div style={{ color: "var(--color-primary)", flexShrink: 0 }}>
-            <it.Icon size={18} />
+          {/* Cycle 14X+ (partner feedback): circular yellow backplate
+              behind each icon so the trust row reads as four "badges"
+              instead of four headings with tiny gray icons. The badge
+              shape is the same trust-signal language used by Amazon
+              ("Prime"), Best Buy ("Geek Squad"), etc. */}
+          <div
+            style={{
+              flexShrink: 0,
+              width: condensed ? 36 : 44,
+              height: condensed ? 36 : 44,
+              borderRadius: "50%",
+              background: "var(--color-primary)",
+              color: "var(--color-primary-foreground, #0a0a0a)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <it.Icon size={condensed ? 18 : 22} sw={2.25} />
           </div>
           <div>
             <div
               className="mono"
-              style={{ fontSize: 11, letterSpacing: "0.12em", fontWeight: 600 }}
+              style={{ fontSize: 11, letterSpacing: "0.12em", fontWeight: 700 }}
             >
               {it.head}
             </div>
