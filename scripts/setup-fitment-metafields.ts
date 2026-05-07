@@ -109,6 +109,13 @@ const DEFINITIONS: Definition[] = [
       "Structured sub-model facets as JSON. Recognized keys: bed_length, cab_type, trim, doors, drive (each maps to a list of strings). Example: {\"bed_length\":[\"5.5'\",\"6.5'\"],\"cab_type\":[\"SuperCrew\",\"SuperCab\"]}",
     type: "json",
   },
+  {
+    name: "Fitment — Raw (CA source)",
+    key: "fitment_raw",
+    description:
+      "Verbatim Fitment string from ChannelAdvisor (YEAR|MAKE|MODEL|SUBMODEL::NOTE per line). Audit trail — do not hand-edit; re-run sync to refresh.",
+    type: "multi_line_text_field",
+  },
 ];
 
 const CREATE_DEFINITION_MUTATION = /* GraphQL */ `

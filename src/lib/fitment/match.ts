@@ -1,4 +1,4 @@
-import type { CatalogProduct } from "@/lib/catalog/types";
+import type { CatalogProduct, FitmentTable } from "@/lib/catalog/types";
 
 type Vehicle = {
   year: string | number;
@@ -197,6 +197,144 @@ function expandYears(text: string): Set<string> {
 }
 
 /**
+ * Cycle 14X+ post-sync: when the product carries a populated FitmentTable
+ * (from CA via metafields), use it as the AUTHORITATIVE answer for
+ * subattribute matching. The metafield list is curated; the title parser
+ * is best-effort. Returns:
+ *   true       — every customer-answered subattribute matches a value in the list
+ *   false      — at least one answered subattribute is missing from the list
+ *   "unknown"  — the product is silent on the customer's answered dimensions
+ *                (universal candidate)
+ */
+function metafieldSubGateAllows(
+  table: FitmentTable | null | undefined,
+  answers: SubModelAnswer[] | null | undefined,
+): true | false | "unknown" {
+  if (!table || !answers || answers.length === 0) return "unknown";
+  let touched = false;
+  for (const ans of answers) {
+    if (ans.group === "bed_length") {
+      const list = table.subattributes.bedLengths;
+      if (!list || list.length === 0) continue;
+      touched = true;
+      const wantBucket = bedLengthBucket(normalizeBedLength(ans.value));
+      const ok = list.some(
+        (l) => bedLengthBucket(normalizeBedLength(l)) === wantBucket,
+      );
+      if (!ok) return false;
+    } else if (ans.group === "cab_type") {
+      const list = table.subattributes.cabTypes;
+      if (!list || list.length === 0) continue;
+      touched = true;
+      const want = normalizeCab(ans.value);
+      const ok = list.some((l) => normalizeCab(l) === want);
+      if (!ok) return false;
+    } else if (ans.group === "trim") {
+      const list = table.subattributes.trims;
+      if (!list || list.length === 0) continue;
+      touched = true;
+      const want = ans.value.toLowerCase().trim();
+      const ok = list.some((l) => l.toLowerCase().trim() === want);
+      if (!ok) return false;
+    }
+  }
+  return touched ? true : "unknown";
+}
+
+/**
+ * Cycle 14X+ post-sync: explicit submodel exclusions (e.g. F-150 Lightning
+ * EV). When the customer's vehicle matches the excluded submodel by model
+ * substring, this product does not fit even if year+make+model tags match.
+ */
+function isVehicleExcluded(
+  table: FitmentTable | null | undefined,
+  vehicle: Vehicle,
+): boolean {
+  if (!table?.subattributes.excludedSubmodels?.length) return false;
+  const vehicleStr = `${vehicle.make} ${vehicle.model}`.toLowerCase();
+  return table.subattributes.excludedSubmodels.some((ex) =>
+    vehicleStr.includes(ex.toLowerCase()),
+  );
+}
+
+/**
+ * Cycle 14X+ post-sync: when the metafield-driven fitment check fails,
+ * compute a structured reason so the PDP can render specific copy:
+ * "This product fits 6.5' bed; your garage has 5.5' bed."
+ */
+export type FitmentFailureReason =
+  | { kind: "year"; productYears: string[]; customerYear: string }
+  | { kind: "make"; productMakes: string[]; customerMake: string }
+  | { kind: "model"; productModels: string[]; customerModel: string }
+  | { kind: "excluded"; excluded: string }
+  | { kind: "subattribute"; group: string; productValues: string[]; customerValue: string }
+  | { kind: "unknown" };
+
+export function getFitmentReason(
+  table: FitmentTable | null | undefined,
+  vehicle: Vehicle | null | undefined,
+  answers: SubModelAnswer[] | null | undefined,
+): FitmentFailureReason {
+  if (!vehicle) return { kind: "unknown" };
+  if (table) {
+    const yearStr = String(vehicle.year);
+    if (table.years.length > 0 && !table.years.includes(yearStr)) {
+      return { kind: "year", productYears: table.years, customerYear: yearStr };
+    }
+    if (
+      table.makes.length > 0 &&
+      !table.makes.some((m) => m.toLowerCase() === vehicle.make.toLowerCase())
+    ) {
+      return { kind: "make", productMakes: table.makes, customerMake: vehicle.make };
+    }
+    if (table.subattributes.excludedSubmodels?.length) {
+      const vehicleStr = `${vehicle.make} ${vehicle.model}`.toLowerCase();
+      const hit = table.subattributes.excludedSubmodels.find((ex) =>
+        vehicleStr.includes(ex.toLowerCase()),
+      );
+      if (hit) return { kind: "excluded", excluded: hit };
+    }
+    if (
+      table.models.length > 0 &&
+      !table.models.some((m) => m.toLowerCase().includes(vehicle.model.toLowerCase()))
+    ) {
+      return { kind: "model", productModels: table.models, customerModel: vehicle.model };
+    }
+    for (const ans of answers ?? []) {
+      const groupMap: Record<string, string[] | undefined> = {
+        bed_length: table.subattributes.bedLengths,
+        cab_type: table.subattributes.cabTypes,
+        trim: table.subattributes.trims,
+      };
+      const list = groupMap[ans.group];
+      if (!list || list.length === 0) continue;
+      const want = ans.value.toLowerCase().trim();
+      let matched = false;
+      if (ans.group === "bed_length") {
+        const wantBucket = bedLengthBucket(normalizeBedLength(ans.value));
+        matched = list.some(
+          (l) => bedLengthBucket(normalizeBedLength(l)) === wantBucket,
+        );
+      } else if (ans.group === "cab_type") {
+        const w = normalizeCab(ans.value);
+        matched = list.some((l) => normalizeCab(l) === w);
+      } else {
+        matched = list.some((l) => l.toLowerCase().trim() === want);
+      }
+      if (!matched) {
+        return {
+          kind: "subattribute",
+          group: ans.group,
+          productValues: list,
+          customerValue: ans.value,
+        };
+      }
+    }
+  }
+  return { kind: "unknown" };
+}
+
+/**
  * Fitment check used everywhere we render a product card / cart line /
  * similar-products rail.
  *
@@ -205,11 +343,25 @@ function expandYears(text: string): Set<string> {
  *   undefined  — can't tell (the safe default; UI shows neutral "CHECK FITMENT")
  */
 export function checkFitment(
-  product: Pick<CatalogProduct, "title" | "fitTitle" | "vehicleTags">,
+  product: Pick<CatalogProduct, "title" | "fitTitle" | "vehicleTags"> & {
+    fitmentTable?: FitmentTable;
+  },
   vehicle: Vehicle | null | undefined,
   subModelAnswers?: SubModelAnswer[] | null,
 ): boolean | undefined {
   if (!vehicle) return undefined;
+  // Cycle 14X+ post-sync (Specialist + Mike): when the product has a
+  // populated FitmentTable, use the metafield-driven check FIRST. The
+  // metafield list is curated by the warehouse; the title parser is
+  // best-effort. The metafield wins when present.
+  const metafieldGate = metafieldSubGateAllows(
+    product.fitmentTable,
+    subModelAnswers,
+  );
+  if (metafieldGate === false) return false;
+  if (product.fitmentTable && isVehicleExcluded(product.fitmentTable, vehicle)) {
+    return false;
+  }
   // Cycle 12 (Mike F-5 BLOCKER): if year+make+model would say true but the
   // sub-model gate finds a contradicting bed-length / cab-type token in the
   // product title, that's a confirmed misfit — flip to false BEFORE the
@@ -313,7 +465,10 @@ export function checkFitment(
  * Returns a shallow copy; never mutates input.
  */
 export function withFitment<
-  T extends Pick<CatalogProduct, "title" | "fitTitle" | "vehicleTags" | "fits">,
+  T extends Pick<
+    CatalogProduct,
+    "title" | "fitTitle" | "vehicleTags" | "fits" | "fitmentTable"
+  >,
 >(products: T[], vehicle: Vehicle | null | undefined): T[] {
   if (!vehicle) return products;
   return products.map((p) => ({ ...p, fits: checkFitment(p, vehicle) }));

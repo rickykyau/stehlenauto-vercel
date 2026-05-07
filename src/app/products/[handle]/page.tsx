@@ -23,7 +23,7 @@ import { Stars } from "@/components/ui/stars";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { getCurrentVehicle } from "@/lib/garage/server";
 import { getSubModelAnswers } from "@/lib/garage/server";
-import { checkFitment, withFitment } from "@/lib/fitment/match";
+import { checkFitment, getFitmentReason, withFitment } from "@/lib/fitment/match";
 import { stripsForCategory } from "@/lib/fitment/sub-model";
 import { getWarehouseNote } from "@/lib/fitment/warehouse-notes";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
@@ -520,11 +520,86 @@ export default async function PdpPage({
                 <div style={{ fontSize: 18, fontWeight: 600 }}>
                   Fits your {vehicle.year} {vehicle.make} {vehicle.model}
                 </div>
+                {/* Cycle 14X+ post-sync (Jordan F-2): when the metafield
+                    confirms a single cab type for this product, surface
+                    it inline so the buyer doesn't have to scroll to the
+                    FITMENT tab to verify their cab matches. */}
+                {product.fitmentTable?.subattributes?.cabTypes?.length === 1 && (
+                  <div
+                    style={{
+                      fontSize: 13,
+                      color: "var(--color-success)",
+                      marginTop: 4,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {product.fitmentTable.subattributes.cabTypes[0]} confirmed
+                  </div>
+                )}
+                {/* Cycle 14X+ post-sync (Jordan F-3): when the part fits
+                    multiple models, disclose the others. Multi-truck
+                    households + fleet customers benefit; everyone else
+                    gets confidence that this isn't an obscure single-model
+                    SKU. */}
+                {(() => {
+                  const otherModels = (product.fitmentTable?.models ?? [])
+                    .filter(
+                      (m) =>
+                        !m
+                          .toLowerCase()
+                          .includes(vehicle.model.toLowerCase()) &&
+                        !vehicle.model
+                          .toLowerCase()
+                          .includes(m.toLowerCase()),
+                    );
+                  if (otherModels.length === 0) return null;
+                  const shown = otherModels.slice(0, 3);
+                  const more = otherModels.length - shown.length;
+                  return (
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: "var(--color-muted)",
+                        marginTop: 6,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      Also fits: {shown.join(" · ")}
+                      {more > 0 ? ` +${more} more` : ""}
+                    </div>
+                  );
+                })()}
+                {/* Cycle 14X+ post-sync (Mike Product 3): if the merch
+                    team noted an engine exclusion for this product, warn
+                    the buyer up-front in the green card. The fitment is
+                    correct at the YMM level but the buyer still needs to
+                    confirm engine. */}
+                {(() => {
+                  const excl =
+                    product.fitmentTable?.subattributes?.engineExclusions ?? [];
+                  if (excl.length === 0) return null;
+                  return (
+                    <div
+                      style={{
+                        marginTop: 8,
+                        padding: "6px 10px",
+                        background: "rgba(245,168,35,0.1)",
+                        border: "1px solid rgba(245,168,35,0.4)",
+                        borderRadius: "var(--radius-sm)",
+                        fontSize: 12,
+                        color: "var(--color-foreground)",
+                      }}
+                    >
+                      <strong>Engine note:</strong> Will not fit{" "}
+                      {excl.join(" / ")} engine.
+                    </div>
+                  );
+                })()}
                 <div
                   style={{
                     fontSize: 12,
                     color: "var(--color-muted)",
-                    marginTop: 4,
+                    marginTop: 8,
                   }}
                 >
                   Engineered for direct bolt-on installation
@@ -566,15 +641,74 @@ export default async function PdpPage({
                   ✗ DOES NOT FIT YOUR {vehicle.year}{" "}
                   {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()}
                 </div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    color: "var(--color-muted)",
-                    marginBottom: 10,
-                  }}
-                >
-                  Browse parts that fit your truck instead.
-                </div>
+                {/* Cycle 14X+ post-sync (Jordan F-5 / Mike Product 3):
+                    name the specific reason when we know it. Sourced from
+                    getFitmentReason() against the metafield FitmentTable. */}
+                {(() => {
+                  const reason = getFitmentReason(
+                    product.fitmentTable,
+                    vehicle,
+                    subModelAnswers,
+                  );
+                  let copy = "Browse parts that fit your vehicle instead.";
+                  if (reason.kind === "year") {
+                    copy = `This product fits ${reason.productYears[0]}–${reason.productYears[reason.productYears.length - 1]}; your ${reason.customerYear} is outside that range.`;
+                  } else if (reason.kind === "make") {
+                    copy = `This product is engineered for ${reason.productMakes.join("/")} — not ${reason.customerMake}.`;
+                  } else if (reason.kind === "model") {
+                    copy = `This product fits ${reason.productModels.slice(0, 3).join(", ")}${reason.productModels.length > 3 ? `, +${reason.productModels.length - 3} more` : ""} — not ${reason.customerModel}.`;
+                  } else if (reason.kind === "excluded") {
+                    copy = `Excluded sub-model: ${reason.excluded}. Your vehicle matches this exclusion.`;
+                  } else if (reason.kind === "subattribute") {
+                    const label =
+                      reason.group === "bed_length"
+                        ? "bed length"
+                        : reason.group === "cab_type"
+                          ? "cab type"
+                          : reason.group === "trim"
+                            ? "trim"
+                            : reason.group;
+                    copy = `This product fits ${label}: ${reason.productValues.join(", ")}. Your saved ${label}: ${reason.customerValue}.`;
+                  }
+                  return (
+                    <div
+                      style={{
+                        fontSize: 13,
+                        color: "var(--color-muted)",
+                        marginBottom: 10,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {copy}
+                    </div>
+                  );
+                })()}
+                {/* Cycle 14X+ post-sync (Mike Product 3): if the warehouse
+                    note explains a known exclusion (e.g. "Will Not Fit
+                    EcoBoost Engine"), surface it in the no-fit card so the
+                    buyer sees the reason without scrolling. */}
+                {warehouseNote?.notes && (
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "var(--color-muted)",
+                      marginBottom: 10,
+                      padding: "8px 10px",
+                      background: "rgba(0,0,0,0.04)",
+                      borderRadius: "var(--radius-sm)",
+                      maxHeight: 120,
+                      overflowY: "auto",
+                    }}
+                  >
+                    <strong style={{ color: "var(--color-foreground)" }}>
+                      Warehouse note:{" "}
+                    </strong>
+                    <span
+                      // eslint-disable-next-line react/no-danger -- warehouseNote.notes is server-built, sanitized in renderShopifyHtml
+                      dangerouslySetInnerHTML={{ __html: warehouseNote.notes }}
+                    />
+                  </div>
+                )}
                 <Link
                   href={`/vehicle/${vehicle.make.toLowerCase()}-${vehicle.model.toLowerCase().replace(/\s+/g, "-")}`}
                   className="btn btn-primary btn-sm"

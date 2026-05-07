@@ -114,6 +114,18 @@ export type FitmentSubattributes = {
   trims?: string[];
   doors?: string[];
   drives?: string[];
+  /** Verbatim 4th-field SUBMODEL strings (audit / fallback display). */
+  submodels?: string[];
+  /** Cycle 14X+ post-sync: Engines this product won't fit. Renders as a
+   *  warning callout on PDP. e.g. ["EcoBoost", "Diesel"]. */
+  engineExclusions?: string[];
+  /** Cycle 14X+ post-sync: Ram bed-cargo-system options. ["RamBox"] means
+   *  fits ONLY trucks with the RamBox option; ["Standard"] means fits
+   *  ONLY trucks WITHOUT it. Drives PDP variant gating on Ram bed mats. */
+  boxOptions?: string[];
+  /** Cycle 14X+ post-sync: Sub-models that are explicitly excluded
+   *  even though the YMM matches (e.g. F-150 Lightning EV). */
+  excludedSubmodels?: string[];
   /** Allow merch to add ad-hoc keys without a code change. */
   [key: string]: string[] | undefined;
 };

@@ -351,7 +351,19 @@ export function BuyBox({
         );
       })}
 
-      {strips.length === 0 && product.fits === true && (
+      {strips.length === 0 &&
+        product.fits === true &&
+        // Cycle 14X+ post-sync (Jordan F-7 / Mike Product 1): suppress
+        // UNIVERSAL FIT when the metafield says the product DOES have
+        // bed/cab/box restrictions. Showing "UNIVERSAL FIT" alongside a
+        // warehouse note "Will Fit Crew Cab Models Only" was a direct
+        // contradiction that destroyed buyer confidence.
+        !(
+          product.fitmentTable?.subattributes?.bedLengths?.length ||
+          product.fitmentTable?.subattributes?.cabTypes?.length ||
+          product.fitmentTable?.subattributes?.boxOptions?.length ||
+          product.fitmentTable?.subattributes?.engineExclusions?.length
+        ) && (
         // Only render the "UNIVERSAL FIT" reassurance when we're confident.
         // Mike F-23 caught this: showing it on every strip-less PDP made the
         // honest "Check Fitment" ribbon above contradict the chip below.
