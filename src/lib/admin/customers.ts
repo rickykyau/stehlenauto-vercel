@@ -223,6 +223,32 @@ type CustomerDetailResponse = {
   } | null;
 };
 
+const CUSTOMER_UPDATE_NOTE = /* GraphQL */ `
+  mutation CustomerNoteUpdate($input: CustomerInput!) {
+    customerUpdate(input: $input) {
+      customer { id note }
+      userErrors { field message }
+    }
+  }
+`;
+
+export async function updateCustomerNote(
+  customerGid: string,
+  note: string,
+): Promise<{ ok: true } | { error: string }> {
+  const data = await shopifyAdminFetch<{
+    customerUpdate: {
+      customer: { id: string; note: string | null } | null;
+      userErrors: { message: string }[];
+    };
+  }>(CUSTOMER_UPDATE_NOTE, {
+    input: { id: customerGid, note },
+  });
+  const errs = data.customerUpdate.userErrors;
+  if (errs.length > 0) return { error: errs.map((e) => e.message).join("; ") };
+  return { ok: true };
+}
+
 export async function getCustomerDetail(
   customerGid: string,
 ): Promise<AdminCustomerDetail | null> {

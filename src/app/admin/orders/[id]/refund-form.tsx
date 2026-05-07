@@ -30,6 +30,10 @@ export function RefundForm({
   );
   const [refundShipping, setRefundShipping] = useState(false);
   const [notify, setNotify] = useState(true);
+  const [apologyEnabled, setApologyEnabled] = useState(false);
+  const [apologyPercent, setApologyPercent] = useState(20);
+  const [apologyDays, setApologyDays] = useState(90);
+  const [apologyMessage, setApologyMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -67,13 +71,44 @@ export function RefundForm({
           notify,
           refundLineItems,
           shipping: refundShipping ? { fullRefund: true } : undefined,
+          apology: apologyEnabled
+            ? {
+                enabled: true,
+                percentage: apologyPercent / 100,
+                expiresInDays: apologyDays,
+                customMessage: apologyMessage || undefined,
+              }
+            : undefined,
         }),
       });
-      const data = (await res.json()) as { error?: string; refundId?: string; totalRefunded?: string };
+      const data = (await res.json()) as {
+        error?: string;
+        refundId?: string;
+        totalRefunded?: string;
+        apology?: {
+          code?: string;
+          percentage?: number;
+          emailSent?: boolean;
+          emailError?: string;
+          error?: string;
+        } | null;
+      };
       if (!res.ok || data.error) {
         throw new Error(data.error ?? `Refund failed (HTTP ${res.status})`);
       }
-      setSuccess(`Refund processed: $${data.totalRefunded ?? "—"} ${currency}.`);
+      let msg = `Refund processed: $${data.totalRefunded ?? "—"} ${currency}.`;
+      if (data.apology) {
+        if (data.apology.error) {
+          msg += ` ${data.apology.error}`;
+        } else if (data.apology.code) {
+          msg += ` Apology code ${data.apology.code} created`;
+          if (data.apology.emailSent) msg += " and emailed to customer.";
+          else if (data.apology.emailError)
+            msg += ` (email skipped: ${data.apology.emailError}).`;
+          else msg += ".";
+        }
+      }
+      setSuccess(msg);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Refund failed");
@@ -219,6 +254,99 @@ export function RefundForm({
         />
         Email customer about the refund
       </label>
+
+      {/* Service-recovery apology block */}
+      <div
+        style={{
+          marginTop: 14,
+          padding: 12,
+          background: apologyEnabled
+            ? "rgba(245,168,35,0.06)"
+            : "var(--color-surface-2)",
+          border: apologyEnabled
+            ? "1px solid rgba(245,168,35,0.4)"
+            : "1px solid var(--color-border)",
+          borderRadius: "var(--radius-sm)",
+        }}
+      >
+        <label
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            fontSize: 13,
+            fontWeight: 500,
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={apologyEnabled}
+            onChange={(e) => setApologyEnabled(e.target.checked)}
+          />
+          Also create a SORRY-XXXX apology code and email it to the customer
+        </label>
+        {apologyEnabled && (
+          <div
+            className="grid grid-cols-1 md:grid-cols-2"
+            style={{ gap: 8, marginTop: 10 }}
+          >
+            <label style={{ fontSize: 12 }}>
+              <span
+                className="mono"
+                style={{ marginRight: 6, color: "var(--color-muted)" }}
+              >
+                PERCENT OFF (5-50%)
+              </span>
+              <input
+                type="number"
+                min={5}
+                max={50}
+                value={apologyPercent}
+                onChange={(e) =>
+                  setApologyPercent(parseInt(e.target.value || "20", 10))
+                }
+                className="input"
+                style={{ width: "100%", marginTop: 4 }}
+              />
+            </label>
+            <label style={{ fontSize: 12 }}>
+              <span
+                className="mono"
+                style={{ marginRight: 6, color: "var(--color-muted)" }}
+              >
+                EXPIRES IN (DAYS)
+              </span>
+              <input
+                type="number"
+                min={7}
+                max={365}
+                value={apologyDays}
+                onChange={(e) =>
+                  setApologyDays(parseInt(e.target.value || "90", 10))
+                }
+                className="input"
+                style={{ width: "100%", marginTop: 4 }}
+              />
+            </label>
+            <textarea
+              value={apologyMessage}
+              onChange={(e) => setApologyMessage(e.target.value)}
+              placeholder="Optional personal note (added to the apology email)…"
+              className="input"
+              rows={2}
+              style={{
+                width: "100%",
+                paddingTop: 8,
+                paddingBottom: 8,
+                resize: "vertical",
+                gridColumn: "1 / -1",
+              }}
+              maxLength={500}
+            />
+          </div>
+        )}
+      </div>
+
       <div
         style={{
           marginTop: 14,

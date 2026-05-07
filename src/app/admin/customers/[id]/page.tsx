@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getCustomerDetail } from "@/lib/admin/customers";
 import { requireOwner } from "@/lib/admin/guard";
+import { NoteEditor } from "./note-editor";
 
 export const dynamic = "force-dynamic";
 
@@ -143,13 +144,9 @@ export default async function AdminCustomerDetailPage({
         </div>
       )}
 
-      {customer.note && (
-        <Panel title="Internal note" style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 13, whiteSpace: "pre-wrap" }}>
-            {customer.note}
-          </div>
-        </Panel>
-      )}
+      <Panel title="Internal note" style={{ marginBottom: 24 }}>
+        <NoteEditor customerGid={customer.id} initial={customer.note} />
+      </Panel>
 
       <h3
         className="mono"

@@ -166,6 +166,91 @@ export async function listOrders(opts: {
   return { orders, pageInfo: data.orders.pageInfo };
 }
 
+/**
+ * Cycle 14X+ post-sync (admin Tier A daily summary): summarize orders
+ * within an arbitrary ISO date range. Used by the cron job to produce
+ * "yesterday's revenue / order count" stats; not paginated, just totals.
+ */
+export type OrderSummary = {
+  count: number;
+  revenue: number;
+  refunded: number;
+  newCustomers: number;
+  topItems: { title: string; quantity: number }[];
+};
+
+const ORDERS_IN_RANGE_QUERY = /* GraphQL */ `
+  query OrdersInRange($query: String!, $first: Int!, $after: String) {
+    orders(first: $first, query: $query, sortKey: CREATED_AT, after: $after) {
+      pageInfo { hasNextPage endCursor }
+      nodes {
+        id
+        currentTotalPriceSet { presentmentMoney { amount } }
+        totalRefundedSet { presentmentMoney { amount } }
+        customer { numberOfOrders }
+        lineItems(first: 25) { nodes { title quantity } }
+      }
+    }
+  }
+`;
+
+type OrdersInRangeResp = {
+  orders: {
+    pageInfo: { hasNextPage: boolean; endCursor: string | null };
+    nodes: {
+      id: string;
+      currentTotalPriceSet: { presentmentMoney: { amount: string } };
+      totalRefundedSet: { presentmentMoney: { amount: string } };
+      customer: { numberOfOrders: string } | null;
+      lineItems: { nodes: { title: string; quantity: number }[] };
+    }[];
+  };
+};
+
+export async function summarizeOrdersInRange(opts: {
+  startISO: string; // inclusive
+  endISO: string; // exclusive
+}): Promise<OrderSummary> {
+  const query = `created_at:>=${opts.startISO} created_at:<${opts.endISO}`;
+  let count = 0;
+  let revenue = 0;
+  let refunded = 0;
+  let newCustomers = 0;
+  const itemCounts = new Map<string, number>();
+  let cursor: string | null = null;
+  let pages = 0;
+  const MAX_PAGES = 10;
+  while (pages < MAX_PAGES) {
+    const data: OrdersInRangeResp = await shopifyAdminFetch<OrdersInRangeResp>(
+      ORDERS_IN_RANGE_QUERY,
+      {
+        query,
+        first: 100,
+        after: cursor,
+      },
+    );
+    pages++;
+    for (const o of data.orders.nodes) {
+      count++;
+      revenue += parseFloat(o.currentTotalPriceSet.presentmentMoney.amount) || 0;
+      refunded += parseFloat(o.totalRefundedSet.presentmentMoney.amount) || 0;
+      if (o.customer && parseInt(o.customer.numberOfOrders, 10) === 1) {
+        newCustomers++;
+      }
+      for (const li of o.lineItems.nodes) {
+        itemCounts.set(li.title, (itemCounts.get(li.title) ?? 0) + (li.quantity || 0));
+      }
+    }
+    if (!data.orders.pageInfo.hasNextPage) break;
+    cursor = data.orders.pageInfo.endCursor;
+  }
+  const topItems = [...itemCounts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([title, quantity]) => ({ title, quantity }));
+  return { count, revenue, refunded, newCustomers, topItems };
+}
+
 export type AdminOrderDetail = {
   id: string;
   legacyId: string;
@@ -207,6 +292,7 @@ export type AdminOrderDetail = {
     note: string | null;
     totalRefunded: string;
   }[];
+  tags: string[];
 };
 
 const ORDER_DETAIL_QUERY = /* GraphQL */ `
@@ -233,6 +319,7 @@ const ORDER_DETAIL_QUERY = /* GraphQL */ `
         email
         phone
       }
+      tags
       shippingAddress {
         address1
         address2
@@ -291,6 +378,7 @@ type OrderDetailResponse = {
       email: string | null;
       phone: string | null;
     } | null;
+    tags: string[];
     shippingAddress: AdminOrderDetail["shippingAddress"];
     lineItems: {
       nodes: {
@@ -359,8 +447,70 @@ export async function getOrderDetail(
       note: r.note,
       totalRefunded: r.totalRefundedSet.presentmentMoney.amount,
     })),
+    tags: o.tags ?? [],
   };
 }
+
+const ORDER_TAGS_ADD = /* GraphQL */ `
+  mutation OrderTagsAdd($id: ID!, $tags: [String!]!) {
+    tagsAdd(id: $id, tags: $tags) {
+      node { id }
+      userErrors { message }
+    }
+  }
+`;
+const ORDER_TAGS_REMOVE = /* GraphQL */ `
+  mutation OrderTagsRemove($id: ID!, $tags: [String!]!) {
+    tagsRemove(id: $id, tags: $tags) {
+      node { id }
+      userErrors { message }
+    }
+  }
+`;
+
+export async function addOrderTags(
+  orderGid: string,
+  tags: string[],
+): Promise<{ ok: true } | { error: string }> {
+  if (tags.length === 0) return { ok: true };
+  const data = await shopifyAdminFetch<{
+    tagsAdd: { node: { id: string } | null; userErrors: { message: string }[] };
+  }>(ORDER_TAGS_ADD, { id: orderGid, tags });
+  const errs = data.tagsAdd.userErrors;
+  if (errs.length > 0) return { error: errs.map((e) => e.message).join("; ") };
+  return { ok: true };
+}
+
+export async function removeOrderTags(
+  orderGid: string,
+  tags: string[],
+): Promise<{ ok: true } | { error: string }> {
+  if (tags.length === 0) return { ok: true };
+  const data = await shopifyAdminFetch<{
+    tagsRemove: { node: { id: string } | null; userErrors: { message: string }[] };
+  }>(ORDER_TAGS_REMOVE, { id: orderGid, tags });
+  const errs = data.tagsRemove.userErrors;
+  if (errs.length > 0) return { error: errs.map((e) => e.message).join("; ") };
+  return { ok: true };
+}
+
+/**
+ * Cycle 14X+ post-sync (admin Tier A): preset tags surfaced in the order
+ * detail UI as one-tap chips. Owner can also type custom tags freely.
+ */
+export const ORDER_TAG_PRESETS: string[] = [
+  "VIP",
+  "First-time",
+  "Repeat customer",
+  "Affirm payment",
+  "Wrong fitment",
+  "Service recovery",
+  "eBay sourced",
+  "Amazon sourced",
+  "Phone order",
+  "Rural shipping",
+  "Hold for fitment confirm",
+];
 
 const REFUND_CREATE_MUTATION = /* GraphQL */ `
   mutation RefundCreate($input: RefundInput!) {

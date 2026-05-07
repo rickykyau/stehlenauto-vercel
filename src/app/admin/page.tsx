@@ -180,6 +180,36 @@ export default async function AdminDashboardPage() {
           body="Catalog fitment data that's missing — flag for the merch team."
         />
       </div>
+
+      <div
+        style={{
+          marginTop: 32,
+          padding: 14,
+          background: "var(--color-surface-2)",
+          border: "1px solid var(--color-border)",
+          borderRadius: "var(--radius-md)",
+          fontSize: 12,
+          color: "var(--color-muted)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 12,
+          flexWrap: "wrap",
+        }}
+      >
+        <div>
+          <strong>Daily summary email</strong> ships at 7am ET to{" "}
+          <code>ADMIN_OWNER_EMAILS</code>. Send a test now:
+        </div>
+        <a
+          href="/api/admin/cron/daily-summary"
+          target="_blank"
+          rel="noreferrer"
+          className="btn btn-sm"
+        >
+          SEND NOW →
+        </a>
+      </div>
     </div>
   );
 }

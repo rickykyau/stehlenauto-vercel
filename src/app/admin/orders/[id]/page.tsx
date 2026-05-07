@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { getOrderDetail } from "@/lib/admin/orders";
+import { getOrderDetail, ORDER_TAG_PRESETS } from "@/lib/admin/orders";
 import { requireOwner } from "@/lib/admin/guard";
 import { RefundForm } from "./refund-form";
+import { TagEditor } from "./tag-editor";
 
 export const dynamic = "force-dynamic";
 
@@ -137,6 +138,33 @@ export default async function AdminOrderDetailPage({
             <div style={{ color: "var(--color-muted)" }}>No address</div>
           )}
         </Card>
+      </div>
+
+      <div
+        style={{
+          background: "var(--color-surface)",
+          border: "1px solid var(--color-border)",
+          borderRadius: "var(--radius-md)",
+          marginBottom: 24,
+          padding: 16,
+        }}
+      >
+        <div
+          className="mono"
+          style={{
+            fontSize: 11,
+            letterSpacing: "0.12em",
+            fontWeight: 600,
+            marginBottom: 12,
+          }}
+        >
+          TAGS
+        </div>
+        <TagEditor
+          orderGid={order.id}
+          initial={order.tags}
+          presets={ORDER_TAG_PRESETS}
+        />
       </div>
 
       <div
