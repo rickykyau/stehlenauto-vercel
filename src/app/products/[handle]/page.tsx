@@ -455,6 +455,41 @@ export default async function PdpPage({
             </span>
           </div>
 
+          {/* Cycle 14X+ post-sync (Mike Product 4): engine exclusion callout
+              renders UNCONDITIONALLY when the metafield has engineExclusions —
+              not nested inside any specific verdict card. EcoBoost owners
+              shopping a bull guard need to see "Will not fit EcoBoost" BEFORE
+              the green ribbon convinces them to add to cart. */}
+          {(product.fitmentTable?.subattributes?.engineExclusions ?? []).length >
+            0 && (
+            <div
+              style={{
+                marginBottom: 14,
+                padding: "10px 14px",
+                background: "rgba(245,168,35,0.1)",
+                border: "1px solid rgba(245,168,35,0.5)",
+                borderRadius: "var(--radius-md)",
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                fontSize: 13,
+              }}
+            >
+              <Icons.alert size={16} />
+              <div>
+                <strong>Engine note:</strong> Will NOT fit{" "}
+                {(
+                  product.fitmentTable!.subattributes.engineExclusions ?? []
+                ).join(" / ")}{" "}
+                engine.{" "}
+                <span style={{ color: "var(--color-muted)" }}>
+                  Confirm your engine before ordering — call 1-888-378-4536
+                  if unsure.
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Fitment hero — only paint green CONFIRMED when product.fits === true.
               When vehicle is set but fitment is unknown (live Shopify products
               before ACES tagging), surface a neutral check-fitment card instead
