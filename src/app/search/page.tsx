@@ -4,7 +4,7 @@ import { ProductCard } from "@/components/commerce/product-card";
 import { Icons } from "@/components/ui/icons";
 import { SearchInput } from "@/components/search/search-input";
 import { Stars } from "@/components/ui/stars";
-import { getCurrentVehicle } from "@/lib/garage/server";
+import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { POPULAR_VEHICLES, PRODUCTS } from "@/lib/catalog/mock";
 import { searchProducts } from "@/lib/catalog";
 import { withFitment } from "@/lib/fitment/match";
@@ -61,6 +61,11 @@ export default async function SearchPage({
   const { q } = await searchParams;
   const query = q?.trim() ?? "";
   const vehicle = (await getCurrentVehicle()) ?? undefined;
+  // Cycle 14X+ post-sync (Mike-O15): pass sub-model answers so search
+  // result cards run the bed/cab gate, not just YMM.
+  const subModelAnswers = vehicle
+    ? await getSubModelAnswers(vehicle.id ?? "")
+    : [];
   const products = PRODUCTS;
 
   // Cycle 4 (Mike F-7): hit the real Shopify Storefront, not the mock list.
@@ -229,7 +234,7 @@ export default async function SearchPage({
               className="grid grid-cols-2"
               style={{ gap: 12 }}
             >
-              {withFitment(products.slice(0, 4), vehicle).map((p) => (
+              {withFitment(products.slice(0, 4), vehicle, subModelAnswers).map((p) => (
                 <ProductCard key={p.sku} product={p} vehicle={vehicle} />
               ))}
             </div>
@@ -344,7 +349,7 @@ export default async function SearchPage({
               className="grid grid-cols-2 md:grid-cols-4"
               style={{ gap: 16 }}
             >
-              {withFitment(filtered, vehicle).map((p) => (
+              {withFitment(filtered, vehicle, subModelAnswers).map((p) => (
                 <ProductCard key={p.sku} product={p} vehicle={vehicle} />
               ))}
             </div>

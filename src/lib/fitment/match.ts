@@ -469,7 +469,21 @@ export function withFitment<
     CatalogProduct,
     "title" | "fitTitle" | "vehicleTags" | "fits" | "fitmentTable"
   >,
->(products: T[], vehicle: Vehicle | null | undefined): T[] {
+>(
+  products: T[],
+  vehicle: Vehicle | null | undefined,
+  // Cycle 14X+ post-sync (Mike-O15 NEW MAJOR): without sub-model answers
+  // here, every ProductCard rendered through this helper (collection,
+  // related, vehicle-hub, search) computed fitment as YMM-only — so a
+  // 5.5'-bed customer saw a green "✓ FITS" badge on a 6.5' tonneau in
+  // the related-products rail right under the buy box that just said
+  // "DOES NOT FIT." Pass the saved answers so the sub-model gate fires
+  // on cards too.
+  subModelAnswers?: SubModelAnswer[] | null,
+): T[] {
   if (!vehicle) return products;
-  return products.map((p) => ({ ...p, fits: checkFitment(p, vehicle) }));
+  return products.map((p) => ({
+    ...p,
+    fits: checkFitment(p, vehicle, subModelAnswers),
+  }));
 }

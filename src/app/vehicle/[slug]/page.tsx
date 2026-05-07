@@ -8,7 +8,7 @@ import { YmmButton } from "@/components/fitment/ymm-button";
 import { CATEGORIES, POPULAR_VEHICLES, PRODUCTS } from "@/lib/catalog/mock";
 import { searchProducts } from "@/lib/catalog";
 import { withFitment } from "@/lib/fitment/match";
-import { getCurrentVehicle } from "@/lib/garage/server";
+import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { breadcrumbJsonLd, jsonLdString } from "@/lib/seo/jsonld";
 
 const SITE_URL =
@@ -227,6 +227,12 @@ export default async function VehicleHubPage({
   // 2014, banner reads 'FITS YOUR 2024 JEEP WRANGLER'." Fall back to the
   // generation latestYear only when no matching garage vehicle is set.
   const garage = await getCurrentVehicle();
+  // Cycle 14X+ post-sync (Mike-O15): when the customer's garage matches
+  // this hub vehicle, surface their saved sub-model answers so the
+  // cross-sell rail's fitment chips run the bed/cab gate too.
+  const hubSubAnswers = garage
+    ? await getSubModelAnswers(garage.id ?? "")
+    : null;
   // Cycle 14h (Mike-8 F-4 regression): exact-equality match missed when the
   // garage model includes a trim suffix the hub doesn't (e.g. garage "Silverado
   // 1500" vs hub "Silverado"). Loosen to a directional substring match in
@@ -249,12 +255,14 @@ export default async function VehicleHubPage({
     const fitHits = withFitment(
       await searchProducts(`${latestYear} ${make} ${model}`, 8),
       fakeVehicle,
+      garageMatchesHub ? hubSubAnswers : null,
     );
     if (fitHits.length < 4) {
       const seenHandles = new Set(fitHits.map((p) => p.handle));
       const padding = withFitment(
         await searchProducts(`${make} ${model}`, 12),
         fakeVehicle,
+        garageMatchesHub ? hubSubAnswers : null,
       ).filter((p) => !seenHandles.has(p.handle));
       products = [...fitHits, ...padding].slice(0, 4);
     } else {

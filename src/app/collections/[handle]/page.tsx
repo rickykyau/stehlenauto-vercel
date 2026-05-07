@@ -15,7 +15,7 @@ import { CollectionToolbar } from "@/components/commerce/collection-toolbar";
 import { FilterSidebar } from "@/components/commerce/filter-sidebar";
 import { MobileFilterDrawer } from "@/components/commerce/mobile-filter-drawer";
 import { Icons } from "@/components/ui/icons";
-import { getCurrentVehicle } from "@/lib/garage/server";
+import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { withFitment } from "@/lib/fitment/match";
 import { breadcrumbJsonLd, itemListJsonLd, jsonLdString } from "@/lib/seo/jsonld";
 
@@ -186,6 +186,12 @@ export default async function CollectionPage({
   // Pull the garage vehicle BEFORE fetching so getCollection can re-rank by
   // fitment for the visible page (Mike F-17). Already running per-request.
   const vehicle = (await getCurrentVehicle()) ?? undefined;
+  // Cycle 14X+ post-sync (Mike-O15 NEW MAJOR): pass sub-model answers
+  // through to the ProductCard fitment gate so a 5.5'-bed customer
+  // doesn't see "✓ FITS" badges on 6.5'-bed products.
+  const subModelAnswers = vehicle
+    ? await getSubModelAnswers(vehicle.id ?? "")
+    : [];
   let collection = await getCollection(handle, 24, {
     rawInputs,
     sort,
@@ -475,7 +481,7 @@ export default async function CollectionPage({
                 {/* Cycle 4 (Mike F-19): repaint `fits` from title-string match
                     so cards stop reading "CHECK FITMENT" on titles that already
                     name the garage vehicle. */}
-                {withFitment(collection.products, vehicle).map((p) => (
+                {withFitment(collection.products, vehicle, subModelAnswers).map((p) => (
                   <ProductCard key={p.sku} product={p} vehicle={vehicle} />
                 ))}
               </div>

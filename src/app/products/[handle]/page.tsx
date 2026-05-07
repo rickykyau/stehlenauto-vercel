@@ -99,7 +99,7 @@ export default async function PdpPage({
   // Cycle 4 P0 (Mike F-3): the SIMILAR PRODUCTS rail used mock `fits: true`
   // values that painted "✓ FITS YOUR WRANGLER" over F-150 cards. Recompute
   // honestly against the actual garage vehicle.
-  const related = withFitment(relatedRaw, vehicle);
+  const related = withFitment(relatedRaw, vehicle, subModelAnswers);
 
   // Cycle 4 P0 (Mike F-19, F-18): the main product's `fits` is undefined out
   // of the Shopify adapter. Title-string match against the garage paints the
