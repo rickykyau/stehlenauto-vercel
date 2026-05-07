@@ -1,0 +1,2512 @@
+{
+  "2015-ford-f-150-5-5ft-bed-hard-tri-fold-tonneau-cover-low-profile": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2015-ford-f-150-6-5ft-bed-tonneau-cover-hard-tri-fold",
+        "cbItemName": "TC-F15015-6.5-LTH"
+      }
+    ]
+  },
+  "2015-ford-f-150-6-5ft-bed-tonneau-cover-hard-tri-fold": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2015-ford-f-150-5-5ft-bed-hard-tri-fold-tonneau-cover-low-profile",
+        "cbItemName": "TC-F15015-5.5-LTH"
+      }
+    ]
+  },
+  "2023-ford-ranger-5-bed-molle-panels-3pc-mp-fo-ra-2326-61-1": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2023-ford-ranger-6ft-bed-molle-panels-front-sides-3pc-set",
+        "cbItemName": "MP-RANG23-6-3P"
+      }
+    ]
+  },
+  "2023-ford-ranger-6ft-bed-molle-panels-front-sides-3pc-set": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2023-ford-ranger-5-bed-molle-panels-3pc-mp-fo-ra-2326-61-1",
+        "cbItemName": "MP-RANG23-5-3P"
+      }
+    ]
+  },
+  "2004-2012-chevy-colorado-gmc-canyon-5-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2004-2012-chevy-colorado-gmc-canyon-6-bed-rubber-mat-grey",
+        "cbItemName": "TBM-COLO04-6-RB-GY"
+      }
+    ]
+  },
+  "2004-2012-chevy-colorado-gmc-canyon-6-bed-rubber-mat-grey": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2004-2012-chevy-colorado-gmc-canyon-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-COLO04-5-RB-GY"
+      }
+    ]
+  },
+  "2004-2012-chevy-colorado-gmc-canyon-5ft-bed-rubber-mat-v2": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "04-12-chevy-colorado-gmc-canyon-6ft-bed-rubber-mat-aa016-v2",
+        "cbItemName": "TBM-COLO04-6-RB-V2"
+      }
+    ]
+  },
+  "04-12-chevy-colorado-gmc-canyon-6ft-bed-rubber-mat-aa016-v2": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2004-2012-chevy-colorado-gmc-canyon-5ft-bed-rubber-mat-v2",
+        "cbItemName": "TBM-COLO04-5-RB-V2"
+      }
+    ]
+  },
+  "2015-2022-chevy-colorado-gmc-canyon-5-bed-rubber-mat-grey": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2015-2022-chevy-colorado-gmc-canyon-6-bed-pvc-truck-bed-mat",
+        "cbItemName": "TBM-COLO15-6-RB-GY"
+      }
+    ]
+  },
+  "2015-2022-chevy-colorado-gmc-canyon-6-bed-pvc-truck-bed-mat": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2015-2022-chevy-colorado-gmc-canyon-5-bed-rubber-mat-grey",
+        "cbItemName": "TBM-COLO15-5-RB-GY"
+      }
+    ]
+  },
+  "2015-2022-chevy-colorado-gmc-canyon-5ft-bed-rubber-mat-v2": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2015-2022-chevy-colorado-gmc-canyon-6ft-bed-rubber-mat-aa037-v2",
+        "cbItemName": "TBM-COLO15-6-RB-V2"
+      }
+    ]
+  },
+  "2015-2022-chevy-colorado-gmc-canyon-6ft-bed-rubber-mat-aa037-v2": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2015-2022-chevy-colorado-gmc-canyon-5ft-bed-rubber-mat-v2",
+        "cbItemName": "TBM-COLO15-5-RB-V2"
+      }
+    ]
+  },
+  "2000-2011-dodge-ram-dakota-5-5-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "rubber-truck-bed-mat-for-dakota-raider-6-5-bed-grey",
+        "cbItemName": "TBM-DAK00-6.5-RB-GY"
+      }
+    ]
+  },
+  "rubber-truck-bed-mat-for-dakota-raider-6-5-bed-grey": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2000-2011-dodge-ram-dakota-5-5-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-DAK00-5.5-RB-GY"
+      }
+    ]
+  },
+  "2000-2011-dodge-ram-dakota-5-5-ft-rubber-bed-mat-aa006-v2": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "1987-2011-dodge-dakota-rubber-truck-bed-mat-6-5-ft-aa023-v2",
+        "cbItemName": "TBM-DAK00-6.5-RB-V2"
+      }
+    ]
+  },
+  "1987-2011-dodge-dakota-rubber-truck-bed-mat-6-5-ft-aa023-v2": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2000-2011-dodge-ram-dakota-5-5-ft-rubber-bed-mat-aa006-v2",
+        "cbItemName": "TBM-DAK00-5.5-RB-V2"
+      }
+    ]
+  },
+  "2006-2008-lincoln-mark-lt-5-5-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2006-2008-lincoln-mark-lt-6-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-F15004-6.5-RB-GY"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2004-2014-ford-f-150-long-bed-8-pvc-bed-mat-black",
+        "cbItemName": "TBM-F15004-8-RB-GY"
+      }
+    ]
+  },
+  "2006-2008-lincoln-mark-lt-6-5-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2006-2008-lincoln-mark-lt-5-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-F15004-5.5-RB-GY"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2004-2014-ford-f-150-long-bed-8-pvc-bed-mat-black",
+        "cbItemName": "TBM-F15004-8-RB-GY"
+      }
+    ]
+  },
+  "2004-2014-ford-f-150-long-bed-8-pvc-bed-mat-black": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2006-2008-lincoln-mark-lt-5-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-F15004-5.5-RB-GY"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "2006-2008-lincoln-mark-lt-6-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-F15004-6.5-RB-GY"
+      }
+    ]
+  },
+  "2004-2014-ford-f-150-lincoln-mark-lt-5-5ft-bed-rubber-mat": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2014-ford-f-150-lincoln-mark-lt-6-5ft-rubber-bed-mat",
+        "cbItemName": "TBM-F15004-6.5-RB-V2"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2004-2014-ford-f-150-8ft-bed-rubber-mat-lightweight-v2-aa033",
+        "cbItemName": "TBM-F15004-8-RB-V2"
+      }
+    ]
+  },
+  "2004-2014-ford-f-150-lincoln-mark-lt-6-5ft-rubber-bed-mat": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2004-2014-ford-f-150-lincoln-mark-lt-5-5ft-bed-rubber-mat",
+        "cbItemName": "TBM-F15004-5.5-RB-V2"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2004-2014-ford-f-150-8ft-bed-rubber-mat-lightweight-v2-aa033",
+        "cbItemName": "TBM-F15004-8-RB-V2"
+      }
+    ]
+  },
+  "2004-2014-ford-f-150-8ft-bed-rubber-mat-lightweight-v2-aa033": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2004-2014-ford-f-150-lincoln-mark-lt-5-5ft-bed-rubber-mat",
+        "cbItemName": "TBM-F15004-5.5-RB-V2"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2014-ford-f-150-lincoln-mark-lt-6-5ft-rubber-bed-mat",
+        "cbItemName": "TBM-F15004-6.5-RB-V2"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-5-5-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2015-2024-ford-f-150-6-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-F15015-6.5-RB-GY"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2015-ford-f-150-8ft-bed-rubber-truck-bed-mat-diamond-plate",
+        "cbItemName": "TBM-F15015-8-RB-GY"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-6-5-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2015-2024-ford-f-150-5-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-F15015-5.5-RB-GY"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2015-ford-f-150-8ft-bed-rubber-truck-bed-mat-diamond-plate",
+        "cbItemName": "TBM-F15015-8-RB-GY"
+      }
+    ]
+  },
+  "2015-ford-f-150-8ft-bed-rubber-truck-bed-mat-diamond-plate": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2015-2024-ford-f-150-5-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-F15015-5.5-RB-GY"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "2015-2024-ford-f-150-6-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-F15015-6.5-RB-GY"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-5-5ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2015-2024-ford-f-150-6-5-ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-F15015-6.5-RB-V2"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2015-2026-ford-f-150-8ft-bed-rubber-truck-bed-mat-tlaps-v2",
+        "cbItemName": "TBM-F15015-8-RB-V2"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-6-5-ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2015-2024-ford-f-150-5-5ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-F15015-5.5-RB-V2"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2015-2026-ford-f-150-8ft-bed-rubber-truck-bed-mat-tlaps-v2",
+        "cbItemName": "TBM-F15015-8-RB-V2"
+      }
+    ]
+  },
+  "2015-2026-ford-f-150-8ft-bed-rubber-truck-bed-mat-tlaps-v2": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2015-2024-ford-f-150-5-5ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-F15015-5.5-RB-V2"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "2015-2024-ford-f-150-6-5-ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-F15015-6.5-RB-V2"
+      }
+    ]
+  },
+  "2017-ford-f250-f350-f450-6-8-bed-rubber-truck-bed-mat-v2": {
+    "currentBedLength": "6.8",
+    "siblings": [
+      {
+        "bedLength": "8",
+        "handle": "2017-2026-ford-f250-f350-f450-8ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-F25017-8-RB-V2"
+      }
+    ]
+  },
+  "2017-2026-ford-f250-f350-f450-8ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "6.8",
+        "handle": "2017-ford-f250-f350-f450-6-8-bed-rubber-truck-bed-mat-v2",
+        "cbItemName": "TBM-F25017-6.8-RB-V2"
+      }
+    ]
+  },
+  "1999-2016-ford-super-duty-6-5-ft-rubber-bed-mat-lightweight-v2": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "8",
+        "handle": "1999-2016-ford-super-duty-8-ft-rubber-truck-bed-mat-aa032-v2",
+        "cbItemName": "TBM-F25099-8-RB-V2"
+      }
+    ]
+  },
+  "1999-2016-ford-super-duty-8-ft-rubber-truck-bed-mat-aa032-v2": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "1999-2016-ford-super-duty-6-5-ft-rubber-bed-mat-lightweight-v2",
+        "cbItemName": "TBM-F25099-6.5-RB-V2"
+      }
+    ]
+  },
+  "2005-2021-nissan-frontier-rubber-truck-bed-mat-grey-5ft-bed": {
+    "currentBedLength": "4.6",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2005-2021-nissan-frontier-6-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-FRON05-6-RB-GY"
+      }
+    ]
+  },
+  "2005-2021-nissan-frontier-6-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "4.6",
+        "handle": "2005-2021-nissan-frontier-rubber-truck-bed-mat-grey-5ft-bed",
+        "cbItemName": "TBM-FRON05-4.6-RB-GY"
+      }
+    ]
+  },
+  "2005-2021-nissan-frontier-5ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "4.6",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2005-2021-nissan-frontier-6ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-FRON05-6-RB-V2"
+      }
+    ]
+  },
+  "2005-2021-nissan-frontier-6ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "4.6",
+        "handle": "2005-2021-nissan-frontier-5ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-FRON05-4.6-RB-V2"
+      }
+    ]
+  },
+  "02-22-dodge-ram-1500-2500-3500-6-5-bed-pvc-truck-bed-mat": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "8",
+        "handle": "2002-2022-dodge-ram-1500-2500-3500-8-long-bed-pvc-mat-black",
+        "cbItemName": "TBM-RAM02-8-RB-GY"
+      }
+    ]
+  },
+  "2002-2022-dodge-ram-1500-2500-3500-8-long-bed-pvc-mat-black": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "02-22-dodge-ram-1500-2500-3500-6-5-bed-pvc-truck-bed-mat",
+        "cbItemName": "TBM-RAM02-6.5-RB-GY"
+      }
+    ]
+  },
+  "02-22-dodge-ram-1500-2500-3500-6-5-ft-rubber-bed-mat-v2": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "8",
+        "handle": "02-22-dodge-ram-1500-2500-3500-8ft-bed-rubber-mat-aa031-v2",
+        "cbItemName": "TBM-RAM02-8-RB-V2"
+      }
+    ]
+  },
+  "02-22-dodge-ram-1500-2500-3500-8ft-bed-rubber-mat-aa031-v2": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "02-22-dodge-ram-1500-2500-3500-6-5-ft-rubber-bed-mat-v2",
+        "cbItemName": "TBM-RAM02-6.5-RB-V2"
+      }
+    ]
+  },
+  "02-22-dodge-ram-rubber-bed-mat-57-rambox-grey": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "5.7",
+        "handle": "02-22-dodge-ram-5-7-short-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-RAM09-5.7-RB-GY"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "02-22-dodge-ram-6-4-bed-rubber-mat-rambox-grey",
+        "cbItemName": "TBM-RAM09-6.5-RB-GY"
+      }
+    ]
+  },
+  "02-22-dodge-ram-5-7-short-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "5.7",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "02-22-dodge-ram-rubber-bed-mat-57-rambox-grey",
+        "cbItemName": "TBM-RAM09-5.5-RB-GY"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "02-22-dodge-ram-6-4-bed-rubber-mat-rambox-grey",
+        "cbItemName": "TBM-RAM09-6.5-RB-GY"
+      }
+    ]
+  },
+  "02-22-dodge-ram-6-4-bed-rubber-mat-rambox-grey": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "02-22-dodge-ram-rubber-bed-mat-57-rambox-grey",
+        "cbItemName": "TBM-RAM09-5.5-RB-GY"
+      },
+      {
+        "bedLength": "5.7",
+        "handle": "02-22-dodge-ram-5-7-short-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-RAM09-5.7-RB-GY"
+      }
+    ]
+  },
+  "02-22-dodge-ram-1500-2500-3500-5-7-bed-mat-w-rambox-v2": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "5.7",
+        "handle": "02-22-dodge-ram-1500-2500-3500-5-7-ft-rubber-bed-mat-v2",
+        "cbItemName": "TBM-RAM09-5.7-RB-V2"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "02-22-dodge-ram-1500-2500-3500-6-5-ft-bed-mat-w-rambox",
+        "cbItemName": "TBM-RAM09-6.5-RB-V2"
+      }
+    ]
+  },
+  "02-22-dodge-ram-1500-2500-3500-5-7-ft-rubber-bed-mat-v2": {
+    "currentBedLength": "5.7",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "02-22-dodge-ram-1500-2500-3500-5-7-bed-mat-w-rambox-v2",
+        "cbItemName": "TBM-RAM09-5.5-RB-V2"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "02-22-dodge-ram-1500-2500-3500-6-5-ft-bed-mat-w-rambox",
+        "cbItemName": "TBM-RAM09-6.5-RB-V2"
+      }
+    ]
+  },
+  "02-22-dodge-ram-1500-2500-3500-6-5-ft-bed-mat-w-rambox": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "02-22-dodge-ram-1500-2500-3500-5-7-bed-mat-w-rambox-v2",
+        "cbItemName": "TBM-RAM09-5.5-RB-V2"
+      },
+      {
+        "bedLength": "5.7",
+        "handle": "02-22-dodge-ram-1500-2500-3500-5-7-ft-rubber-bed-mat-v2",
+        "cbItemName": "TBM-RAM09-5.7-RB-V2"
+      }
+    ]
+  },
+  "2019-dodge-ram-2500-3500-6-4ft-bed-rubber-mat-diamond-plate": {
+    "currentBedLength": "6.4",
+    "siblings": [
+      {
+        "bedLength": "8",
+        "handle": "2019-2024-ram-2500-3500-8ft-bed-rubber-mat-diamond-plate",
+        "cbItemName": "TBM-RAM192500-8-RB-GY"
+      }
+    ]
+  },
+  "2019-2024-ram-2500-3500-8ft-bed-rubber-mat-diamond-plate": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "6.4",
+        "handle": "2019-dodge-ram-2500-3500-6-4ft-bed-rubber-mat-diamond-plate",
+        "cbItemName": "TBM-RAM192500-6.4-RB-GY"
+      }
+    ]
+  },
+  "2019-2024-ram-2500-3500-6-4-bed-rubber-truck-bed-mat-tlaps": {
+    "currentBedLength": "6.4",
+    "siblings": [
+      {
+        "bedLength": "8",
+        "handle": "2019-2024-ram-2500-3500-8ft-bed-rubber-truck-bed-mat-tlaps-v2",
+        "cbItemName": "TBM-RAM192500-8-RB-V2"
+      }
+    ]
+  },
+  "2019-2024-ram-2500-3500-8ft-bed-rubber-truck-bed-mat-tlaps-v2": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "6.4",
+        "handle": "2019-2024-ram-2500-3500-6-4-bed-rubber-truck-bed-mat-tlaps",
+        "cbItemName": "TBM-RAM192500-6.4-RB-V2"
+      }
+    ]
+  },
+  "2019-ford-ranger-5-bed-rubber-truck-bed-mat-diamond-plate": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2019-ford-ranger-6-bed-rubber-truck-bed-mat-diamond-plate",
+        "cbItemName": "TBM-RANG19-6-RB-GY"
+      }
+    ]
+  },
+  "2019-ford-ranger-6-bed-rubber-truck-bed-mat-diamond-plate": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2019-ford-ranger-5-bed-rubber-truck-bed-mat-diamond-plate",
+        "cbItemName": "TBM-RANG19-5-RB-GY"
+      }
+    ]
+  },
+  "2019-ford-ranger-supercrew-5ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2019-ford-ranger-super-cab-6ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-RANG19-6-RB-V2"
+      }
+    ]
+  },
+  "2019-ford-ranger-super-cab-6ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2019-ford-ranger-supercrew-5ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-RANG19-5-RB-V2"
+      }
+    ]
+  },
+  "07-18-chevy-silverado-gmc-sierra-5-8-bed-rubber-mat-grey": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "07-19-chevy-silverado-gmc-sierra-6-5-bed-rubber-mat-grey",
+        "cbItemName": "TBM-SIL07-6.5-RB-GY"
+      },
+      {
+        "bedLength": "8",
+        "handle": "07-18-silverado-sierra-8-long-bed-pvc-bed-mat-black",
+        "cbItemName": "TBM-SIL07-8-RB-GY"
+      }
+    ]
+  },
+  "07-19-chevy-silverado-gmc-sierra-6-5-bed-rubber-mat-grey": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "07-18-chevy-silverado-gmc-sierra-5-8-bed-rubber-mat-grey",
+        "cbItemName": "TBM-SIL07-5.8-RB-GY"
+      },
+      {
+        "bedLength": "8",
+        "handle": "07-18-silverado-sierra-8-long-bed-pvc-bed-mat-black",
+        "cbItemName": "TBM-SIL07-8-RB-GY"
+      }
+    ]
+  },
+  "07-18-silverado-sierra-8-long-bed-pvc-bed-mat-black": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "07-18-chevy-silverado-gmc-sierra-5-8-bed-rubber-mat-grey",
+        "cbItemName": "TBM-SIL07-5.8-RB-GY"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "07-19-chevy-silverado-gmc-sierra-6-5-bed-rubber-mat-grey",
+        "cbItemName": "TBM-SIL07-6.5-RB-GY"
+      }
+    ]
+  },
+  "07-18-silverado-sierra-5-8ft-rubber-truck-bed-mat-v2": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "07-19-silverado-sierra-6-5ft-rubber-truck-bed-mat-v2-aa003",
+        "cbItemName": "TBM-SIL07-6.5-RB-V2"
+      },
+      {
+        "bedLength": "8",
+        "handle": "07-18-silverado-sierra-8ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-SIL07-8-RB-V2"
+      }
+    ]
+  },
+  "07-19-silverado-sierra-6-5ft-rubber-truck-bed-mat-v2-aa003": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "07-18-silverado-sierra-5-8ft-rubber-truck-bed-mat-v2",
+        "cbItemName": "TBM-SIL07-5.8-RB-V2"
+      },
+      {
+        "bedLength": "8",
+        "handle": "07-18-silverado-sierra-8ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-SIL07-8-RB-V2"
+      }
+    ]
+  },
+  "07-18-silverado-sierra-8ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "07-18-silverado-sierra-5-8ft-rubber-truck-bed-mat-v2",
+        "cbItemName": "TBM-SIL07-5.8-RB-V2"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "07-19-silverado-sierra-6-5ft-rubber-truck-bed-mat-v2-aa003",
+        "cbItemName": "TBM-SIL07-6.5-RB-V2"
+      }
+    ]
+  },
+  "2019-2022-chevy-silverado-gmc-sierra-5-8-rubber-truck-bed-mat": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-2022-chevy-silverado-gmc-sierra-6-5-rubber-bed-mat-mpn-66",
+        "cbItemName": "TBM-SIL19-6.5-RB-GY"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2019-chevy-silverado-gmc-sierra-1500-8ft-bed-rubber-mat-diamond",
+        "cbItemName": "TBM-SIL19-8-RB-GY"
+      }
+    ]
+  },
+  "2019-2022-chevy-silverado-gmc-sierra-6-5-rubber-bed-mat-mpn-66": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-2022-chevy-silverado-gmc-sierra-5-8-rubber-truck-bed-mat",
+        "cbItemName": "TBM-SIL19-5.8-RB-GY"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2019-chevy-silverado-gmc-sierra-1500-8ft-bed-rubber-mat-diamond",
+        "cbItemName": "TBM-SIL19-8-RB-GY"
+      }
+    ]
+  },
+  "2019-chevy-silverado-gmc-sierra-1500-8ft-bed-rubber-mat-diamond": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-2022-chevy-silverado-gmc-sierra-5-8-rubber-truck-bed-mat",
+        "cbItemName": "TBM-SIL19-5.8-RB-GY"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "2019-2022-chevy-silverado-gmc-sierra-6-5-rubber-bed-mat-mpn-66",
+        "cbItemName": "TBM-SIL19-6.5-RB-GY"
+      }
+    ]
+  },
+  "2019-2022-chevy-silverado-gmc-sierra-1500-5-8-ft-rubber-bed-mat-v2": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-2022-chevy-silverado-gmc-sierra-1500-6-5-ft-rubber-bed-mat",
+        "cbItemName": "TBM-SIL19-6.5-RB-V2"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2019-chevy-silverado-gmc-sierra-1500-8ft-bed-rubber-mat-v2",
+        "cbItemName": "TBM-SIL19-8-RB-V2"
+      }
+    ]
+  },
+  "2019-2022-chevy-silverado-gmc-sierra-1500-6-5-ft-rubber-bed-mat": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-2022-chevy-silverado-gmc-sierra-1500-5-8-ft-rubber-bed-mat-v2",
+        "cbItemName": "TBM-SIL19-5.8-RB-V2"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2019-chevy-silverado-gmc-sierra-1500-8ft-bed-rubber-mat-v2",
+        "cbItemName": "TBM-SIL19-8-RB-V2"
+      }
+    ]
+  },
+  "2019-chevy-silverado-gmc-sierra-1500-8ft-bed-rubber-mat-v2": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-2022-chevy-silverado-gmc-sierra-1500-5-8-ft-rubber-bed-mat-v2",
+        "cbItemName": "TBM-SIL19-5.8-RB-V2"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "2019-2022-chevy-silverado-gmc-sierra-1500-6-5-ft-rubber-bed-mat",
+        "cbItemName": "TBM-SIL19-6.5-RB-V2"
+      }
+    ]
+  },
+  "2020-chevy-silverado-gmc-sierra-2500-3500-hd-6-9-rubber-bed-mat": {
+    "currentBedLength": "6.9",
+    "siblings": [
+      {
+        "bedLength": "8",
+        "handle": "2020-chevy-silverado-gmc-sierra-2500-3500-hd-8ft-rubber-bed-mat",
+        "cbItemName": "TBM-SIL250020-8-RB-GY"
+      }
+    ]
+  },
+  "2020-chevy-silverado-gmc-sierra-2500-3500-hd-8ft-rubber-bed-mat": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "6.9",
+        "handle": "2020-chevy-silverado-gmc-sierra-2500-3500-hd-6-9-rubber-bed-mat",
+        "cbItemName": "TBM-SIL250020-6.9-RB-GY"
+      }
+    ]
+  },
+  "access-truck-bed-mat-2020-chevy-silverado-gmc-sierra-2500-3500-hd-6-9": {
+    "currentBedLength": "6.9",
+    "siblings": [
+      {
+        "bedLength": "8",
+        "handle": "2020-2025-chevy-silverado-gmc-sierra-2500-3500-hd-8-bed-mat-rubber",
+        "cbItemName": "TBM-SIL250020-8-RB-V2"
+      }
+    ]
+  },
+  "2020-2025-chevy-silverado-gmc-sierra-2500-3500-hd-8-bed-mat-rubber": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "6.9",
+        "handle": "access-truck-bed-mat-2020-chevy-silverado-gmc-sierra-2500-3500-hd-6-9",
+        "cbItemName": "TBM-SIL250020-6.9-RB-v2"
+      }
+    ]
+  },
+  "1999-2007-chevy-silverado-gmc-sierra-6-5-rubber-bed-mat-grey": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "8",
+        "handle": "1999-2007-silverado-sierra-8-long-bed-pvc-bed-mat-black",
+        "cbItemName": "TBM-SIL99-8-RB-GY"
+      }
+    ]
+  },
+  "1999-2007-silverado-sierra-8-long-bed-pvc-bed-mat-black": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "1999-2007-chevy-silverado-gmc-sierra-6-5-rubber-bed-mat-grey",
+        "cbItemName": "TBM-SIL99-6.5-RB-GY"
+      }
+    ]
+  },
+  "1999-2007-silverado-sierra-6-5ft-rubber-truck-bed-mat-aa025-v2": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "8",
+        "handle": "1999-2007-silverado-sierra-8ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-SIL99-8-RB-V2"
+      }
+    ]
+  },
+  "1999-2007-silverado-sierra-8ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "1999-2007-silverado-sierra-6-5ft-rubber-truck-bed-mat-aa025-v2",
+        "cbItemName": "TBM-SIL99-6.5-RB-V2"
+      }
+    ]
+  },
+  "2005-2022-toyota-tacoma-5-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2005-2022-toyota-tacoma-6-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-TACO05-6-RB-GY"
+      }
+    ]
+  },
+  "2005-2022-toyota-tacoma-6-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2005-2022-toyota-tacoma-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-TACO05-5-RB-GY"
+      }
+    ]
+  },
+  "2005-2022-toyota-tacoma-5ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2005-2022-toyota-tacoma-6ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-TACO05-6-RB-V2"
+      }
+    ]
+  },
+  "2005-2022-toyota-tacoma-6ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2005-2022-toyota-tacoma-5ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-TACO05-5-RB-V2"
+      }
+    ]
+  },
+  "2004-2024-nissan-titan-5-7-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "5.7",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2024-nissan-titan-6-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-TIT04-6.5-RB-GY"
+      }
+    ]
+  },
+  "2004-2024-nissan-titan-6-5-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.7",
+        "handle": "2004-2024-nissan-titan-5-7-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-TIT04-5.7-RB-GY"
+      }
+    ]
+  },
+  "2004-2024-nissan-titan-5-7-ft-rubber-truck-bed-mat-aa009-v2": {
+    "currentBedLength": "5.7",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2024-nissan-titan-6-5-ft-rubber-bed-mat-lightweight-v2",
+        "cbItemName": "TBM-TIT04-6.5-RB-V2"
+      }
+    ]
+  },
+  "2004-2024-nissan-titan-6-5-ft-rubber-bed-mat-lightweight-v2": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.7",
+        "handle": "2004-2024-nissan-titan-5-7-ft-rubber-truck-bed-mat-aa009-v2",
+        "cbItemName": "TBM-TIT04-5.7-RB-V2"
+      }
+    ]
+  },
+  "2016-nissan-titan-5-7ft-bed-rubber-truck-bed-mat-diamond-plate": {
+    "currentBedLength": "5.7",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2016-nissan-titan-6-5-bed-rubber-truck-bed-mat-diamond-plate",
+        "cbItemName": "TBM-TIT16B-6.5-RB-GY"
+      }
+    ]
+  },
+  "2016-nissan-titan-6-5-bed-rubber-truck-bed-mat-diamond-plate": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.7",
+        "handle": "2016-nissan-titan-5-7ft-bed-rubber-truck-bed-mat-diamond-plate",
+        "cbItemName": "TBM-TIT16B-5.7-RB-GY"
+      }
+    ]
+  },
+  "2016-2024-nissan-titan-5-7ft-bed-rubber-truck-bed-mat-lightweight-v2": {
+    "currentBedLength": "5.7",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2016-2024-nissan-titan-6-5ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-TIT16B-6.5-RB-V2"
+      }
+    ]
+  },
+  "2016-2024-nissan-titan-6-5ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.7",
+        "handle": "2016-2024-nissan-titan-5-7ft-bed-rubber-truck-bed-mat-lightweight-v2",
+        "cbItemName": "TBM-TIT16B-5.7-RB-V2"
+      }
+    ]
+  },
+  "2007-2021-toyota-tundra-5-5-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2007-2021-toyota-tundra-6-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-TUN07-6.5-RB-GY"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2007-2021-toyota-tundra-8-long-bed-pvc-bed-mat-black",
+        "cbItemName": "TBM-TUN07-8-RB-GY"
+      }
+    ]
+  },
+  "2007-2021-toyota-tundra-6-5-bed-rubber-truck-bed-mat-grey": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2007-2021-toyota-tundra-5-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-TUN07-5.5-RB-GY"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2007-2021-toyota-tundra-8-long-bed-pvc-bed-mat-black",
+        "cbItemName": "TBM-TUN07-8-RB-GY"
+      }
+    ]
+  },
+  "2007-2021-toyota-tundra-8-long-bed-pvc-bed-mat-black": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2007-2021-toyota-tundra-5-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-TUN07-5.5-RB-GY"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "2007-2021-toyota-tundra-6-5-bed-rubber-truck-bed-mat-grey",
+        "cbItemName": "TBM-TUN07-6.5-RB-GY"
+      }
+    ]
+  },
+  "2007-2021-toyota-tundra-5-5ft-bed-rubber-mat-lightweight-v2-aa002": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2007-2021-toyota-tundra-6-5ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-TUN07-6.5-RB-V2"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2007-2021-toyota-tundra-8ft-bed-rubber-mat-lightweight-v2-aa030",
+        "cbItemName": "TBM-TUN07-8-RB-V2"
+      }
+    ]
+  },
+  "2007-2021-toyota-tundra-6-5ft-bed-rubber-mat-lightweight-v2": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2007-2021-toyota-tundra-5-5ft-bed-rubber-mat-lightweight-v2-aa002",
+        "cbItemName": "TBM-TUN07-5.5-RB-V2"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2007-2021-toyota-tundra-8ft-bed-rubber-mat-lightweight-v2-aa030",
+        "cbItemName": "TBM-TUN07-8-RB-V2"
+      }
+    ]
+  },
+  "2007-2021-toyota-tundra-8ft-bed-rubber-mat-lightweight-v2-aa030": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2007-2021-toyota-tundra-5-5ft-bed-rubber-mat-lightweight-v2-aa002",
+        "cbItemName": "TBM-TUN07-5.5-RB-V2"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "2007-2021-toyota-tundra-6-5ft-bed-rubber-mat-lightweight-v2",
+        "cbItemName": "TBM-TUN07-6.5-RB-V2"
+      }
+    ]
+  },
+  "2015-2022-chevy-colorado-gmc-canyon-5-bed-soft-roll-up-cover": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2015-2022-chevy-colorado-gmc-canyon-6-bed-soft-roll-up-tonneau-cover",
+        "cbItemName": "TC-COLO15-6-HSS"
+      }
+    ]
+  },
+  "2015-2022-chevy-colorado-gmc-canyon-6-bed-soft-roll-up-tonneau-cover": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2015-2022-chevy-colorado-gmc-canyon-5-bed-soft-roll-up-cover",
+        "cbItemName": "TC-COLO15-5-HSS"
+      }
+    ]
+  },
+  "2015-2022-colorado-canyon-5-bed-tonneau-cover-led-light-kit": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2015-2022-colorado-canyon-6-bed-tonneau-cover-w-led-lights-kit",
+        "cbItemName": "TC-COLO15-6-HSS+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2015-2022-colorado-canyon-6-bed-tonneau-cover-w-led-lights-kit": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2015-2022-colorado-canyon-5-bed-tonneau-cover-led-light-kit",
+        "cbItemName": "TC-COLO15-5-HSS+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2015-2022-chevy-colorado-gmc-canyon-5-bed-roll-up-tonneau-cover": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2015-2022-chevy-colorado-gmc-canyon-6-bed-roll-up-tonneau-cover",
+        "cbItemName": "TC-COLO15-6-LRU"
+      }
+    ]
+  },
+  "2015-2022-chevy-colorado-gmc-canyon-6-bed-roll-up-tonneau-cover": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2015-2022-chevy-colorado-gmc-canyon-5-bed-roll-up-tonneau-cover",
+        "cbItemName": "TC-COLO15-5-LRU"
+      }
+    ]
+  },
+  "2015-2022-colorado-canyon-5-roll-up-tonneau-cover-w-led-lights": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2015-2022-colorado-canyon-6-roll-up-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-COLO15-6-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2015-2022-colorado-canyon-6-roll-up-tonneau-cover-w-led-lights": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2015-2022-colorado-canyon-5-roll-up-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-COLO15-5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2015-chevy-colorado-gmc-canyon-5ft-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2015-chevy-colorado-gmc-canyon-6ft-bed-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-COLO15-6-LTH"
+      }
+    ]
+  },
+  "2015-chevy-colorado-gmc-canyon-6ft-bed-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2015-chevy-colorado-gmc-canyon-5ft-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-COLO15-5-LTH"
+      }
+    ]
+  },
+  "2015-chevy-colorado-gmc-canyon-5ft-tri-fold-tonneau-cover-w-led": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2015-chevy-colorado-gmc-canyon-6ft-tri-fold-tonneau-cover-w-led-kit",
+        "cbItemName": "TC-COLO15-6-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2015-chevy-colorado-gmc-canyon-6ft-tri-fold-tonneau-cover-w-led-kit": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2015-chevy-colorado-gmc-canyon-5ft-tri-fold-tonneau-cover-w-led",
+        "cbItemName": "TC-COLO15-5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "04-14-ford-f-150-lincoln-mark-lt-5-5-roll-up-tonneau-cover": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2014-ford-f-150-6-5-roll-up-tonneau-cover-mpn-503309",
+        "cbItemName": "TC-F15004-6.5-LRU"
+      }
+    ]
+  },
+  "2004-2014-ford-f-150-6-5-roll-up-tonneau-cover-mpn-503309": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "04-14-ford-f-150-lincoln-mark-lt-5-5-roll-up-tonneau-cover",
+        "cbItemName": "TC-F15004-5.5-LRU"
+      }
+    ]
+  },
+  "2004-2014-ford-f-150-5-5ft-bed-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2014-ford-f-150-6-5ft-bed-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-F15004-6.5-LTH"
+      }
+    ]
+  },
+  "2004-2014-ford-f-150-6-5ft-bed-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2004-2014-ford-f-150-5-5ft-bed-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-F15004-5.5-LTH"
+      }
+    ]
+  },
+  "04-14-ford-f-150-5-5-roll-up-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "04-14-ford-f-150-6-5-roll-up-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-F15004-6.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "04-14-ford-f-150-6-5-roll-up-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "04-14-ford-f-150-5-5-roll-up-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-F15004-5.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2004-2014-ford-f-150-5-5ft-tri-fold-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2014-ford-f-150-6-5ft-tri-fold-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-F15004-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2004-2014-ford-f-150-6-5ft-tri-fold-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2004-2014-ford-f-150-5-5ft-tri-fold-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-F15004-5.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-5-5-bed-soft-roll-up-tonneau-cover-503362": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2015-2024-ford-f-150-6-5-bed-soft-roll-up-tonneau-cover-503363",
+        "cbItemName": "TC-F15015-6.5-LRU"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2015-2024-ford-f-150-8ft-bed-soft-roll-up-tonneau-cover-503368",
+        "cbItemName": "TC-F15015-8-LRU"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-6-5-bed-soft-roll-up-tonneau-cover-503363": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2015-2024-ford-f-150-5-5-bed-soft-roll-up-tonneau-cover-503362",
+        "cbItemName": "TC-F15015-5.5-LRU"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2015-2024-ford-f-150-8ft-bed-soft-roll-up-tonneau-cover-503368",
+        "cbItemName": "TC-F15015-8-LRU"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-8ft-bed-soft-roll-up-tonneau-cover-503368": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2015-2024-ford-f-150-5-5-bed-soft-roll-up-tonneau-cover-503362",
+        "cbItemName": "TC-F15015-5.5-LRU"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "2015-2024-ford-f-150-6-5-bed-soft-roll-up-tonneau-cover-503363",
+        "cbItemName": "TC-F15015-6.5-LRU"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-5-5-tonneau-cover-with-led-bed-lights": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2015-2024-ford-f-150-6-5-tonneau-cover-with-led-bed-lights",
+        "cbItemName": "TC-F15015-6.5-LRU+TBL-16W8P-01"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2015-2024-ford-f-150-8-bed-roll-up-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-F15015-8-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-6-5-tonneau-cover-with-led-bed-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2015-2024-ford-f-150-5-5-tonneau-cover-with-led-bed-lights",
+        "cbItemName": "TC-F15015-5.5-LRU+TBL-16W8P-01"
+      },
+      {
+        "bedLength": "8",
+        "handle": "2015-2024-ford-f-150-8-bed-roll-up-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-F15015-8-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-8-bed-roll-up-tonneau-cover-w-led-lights": {
+    "currentBedLength": "8",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2015-2024-ford-f-150-5-5-tonneau-cover-with-led-bed-lights",
+        "cbItemName": "TC-F15015-5.5-LRU+TBL-16W8P-01"
+      },
+      {
+        "bedLength": "6.5",
+        "handle": "2015-2024-ford-f-150-6-5-tonneau-cover-with-led-bed-lights",
+        "cbItemName": "TC-F15015-6.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2015-2026-ford-f-150-5-5ft-bed-hard-tri-fold-tonneau-cover-w-led": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2015-2024-ford-f-150-6-5ft-bed-hard-tri-fold-tonneau-cover-w-led",
+        "cbItemName": "TC-F15015-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2015-2024-ford-f-150-6-5ft-bed-hard-tri-fold-tonneau-cover-w-led": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2015-2026-ford-f-150-5-5ft-bed-hard-tri-fold-tonneau-cover-w-led",
+        "cbItemName": "TC-F15015-5.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "05-21-nissan-frontier-5-bed-hidden-snap-roll-up-tonneau-cover": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "05-21-nissan-frontier-6-bed-hidden-snap-roll-up-tonneau-cover",
+        "cbItemName": "TC-FRON05-6-HSS"
+      }
+    ]
+  },
+  "05-21-nissan-frontier-6-bed-hidden-snap-roll-up-tonneau-cover": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "05-21-nissan-frontier-5-bed-hidden-snap-roll-up-tonneau-cover",
+        "cbItemName": "TC-FRON05-5-HSS"
+      }
+    ]
+  },
+  "05-21-nissan-frontier-5-bed-roll-up-tonneau-cover-503340": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "05-21-nissan-frontier-6-bed-roll-up-vinyl-tonneau-cover-503341",
+        "cbItemName": "TC-FRON05-6-LRU"
+      }
+    ]
+  },
+  "05-21-nissan-frontier-6-bed-roll-up-vinyl-tonneau-cover-503341": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "05-21-nissan-frontier-5-bed-roll-up-tonneau-cover-503340",
+        "cbItemName": "TC-FRON05-5-LRU"
+      }
+    ]
+  },
+  "05-21-nissan-frontier-5-tonneau-cover-led-light-combo-kit": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "05-21-nissan-frontier-6-tonneau-cover-combo-w-led-bed-lights",
+        "cbItemName": "TC-FRON05-6-HSS+TBL-16W8P-01"
+      }
+    ]
+  },
+  "05-21-nissan-frontier-6-tonneau-cover-combo-w-led-bed-lights": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "05-21-nissan-frontier-5-tonneau-cover-led-light-combo-kit",
+        "cbItemName": "TC-FRON05-5-HSS+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2005-nissan-frontier-5ft-bed-hard-tri-fold-tonneau-cover-243340": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2005-2021-nissan-frontier-6ft-bed-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-FRON05-6-LTH"
+      }
+    ]
+  },
+  "2005-2021-nissan-frontier-6ft-bed-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2005-nissan-frontier-5ft-bed-hard-tri-fold-tonneau-cover-243340",
+        "cbItemName": "TC-FRON05-5-LTH"
+      }
+    ]
+  },
+  "05-21-nissan-frontier-5-roll-up-tonneau-cover-led-bed-lights": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "05-21-nissan-frontier-6-roll-up-tonneau-cover-with-led-bed-lights",
+        "cbItemName": "TC-FRON05-6-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "05-21-nissan-frontier-6-roll-up-tonneau-cover-with-led-bed-lights": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "05-21-nissan-frontier-5-roll-up-tonneau-cover-led-bed-lights",
+        "cbItemName": "TC-FRON05-5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2005-2021-nissan-frontier-5ft-bed-tri-fold-tonneau-cover-led-kit": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2005-2021-nissan-frontier-6ft-bed-hard-tri-fold-tonneau-cover-w-led",
+        "cbItemName": "TC-FRON05-6-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2005-2021-nissan-frontier-6ft-bed-hard-tri-fold-tonneau-cover-w-led": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2005-2021-nissan-frontier-5ft-bed-tri-fold-tonneau-cover-led-kit",
+        "cbItemName": "TC-FRON05-5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "09-22-ram-1500-5-7-bed-roll-up-vinyl-tonneau-cover-503353": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "09-22-dodge-ram-1500-2500-3500-6-4-roll-up-tonneau-cover",
+        "cbItemName": "TC-RAM09-6.5-LRU"
+      }
+    ]
+  },
+  "09-22-dodge-ram-1500-2500-3500-6-4-roll-up-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "09-22-ram-1500-5-7-bed-roll-up-vinyl-tonneau-cover-503353",
+        "cbItemName": "TC-RAM09-5.8-LRU"
+      }
+    ]
+  },
+  "09-22-ram-1500-roll-up-tonneau-cover-w-led-bed-lights-5-7-bed": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "09-22-ram-1500-2500-3500-roll-up-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-RAM09-6.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "09-22-ram-1500-2500-3500-roll-up-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "09-22-ram-1500-roll-up-tonneau-cover-w-led-bed-lights-5-7-bed",
+        "cbItemName": "TC-RAM09-5.8-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "09-18-ram-1500-5-8ft-bed-hard-tri-fold-tonneau-cover-243353": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "09-18-dodge-ram-1500-6-5-bed-hard-tri-fold-tonneau-cover-243354",
+        "cbItemName": "TC-RAM09-6.5-LTH"
+      }
+    ]
+  },
+  "09-18-dodge-ram-1500-6-5-bed-hard-tri-fold-tonneau-cover-243354": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "09-18-ram-1500-5-8ft-bed-hard-tri-fold-tonneau-cover-243353",
+        "cbItemName": "TC-RAM09-5.8-LTH"
+      }
+    ]
+  },
+  "09-18-ram-1500-5-8ft-tri-fold-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "09-18-ram-1500-6-5ft-bed-tri-fold-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-RAM09-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "09-18-ram-1500-6-5ft-bed-tri-fold-tonneau-cover-w-led-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "09-18-ram-1500-5-8ft-tri-fold-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-RAM09-5.8-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-dodge-ram-5-8ft-bed-flush-roll-up-vinyl-tonneau-cover": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-dodge-ram-6-4ft-bed-flush-roll-up-vinyl-tonneau-cover",
+        "cbItemName": "TC-RAM19-6.5-FRU2"
+      }
+    ]
+  },
+  "2019-dodge-ram-6-4ft-bed-flush-roll-up-vinyl-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-dodge-ram-5-8ft-bed-flush-roll-up-vinyl-tonneau-cover",
+        "cbItemName": "TC-RAM19-5.8-FRU2"
+      }
+    ]
+  },
+  "2019-2026-dodge-ram-1500-5-8ft-bed-roll-up-tonneau-cover-led-kit": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-dodge-ram-6-4ft-flush-roll-up-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-RAM19-6.5-FRU2+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-dodge-ram-6-4ft-flush-roll-up-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-2026-dodge-ram-1500-5-8ft-bed-roll-up-tonneau-cover-led-kit",
+        "cbItemName": "TC-RAM19-5.8-FRU2+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-2024-ram-1500-5-7ft-bed-lock-roll-up-tonneau-cover": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-2024-ram-1500-lock-roll-up-tonneau-cover-6-4-ft-bed",
+        "cbItemName": "tc-ram19-6.5-lru"
+      }
+    ]
+  },
+  "2019-2024-ram-1500-lock-roll-up-tonneau-cover-6-4-ft-bed": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-2024-ram-1500-5-7ft-bed-lock-roll-up-tonneau-cover",
+        "cbItemName": "tc-ram19-5.8-lru"
+      }
+    ]
+  },
+  "2019-2024-ram-1500-tonneau-cover-led-light-combo-5-7ft-bed": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-2024-ram-1500-tonneau-cover-led-bed-light-kit-6-4-ft",
+        "cbItemName": "TC-RAM19-6.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-2024-ram-1500-tonneau-cover-led-bed-light-kit-6-4-ft": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-2024-ram-1500-tonneau-cover-led-light-combo-5-7ft-bed",
+        "cbItemName": "TC-RAM19-5.8-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-2026-ram-1500-5-8ft-tri-fold-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-2026-dodge-ram-1500-6-5-tri-fold-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-RAM19-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-2026-dodge-ram-1500-6-5-tri-fold-tonneau-cover-w-led-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-2026-ram-1500-5-8ft-tri-fold-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-RAM19-5.8-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-ford-ranger-5-bed-flush-roll-up-vinyl-tonneau-cover": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2019-ford-ranger-6-bed-flush-roll-up-vinyl-tonneau-cover",
+        "cbItemName": "TC-RANG19-6-FRU2"
+      }
+    ]
+  },
+  "2019-ford-ranger-6-bed-flush-roll-up-vinyl-tonneau-cover": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2019-ford-ranger-5-bed-flush-roll-up-vinyl-tonneau-cover",
+        "cbItemName": "TC-RANG19-5-FRU2"
+      }
+    ]
+  },
+  "2019-2024-ford-ranger-5-bed-roll-up-tonneau-cover-led-light-kit": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2019-2023-ford-ranger-6-bed-tonneau-cover-led-light-kit",
+        "cbItemName": "TC-RANG19-6-FRU2+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-2023-ford-ranger-6-bed-tonneau-cover-led-light-kit": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2019-2024-ford-ranger-5-bed-roll-up-tonneau-cover-led-light-kit",
+        "cbItemName": "TC-RANG19-5-FRU2+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-ford-ranger-5ft-bed-hard-tri-fold-tonneau-cover-2433106": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2019-ford-ranger-6ft-bed-hard-tri-fold-tonneau-cover-low-profile",
+        "cbItemName": "TC-RANG19-6-LTH"
+      }
+    ]
+  },
+  "2019-ford-ranger-6ft-bed-hard-tri-fold-tonneau-cover-low-profile": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2019-ford-ranger-5ft-bed-hard-tri-fold-tonneau-cover-2433106",
+        "cbItemName": "TC-RANG19-5-LTH"
+      }
+    ]
+  },
+  "2019-2024-ford-ranger-5ft-bed-tri-fold-tonneau-cover-w-led-lights": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2019-2023-ford-ranger-6ft-bed-hard-tri-fold-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-RANG19-6-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-2023-ford-ranger-6ft-bed-hard-tri-fold-tonneau-cover-w-led-lights": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2019-2024-ford-ranger-5ft-bed-tri-fold-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-RANG19-5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "07-14-silverado-sierra-5-8-bed-hidden-snap-tonneau-cover": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "07-14-chevy-silverado-gmc-sierra-6-5-hidden-snap-tonneau-cover",
+        "cbItemName": "TC-SIL07-6.5-HSS"
+      }
+    ]
+  },
+  "07-14-chevy-silverado-gmc-sierra-6-5-hidden-snap-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "07-14-silverado-sierra-5-8-bed-hidden-snap-tonneau-cover",
+        "cbItemName": "TC-SIL07-5.8-HSS"
+      }
+    ]
+  },
+  "07-14-silverado-sierra-5-8-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "07-14-silverado-sierra-6-5-tonneau-cover-led-bed-light-kit",
+        "cbItemName": "TC-SIL07-6.5-HSS+TBL-16W8P-01"
+      }
+    ]
+  },
+  "07-14-silverado-sierra-6-5-tonneau-cover-led-bed-light-kit": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "07-14-silverado-sierra-5-8-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-SIL07-5.8-HSS+TBL-16W8P-01"
+      }
+    ]
+  },
+  "07-14-chevy-silverado-gmc-sierra-5-8-roll-up-tonneau-cover": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "07-14-chevy-silverado-gmc-sierra-6-5-roll-up-tonneau-cover",
+        "cbItemName": "TC-SIL07-6.5-LRU"
+      }
+    ]
+  },
+  "07-14-chevy-silverado-gmc-sierra-6-5-roll-up-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "07-14-chevy-silverado-gmc-sierra-5-8-roll-up-tonneau-cover",
+        "cbItemName": "TC-SIL07-5.8-LRU"
+      }
+    ]
+  },
+  "07-14-silverado-sierra-5-8-roll-up-tonneau-cover-w-led-lights": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "07-14-silverado-sierra-6-5-roll-up-tonneau-cover-led-bed-lights",
+        "cbItemName": "TC-SIL07-6.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "07-14-silverado-sierra-6-5-roll-up-tonneau-cover-led-bed-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "07-14-silverado-sierra-5-8-roll-up-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-SIL07-5.8-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2007-2013-chevy-silverado-5-8ft-bed-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2007-2013-chevy-silverado-6-5ft-low-profile-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-SIL07-6.5-LTH"
+      }
+    ]
+  },
+  "2007-2013-chevy-silverado-6-5ft-low-profile-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2007-2013-chevy-silverado-5-8ft-bed-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-SIL07-5.8-LTH"
+      }
+    ]
+  },
+  "07-13-chevy-silverado-5-8ft-tri-fold-tonneau-cover-w-led-lights": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "07-13-chevy-silverado-6-5ft-tri-fold-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-SIL07-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "07-13-chevy-silverado-6-5ft-tri-fold-tonneau-cover-w-led-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "07-13-chevy-silverado-5-8ft-tri-fold-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-SIL07-5.8-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2014-2018-gmc-sierra-5-8-roll-up-vinyl-tonneau-cover-503360": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2014-2019-gmc-sierra-6-5-roll-up-vinyl-tonneau-cover-503361",
+        "cbItemName": "TC-SIL14-6.5-LRU"
+      }
+    ]
+  },
+  "2014-2019-gmc-sierra-6-5-roll-up-vinyl-tonneau-cover-503361": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2014-2018-gmc-sierra-5-8-roll-up-vinyl-tonneau-cover-503360",
+        "cbItemName": "TC-SIL14-5.8-LRU"
+      }
+    ]
+  },
+  "2014-2018-gmc-sierra-5-8-roll-up-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2014-2019-gmc-sierra-6-5-roll-up-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-SIL14-6.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2014-2019-gmc-sierra-6-5-roll-up-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2014-2018-gmc-sierra-5-8-roll-up-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-SIL14-5.8-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2014-2018-chevy-silverado-gmc-sierra-5-8ft-hard-tri-fold-tonneau": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2014-2018-chevy-silverado-gmc-sierra-6-5ft-hard-tri-fold-tonneau",
+        "cbItemName": "TC-SIL14-6.5-LTH"
+      }
+    ]
+  },
+  "2014-2018-chevy-silverado-gmc-sierra-6-5ft-hard-tri-fold-tonneau": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2014-2018-chevy-silverado-gmc-sierra-5-8ft-hard-tri-fold-tonneau",
+        "cbItemName": "TC-SIL14-5.8-LTH"
+      }
+    ]
+  },
+  "2014-2018-silverado-sierra-5-8ft-hard-tri-fold-tonneau-cover-led": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2014-2018-silverado-sierra-6-5ft-hard-tri-fold-tonneau-cover-w-led",
+        "cbItemName": "TC-SIL14-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2014-2018-silverado-sierra-6-5ft-hard-tri-fold-tonneau-cover-w-led": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2014-2018-silverado-sierra-5-8ft-hard-tri-fold-tonneau-cover-led",
+        "cbItemName": "TC-SIL14-5.8-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-chevy-silverado-gmc-sierra-1500-5-8-flush-roll-up-tonneau-cover": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-chevy-silverado-gmc-sierra-1500-6-5-flush-roll-up-tonneau-cover",
+        "cbItemName": "TC-SIL19-6.5-FRU2"
+      }
+    ]
+  },
+  "2019-chevy-silverado-gmc-sierra-1500-6-5-flush-roll-up-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-chevy-silverado-gmc-sierra-1500-5-8-flush-roll-up-tonneau-cover",
+        "cbItemName": "TC-SIL19-5.8-FRU2"
+      }
+    ]
+  },
+  "2019-chevy-silverado-gmc-sierra-1500-5-8-tonneau-cover-led-kit": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-chevy-silverado-gmc-sierra-1500-6-5-tonneau-cover-led-kit",
+        "cbItemName": "TC-SIL19-6.5-FRU2+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-chevy-silverado-gmc-sierra-1500-6-5-tonneau-cover-led-kit": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-chevy-silverado-gmc-sierra-1500-5-8-tonneau-cover-led-kit",
+        "cbItemName": "TC-SIL19-5.8-FRU2+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-chevy-silverado-gmc-sierra-5-8ft-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-chevy-silverado-gmc-sierra-6-5ft-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-SIL19-6.5-LTH"
+      }
+    ]
+  },
+  "2019-chevy-silverado-gmc-sierra-6-5ft-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-chevy-silverado-gmc-sierra-5-8ft-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-SIL19-5.8-LTH"
+      }
+    ]
+  },
+  "2019-chevy-silverado-gmc-sierra-5-8ft-tri-fold-tonneau-cover-w-led": {
+    "currentBedLength": "5.8",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2019-chevy-silverado-gmc-sierra-6-5-tri-fold-tonneau-cover-w-led",
+        "cbItemName": "TC-SIL19-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2019-chevy-silverado-gmc-sierra-6-5-tri-fold-tonneau-cover-w-led": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.8",
+        "handle": "2019-chevy-silverado-gmc-sierra-5-8ft-tri-fold-tonneau-cover-w-led",
+        "cbItemName": "TC-SIL19-5.8-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2016-2023-toyota-tacoma-5-bed-soft-roll-up-tonneau-cover": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2016-2023-toyota-tacoma-6-bed-soft-roll-up-tonneau-cover-1",
+        "cbItemName": "TC-TACO16-6-LRU"
+      }
+    ]
+  },
+  "2016-2023-toyota-tacoma-6-bed-soft-roll-up-tonneau-cover-1": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2016-2023-toyota-tacoma-5-bed-soft-roll-up-tonneau-cover",
+        "cbItemName": "TC-TACO16-5-LRU"
+      }
+    ]
+  },
+  "2016-2023-toyota-tacoma-5-bed-tonneau-cover-led-light-combo": {
+    "currentBedLength": "5",
+    "siblings": [
+      {
+        "bedLength": "6",
+        "handle": "2016-2023-toyota-tacoma-6-bed-roll-up-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-TACO16-6-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2016-2023-toyota-tacoma-6-bed-roll-up-tonneau-cover-w-led-lights": {
+    "currentBedLength": "6",
+    "siblings": [
+      {
+        "bedLength": "5",
+        "handle": "2016-2023-toyota-tacoma-5-bed-tonneau-cover-led-light-combo",
+        "cbItemName": "TC-TACO16-5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2004-2015-nissan-titan-5-5-roll-up-vinyl-tonneau-cover": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2015-nissan-titan-6-5-bed-roll-up-vinyl-tonneau-cover",
+        "cbItemName": "TC-TIT04-6.5-LRU"
+      }
+    ]
+  },
+  "2004-2015-nissan-titan-6-5-bed-roll-up-vinyl-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2004-2015-nissan-titan-5-5-roll-up-vinyl-tonneau-cover",
+        "cbItemName": "TC-TIT04-5.5-LRU"
+      }
+    ]
+  },
+  "04-15-nissan-titan-5-5-roll-up-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2015-nissan-titan-6-5-roll-up-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-TIT04-6.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2004-2015-nissan-titan-6-5-roll-up-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "04-15-nissan-titan-5-5-roll-up-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-TIT04-5.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2004-2015-nissan-titan-5-5ft-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2015-nissan-titan-6-5ft-low-profile-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-TIT04-6.5-LTH"
+      }
+    ]
+  },
+  "2004-2015-nissan-titan-6-5ft-low-profile-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2004-2015-nissan-titan-5-5ft-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-TIT04-5.5-LTH"
+      }
+    ]
+  },
+  "2004-2015-nissan-titan-5-5ft-tri-fold-tonneau-cover-w-led-lights": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2004-2015-nissan-titan-6-5-hard-tri-fold-tonneau-cover-w-led",
+        "cbItemName": "TC-TIT04-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2004-2015-nissan-titan-6-5-hard-tri-fold-tonneau-cover-w-led": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2004-2015-nissan-titan-5-5ft-tri-fold-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-TIT04-5.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2017-2024-nissan-titan-5-5-soft-roll-up-tonneau-cover-503334": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2016-2024-nissan-titan-6-5-soft-roll-up-tonneau-cover-503330",
+        "cbItemName": "TC-TIT16-6.5-LRU"
+      }
+    ]
+  },
+  "2016-2024-nissan-titan-6-5-soft-roll-up-tonneau-cover-503330": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2017-2024-nissan-titan-5-5-soft-roll-up-tonneau-cover-503334",
+        "cbItemName": "TC-TIT16-5.5-LRU"
+      }
+    ]
+  },
+  "2017-2024-nissan-titan-5-5-soft-roll-up-tonneau-cover-led-kit": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2016-2024-nissan-titan-6-5-soft-roll-up-cover-led-light-kit",
+        "cbItemName": "TC-TIT16-6.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2016-2024-nissan-titan-6-5-soft-roll-up-cover-led-light-kit": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2017-2024-nissan-titan-5-5-soft-roll-up-tonneau-cover-led-kit",
+        "cbItemName": "TC-TIT16-5.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2016-nissan-titan-5-5ft-bed-low-profile-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2016-nissan-titan-6-5ft-bed-hard-tri-fold-tonneau-cover-243330",
+        "cbItemName": "TC-TIT16-6.5-LTH"
+      }
+    ]
+  },
+  "2016-nissan-titan-6-5ft-bed-hard-tri-fold-tonneau-cover-243330": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2016-nissan-titan-5-5ft-bed-low-profile-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-TIT16-5.5-LTH"
+      }
+    ]
+  },
+  "2016-nissan-titan-5-5ft-tonneau-cover-w-led-bed-lights-combo": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2016-nissan-titan-6-5-tonneau-cover-led-bed-light-combo-kit",
+        "cbItemName": "TC-TIT16-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2016-nissan-titan-6-5-tonneau-cover-led-bed-light-combo-kit": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2016-nissan-titan-5-5ft-tonneau-cover-w-led-bed-lights-combo",
+        "cbItemName": "TC-TIT16-5.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2007-2016-toyota-tundra-5-5-bed-soft-roll-up-tonneau-cover": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2007-2016-toyota-tundra-6-5-bed-soft-roll-up-tonneau-cover",
+        "cbItemName": "TC-TUN07-6.5-HSS"
+      }
+    ]
+  },
+  "2007-2016-toyota-tundra-6-5-bed-soft-roll-up-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2007-2016-toyota-tundra-5-5-bed-soft-roll-up-tonneau-cover",
+        "cbItemName": "TC-TUN07-5.5-HSS"
+      }
+    ]
+  },
+  "07-16-toyota-tundra-5-5-bed-tonneau-cover-w-led-lights-kit": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2007-2016-toyota-tundra-6-5-tonneau-cover-led-bed-light-kit",
+        "cbItemName": "TC-TUN07-6.5-HSS+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2007-2016-toyota-tundra-6-5-tonneau-cover-led-bed-light-kit": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "07-16-toyota-tundra-5-5-bed-tonneau-cover-w-led-lights-kit",
+        "cbItemName": "TC-TUN07-5.5-HSS+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2007-2016-toyota-tundra-5-5-bed-roll-up-tonneau-cover-503337": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2007-2016-toyota-tundra-6-5-bed-roll-up-vinyl-tonneau-cover",
+        "cbItemName": "TC-TUN07-6.5-LRU"
+      }
+    ]
+  },
+  "2007-2016-toyota-tundra-6-5-bed-roll-up-vinyl-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2007-2016-toyota-tundra-5-5-bed-roll-up-tonneau-cover-503337",
+        "cbItemName": "TC-TUN07-5.5-LRU"
+      }
+    ]
+  },
+  "2007-2016-toyota-tundra-roll-up-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "07-16-toyota-tundra-6-5-roll-up-tonneau-cover-led-bed-lights",
+        "cbItemName": "TC-TUN07-6.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "07-16-toyota-tundra-6-5-roll-up-tonneau-cover-led-bed-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2007-2016-toyota-tundra-roll-up-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-TUN07-5.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2007-2013-toyota-tundra-5-5ft-bed-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2007-2013-toyota-tundra-6-5-ft-bed-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-TUN07-6.5-LTH"
+      }
+    ]
+  },
+  "2007-2013-toyota-tundra-6-5-ft-bed-hard-tri-fold-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2007-2013-toyota-tundra-5-5ft-bed-hard-tri-fold-tonneau-cover",
+        "cbItemName": "TC-TUN07-5.5-LTH"
+      }
+    ]
+  },
+  "2007-2013-toyota-tundra-5-5ft-bed-hard-tri-fold-tonneau-cover-leds": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2007-2013-toyota-tundra-6-5ft-tri-fold-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-TUN07-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2007-2013-toyota-tundra-6-5ft-tri-fold-tonneau-cover-w-led-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2007-2013-toyota-tundra-5-5ft-bed-hard-tri-fold-tonneau-cover-leds",
+        "cbItemName": "TC-TUN07-5.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2014-2021-toyota-tundra-5-5-bed-soft-roll-up-tonneau-cover": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2014-2021-toyota-tundra-6-5-bed-soft-roll-up-tonneau-cover",
+        "cbItemName": "TC-TUN14-6.5-HSS"
+      }
+    ]
+  },
+  "2014-2021-toyota-tundra-6-5-bed-soft-roll-up-tonneau-cover": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2014-2021-toyota-tundra-5-5-bed-soft-roll-up-tonneau-cover",
+        "cbItemName": "TC-TUN14-5.5-HSS"
+      }
+    ]
+  },
+  "2014-2021-toyota-tundra-5-5-bed-tonneau-cover-w-led-lights": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2014-2021-toyota-tundra-6-5-tonneau-cover-w-led-bed-lights",
+        "cbItemName": "TC-TUN14-6.5-HSS+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2014-2021-toyota-tundra-6-5-tonneau-cover-w-led-bed-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2014-2021-toyota-tundra-5-5-bed-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-TUN14-5.5-HSS+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2014-2021-toyota-tundra-5-5-bed-roll-up-tonneau-cover-503364": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2014-2021-toyota-tundra-6-5-bed-roll-up-tonneau-cover-503365",
+        "cbItemName": "TC-TUN14-6.5-LRU"
+      }
+    ]
+  },
+  "2014-2021-toyota-tundra-6-5-bed-roll-up-tonneau-cover-503365": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2014-2021-toyota-tundra-5-5-bed-roll-up-tonneau-cover-503364",
+        "cbItemName": "TC-TUN14-5.5-LRU"
+      }
+    ]
+  },
+  "2014-2021-toyota-tundra-5-5-roll-up-tonneau-cover-led-light-kit": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2014-2021-toyota-tundra-6-5-roll-up-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-TUN14-6.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2014-2021-toyota-tundra-6-5-roll-up-tonneau-cover-w-led-lights": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2014-2021-toyota-tundra-5-5-roll-up-tonneau-cover-led-light-kit",
+        "cbItemName": "TC-TUN14-5.5-LRU+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2014-toyota-tundra-5-5ft-bed-hard-tri-fold-tonneau-cover-243364": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2014-toyota-tundra-6-5ft-bed-hard-tri-fold-tonneau-cover-243365",
+        "cbItemName": "TC-TUN14-6.5-LTH"
+      }
+    ]
+  },
+  "2014-toyota-tundra-6-5ft-bed-hard-tri-fold-tonneau-cover-243365": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2014-toyota-tundra-5-5ft-bed-hard-tri-fold-tonneau-cover-243364",
+        "cbItemName": "TC-TUN14-5.5-LTH"
+      }
+    ]
+  },
+  "2014-2021-toyota-tundra-5-5-bed-tri-fold-tonneau-cover-w-led-lights": {
+    "currentBedLength": "5.5",
+    "siblings": [
+      {
+        "bedLength": "6.5",
+        "handle": "2014-toyota-tundra-6-5-bed-low-profile-hard-tri-fold-tonneau-cover-w-led",
+        "cbItemName": "TC-TUN14-6.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  },
+  "2014-toyota-tundra-6-5-bed-low-profile-hard-tri-fold-tonneau-cover-w-led": {
+    "currentBedLength": "6.5",
+    "siblings": [
+      {
+        "bedLength": "5.5",
+        "handle": "2014-2021-toyota-tundra-5-5-bed-tri-fold-tonneau-cover-w-led-lights",
+        "cbItemName": "TC-TUN14-5.5-LTH+TBL-16W8P-01"
+      }
+    ]
+  }
+}

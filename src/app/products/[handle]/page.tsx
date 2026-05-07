@@ -26,6 +26,7 @@ import { getSubModelAnswers } from "@/lib/garage/server";
 import { checkFitment, getFitmentReason, withFitment } from "@/lib/fitment/match";
 import { stripsForCategory } from "@/lib/fitment/sub-model";
 import { getWarehouseNote } from "@/lib/fitment/warehouse-notes";
+import { getBedLengthSiblings } from "@/lib/fitment/siblings";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
 
 // Personalized per visitor (cookie-driven fitment + sub-model), so render on each request.
@@ -113,6 +114,12 @@ export default async function PdpPage({
   // the metafield is populated, prefer it as the canonical source — the
   // CSV is a one-time backfill, the metafield is the live source of truth.
   const csvWarehouseNote = await getWarehouseNote(handle);
+  // Cycle 14X+ post-sync (owner: bed-length chip should switch products):
+  // Look up sibling products that differ only in bed length (e.g. F-150 LRU
+  // tonneau in 5.5/6.5/8 ft variants). When present, BuyBox renders the
+  // bed-length chip as a navigation link to the correct sibling, hiding
+  // chips for bed lengths Stehlen doesn't actually stock for this model.
+  const bedLengthSiblings = await getBedLengthSiblings(handle);
   const metafieldNotes = product.fitmentTable?.notesHtml ?? null;
   const warehouseNote = metafieldNotes
     ? {
@@ -1017,6 +1024,7 @@ export default async function PdpPage({
             product={productWithFit}
             vehicle={vehicle}
             initialAnswers={subModelAnswers}
+            bedLengthSiblings={bedLengthSiblings}
           />
 
           {/* Trust micro list */}

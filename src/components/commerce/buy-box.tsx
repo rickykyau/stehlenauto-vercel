@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
 import type { CatalogProduct } from "@/lib/catalog/types";
@@ -56,14 +57,42 @@ function productMentionsGroup(
 
 // (Cycle 1 removed the auto-default; valueOf helper no longer needed.)
 
+// Cycle 14X+ post-sync: extract numeric bed length from a chip option label
+// like "5.5' BED" → "5.5", "6.5' BED" → "6.5", "8' BED" → "8". Falls back
+// to the raw label if no number prefix is found.
+function chipToBedLen(opt: string): string {
+  const m = opt.match(/^(\d+(?:\.\d+)?)/);
+  return m ? m[1] : opt;
+}
+
+type BedLengthSibling = {
+  bedLength: string;
+  handle: string;
+  cbItemName: string;
+};
+
+type BedLengthSiblingsEntry = {
+  currentBedLength: string;
+  siblings: BedLengthSibling[];
+} | null;
+
 export function BuyBox({
   product,
   vehicle,
   initialAnswers = [],
+  bedLengthSiblings = null,
 }: {
   product: CatalogProduct;
   vehicle?: Vehicle;
   initialAnswers?: SubModelAnswer[];
+  /**
+   * Cycle 14X+ post-sync (owner): when this product has CB-Item-Name
+   * siblings that differ only in bed length, the BED LENGTH chip strip
+   * becomes a real variant picker — clicking 5.5' BED on a 6.5' tonneau
+   * navigates to TC-F15015-5.5-LRU. Hides options Stehlen doesn't stock
+   * for this product family.
+   */
+  bedLengthSiblings?: BedLengthSiblingsEntry;
 }) {
   // Cycle 14f (Mike-6 MAJOR F-8): stripsForCategory is keyed on the Shopify
   // collection handle (e.g. "tonneau-covers"), not product.category (the
@@ -320,32 +349,96 @@ export function BuyBox({
             );
           })()}
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-            {s.options.map((opt) => {
-              const active = picks[s.group] === opt;
-              return (
-                <button
-                  key={opt}
-                  type="button"
-                  onClick={() => onPick(s.group, opt)}
-                  aria-pressed={active}
-                  className="btn btn-sm"
-                  style={{
-                    flex: "1 1 0",
-                    background: active
-                      ? "var(--color-foreground)"
-                      : "transparent",
-                    color: active
-                      ? "var(--color-background)"
-                      : "var(--color-foreground)",
-                    borderColor: active
-                      ? "var(--color-foreground)"
-                      : "var(--color-border)",
-                  }}
-                >
-                  {opt}
-                </button>
-              );
-            })}
+            {(() => {
+              // Cycle 14X+ post-sync (owner): when this is the bed_length
+              // strip AND we have sibling products that differ only in bed
+              // length, the chips become a real product variant picker.
+              // Click a non-current chip → navigate to the sibling's PDP
+              // (CB Item Name + price + media all update because it's a
+              // different product). Hide chips for bed lengths that don't
+              // exist in the catalog for this product family.
+              const isBedStripWithSiblings =
+                s.group === "bed_length" && bedLengthSiblings;
+              const visibleOptions = s.options.filter((opt) => {
+                if (!isBedStripWithSiblings) return true;
+                const bed = chipToBedLen(opt);
+                if (bed === bedLengthSiblings!.currentBedLength) return true;
+                return bedLengthSiblings!.siblings.some(
+                  (sib) => sib.bedLength === bed,
+                );
+              });
+              return visibleOptions.map((opt) => {
+                const active = picks[s.group] === opt;
+                if (isBedStripWithSiblings) {
+                  const bed = chipToBedLen(opt);
+                  const isCurrent =
+                    bed === bedLengthSiblings!.currentBedLength;
+                  if (isCurrent) {
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        aria-pressed
+                        disabled
+                        className="btn btn-sm"
+                        style={{
+                          flex: "1 1 0",
+                          background: "var(--color-primary)",
+                          color: "var(--color-primary-foreground, #0a0a0a)",
+                          borderColor: "var(--color-primary)",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  }
+                  const target = bedLengthSiblings!.siblings.find(
+                    (sib) => sib.bedLength === bed,
+                  );
+                  if (!target) return null;
+                  return (
+                    <Link
+                      key={opt}
+                      href={`/products/${target.handle}`}
+                      className="btn btn-sm"
+                      style={{
+                        flex: "1 1 0",
+                        background: "transparent",
+                        color: "var(--color-foreground)",
+                        borderColor: "var(--color-border)",
+                        textAlign: "center",
+                      }}
+                    >
+                      {opt}
+                    </Link>
+                  );
+                }
+                return (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => onPick(s.group, opt)}
+                    aria-pressed={active}
+                    className="btn btn-sm"
+                    style={{
+                      flex: "1 1 0",
+                      background: active
+                        ? "var(--color-foreground)"
+                        : "transparent",
+                      color: active
+                        ? "var(--color-background)"
+                        : "var(--color-foreground)",
+                      borderColor: active
+                        ? "var(--color-foreground)"
+                        : "var(--color-border)",
+                    }}
+                  >
+                    {opt}
+                  </button>
+                );
+              });
+            })()}
           </div>
         </div>
         );
