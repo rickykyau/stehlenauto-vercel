@@ -308,11 +308,30 @@ export function BuyBox({
             // and they're confused about why a chip is "selected" without
             // them choosing). Explain in plain English.
             const saved = picks[s.group] || initialAnswers.find((a) => a.group === s.group)?.value;
-            const conflict =
-              !!saved &&
-              productSpec &&
-              saved.toUpperCase().replace(/\s+/g, "") !==
-                productSpec.toUpperCase().replace(/\s+/g, "") + "BED";
+            // Cycle 14X+ post-sync (Mike-O14 F-1 MAJOR): the conflict
+            // detection compared raw strings ("5.5'BED" vs "5.5FTBED")
+            // and never matched even when the values were equivalent.
+            // Result: the contradiction callout fired on MATCHING
+            // products — telling a 5.5'-bed customer their saved spec
+            // "doesn't match" a 5.5'-bed cover that the green CONFIRMED
+            // card just confirmed. Fix: compare on the normalized number
+            // for bed_length; whitespace-stripped string for cab_type.
+            const normalizeBedLen = (v: string): string | null => {
+              const m = v.match(/(\d+(?:\.\d+)?)/);
+              return m ? m[1] : null;
+            };
+            const conflict = (() => {
+              if (!saved || !productSpec) return false;
+              if (s.group === "bed_length") {
+                const a = normalizeBedLen(saved);
+                const b = normalizeBedLen(productSpec);
+                return !!a && !!b && a !== b;
+              }
+              return (
+                saved.toUpperCase().replace(/\s+/g, "") !==
+                productSpec.toUpperCase().replace(/\s+/g, "")
+              );
+            })();
             const friendlyType = s.group === "bed_length" ? "bed" : "cab";
             if (conflict) {
               return (

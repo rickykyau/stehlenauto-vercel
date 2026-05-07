@@ -340,7 +340,7 @@ export function CartPageClient({
                 "96px 1fr auto auto auto" which clipped the price column at
                 375px. Mobile now uses a 2-col layout (image + body) with
                 qty + price stacked inside body. */}
-            {lines.map((line) => (
+            {lines.map((line, idx) => (
               <div
                 key={line.id}
                 className="cart-line"
@@ -379,6 +379,39 @@ export function CartPageClient({
                   >
                     {line.productTitle}
                   </Link>
+                  {/* Cycle 14X+ post-sync (Mike-O14 F-2 MAJOR): cart page
+                      had a global "MIXED FITMENT" banner but no per-line
+                      fitment tags — buyer couldn't tell WHICH item was
+                      the misfit. Surface a chip on each line. */}
+                  {vehicle && fitments[idx] !== undefined && (
+                    <div
+                      className="mono"
+                      style={{
+                        display: "inline-block",
+                        marginTop: 6,
+                        padding: "2px 8px",
+                        fontSize: 10,
+                        letterSpacing: "0.08em",
+                        borderRadius: "var(--radius-sm)",
+                        background:
+                          fitments[idx] === true
+                            ? "rgba(34,197,94,0.12)"
+                            : "rgba(239,68,68,0.12)",
+                        color:
+                          fitments[idx] === true
+                            ? "var(--color-success)"
+                            : "var(--color-destructive)",
+                        border:
+                          fitments[idx] === true
+                            ? "1px solid rgba(34,197,94,0.4)"
+                            : "1px solid rgba(239,68,68,0.4)",
+                      }}
+                    >
+                      {fitments[idx] === true
+                        ? `✓ FITS YOUR ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                        : `✗ DOES NOT FIT YOUR ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
+                    </div>
+                  )}
                   <div
                     className="mono"
                     style={{

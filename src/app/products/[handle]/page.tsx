@@ -67,10 +67,14 @@ function jsonLdString(obj: object): string {
 
 export default async function PdpPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ handle: string }>;
+  searchParams: Promise<{ notify?: string }>;
 }) {
   const { handle } = await params;
+  const sp = await searchParams;
+  const notifyState = sp.notify ?? null; // "ok" | "invalid" | "error" | null
   const product = await getProduct(handle);
   if (!product) notFound();
 
@@ -1122,11 +1126,16 @@ export default async function PdpPage({
         </section>
       )}
 
-      {/* Back-in-stock + Prop 65 */}
+      {/* Back-in-stock + Prop 65
+          Cycle 14X+ post-sync (Mike-O14 F-7 NIT): the back-in-stock card
+          used to render on every PDP including in-stock products. Now
+          gated to OOS only — there's nothing to "be notified about" if
+          the part is in stock. The Prop 65 disclosure stays unconditional. */}
       <section
-        className="container-x grid grid-cols-1 md:grid-cols-2"
+        className={`container-x grid grid-cols-1 ${product.inventory <= 0 ? "md:grid-cols-2" : ""}`}
         style={{ paddingBottom: 64, gap: 16 }}
       >
+        {product.inventory <= 0 && (
         <div
           style={{
             background: "var(--color-surface)",
@@ -1141,36 +1150,77 @@ export default async function PdpPage({
           <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>
             Back in stock alerts
           </h3>
-          <p
-            style={{
-              color: "var(--color-muted)",
-              fontSize: 13,
-              marginBottom: 14,
-            }}
-          >
-            Get notified the moment we restock or release a new variant for
-            your vehicle.
-          </p>
-          <form
-            action="/api/back-in-stock"
-            method="post"
-            style={{ display: "flex", gap: 8 }}
-          >
-            <input
-              type="email"
-              name="email"
-              required
-              className="input"
-              placeholder="you@example.com"
-              style={{ flex: 1 }}
-              aria-label="Email address"
-            />
-            <input type="hidden" name="sku" value={product.sku} />
-            <button type="submit" className="btn btn-primary">
-              NOTIFY ME
-            </button>
-          </form>
+          {/* Cycle 14X+ post-sync (Mike-O14 F-3 MAJOR): /api/back-in-stock
+              now exists (was 404 since Phase 2), but the form re-rendered
+              blank with no success message after submit. The buyer thinks
+              the route silently failed. Surface the success / invalid /
+              error state from the ?notify=... query param. */}
+          {notifyState === "ok" ? (
+            <div
+              style={{
+                padding: "10px 12px",
+                background: "rgba(34,197,94,0.08)",
+                border: "1px solid rgba(34,197,94,0.4)",
+                borderRadius: "var(--radius-sm)",
+                fontSize: 13,
+                color: "var(--color-foreground)",
+              }}
+            >
+              <strong style={{ color: "var(--color-success)" }}>
+                ✓ You&apos;re on the list.
+              </strong>{" "}
+              We&apos;ll email you the moment this part is back in stock.
+            </div>
+          ) : (
+            <>
+              <p
+                style={{
+                  color: "var(--color-muted)",
+                  fontSize: 13,
+                  marginBottom: 14,
+                }}
+              >
+                Get notified the moment we restock or release a new variant
+                for your vehicle.
+              </p>
+              {notifyState === "invalid" && (
+                <div
+                  style={{
+                    padding: "8px 10px",
+                    background: "rgba(239,68,68,0.08)",
+                    border: "1px solid rgba(239,68,68,0.4)",
+                    borderRadius: "var(--radius-sm)",
+                    fontSize: 12,
+                    marginBottom: 10,
+                    color: "var(--color-destructive)",
+                  }}
+                >
+                  Please enter a valid email address.
+                </div>
+              )}
+              <form
+                action="/api/back-in-stock"
+                method="post"
+                style={{ display: "flex", gap: 8 }}
+              >
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  className="input"
+                  placeholder="you@example.com"
+                  style={{ flex: 1 }}
+                  aria-label="Email address"
+                />
+                <input type="hidden" name="sku" value={product.sku} />
+                <button type="submit" className="btn btn-primary">
+                  NOTIFY ME
+                </button>
+              </form>
+            </>
+          )}
         </div>
+        )}
         <div
           style={{
             background: "var(--color-surface)",
