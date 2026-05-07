@@ -666,11 +666,16 @@ export default async function HomePage() {
               key={cat.slug}
               href={`/collections/${cat.slug}`}
               style={{
+                // Cycle 14X+ (Mike-O11 F-1 NIT): wrapper padding dropped
+                // 24 → 0 so the gray .product-img-bg fills the tile edge-
+                // to-edge, matching the vehicle-hub treatment. Title +
+                // arrow now live BELOW the image area in their own padded
+                // strip so the tile reads as a single panel, not a photo
+                // suspended inside a gray-on-gray frame.
                 background: "var(--color-surface)",
-                padding: 24,
+                padding: 0,
                 display: "flex",
                 flexDirection: "column",
-                gap: 12,
                 position: "relative",
                 overflow: "hidden",
                 aspectRatio: "1.05",
@@ -680,7 +685,6 @@ export default async function HomePage() {
                 className="product-img-bg"
                 style={{
                   flex: 1,
-                  borderRadius: "var(--radius-sm)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -719,12 +723,16 @@ export default async function HomePage() {
                   and pushed the arrow onto its own line. Now title clamps to
                   exactly 2 lines (consistent tile heights), arrow lives in
                   bottom-right via absolute positioning. */}
+              {/* Cycle 14X+ (Mike-O11 F-1 NIT): wrapper padding moved from
+                  the outer Link onto this title strip so the image fills
+                  edge-to-edge. */}
               <div
                 style={{
                   display: "flex",
                   alignItems: "flex-start",
                   justifyContent: "space-between",
                   gap: 8,
+                  padding: "12px 14px",
                 }}
               >
                 <div

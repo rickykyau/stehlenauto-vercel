@@ -255,6 +255,34 @@ export default async function PdpPage({
     }
   }
 
+  // Cycle 14X+ (Priya F-10): when the metafield table covers a known
+  // make+model set, also emit isAccessoryOrSparePartFor pointing at
+  // schema.org/Vehicle entities — the canonical semantic link for an
+  // auto parts PDP. Emerging schema; no documented rich-result reward
+  // today, but it grounds the entity for AI Overviews and is the
+  // correct type for parts.
+  const fitmentVehicles: Record<string, unknown>[] = [];
+  if (
+    product.fitmentTable &&
+    product.fitmentTable.makes.length > 0 &&
+    product.fitmentTable.models.length > 0
+  ) {
+    const ft = product.fitmentTable;
+    const make = ft.makes[0]?.trim();
+    for (const model of ft.models) {
+      if (!model.trim()) continue;
+      // Pair year ranges 1-to-1 if same length, else use first range.
+      const years = ft.years.length > 0 ? ft.years[0] : null;
+      const v: Record<string, unknown> = {
+        "@type": "Vehicle",
+        name: [make, model.trim()].filter(Boolean).join(" "),
+        ...(make ? { vehicleConfiguration: model.trim(), brand: { "@type": "Brand", name: make } } : {}),
+        ...(years ? { vehicleModelDate: years } : {}),
+      };
+      fitmentVehicles.push(v);
+    }
+  }
+
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org/",
     "@type": "Product",
@@ -266,6 +294,9 @@ export default async function PdpPage({
     brand: { "@type": "Brand", name: "Stehlen Auto" },
     ...(fitmentAdditionalProperties.length > 0
       ? { additionalProperty: fitmentAdditionalProperties }
+      : {}),
+    ...(fitmentVehicles.length > 0
+      ? { isAccessoryOrSparePartFor: fitmentVehicles }
       : {}),
     offers: {
       "@type": "Offer",

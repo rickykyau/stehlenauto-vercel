@@ -58,17 +58,30 @@ export const metadata: Metadata = {
     "trailer hitch",
     "bed mat",
   ],
+  // Cycle 14X+ (Priya F-6 follow-up): default og:image + twitter:image at
+  // the layout root so any future route that doesn't define its own gets
+  // a real social card — no more "added a route, forgot the OG image"
+  // regressions. Per-route metadata.openGraph.images overrides this.
   openGraph: {
     type: "website",
     siteName: "Stehlen Auto",
     title: "Stehlen Auto — Heavy-Duty Vehicle Accessories",
     description:
       "Heavy-duty truck, SUV, and Jeep accessories. Fitment guaranteed.",
+    images: [
+      {
+        url: "/images/hero-stehlen.jpg",
+        width: 1280,
+        height: 640,
+        alt: "Stehlen Auto — Heavy-Duty Vehicle Accessories",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Stehlen Auto — Heavy-Duty Vehicle Accessories",
     description: "Fitment guaranteed for your vehicle.",
+    images: ["/images/hero-stehlen.jpg"],
   },
   robots: {
     index: true,

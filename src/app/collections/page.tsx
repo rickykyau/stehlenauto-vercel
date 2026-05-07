@@ -60,11 +60,13 @@ export default function CollectionsIndexPage() {
             key={cat.slug}
             href={`/collections/${cat.slug}`}
             style={{
+              // Cycle 14X+ (Mike-O11 F-1 NIT): wrapper padding 24 → 0,
+              // matches /vehicle/[slug] hub. Image area now bleeds to the
+              // tile edge; title strip carries its own padding below.
               background: "var(--color-surface)",
-              padding: 24,
+              padding: 0,
               display: "flex",
               flexDirection: "column",
-              gap: 12,
               aspectRatio: "1.05",
               position: "relative",
             }}
@@ -73,7 +75,6 @@ export default function CollectionsIndexPage() {
               className="product-img-bg"
               style={{
                 flex: 1,
-                borderRadius: "var(--radius-sm)",
                 position: "relative",
                 overflow: "hidden",
                 minHeight: 100,
@@ -112,6 +113,7 @@ export default function CollectionsIndexPage() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                padding: "12px 14px",
               }}
             >
               <div
