@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
 import { ProductCard } from "@/components/commerce/product-card";
 import { YmmButton } from "@/components/fitment/ymm-button";
+import { YearPicker } from "./year-picker";
 import { CATEGORIES, POPULAR_VEHICLES, PRODUCTS } from "@/lib/catalog/mock";
 import { searchProducts } from "@/lib/catalog";
 import { withFitment } from "@/lib/fitment/match";
@@ -471,34 +472,12 @@ export default async function VehicleHubPage({
           >
             Pick your year
           </span>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 6,
-              flex: 1,
-            }}
-          >
-            {YEARS.map((y) => (
-              <YmmButton
-                key={y}
-                className="mono"
-                style={{
-                  padding: "8px 14px",
-                  background: "rgba(0,0,0,0.1)",
-                  border: "1px solid rgba(0,0,0,0.2)",
-                  color: "var(--color-background)",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  letterSpacing: "0.06em",
-                  cursor: "pointer",
-                  borderRadius: "var(--radius-sm)",
-                }}
-              >
-                {y}
-              </YmmButton>
-            ))}
-          </div>
+          <YearPicker
+            years={YEARS}
+            make={make}
+            model={model}
+            selectedYear={garageMatchesHub ? String(garage.year) : null}
+          />
         </div>
       </div>
 

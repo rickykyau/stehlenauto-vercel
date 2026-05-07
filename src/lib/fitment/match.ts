@@ -18,50 +18,56 @@ type SubModelAnswer = {
  * A 5.5ft-bed F-150 garage looking at a 6.5ft-bed tonneau used to get green
  * "CONFIRMED FITMENT" — direct brand-promise failure.
  *
+ * Cycle 14AA (Mike-O14AA F-2 MAJOR): also returns "needs_pick" when the
+ * product mentions a sub-model attribute (bed length or cab type) but the
+ * customer hasn't answered that question yet. Without this, a 6.5'-bed
+ * tonneau showed green "FITS YOUR 2021 FORD F-150" before the customer
+ * picked their bed length — a false-positive that read as deceptive.
+ *
  * Returns:
- *   true        — answer is unset OR product mentions a matching value
- *   false       — product mentions a DIFFERENT value (e.g. customer 5.5, product 6.5)
- *   "unknown"   — product mentions no bed-length/cab-type token at all
- *                 (universal-fit / silent-on-attribute → don't flip a positive
- *                 fit to false)
+ *   true          — answer + product agree, OR product silent on all subs
+ *   false         — product mentions a DIFFERENT value than customer answer
+ *   "needs_pick"  — product mentions a sub-model attr but customer hasn't
+ *                   answered yet (caller surfaces "Likely fit — confirm X")
  */
 function subModelGateAllows(
   product: { title: string; fitTitle?: string; vehicleTags?: string[] },
   answers: SubModelAnswer[] | null | undefined,
-): true | false | "unknown" {
-  if (!answers || answers.length === 0) return true;
+): true | false | "needs_pick" {
   const text = [product.title, product.fitTitle ?? "", ...(product.vehicleTags ?? [])]
     .join(" ")
     .toLowerCase();
 
-  // Bed-length: detect "5.5 ft", "5'5\"", "65 inch", etc. Normalize to "5.5".
-  // Cycle 14i (Mike-9 BLOCKER F-17): the chip vocab is 5'/5.5'/6.5'/8' but
-  // catalog product titles use the as-built dimension (5.8 ft, 6.6 ft). Strict
-  // equality flipped collection-green Sierra products to RED on PDP. Bucket
-  // the comparison so 5.5' chip accepts 5.5–5.9 ft products ("short bed"),
-  // 6.5' chip accepts 6.0–6.9 ft ("standard bed"), 8' chip accepts ≥7.5 ft
-  // ("long bed"), 5' chip accepts 4.5–5.4 ft ("compact short bed").
-  const bedAns = answers.find((a) => a.group === "bed_length");
+  const bedAns = answers?.find((a) => a.group === "bed_length");
+  const cabAns = answers?.find((a) => a.group === "cab_type");
+  const productBeds = extractBedLengths(text);
+  const productCabs = extractCabs(text);
+
+  // Bed-length gate
   if (bedAns) {
     const wantBucket = bedLengthBucket(normalizeBedLength(bedAns.value));
-    const found = extractBedLengths(text);
-    if (found.length === 0) {
+    if (productBeds.length === 0) {
       // product silent on bed length — universal candidate, don't fail
-    } else if (!found.some((f) => bedLengthBucket(f) === wantBucket)) {
+    } else if (!productBeds.some((f) => bedLengthBucket(f) === wantBucket)) {
       return false;
     }
+  } else if (productBeds.length > 0) {
+    // Product is bed-length-specific (e.g. "6.5 ft Bed Tonneau Cover") but
+    // the customer hasn't picked a bed length yet — surface as "likely fit,
+    // confirm bed length" rather than green "fits your truck."
+    return "needs_pick";
   }
 
-  // Cab-type: detect "supercrew", "crew cab", "supercab", "regular cab", etc.
-  const cabAns = answers.find((a) => a.group === "cab_type");
+  // Cab-type gate
   if (cabAns) {
     const want = normalizeCab(cabAns.value);
-    const found = extractCabs(text);
-    if (found.length === 0) {
+    if (productCabs.length === 0) {
       // silent → universal candidate
-    } else if (!found.some((f) => f === want)) {
+    } else if (!productCabs.some((f) => f === want)) {
       return false;
     }
+  } else if (productCabs.length > 0) {
+    return "needs_pick";
   }
 
   return true;
@@ -371,6 +377,12 @@ export function checkFitment(
     subModelAnswers,
   );
   if (subGate === false) return false;
+  // Cycle 14AA (Mike-O14AA F-2 MAJOR): product mentions a sub-model attr the
+  // customer hasn't answered → surface as "yellow / verify" not green "fits".
+  // Returning undefined keeps the row in fits-first ordering on the collection
+  // but flips the badge from green to a "Likely fits — confirm bed length"
+  // tone, which is the honest answer.
+  if (subGate === "needs_pick") return undefined;
 
   // Structured tags (Shopify cycle-3 schema: `make:Jeep`, `model:Wrangler`,
   // `year:2014`) — ~49% of catalog. When present they're authoritative.

@@ -2,7 +2,8 @@
 
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 
 const QUICK_PROMPTS = [
@@ -25,9 +26,38 @@ export function ChatAssistant() {
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { messages, sendMessage, status, error } = useChat({
-    transport: new DefaultChatTransport({ api: "/api/chat" }),
-  });
+  const pathname = usePathname();
+
+  // Cycle 14AA (Mike-O14AA F-3 MAJOR): RIG used to reply "what are you
+  // looking at?" when asked "will this fit?" from a PDP, even though we
+  // were already on the product page and the saved vehicle was in cookie.
+  // Thread the current page context (PDP handle, collection handle) into
+  // every chat request so the API can inject product info into the
+  // system prompt before the model thinks about the question.
+  const pageContext = useMemo(() => {
+    const ctx: { productHandle?: string; collectionHandle?: string; pathname: string } = {
+      pathname: pathname ?? "/",
+    };
+    if (pathname?.startsWith("/products/")) {
+      ctx.productHandle = pathname.replace("/products/", "").split("/")[0] || undefined;
+    } else if (pathname?.startsWith("/collections/")) {
+      ctx.collectionHandle = pathname.replace("/collections/", "").split("/")[0] || undefined;
+    }
+    return ctx;
+  }, [pathname]);
+
+  const transport = useMemo(
+    () =>
+      new DefaultChatTransport({
+        api: "/api/chat",
+        prepareSendMessagesRequest: ({ messages, body }) => ({
+          body: { ...body, messages, pageContext },
+        }),
+      }),
+    [pageContext],
+  );
+
+  const { messages, sendMessage, status, error } = useChat({ transport });
 
   useEffect(() => {
     if (scrollRef.current) {

@@ -7,6 +7,7 @@ import { Geist_Mono, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { BlurOnNav } from "@/components/layout/blur-on-nav";
 import { YmmModal } from "@/components/fitment/ymm-modal";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { ChatAssistant } from "@/components/chat/chat-assistant";
@@ -140,6 +141,9 @@ export default async function RootLayout({
             <PageViewTracker />
           </Suspense>
           <IdentifyUser />
+          <Suspense fallback={null}>
+            <BlurOnNav />
+          </Suspense>
           <VercelAnalytics />
           <SpeedInsights />
         </body>

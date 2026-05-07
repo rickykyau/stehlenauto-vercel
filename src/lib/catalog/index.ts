@@ -421,6 +421,25 @@ function mockCollection(
  * Drops the v.option.* and t.product_type.* facets that just duplicate the
  * collection itself. Sorts values by descending count.
  */
+/**
+ * Cycle 14AA (Mike-O14AA F-11 MINOR): normalize colloquial make abbreviations
+ * to their formal brand name in customer-facing filter labels — Shopify tags
+ * may say "Chevy" but the customer's garage and the rest of the site say
+ * "Chevrolet." Single source of truth for the display string.
+ */
+function normalizeFilterLabel(label: string): string {
+  const t = label.trim();
+  const aliasMap: Record<string, string> = {
+    chevy: "Chevrolet",
+    "vw": "Volkswagen",
+    benz: "Mercedes-Benz",
+    bimmer: "BMW",
+  };
+  const lower = t.toLowerCase();
+  if (aliasMap[lower]) return aliasMap[lower];
+  return t;
+}
+
 function adaptFilters(raw: NonNullable<CollectionNode["products"]["filters"]>): FilterGroup[] {
   const groups: FilterGroup[] = [];
   for (const f of raw) {
@@ -440,7 +459,11 @@ function adaptFilters(raw: NonNullable<CollectionNode["products"]["filters"]>): 
       .filter((v) => v.count > 0)
       .sort((a, b) => b.count - a.count)
       .slice(0, 12)
-      .map((v) => ({ label: v.label, count: v.count, input: v.input }));
+      .map((v) => ({
+        label: normalizeFilterLabel(v.label),
+        count: v.count,
+        input: v.input,
+      }));
     if (items.length === 0) continue;
     groups.push({
       title: f.label.toUpperCase(),

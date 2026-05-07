@@ -224,29 +224,62 @@ export function CartPageClient({
               <br />
               YOUR ORDER.
             </h1>
-            {/* Cycle 14Z (Mike-O1 M-1): empty-cart escape hatch. The Shopify
-                cart token survives in-page cookie clears, so customers can
-                end up with phantom items. One tap clears. */}
+            {/* Cycle 14AA (Mike-O14AA F-1 BLOCKER): the previous 2-state
+                button — single button that flipped its label to "TAP AGAIN
+                TO CONFIRM" on first click — was invisible to a real
+                customer. Mike clicked, saw "nothing happen," and concluded
+                the button was broken. Replace with an inline confirm row
+                so the next tap target is unmistakable. */}
             {lines.length > 0 && (
-              <button
-                type="button"
-                onClick={emptyCart}
-                disabled={busy}
-                className="btn btn-sm"
-                style={{
-                  marginTop: 12,
-                  background: emptyConfirm ? "rgba(239,68,68,0.12)" : "transparent",
-                  borderColor: emptyConfirm
-                    ? "rgba(239,68,68,0.5)"
-                    : "var(--color-border)",
-                  color: emptyConfirm
-                    ? "var(--color-destructive)"
-                    : "var(--color-muted)",
-                  fontWeight: emptyConfirm ? 700 : 500,
-                }}
-              >
-                {emptyConfirm ? "TAP AGAIN TO CONFIRM" : "EMPTY CART"}
-              </button>
+              <div style={{ marginTop: 12, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                {!emptyConfirm ? (
+                  <button
+                    type="button"
+                    onClick={emptyCart}
+                    disabled={busy}
+                    className="btn btn-sm"
+                    style={{
+                      color: "var(--color-muted)",
+                    }}
+                  >
+                    EMPTY CART
+                  </button>
+                ) : (
+                  <>
+                    <span
+                      style={{
+                        fontSize: 13,
+                        color: "var(--color-destructive)",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Empty the entire cart?
+                    </span>
+                    <button
+                      type="button"
+                      onClick={emptyCart}
+                      disabled={busy}
+                      className="btn btn-sm"
+                      style={{
+                        background: "var(--color-destructive)",
+                        borderColor: "var(--color-destructive)",
+                        color: "#fff",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {busy ? "EMPTYING…" : "YES, EMPTY"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEmptyConfirm(false)}
+                      disabled={busy}
+                      className="btn btn-sm"
+                    >
+                      CANCEL
+                    </button>
+                  </>
+                )}
+              </div>
             )}
           </div>
           {vehicle && (
@@ -408,8 +441,8 @@ export function CartPageClient({
                       }}
                     >
                       {fitments[idx] === true
-                        ? `✓ FITS YOUR ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
-                        : `✗ DOES NOT FIT YOUR ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
+                        ? `✓ FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                        : `✗ DOES NOT FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
                     </div>
                   )}
                   <div

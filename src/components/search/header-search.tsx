@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
 import { track } from "@/lib/analytics/client";
 
@@ -17,9 +17,24 @@ type Suggestion = {
 
 export function HeaderSearch() {
   const router = useRouter();
-  const [q, setQ] = useState("");
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  // Cycle 14AA (Mike-O14AA F-9 MINOR): when the customer is on /search?q=…
+  // the header input was empty — they couldn't see what they had searched
+  // for, and re-typing felt like the site forgot. Hydrate from the URL on
+  // every navigation so the header search matches the page content.
+  const [q, setQ] = useState(() =>
+    pathname === "/search" ? searchParams.get("q") ?? "" : "",
+  );
   const [open, setOpen] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+
+  useEffect(() => {
+    if (pathname === "/search") {
+      const urlQ = searchParams.get("q") ?? "";
+      setQ(urlQ);
+    }
+  }, [pathname, searchParams]);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<number | null>(null);
 

@@ -5,8 +5,14 @@ import { getCategories, getPopularVehicles } from "@/lib/catalog";
 import { TrustRow } from "@/components/ui/trust-row";
 import { Icons } from "@/components/ui/icons";
 import { YmmButton } from "@/components/fitment/ymm-button";
+import { getCurrentVehicle } from "@/lib/garage/server";
 
-export const revalidate = 3600;
+// Cycle 14AA (Mike-O14AA F-7 MAJOR): page must read garage cookie at SSR
+// time to flip the YMM band into "Shop your truck" mode. Setting
+// `revalidate` here would cache the rendered HTML across users, which
+// would freeze a single visitor's vehicle into the static blob. Switch
+// to dynamic so the SSR pass sees the cookie on every request.
+export const dynamic = "force-dynamic";
 
 // Cycle 14X+ (partner feedback): map of popular-vehicle slugs to the
 // latest-generation photo in /public/images/vehicle-gens. Slugs match the
@@ -59,6 +65,15 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const categories = getCategories();
   const popularVehicles = getPopularVehicles();
+  // Cycle 14AA (Mike-O14AA F-7 MAJOR): if the visitor already has a
+  // saved vehicle, flip the YMM band to a "shop your truck" CTA pointing
+  // to the vehicle hub instead of asking them to re-pick year/make/model.
+  const savedVehicle = await getCurrentVehicle().catch(() => null);
+  const vehicleSlug = savedVehicle
+    ? `${savedVehicle.make.toLowerCase()}-${savedVehicle.model
+        .toLowerCase()
+        .replace(/\s+/g, "-")}`
+    : null;
 
   return (
     <main>
@@ -311,7 +326,7 @@ export default async function HomePage() {
                   opacity: 0.7,
                 }}
               >
-                FITMENT GUARANTEED
+                {savedVehicle ? "SHOP YOUR VEHICLE" : "FITMENT GUARANTEED"}
               </div>
               <div
                 style={{
@@ -323,10 +338,64 @@ export default async function HomePage() {
                   lineHeight: 1.1,
                 }}
               >
-                Find parts for your ride
+                {savedVehicle
+                  ? `${savedVehicle.year} ${savedVehicle.make} ${savedVehicle.model}`
+                  : "Find parts for your ride"}
               </div>
             </div>
           </div>
+          {savedVehicle && vehicleSlug ? (
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                flex: 1,
+                minWidth: 0,
+                flexWrap: "wrap",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Link
+                href={`/vehicle/${vehicleSlug}`}
+                className="btn btn-lg"
+                style={{
+                  background: "#0a0a0a",
+                  color: "var(--color-primary)",
+                  fontFamily: "var(--font-display)",
+                  fontSize: 13,
+                  fontWeight: 800,
+                  letterSpacing: "0.04em",
+                  padding: "0 22px",
+                  height: 44,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  border: 0,
+                }}
+              >
+                SHOP PARTS THAT FIT <Icons.arrowR size={14} />
+              </Link>
+              <YmmButton
+                ariaLabel="Change vehicle"
+                style={{
+                  height: 44,
+                  background: "transparent",
+                  color: "#0a0a0a",
+                  border: "1px solid rgba(0,0,0,0.3)",
+                  borderRadius: "var(--radius-sm)",
+                  fontFamily: "var(--font-display)",
+                  fontSize: 12,
+                  letterSpacing: "0.1em",
+                  padding: "0 18px",
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+              >
+                CHANGE VEHICLE
+              </YmmButton>
+            </div>
+          ) : (
           <div
             className="grid grid-cols-2 md:grid-cols-[1fr_1fr_1fr_auto]"
             style={{ gap: 8, flex: 1, minWidth: 0 }}
@@ -399,6 +468,7 @@ export default async function HomePage() {
               SEARCH <Icons.arrowR size={14} />
             </YmmButton>
           </div>
+          )}
         </div>
       </section>
 
