@@ -570,8 +570,13 @@ export default async function HomePage() {
           className="grid grid-cols-2 md:grid-cols-4"
           style={{
             gap: 1,
-            background: "var(--color-border)",
-            border: "1px solid var(--color-border)",
+            // Cycle 14AN-fix (Diana recovery): grid gap was painting the
+            // dark --color-border (#2a2a2a) between tiles — fine on the
+            // old all-dark page, but a harsh dark slash on the new
+            // light section. Switched to the warm mid-grey muted token
+            // so the 1px seams recede.
+            background: "var(--color-section-light-muted)",
+            border: "1px solid var(--color-section-light-muted)",
           }}
         >
           {categories.map((cat) => (
@@ -579,13 +584,15 @@ export default async function HomePage() {
               key={cat.slug}
               href={`/collections/${cat.slug}`}
               style={{
-                // Cycle 14X+ (Mike-O11 F-1 NIT): wrapper padding dropped
-                // 24 → 0 so the gray .product-img-bg fills the tile edge-
-                // to-edge, matching the vehicle-hub treatment. Title +
-                // arrow now live BELOW the image area in their own padded
-                // strip so the tile reads as a single panel, not a photo
-                // suspended inside a gray-on-gray frame.
-                background: "var(--color-surface)",
+                // Cycle 14AN-fix (Diana recovery): tile wrapper bg
+                // matches the section now (--color-section-light) so the
+                // tiles read as integrated to the light section instead
+                // of dark Polaroids glued onto warm-off-white. The
+                // category-img-bg recess on the inner div gives the
+                // image area subtle separation; the light label strip
+                // below the image now picks up dark text correctly.
+                background: "var(--color-section-light)",
+                color: "var(--color-section-light-fg)",
                 padding: 0,
                 display: "flex",
                 flexDirection: "column",
@@ -653,6 +660,14 @@ export default async function HomePage() {
                   // mobile a 13px mono cap was reading as supporting
                   // detail. 15/700 reads as a real navigation choice.
                   padding: "14px 16px",
+                  // Cycle 14AN-fix (Diana recovery): explicit bg + color
+                  // on the strip — was transparent + inheriting the
+                  // section's dark fg color, rendering "TONNEAU COVERS"
+                  // dark-on-dark inside a then-still-dark tile strip.
+                  // Now bg matches the light section and text is anchored
+                  // directly to the dark fg token, no inheritance race.
+                  background: "var(--color-section-light)",
+                  color: "var(--color-section-light-fg)",
                 }}
               >
                 <div
