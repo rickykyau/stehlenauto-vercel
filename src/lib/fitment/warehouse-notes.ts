@@ -49,40 +49,78 @@ async function load(): Promise<Record<string, WarehouseNote>> {
 /**
  * Cycle 14AG (Mike-O14AG NF-5): the merch team's metafield notes
  * occasionally contain 4 near-duplicate clauses separated by
- * `<br/>` and `;` — e.g.
- *   "Will Fit 6.6 Ft Standard Bed ; Will Not Fit Carbon Bed"
- *   "Will Fit New Body Style 6.6 Ft Standard Bed ; Will Not Fit Carbon Bed ; Will Not Fit 2019 LD"
- *   "Will Fit New Body Style 6.6 Ft Standard Bed ; Will Not Fit Carbon Bed"
- * After splitting on ; and <br/>, the same atomic clause appears
- * many times. Dedupe at the clause level — case + whitespace
- * normalized — then rejoin. Preserves the first occurrence's order.
+ * `<br/>` and `;`. The original equality-based dedup left 3 lines
+ * because "Will Fit 6.6 Ft Standard Bed" and "Will Fit New Body
+ * Style 6.6 Ft Standard Bed" are not exact-equal strings.
+ *
+ * Cycle 14AH (Mike-O14AH NF-5 round 2): switched to a containment-
+ * aware dedup. A clause whose normalized text is contained in (or
+ * contains) an already-kept clause is treated as a duplicate. The
+ * MORE-SPECIFIC clause wins ("New Body Style 6.6 Ft" beats "6.6 Ft").
+ * Output collapses to a single line of unique clauses joined by
+ * " ; " — readable, no <br/>-separated near-duplicate noise.
  */
 function dedupeClauses(text: string): string {
-  // Split on <br/> first to keep the visual line structure, then
-  // collapse semicolon-clauses inside each line.
-  const lines = text.split(/<br\s*\/?>/gi);
-  const seen = new Set<string>();
-  const keptLines: string[] = [];
-  for (const line of lines) {
-    const clauses = line.split(/\s*;\s*/);
-    const lineKept: string[] = [];
-    for (const c of clauses) {
-      const norm = c
-        .replace(/<[^>]+>/g, "")
-        .replace(/\s+/g, " ")
-        .replace(/[(),]/g, "")
-        .trim()
-        .toLowerCase();
-      if (!norm) continue;
-      if (seen.has(norm)) continue;
-      seen.add(norm);
-      lineKept.push(c.trim());
-    }
-    if (lineKept.length > 0) {
-      keptLines.push(lineKept.join(" ; "));
+  // Pull every clause across all lines into a flat list.
+  const allClauses: string[] = [];
+  for (const line of text.split(/<br\s*\/?>/gi)) {
+    for (const c of line.split(/\s*;\s*/)) {
+      const trimmed = c.trim();
+      if (trimmed) allClauses.push(trimmed);
     }
   }
-  return keptLines.join("<br/>");
+  if (allClauses.length === 0) return "";
+
+  const tokenize = (s: string): Set<string> => {
+    const cleaned = s
+      .replace(/<[^>]+>/g, " ")
+      .replace(/[(),"]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+    return new Set(cleaned.split(" ").filter((t) => t.length > 0));
+  };
+
+  const isSubset = (a: Set<string>, b: Set<string>): boolean => {
+    if (a.size > b.size) return false;
+    for (const t of a) if (!b.has(t)) return false;
+    return true;
+  };
+
+  // Token-set containment dedup. A clause whose word-set is a subset of
+  // an already-kept clause is redundant ("Will Fit 6.6 Ft" ⊂ "Will Fit
+  // New Body Style 6.6 Ft" once tokenized — string containment misses
+  // this because they differ as substrings, not as token sets). When
+  // the new clause is a strict superset, it replaces the kept one.
+  const kept: { raw: string; tokens: Set<string> }[] = [];
+  for (const raw of allClauses) {
+    const tokens = tokenize(raw);
+    if (tokens.size === 0) continue;
+    let absorbed = false;
+    let replaceIdx = -1;
+    for (let i = 0; i < kept.length; i++) {
+      const ks = kept[i]!.tokens;
+      if (isSubset(tokens, ks)) {
+        // New clause's tokens are a subset of an already-kept clause —
+        // the kept clause is more specific, skip the new one.
+        absorbed = true;
+        break;
+      }
+      if (isSubset(ks, tokens)) {
+        // The kept clause is a subset of this new one — new is more
+        // specific, replace.
+        replaceIdx = i;
+      }
+    }
+    if (absorbed) continue;
+    if (replaceIdx >= 0) {
+      kept[replaceIdx] = { raw, tokens };
+    } else {
+      kept.push({ raw, tokens });
+    }
+  }
+
+  return kept.map((k) => k.raw).join(" ; ");
 }
 
 export function normalizeNoteHtml(html: string): string {
