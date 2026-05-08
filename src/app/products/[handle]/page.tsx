@@ -25,7 +25,7 @@ import { getCurrentVehicle } from "@/lib/garage/server";
 import { getSubModelAnswers } from "@/lib/garage/server";
 import { checkFitment, getFitmentReason, withFitment } from "@/lib/fitment/match";
 import { stripsForCategory } from "@/lib/fitment/sub-model";
-import { getWarehouseNote } from "@/lib/fitment/warehouse-notes";
+import { getWarehouseNote, normalizeNoteHtml } from "@/lib/fitment/warehouse-notes";
 import { getBedLengthSiblings } from "@/lib/fitment/siblings";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
 
@@ -124,7 +124,16 @@ export default async function PdpPage({
   // bed-length chip as a navigation link to the correct sibling, hiding
   // chips for bed lengths Stehlen doesn't actually stock for this model.
   const bedLengthSiblings = await getBedLengthSiblings(handle);
-  const metafieldNotes = product.fitmentTable?.notesHtml ?? null;
+  // Cycle 14AG (Mike-O14AG NF-5): the metafield path skipped the
+  // dedup that csvWarehouseNote already runs through getWarehouseNote
+  // → normalizeNoteHtml. Apply the same normalizer to metafield notes
+  // so a metafield with 4 near-duplicate clauses ("Will Fit 6.6 ft …;
+  // Will Not Fit Carbon Bed" repeated with minor wording variation)
+  // collapses to one clean line.
+  const rawMetafieldNotes = product.fitmentTable?.notesHtml ?? null;
+  const metafieldNotes = rawMetafieldNotes
+    ? normalizeNoteHtml(rawMetafieldNotes)
+    : null;
   const warehouseNote = metafieldNotes
     ? {
         verdict: "METAFIELD",
