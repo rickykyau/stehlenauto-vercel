@@ -95,13 +95,19 @@ export function FilterSidebar({
         </div>
         {vehicle ? (
           <>
+            {/* Cycle 14AC (Mike-O14AC NW-2 MAJOR): green dot here meant
+                "your truck fits this collection" — but the dot fired the
+                instant a vehicle was set, even when the page below said
+                "NO EXACT-FIT MATCHES." False signal. Replaced with a
+                neutral truck icon: vehicle context only, no fit claim. */}
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span
+                aria-hidden
                 style={{
                   width: 8,
                   height: 8,
                   borderRadius: "50%",
-                  background: "var(--color-success)",
+                  background: "var(--color-muted)",
                 }}
               />
               <span

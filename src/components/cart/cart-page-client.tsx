@@ -733,7 +733,7 @@ export function CartPageClient({
               EMPTY ENTIRE CART?
             </h3>
             <p style={{ fontSize: 14, color: "var(--color-foreground)", marginBottom: 20 }}>
-              This removes all {itemCount} item{itemCount === 1 ? "" : "s"} from your cart. This can&apos;t be undone.
+              This removes all {itemCount} item{itemCount === 1 ? "" : "s"}{" "}from your cart. This can&apos;t be undone.
             </p>
             <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
               <button

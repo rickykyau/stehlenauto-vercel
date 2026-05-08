@@ -116,9 +116,16 @@ export function HeaderSearch() {
           value={q}
           onChange={(e) => {
             setQ(e.target.value);
-            setOpen(true);
+            // Cycle 14AC (Mike-O14AC N-4): on /search the page below
+            // already shows the canonical results — the typeahead would
+            // overlay them and intercept clicks. Suppress the dropdown
+            // when already on /search; the form-submit (Enter) still
+            // refreshes the page with the new query.
+            if (pathname !== "/search") setOpen(true);
           }}
-          onFocus={() => setOpen(true)}
+          onFocus={() => {
+            if (pathname !== "/search") setOpen(true);
+          }}
           className="input"
           placeholder="Search by Year Make Model, product type, or part number…"
           style={{

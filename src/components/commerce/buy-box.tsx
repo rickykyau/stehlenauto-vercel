@@ -417,22 +417,35 @@ export function BuyBox({
                   const isCurrent =
                     bed === bedLengthSiblings!.currentBedLength;
                   if (isCurrent) {
+                    // Cycle 14AC (Mike-O14AC NW-1 BLOCKER): when this is
+                    // a single-bed-option product (no siblings to
+                    // navigate to), the only chip rendered is the
+                    // current one — and it was hard-disabled. The
+                    // customer couldn't persist their bed answer, so
+                    // ATC stayed at "SELECT YOUR TRUCK'S BED LENGTH"
+                    // forever. Make it clickable + use onPick so the
+                    // answer flows to the garage and ATC unblocks.
                     return (
                       <button
                         key={opt}
                         type="button"
-                        aria-pressed
-                        disabled
+                        onClick={() => onPick(s.group, opt)}
+                        aria-pressed={active}
                         className="btn btn-sm"
                         style={{
                           flex: "1 1 0",
-                          background: "var(--color-primary)",
-                          color: "var(--color-primary-foreground, #0a0a0a)",
+                          background: active
+                            ? "var(--color-primary)"
+                            : "var(--color-surface-2)",
+                          color: active
+                            ? "var(--color-primary-foreground, #0a0a0a)"
+                            : "var(--color-foreground)",
                           borderColor: "var(--color-primary)",
                           fontWeight: 600,
+                          cursor: "pointer",
                         }}
                       >
-                        {opt}
+                        {active ? `✓ ${opt}` : opt}
                       </button>
                     );
                   }

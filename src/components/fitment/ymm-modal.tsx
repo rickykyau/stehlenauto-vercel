@@ -161,31 +161,34 @@ export function YmmModal() {
         vehicle_model: m,
       });
       close();
-      // Cycle 14N (owner): "Shop by Vehicle" appeared dead because picking
-      // a year/make/model just refreshed the home page — the customer was
-      // left wondering "where do I shop now?". Navigate to the vehicle hub
-      // (/vehicle/<make>-<model>) on the home and content pages so the
-      // customer sees what fits their truck immediately. On collection /
-      // search / PDP / cart pages, just refresh in place — the page is
-      // already vehicle-aware and re-ranks to fits-first.
+      // Cycle 14AC (Mike-O14AC NW-3): updated decision. The 14N cycle
+      // hard-redirected to /vehicle/<slug> from non-shopping pages so a
+      // first-time customer would see what fits. But Mike (returning
+      // customer who's just CHANGING garage from the header) found
+      // himself yanked to a hub he didn't want — destroying his place
+      // in whatever article / hub he was reading. Now: stay on the
+      // current page in all cases. Hard-reload via window.location so
+      // the layout re-evaluates getCurrentVehicle and the header chip
+      // updates. First-time customers from the home band can use the
+      // SHOP PARTS THAT FIT button (cycle 14AA F-7) to reach the hub
+      // explicitly.
       const slug = `${make.toLowerCase()}-${m
         .toLowerCase()
         .replace(/\s+/g, "-")}`;
       const onShoppingPage = /^\/(collections|products|search|cart|checkout|account)/.test(
         pathname ?? "",
       );
-      // Cycle 14Y (owner): router.push() is a soft SPA nav that doesn't
-      // re-execute the root layout (where getCurrentVehicle reads the cookie)
-      // — even with a follow-up router.refresh() the header chip stayed
-      // stuck on "SELECT VEHICLE" after the customer picked a vehicle.
-      // Hard-navigate via window.location so the layout always re-renders
-      // fresh with the just-set cookie. On shopping pages (already vehicle-
-      // aware), keep the soft refresh — it's enough there because the page
-      // re-evaluates getCurrentVehicle on the SSR pass.
       if (onShoppingPage) {
+        // Vehicle-aware page; soft refresh re-runs SSR with the new
+        // cookie. Faster, no scroll-jump.
         router.refresh();
-      } else {
+      } else if (pathname && /^\/vehicle\//.test(pathname)) {
+        // On a different vehicle hub already; navigate to the new hub.
         window.location.href = `/vehicle/${slug}`;
+      } else {
+        // Home, content, help, legal, etc — stay put. Hard-reload so
+        // the root layout re-renders with the new vehicle.
+        window.location.reload();
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));

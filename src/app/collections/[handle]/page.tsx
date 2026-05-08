@@ -449,6 +449,12 @@ export default async function CollectionPage({
                 textAlign: "center",
               }}
             >
+              {/* Cycle 14AC (Mike-O14AC NW-4 MINOR): the "uploading from
+                  warehouse" copy was always rendered for zero products,
+                  even when the cause was the SHOW ONLY FITS toggle (no
+                  exact-fit matches for the saved vehicle). Branch on
+                  fitsOnly + vehicle so the message tells the customer
+                  what to do — turn off the filter or change vehicle. */}
               <p
                 className="mono"
                 style={{
@@ -458,18 +464,49 @@ export default async function CollectionPage({
                   marginBottom: 12,
                 }}
               >
-                NO PRODUCTS YET
+                {fitsOnly && vehicle
+                  ? `NO EXACT-FIT MATCHES FOR YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                  : "NO PRODUCTS YET"}
               </p>
               <p style={{ fontSize: 14, color: "var(--color-muted)" }}>
-                We&apos;re uploading {collection.title.toLowerCase()} from the
-                warehouse — check back soon, or{" "}
-                <Link
-                  href="/collections"
-                  style={{ color: "var(--color-primary)" }}
-                >
-                  browse other categories
-                </Link>
-                .
+                {fitsOnly && vehicle ? (
+                  <>
+                    Tap{" "}
+                    <Link
+                      href={`?${(() => {
+                        const u = new URLSearchParams();
+                        Object.entries(sp).forEach(([k, v]) => {
+                          if (k !== "fits" && typeof v === "string") u.set(k, v);
+                        });
+                        const qs = u.toString();
+                        return qs;
+                      })()}`}
+                      style={{ color: "var(--color-primary)", fontWeight: 600 }}
+                    >
+                      SHOW ALL
+                    </Link>{" "}
+                    to see universal-fit and likely-fit options, or{" "}
+                    <Link
+                      href="/collections"
+                      style={{ color: "var(--color-primary)" }}
+                    >
+                      browse other categories
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  <>
+                    We&apos;re uploading {collection.title.toLowerCase()} from
+                    the warehouse — check back soon, or{" "}
+                    <Link
+                      href="/collections"
+                      style={{ color: "var(--color-primary)" }}
+                    >
+                      browse other categories
+                    </Link>
+                    .
+                  </>
+                )}
               </p>
             </div>
           ) : (
