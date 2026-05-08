@@ -47,12 +47,19 @@ export function VehiclePill({
         cursor: "pointer",
       }}
     >
+      {/* Cycle 14AD (Mike-O14AD NW-2 MAJOR): the green dot here said
+          "your truck fits" — green-active state on every page even when
+          the collection said "NO EXACT-FIT MATCHES." Mike: "the most
+          prominent fitment signal on the site is lying to me." Drop to
+          neutral muted. The pill itself + chevDown still convey "you
+          have a vehicle saved, click to change." Match sidebar. */}
       <span
+        aria-hidden
         style={{
           width: 8,
           height: 8,
           borderRadius: "50%",
-          background: "var(--color-success)",
+          background: "var(--color-muted)",
           flexShrink: 0,
         }}
       />

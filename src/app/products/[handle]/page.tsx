@@ -1283,7 +1283,10 @@ export default async function PdpPage({
           so the sticky bottom bar stayed bright yellow + enabled even on a
           confirmed misfit PDP while the main buy-box correctly went red. Pass
           productWithFit so the sticky mirrors the misfit state. */}
-      <MobileStickyAtc product={productWithFit} />
+      <MobileStickyAtc
+        product={productWithFit}
+        needsSubModelPick={!!vehicle && !allStripsAnswered && requiredStrips.length > 0}
+      />
     </main>
   );
 }

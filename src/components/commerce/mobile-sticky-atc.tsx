@@ -14,14 +14,23 @@ const STICKY_HEIGHT_VAR = "--stehlen-sticky-atc-height";
  * Tapping it scrolls back to the buy-box rather than auto-adding to cart —
  * the in-page sub-model strips must still gate the purchase.
  */
-export function MobileStickyAtc({ product }: { product: CatalogProduct }) {
+export function MobileStickyAtc({
+  product,
+  needsSubModelPick = false,
+}: {
+  product: CatalogProduct;
+  /**
+   * Cycle 14AD (Mike-O14AD F-3 MAJOR): when the in-page buy-box is
+   * blocked on a sub-model question (cab_type / bed_length not yet
+   * answered), the sticky must mirror that blocked state. Previously
+   * the sticky said "ADD TO CART" enabled while the main ATC said
+   * "SELECT YOUR TRUCK'S CAB TYPE" disabled — tapping the sticky did
+   * nothing silently. Pass true from the PDP when there are unanswered
+   * required strips for this vehicle.
+   */
+  needsSubModelPick?: boolean;
+}) {
   const [visible, setVisible] = useState(false);
-  // Cycle 14d (Mike-4 MAJOR): sticky bar used to stay bright yellow + enabled
-  // even on a confirmed misfit PDP. Cycle 14X+ (owner): hard-disabling on
-  // misfit blocks gift / multi-vehicle purchases. Mirror the buy-box policy:
-  // misfit no longer hard-blocks; it changes the label to "ADD TO CART
-  // ANYWAY" so the customer sees they're knowingly buying a non-fit. Only
-  // out-of-stock keeps the hard disable (can't sell what we don't have).
   const isMisfit = product.fits === false;
   const outOfStock = product.inventory <= 0;
   const blocked = outOfStock;
@@ -100,36 +109,54 @@ export function MobileStickyAtc({ product }: { product: CatalogProduct }) {
         <button
           type="button"
           onClick={onClick}
-          className={blocked || isMisfit ? "btn" : "btn btn-primary"}
+          className={
+            blocked || isMisfit || needsSubModelPick ? "btn" : "btn btn-primary"
+          }
           disabled={blocked}
           style={{
             flex: 1,
             height: 48,
             minHeight: 44,
-            // OUT OF STOCK: gray hard-disabled. MISFIT: outlined secondary
-            // (matches desktop "ADD TO CART ANYWAY" treatment — clickable
-            // but visually distinct from a clean primary CTA). FIT:
+            // OUT OF STOCK: gray hard-disabled. SUB-MODEL GATED:
+            // outlined-warning so the customer sees they need to scroll
+            // up and answer something. MISFIT: outlined secondary. FIT:
             // primary yellow.
             background: blocked
               ? "#3a3a3a"
-              : isMisfit
-                ? "transparent"
-                : undefined,
+              : needsSubModelPick
+                ? "rgba(245,168,35,0.12)"
+                : isMisfit
+                  ? "transparent"
+                  : undefined,
             color: blocked
               ? "rgba(255,255,255,0.6)"
+              : needsSubModelPick
+                ? "var(--color-primary)"
+                : isMisfit
+                  ? "var(--color-foreground)"
+                  : undefined,
+            borderColor: needsSubModelPick
+              ? "var(--color-primary)"
               : isMisfit
-                ? "var(--color-foreground)"
+                ? "var(--color-border)"
                 : undefined,
-            borderColor: isMisfit ? "var(--color-border)" : undefined,
             cursor: blocked ? "not-allowed" : "pointer",
             fontWeight: 700,
+            fontSize: 14,
+            letterSpacing: "0.04em",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            paddingInline: 12,
           }}
         >
           {outOfStock
             ? "OUT OF STOCK"
-            : isMisfit
-              ? "ADD TO CART ANYWAY"
-              : "ADD TO CART"}
+            : needsSubModelPick
+              ? "PICK FITMENT ABOVE ↑"
+              : isMisfit
+                ? "ADD TO CART ANYWAY"
+                : "ADD TO CART"}
         </button>
       </div>
     </div>

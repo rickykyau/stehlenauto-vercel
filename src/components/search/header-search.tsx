@@ -80,8 +80,17 @@ export function HeaderSearch() {
         setOpen(false);
       }
     };
+    // Cycle 14AD (Mike-O14AD N-4): Escape didn't close the dropdown
+    // because the only outside-close path was mousedown. Add Escape.
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
     window.addEventListener("mousedown", onDown);
-    return () => window.removeEventListener("mousedown", onDown);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("mousedown", onDown);
+      window.removeEventListener("keydown", onKey);
+    };
   }, [open]);
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,8 +98,20 @@ export function HeaderSearch() {
     const trimmed = q.trim();
     if (!trimmed) return;
     track("search", { search_term: trimmed });
-    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+    // Cycle 14AD (Mike-O14AD N-4 PARTIAL fix): close BEFORE navigation
+    // and pre-empt the pending typeahead fetch. Without this, the
+    // landed /search page rendered with an active suggestions list
+    // and the dropdown was visible over results, intercepting clicks.
+    // Belt-and-suspenders: close, clear suggestions, kill debounce
+    // timer, blur the input — then push.
     setOpen(false);
+    setSuggestions([]);
+    if (debounceRef.current) {
+      window.clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+    (e.currentTarget.querySelector("input[name=q]") as HTMLInputElement | null)?.blur();
+    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
   };
 
   return (
