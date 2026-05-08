@@ -40,8 +40,10 @@ function subModelGateAllows(
 
   const bedAns = answers?.find((a) => a.group === "bed_length");
   const cabAns = answers?.find((a) => a.group === "cab_type");
+  const trimAns = answers?.find((a) => a.group === "trim");
   const productBeds = extractBedLengths(text);
   const productCabs = extractCabs(text);
+  const productTrims = extractTrims(text);
 
   // Bed-length gate
   if (bedAns) {
@@ -67,6 +69,22 @@ function subModelGateAllows(
       return false;
     }
   } else if (productCabs.length > 0) {
+    return "needs_pick";
+  }
+
+  // Cycle 14AO-fix2 (Sam gap 3): trim gate. Identical structure to bed/
+  // cab — silent-on-trim products survive as universal candidates;
+  // products that name a competing trim bucket fail; products that
+  // mention any trim while the customer hasn't picked one promote to
+  // needs_pick. Buckets: base / mid / heavy (see extractTrims).
+  if (trimAns) {
+    const wantBucket = trimBucket(trimAns.value);
+    if (productTrims.length === 0) {
+      // silent → universal
+    } else if (!productTrims.some((f) => f === wantBucket)) {
+      return false;
+    }
+  } else if (productTrims.length > 0) {
     return "needs_pick";
   }
 
@@ -112,6 +130,63 @@ function extractBedLengths(text: string): string[] {
 
 function normalizeCab(s: string): string {
   return s.toLowerCase().replace(/[\s-]+/g, "");
+}
+
+/**
+ * Cycle 14AO-fix2 (Sam audit gap 3): bull-guards-grille-guards and
+ * front-grilles use "trim" as the gating sub-model with chip vocab
+ * "BASE / MID / HEAVY-DUTY". Without this parser, products that don't
+ * carry a populated `custom.fitment_subattributes.trims` metafield
+ * sailed through the gate as universal candidates regardless of trim
+ * answer — making the trim DimensionPicker visually functional but
+ * the underlying filter a silent no-op for most of the catalog.
+ *
+ * Bucket vocabulary mirrors how the merch team labels SKUs in titles:
+ *   base      — words like "base", "standard", "OE", "stock", "factory"
+ *   mid       — "mid", "midline", "trail", "off-road" (mid-tier trim
+ *               packages that share a mounting pattern)
+ *   heavy     — "heavy duty", "hd", "advance series", "max", "pro",
+ *               "platinum", "limited", "denali", "rebel", "raptor",
+ *               "trd pro", "trail boss" (heavy/premium trim packages)
+ *
+ * If the title contains no trim vocabulary, returns []; the gate then
+ * treats the product as silent-on-trim (universal candidate). Same
+ * "needs_pick" logic as bed_length / cab_type applies.
+ */
+function normalizeTrim(s: string): string {
+  return s.toLowerCase().trim().replace(/[\s-]+/g, "-");
+}
+
+function extractTrims(text: string): string[] {
+  const out = new Set<string>();
+  const patterns: { re: RegExp; bucket: "base" | "mid" | "heavy" }[] = [
+    // Heavy / premium trim packages (most specific first to win in
+    // alternation; "advance series" before bare "advance" etc.)
+    { re: /\b(heavy[\s-]?duty|hd)\b/gi, bucket: "heavy" },
+    { re: /\badvance[\s-]series\b/gi, bucket: "heavy" },
+    { re: /\b(max|pro|platinum|limited|denali|rebel|raptor)\b/gi, bucket: "heavy" },
+    { re: /\btrd[\s-]pro\b/gi, bucket: "heavy" },
+    { re: /\btrail[\s-]boss\b/gi, bucket: "heavy" },
+    // Mid trim packages
+    { re: /\b(midline|mid[\s-]tier|mid)\b/gi, bucket: "mid" },
+    { re: /\b(trail|off[\s-]road|offroad)\b/gi, bucket: "mid" },
+    // Base / OE
+    { re: /\b(base|standard|oe|stock|factory)\b/gi, bucket: "base" },
+  ];
+  for (const { re, bucket } of patterns) {
+    if (re.test(text)) out.add(bucket);
+  }
+  return Array.from(out);
+}
+
+function trimBucket(value: string): string {
+  const v = value.toLowerCase().trim();
+  if (/heavy|hd|advance|max|pro|platinum|limited|denali|rebel|raptor|trd|boss/.test(v)) {
+    return "heavy";
+  }
+  if (/mid|trail|off[\s-]?road/.test(v)) return "mid";
+  if (/base|standard|oe|stock|factory/.test(v)) return "base";
+  return normalizeTrim(value);
 }
 
 function extractCabs(text: string): string[] {

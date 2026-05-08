@@ -15,10 +15,11 @@ import { CollectionToolbar } from "@/components/commerce/collection-toolbar";
 import { FilterSidebar } from "@/components/commerce/filter-sidebar";
 import { MobileFilterDrawer } from "@/components/commerce/mobile-filter-drawer";
 import { DimensionPicker } from "@/components/commerce/dimension-picker";
+import { ClearFiltersLink } from "@/components/commerce/clear-filters-link";
 import { Icons } from "@/components/ui/icons";
 import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { withFitment } from "@/lib/fitment/match";
-import { stripsForCategory } from "@/lib/fitment/sub-model";
+import { canonicalSubModelValue, stripsForCategory } from "@/lib/fitment/sub-model";
 import type { SubModelAnswer, SubModelGroup } from "@/lib/garage/types";
 import { breadcrumbJsonLd, itemListJsonLd, jsonLdString } from "@/lib/seo/jsonld";
 
@@ -195,15 +196,23 @@ function parseFilterParams(sp: Record<string, string | string[] | undefined>): {
   const seenGroups = new Set<string>();
   for (const entry of dimList) {
     if (typeof entry !== "string") continue;
+    if (entry.length > 64) continue; // Cycle 14AO-fix3 (Mike NB-5): cap raw param length
     const idx = entry.indexOf(":");
     if (idx < 1) continue;
     const group = entry.slice(0, idx);
-    const value = decodeURIComponent(entry.slice(idx + 1));
+    const rawValue = decodeURIComponent(entry.slice(idx + 1));
     if (!VALID_SUB_GROUPS.has(group as SubModelGroup)) continue;
-    if (!value) continue;
-    if (seenGroups.has(group)) continue;
+    if (!rawValue) continue;
+    if (seenGroups.has(group)) continue; // first wins (matches client picker)
+    // Cycle 14AO-fix3 (Mike NB-5): allowlist value against the canonical
+    // option vocabulary. A crafted shared link with `?dim=bed_length:invalid+value`
+    // used to render the unsanitized text inside the picker pill;
+    // canonicalSubModelValue rejects unknown values and the picker shows
+    // the question instead.
+    const canonical = canonicalSubModelValue(group, rawValue);
+    if (!canonical) continue;
     seenGroups.add(group);
-    dimensionAnswers.push({ group: group as SubModelGroup, value });
+    dimensionAnswers.push({ group: group as SubModelGroup, value: canonical });
   }
   return { rawInputs, sort, dimensionAnswers };
 }
@@ -524,65 +533,172 @@ export default async function CollectionPage({
                 textAlign: "center",
               }}
             >
-              {/* Cycle 14AC (Mike-O14AC NW-4 MINOR): the "uploading from
-                  warehouse" copy was always rendered for zero products,
-                  even when the cause was the SHOW ONLY FITS toggle (no
-                  exact-fit matches for the saved vehicle). Branch on
-                  fitsOnly + vehicle so the message tells the customer
-                  what to do — turn off the filter or change vehicle. */}
-              <p
-                className="mono"
-                style={{
-                  fontSize: 12,
-                  letterSpacing: "0.12em",
-                  color: "var(--color-muted)",
-                  marginBottom: 12,
-                }}
-              >
-                {fitsOnly && vehicle
-                  ? `NO EXACT-FIT MATCHES FOR YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
-                  : "NO PRODUCTS YET"}
-              </p>
-              <p style={{ fontSize: 14, color: "var(--color-muted)" }}>
-                {fitsOnly && vehicle ? (
+              {/* Cycle 14AO-fix2 (Sam gap 10): four-branch empty-state copy.
+                  Earlier was two branches (fitsOnly vs warehouse uploading)
+                  which left "vehicle + dimension answer + sidebar filter
+                  produces 0 products" falling into the warehouse-uploading
+                  bucket — telling the customer the WAREHOUSE is the
+                  problem when really their FILTERS narrowed to zero. The
+                  four branches now match the four real causes:
+                    a) fitsOnly + vehicle  → strict mode, no exact fits
+                    b) vehicle + dimension or sidebar filter → narrow filters
+                    c) vehicle, no narrow filter → no products in collection at all
+                    d) no vehicle, ?f= filters → filter narrowed
+                    e) baseline → warehouse-uploading honest fallback */}
+              {(() => {
+                // Cycle 14AO-fix4 (Mike NF-2): only count dimension answers
+                // that are RELEVANT to this category. A 5.5'-bed cookie set
+                // on Tonneau Covers should not flag Headlights as "filtered
+                // by these filters" — Headlights doesn't gate by bed length,
+                // so the dim cookie is a no-op there. Without this check the
+                // empty state misleadingly said "NO MATCHES WITH THESE
+                // FILTERS" when the real cause was just the vehicle and
+                // there's no inventory; CLEAR FILTERS then loops because
+                // dropping ?f= doesn't change anything.
+                const categoryDimGroups = new Set(
+                  stripsForCategory(collection.handle).map((s) => s.group),
+                );
+                const relevantDimensionAnswers = subModelAnswers.filter((a) =>
+                  categoryDimGroups.has(a.group),
+                );
+                const dimensionApplied = relevantDimensionAnswers.length > 0;
+                const sidebarFilterApplied = rawInputs.length > 0;
+                const narrowingApplied =
+                  dimensionApplied || sidebarFilterApplied;
+
+                let title: string;
+                let body: React.ReactNode;
+                if (fitsOnly && vehicle) {
+                  title = `NO EXACT-FIT MATCHES FOR YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`;
+                  body = (
+                    <>
+                      Tap{" "}
+                      <Link
+                        href={`?${(() => {
+                          const u = new URLSearchParams();
+                          Object.entries(sp).forEach(([k, v]) => {
+                            if (k !== "fits" && typeof v === "string") u.set(k, v);
+                          });
+                          return u.toString();
+                        })()}`}
+                        style={{ color: "var(--color-primary)", fontWeight: 600 }}
+                      >
+                        SHOW ALL
+                      </Link>{" "}
+                      to see universal-fit and likely-fit options, or{" "}
+                      <Link
+                        href="/collections"
+                        style={{ color: "var(--color-primary)" }}
+                      >
+                        browse other categories
+                      </Link>
+                      .
+                    </>
+                  );
+                } else if (vehicle && narrowingApplied) {
+                  title = `NO MATCHES FOR YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} WITH THESE FILTERS`;
+                  body = (
+                    <>
+                      Tap{" "}
+                      <ClearFiltersLink
+                        collectionHandle={collection.handle}
+                        vehicle={vehicle ?? undefined}
+                        answeredGroups={relevantDimensionAnswers.map((a) => a.group)}
+                        style={{ color: "var(--color-primary)", fontWeight: 600 }}
+                      >
+                        CLEAR FILTERS
+                      </ClearFiltersLink>{" "}
+                      to see all {collection.title.toLowerCase()} that fit
+                      your vehicle, or{" "}
+                      <Link
+                        href="/collections"
+                        style={{ color: "var(--color-primary)" }}
+                      >
+                        browse other categories
+                      </Link>
+                      .
+                    </>
+                  );
+                } else if (vehicle) {
+                  title = `NO ${collection.title.toUpperCase()} FOR YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} YET`;
+                  body = (
+                    <>
+                      We don&apos;t carry this category for your vehicle
+                      yet. Check{" "}
+                      <Link
+                        href={`/vehicle/${vehicle.year}-${vehicle.make.toLowerCase()}-${vehicle.model.toLowerCase().replace(/\s+/g, "-")}`}
+                        style={{ color: "var(--color-primary)" }}
+                      >
+                        all parts that fit your truck
+                      </Link>
+                      , or{" "}
+                      <Link
+                        href="/collections"
+                        style={{ color: "var(--color-primary)" }}
+                      >
+                        browse other categories
+                      </Link>
+                      .
+                    </>
+                  );
+                } else if (narrowingApplied) {
+                  title = `NO ${collection.title.toUpperCase()} MATCH THESE FILTERS`;
+                  body = (
+                    <>
+                      Tap{" "}
+                      <ClearFiltersLink
+                        collectionHandle={collection.handle}
+                        vehicle={undefined}
+                        answeredGroups={relevantDimensionAnswers.map((a) => a.group)}
+                        style={{ color: "var(--color-primary)", fontWeight: 600 }}
+                      >
+                        CLEAR FILTERS
+                      </ClearFiltersLink>{" "}
+                      to see all {collection.title.toLowerCase()}, or{" "}
+                      <Link
+                        href="/collections"
+                        style={{ color: "var(--color-primary)" }}
+                      >
+                        browse other categories
+                      </Link>
+                      .
+                    </>
+                  );
+                } else {
+                  title = "NO PRODUCTS YET";
+                  body = (
+                    <>
+                      We&apos;re uploading {collection.title.toLowerCase()}{" "}
+                      from the warehouse — check back soon, or{" "}
+                      <Link
+                        href="/collections"
+                        style={{ color: "var(--color-primary)" }}
+                      >
+                        browse other categories
+                      </Link>
+                      .
+                    </>
+                  );
+                }
+                return (
                   <>
-                    Tap{" "}
-                    <Link
-                      href={`?${(() => {
-                        const u = new URLSearchParams();
-                        Object.entries(sp).forEach(([k, v]) => {
-                          if (k !== "fits" && typeof v === "string") u.set(k, v);
-                        });
-                        const qs = u.toString();
-                        return qs;
-                      })()}`}
-                      style={{ color: "var(--color-primary)", fontWeight: 600 }}
+                    <p
+                      className="mono"
+                      style={{
+                        fontSize: 12,
+                        letterSpacing: "0.12em",
+                        color: "var(--color-muted)",
+                        marginBottom: 12,
+                      }}
                     >
-                      SHOW ALL
-                    </Link>{" "}
-                    to see universal-fit and likely-fit options, or{" "}
-                    <Link
-                      href="/collections"
-                      style={{ color: "var(--color-primary)" }}
-                    >
-                      browse other categories
-                    </Link>
-                    .
+                      {title}
+                    </p>
+                    <p style={{ fontSize: 14, color: "var(--color-muted)" }}>
+                      {body}
+                    </p>
                   </>
-                ) : (
-                  <>
-                    We&apos;re uploading {collection.title.toLowerCase()} from
-                    the warehouse — check back soon, or{" "}
-                    <Link
-                      href="/collections"
-                      style={{ color: "var(--color-primary)" }}
-                    >
-                      browse other categories
-                    </Link>
-                    .
-                  </>
-                )}
-              </p>
+                );
+              })()}
             </div>
           ) : (
             <>
@@ -598,61 +714,41 @@ export default async function CollectionPage({
                 ))}
               </div>
 
-              {/* Pagination — Phase 4 wires real pagination */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginTop: 32,
-                  paddingTop: 24,
-                  borderTop: "1px solid var(--color-border)",
-                  flexWrap: "wrap",
-                  gap: 12,
-                }}
-              >
-                <span
-                  className="mono"
+              {/* Cycle 14AO-fix3 (Mike NB-3): pagination only renders when
+                  there's actually more than one page of results. Earlier
+                  the placeholder buttons "1, 2, 3, …, last" rendered for
+                  every collection — once filters narrowed totalProducts to
+                  the page size, the "last page" math evaluated to 1 and
+                  the bar read "1 2 3 … 1". The numeric buttons 2 and 3
+                  were also hardcoded placeholders (Phase 4 was supposed to
+                  wire real pagination), making the UI a lie regardless. We
+                  hide the bar entirely until real pagination ships. */}
+              {collection.totalProducts > collection.products.length && (
+                <div
                   style={{
-                    fontSize: 11,
-                    color: "var(--color-muted)",
-                    letterSpacing: "0.08em",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 32,
+                    paddingTop: 24,
+                    borderTop: "1px solid var(--color-border)",
+                    flexWrap: "wrap",
+                    gap: 12,
                   }}
                 >
-                  PAGE 1
-                </span>
-                <div style={{ display: "flex", gap: 4 }}>
-                  <button className="btn btn-sm" disabled>
-                    <Icons.chevLeft size={12} />
-                  </button>
-                  <button
-                    className="btn btn-sm"
+                  <span
+                    className="mono"
                     style={{
-                      background: "var(--color-foreground)",
-                      color: "var(--color-background)",
-                      borderColor: "var(--color-foreground)",
+                      fontSize: 11,
+                      color: "var(--color-muted)",
+                      letterSpacing: "0.08em",
                     }}
                   >
-                    1
-                  </button>
-                  <button className="btn btn-sm">2</button>
-                  <button className="btn btn-sm">3</button>
-                  <button className="btn btn-sm" disabled>
-                    …
-                  </button>
-                  <button className="btn btn-sm">
-                    {Math.max(
-                      1,
-                      Math.ceil(
-                        collection.totalProducts / collection.products.length,
-                      ),
-                    )}
-                  </button>
-                  <button className="btn btn-sm">
-                    <Icons.chevRight size={12} />
-                  </button>
+                    SHOWING {collection.products.length} OF{" "}
+                    {collection.totalProducts}
+                  </span>
                 </div>
-              </div>
+              )}
             </>
           )}
         </div>

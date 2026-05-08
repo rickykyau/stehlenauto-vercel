@@ -136,6 +136,44 @@ export async function getSubModelAnswers(
   return all[vid] ?? [];
 }
 
+/**
+ * Cycle 14AO-fix2 (Sam audit): clear a single sub-model group answer for
+ * a vehicle. Used by the DimensionPicker "Change" link so authed users
+ * who answer 5.5' BED then click Change actually drop the cookie/DB
+ * row instead of having it snap back on next render. Mirrors the cookie
+ * + DB shape of saveSubModelAnswers but for a single group key.
+ */
+export async function clearSubModelAnswer(
+  vid: string,
+  group: SubModelAnswer["group"],
+): Promise<void> {
+  // Cookie: read existing, drop the matching group, write back.
+  const all = await readSubModelCookie();
+  const current = all[vid] ?? [];
+  const filtered = current.filter((a) => a.group !== group);
+  // Re-write only the answers we kept; writeSubModelCookie merges by group.
+  // Special case: if `filtered` is empty, the cookie write helper still
+  // updates the per-vehicle slot to [] cleanly.
+  await writeSubModelCookie(vid, filtered);
+
+  const { userId } = await auth();
+  if (userId && dbConfigured) {
+    try {
+      await db()
+        .delete(subModelAnswers)
+        .where(
+          and(
+            eq(subModelAnswers.userId, userId),
+            eq(subModelAnswers.vehicleId, vid),
+            eq(subModelAnswers.group, group),
+          ),
+        );
+    } catch (err) {
+      console.error("[garage] clearSubModelAnswer DB error:", err);
+    }
+  }
+}
+
 export async function saveSubModelAnswers(
   vid: string,
   answers: SubModelAnswer[],

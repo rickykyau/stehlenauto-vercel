@@ -86,3 +86,23 @@ export function stripsForCategory(
   if (!groups || groups.length === 0) return [];
   return groups.map((g) => STRIPS[g]);
 }
+
+/**
+ * Cycle 14AO-fix3 (Mike NB-5): allowlist check used by the URL ?dim= parser
+ * so a customer can't inject arbitrary text into the picker pill via a
+ * crafted shared link. Case-insensitive match against the canonical option
+ * vocabulary; returns the canonical-cased value if matched, null otherwise.
+ */
+export function canonicalSubModelValue(
+  group: string,
+  raw: string,
+): string | null {
+  const cfg = STRIPS[group as SubModelGroup];
+  if (!cfg) return null;
+  const wanted = raw.trim().toLowerCase();
+  if (!wanted) return null;
+  for (const opt of cfg.options) {
+    if (opt.toLowerCase() === wanted) return opt;
+  }
+  return null;
+}

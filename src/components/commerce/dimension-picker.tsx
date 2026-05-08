@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
 import { stripsForCategory, type SubModelStripConfig } from "@/lib/fitment/sub-model";
@@ -47,43 +47,120 @@ export function DimensionPicker({
   const [error, setError] = useState<string | null>(null);
   // Optimistic local state so the UI reacts instantly while the server round-
   // trip is in flight. Initial pull from props (cookie/DB or URL).
+  // Cycle 14AO-fix4 (Mike NF-1): when the browser restores this page from
+  // BFCache (back/forward navigation), client component state is restored
+  // from the snapshot — including stale `picks` that predate any cookie
+  // writes the user did before navigating away. Refetch server state so
+  // initialAnswers comes back fresh and the useEffect below re-syncs.
+  useEffect(() => {
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) router.refresh();
+    };
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
+  }, [router]);
+
+  // Cycle 14AO-fix3 (Mike NB-1): track groups the customer just cleared via
+  // "Change". Until the server confirms the clear by no longer reporting
+  // that group in initialAnswers, the useEffect below skips re-applying
+  // the stale prop value. Without this, clicking Change instantly snapped
+  // the picker back to its answered state because the next render still
+  // had the pre-clear initialAnswers prop attached.
+  const clearedGroupsRef = useRef<Set<string>>(new Set());
+
+  // Cycle 14AO-fix3 (Mike NB-2): track the active vehicleId. When it changes
+  // (customer switched vehicle via YMM modal), wipe local picks so the
+  // picker shows fresh question rows for the new vehicle instead of
+  // leaking the previous vehicle's answer into the new context.
+  const lastVehicleIdRef = useRef<string | undefined>(vehicle?.id);
+
+  // Cycle 14AO-fix3 (Mike NB-6): URL parsing matches server-side first-wins
+  // semantics. Earlier the client picker did `out[g] = val` (last wins)
+  // while the server's parseFilterParams used "if seen, continue" (first
+  // wins). UI/server divergence: a crafted ?dim=bed_length:5.5'+BED&dim=bed_length:8'+BED
+  // showed 8' BED in the picker but filtered the grid by 5.5'.
+  const readUrlDims = useCallback((sp: URLSearchParams) => {
+    const out: Record<string, string> = {};
+    for (const v of sp.getAll(DIM_PARAM)) {
+      const idx = v.indexOf(":");
+      if (idx < 1) continue;
+      const g = v.slice(0, idx);
+      const val = v.slice(idx + 1);
+      if (g && val && !(g in out)) out[g] = val;
+    }
+    return out;
+  }, []);
+
   const [picks, setPicks] = useState<Record<string, string>>(() => {
     const out: Record<string, string> = {};
     for (const a of initialAnswers ?? []) out[a.group] = a.value;
     // Layer URL ?dim= over the initial answers (URL wins for guest path).
-    for (const v of params.getAll(DIM_PARAM)) {
-      const [g, ...rest] = v.split(":");
-      const val = rest.join(":");
-      if (g && val) out[g] = val;
-    }
+    Object.assign(out, readUrlDims(params));
     return out;
   });
 
-  // Cycle 14AO-fix B-3: re-sync local picks with the latest server-rendered
-  // answers + URL after every router.refresh() / router.replace(). Without
-  // this, clicking a sidebar filter (router.replace) re-rendered the page
-  // tree but the picker's useState initializer didn't re-run, so when the
-  // server's freshly-read cookie answers DID arrive the picker stayed in
-  // its prior local-only state — and worse, after a sidebar-only refresh
-  // the picker visibly reverted to "Which bed length fits?" because nothing
-  // was syncing the cookie answer back into local state.
-  // Race-safe merge: server-confirmed groups overwrite local; groups that
-  // the customer just optimistically picked but the server hasn't yet
-  // reported back (cookie-write in flight) are preserved.
+  // Cycle 14AO-fix B-3 (round 2): re-sync local picks with the latest
+  // server-rendered answers + URL after every router.refresh() / replace.
+  // Cycle 14AO-fix3 (round 3) refines the merge to:
+  //   1) WIPE local state if vehicle.id changed — different vehicle, fresh
+  //      question state, no leaks across YMM switches.
+  //   2) SKIP re-applying initialAnswers values for groups in
+  //      clearedGroupsRef so the user's "Change" click isn't undone by
+  //      stale-prop timing.
+  //   3) Once the server stops reporting a cleared group (initialAnswers
+  //      no longer has it), drop it from the cleared set so future picks
+  //      sync normally.
   useEffect(() => {
+    if (vehicle?.id !== lastVehicleIdRef.current) {
+      lastVehicleIdRef.current = vehicle?.id;
+      clearedGroupsRef.current.clear();
+      const fresh: Record<string, string> = {};
+      for (const a of initialAnswers ?? []) fresh[a.group] = a.value;
+      Object.assign(fresh, readUrlDims(params));
+      setPicks(fresh);
+      return;
+    }
+
+    // Drop confirmed-cleared groups from the tracking set.
+    for (const g of Array.from(clearedGroupsRef.current)) {
+      const stillSet =
+        (initialAnswers ?? []).some((a) => a.group === g) ||
+        params.getAll(DIM_PARAM).some((v) => v.startsWith(`${g}:`));
+      if (!stillSet) clearedGroupsRef.current.delete(g);
+    }
+
     setPicks((prev) => {
       const next: Record<string, string> = { ...prev };
-      for (const a of initialAnswers ?? []) next[a.group] = a.value;
-      for (const v of params.getAll(DIM_PARAM)) {
-        const [g, ...rest] = v.split(":");
-        const val = rest.join(":");
-        if (g && val) next[g] = val;
+      // Drop locally any group that the user cleared AND the server has
+      // confirmed is gone (no longer in initialAnswers + URL).
+      for (const g of Object.keys(prev)) {
+        if (clearedGroupsRef.current.has(g)) {
+          // Still in flight — keep prev as-is (already deleted in onChange).
+          continue;
+        }
+      }
+      for (const a of initialAnswers ?? []) {
+        if (clearedGroupsRef.current.has(a.group)) continue;
+        next[a.group] = a.value;
+      }
+      const urlDims = readUrlDims(params);
+      for (const [g, val] of Object.entries(urlDims)) {
+        if (clearedGroupsRef.current.has(g)) continue;
+        next[g] = val;
+      }
+      // If a group is in clearedGroupsRef AND no longer in initialAnswers
+      // or URL, ensure it's removed from picks too.
+      for (const g of Array.from(clearedGroupsRef.current)) {
+        if (
+          !(initialAnswers ?? []).some((a) => a.group === g) &&
+          !urlDims[g]
+        ) {
+          delete next[g];
+        }
       }
       return next;
     });
-    // We intentionally depend on the params object identity; useSearchParams
-    // gives a stable ref per URL so this fires once per URL change.
-  }, [initialAnswers, params]);
+  }, [vehicle?.id, initialAnswers, params, readUrlDims]);
 
   const writeUrlDim = useCallback(
     (group: SubModelGroup, value: string) => {
@@ -156,21 +233,44 @@ export function DimensionPicker({
     [persistToDb, vehicle?.id, writeUrlDim],
   );
 
+  const clearDb = useCallback(
+    async (group: SubModelGroup) => {
+      if (!vehicle?.id) return;
+      try {
+        await fetch("/api/sub-model", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ vehicleId: vehicle.id, clear: group }),
+        });
+        router.refresh();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "clear failed");
+      }
+    },
+    [vehicle, router],
+  );
+
   const onChange = useCallback(
     (group: SubModelGroup) => {
+      // Cycle 14AO-fix3 (Mike NB-1): mark this group as "user-cleared" so
+      // the useEffect re-sync that runs on the next URL/params change
+      // doesn't immediately reapply the stale initialAnswers value before
+      // the server has had a chance to confirm the clear. Removed from
+      // the set automatically once the server-rendered initialAnswers no
+      // longer carries the group.
+      clearedGroupsRef.current.add(group);
       setPicks((p) => {
         const next = { ...p };
         delete next[group];
         return next;
       });
-      if (!vehicle?.id) {
+      if (vehicle?.id) {
+        void clearDb(group);
+      } else {
         clearUrlDim(group);
       }
-      // With a vehicle: /api/sub-model has no DELETE shape today, and the
-      // schema rejects empty values. Local state revert is enough — the
-      // chip row re-appears and the next pick overwrites the cookie/DB row.
     },
-    [vehicle, clearUrlDim],
+    [vehicle, clearDb, clearUrlDim],
   );
 
   const strips: SubModelStripConfig[] = stripsForCategory(categoryHandle);

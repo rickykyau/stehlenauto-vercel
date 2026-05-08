@@ -881,6 +881,12 @@ export async function getCollection(
 
     let products: CatalogProduct[];
     let fitMeta: CollectionFitMeta | undefined;
+    // Cycle 14AO-fix2 (Sam audit): refactored away from the
+    // `(collection as { _postFilterTotal })` mutation hack. This local
+    // is set by whichever branch ran filtering and is read once at the
+    // bottom for the totalProducts assignment. No more property-bag
+    // smuggling on a Shopify response object.
+    let postFilterTotal: number | undefined;
 
     if (wantsFitBoost && opts.vehicle) {
       const verdicts = adapted.map((p) => ({
@@ -939,7 +945,6 @@ export async function getCollection(
       // Cycle 14AO-fix B-2: count of products that actually match the
       // active filter set, used as totalProducts so the FILTERS button +
       // mobile drawer footer don't lie ("286 PRODUCTS" while only 4 fit).
-      let postFilterTotal: number;
       if (opts.fitsOnly) {
         products = exact.slice(0, first);
         postFilterTotal = exact.length;
@@ -954,16 +959,12 @@ export async function getCollection(
         fitsCount: exact.length,
         noExactFit: exact.length === 0,
       };
-      // Stash for the totalProducts assignment below.
-      (collection as { _postFilterTotal?: number })._postFilterTotal =
-        postFilterTotal;
     } else {
       products = adapted.slice(0, first);
-      // Same trick for the no-vehicle, dimension-only narrowing case so
-      // the count badge tells the truth there too.
+      // Same accounting for the no-vehicle, dimension-only narrowing case
+      // so the count badge tells the truth there too.
       if (dimensionAnswers.length > 0) {
-        (collection as { _postFilterTotal?: number })._postFilterTotal =
-          adapted.length;
+        postFilterTotal = adapted.length;
       }
     }
 
@@ -974,9 +975,8 @@ export async function getCollection(
     // Cycle 14AO-fix B-2: prefer the post-filter count when bucketing or
     // dimension-filtering ran — otherwise the badge always reports the
     // unfiltered collection size.
-    const stash = (collection as { _postFilterTotal?: number })._postFilterTotal;
     const totalProducts =
-      stash != null ? stash : (totalFromFilters(collection) ?? products.length);
+      postFilterTotal ?? totalFromFilters(collection) ?? products.length;
 
     return {
       handle,
