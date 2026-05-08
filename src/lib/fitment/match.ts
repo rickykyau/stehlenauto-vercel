@@ -283,10 +283,14 @@ export function getFitmentReason(
 ): FitmentFailureReason {
   if (!vehicle) return { kind: "unknown" };
   if (table) {
-    const yearStr = String(vehicle.year);
-    if (table.years.length > 0 && !table.years.includes(yearStr)) {
-      return { kind: "year", productYears: table.years, customerYear: yearStr };
-    }
+    // Cycle 14AF (Mike-O14AF NF-2 reason text): order matters for the
+    // human-readable reason. Make is the most fundamental mismatch — a
+    // Tundra tonneau on a Silverado garage should say "engineered for
+    // Toyota — not Chevrolet," NOT "fits 2007-2016; your 2019 is
+    // outside that range." Customer doesn't care about year coverage
+    // when the make's wrong. Check: make → model → excluded → year →
+    // sub-attribute. Year drops to last because year-only mismatches
+    // are rare for products that pass make+model.
     if (
       table.makes.length > 0 &&
       !table.makes.some((m) => m.toLowerCase() === vehicle.make.toLowerCase())
@@ -305,6 +309,10 @@ export function getFitmentReason(
       !table.models.some((m) => m.toLowerCase().includes(vehicle.model.toLowerCase()))
     ) {
       return { kind: "model", productModels: table.models, customerModel: vehicle.model };
+    }
+    const yearStr = String(vehicle.year);
+    if (table.years.length > 0 && !table.years.includes(yearStr)) {
+      return { kind: "year", productYears: table.years, customerYear: yearStr };
     }
     for (const ans of answers ?? []) {
       const groupMap: Record<string, string[] | undefined> = {

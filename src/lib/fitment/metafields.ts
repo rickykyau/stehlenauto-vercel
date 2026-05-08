@@ -73,7 +73,10 @@ export function fitmentTableToRows(t: FitmentTable): {
 
   if (oneToOne) {
     for (let i = 0; i < yearsArr.length; i++) {
-      const cab = [models[i] ?? "", make ?? ""]
+      // Cycle 14AF (Mike-O14AF NF-6): industry-standard order is
+      // Make-then-Model ("Toyota Tundra"), not Model-then-Make
+      // ("Tundra Toyota"). Was reversed since cycle 14X.
+      const cab = [make ?? "", models[i] ?? ""]
         .filter(Boolean)
         .join(" ")
         .trim();
@@ -90,7 +93,8 @@ export function fitmentTableToRows(t: FitmentTable): {
 
   for (const y of yearsArr) {
     for (const m of models) {
-      const cab = [m, make ?? ""].filter(Boolean).join(" ").trim();
+      // Make-then-Model order — see oneToOne branch above.
+      const cab = [make ?? "", m].filter(Boolean).join(" ").trim();
       rows.push({
         years: y,
         cab: cab || (make ?? ""),

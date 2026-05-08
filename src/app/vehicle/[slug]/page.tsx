@@ -614,18 +614,49 @@ export default async function VehicleHubPage({
                       modal then dump the user back on the same hub. Now it
                       lands on a vehicle-aware search pre-seeded with the most
                       recent year of the gen. The /search page (#73) handles the
-                      no-exact-fit fail-open if the catalog is thin for that gen. */}
-                  <Link
-                    href={`/search?q=${encodeURIComponent(`${g.latestYear} ${make} ${model}`)}`}
-                    className="btn btn-sm btn-block"
-                    style={{
-                      marginTop: 14,
-                      justifyContent: "space-between",
-                      textDecoration: "none",
-                    }}
-                  >
-                    SHOP {g.code} PARTS <Icons.arrowR size={12} />
-                  </Link>
+                      no-exact-fit fail-open if the catalog is thin for that gen.
+
+                      Cycle 14AF (Mike-O14AF NF-4 MAJOR): a 2019-Silverado
+                      customer clicking SHOP T1XX PARTS got
+                      /search?q=2024+Chevrolet+Silverado — hardcoded to the
+                      gen's latestYear, ignoring their saved garage year.
+                      Now: if their saved year is inside this gen's range,
+                      pre-seed the search with THEIR year. Otherwise fall
+                      back to latestYear so a customer browsing an older
+                      gen still sees representative results. */}
+                  {(() => {
+                    const yearsMatch = g.years.match(/(\d{4})/g);
+                    const genStart = yearsMatch?.[0]
+                      ? parseInt(yearsMatch[0], 10)
+                      : g.latestYear;
+                    const genEndRaw = yearsMatch?.[1];
+                    const genEnd = genEndRaw
+                      ? parseInt(genEndRaw, 10)
+                      : g.latestYear;
+                    const garageYear = garageMatchesHub
+                      ? parseInt(String(garage.year), 10)
+                      : null;
+                    const ctaYear =
+                      garageYear &&
+                      Number.isFinite(garageYear) &&
+                      garageYear >= genStart &&
+                      garageYear <= Math.max(genEnd, g.latestYear)
+                        ? garageYear
+                        : g.latestYear;
+                    return (
+                      <Link
+                        href={`/search?q=${encodeURIComponent(`${ctaYear} ${make} ${model}`)}`}
+                        className="btn btn-sm btn-block"
+                        style={{
+                          marginTop: 14,
+                          justifyContent: "space-between",
+                          textDecoration: "none",
+                        }}
+                      >
+                        SHOP {g.code} PARTS <Icons.arrowR size={12} />
+                      </Link>
+                    );
+                  })()}
                 </div>
               </div>
             ))}

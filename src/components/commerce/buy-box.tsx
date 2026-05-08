@@ -320,12 +320,30 @@ export function BuyBox({
               const m = v.match(/(\d+(?:\.\d+)?)/);
               return m ? m[1] : null;
             };
+            // Cycle 14AF (Mike-O14AF NF-3 BLOCKER): industry-standard
+            // bed buckets — 5.5/5.7/5.8 ft are all "short bed" (5.5–5.9),
+            // 6.4/6.5/6.6/6.8 are all "standard bed" (6.0–6.9). The fitment
+            // engine in match.ts already uses these buckets for green
+            // CONFIRMED FITMENT. Use the SAME bucket here so the warning
+            // text doesn't contradict the badge: a 6.5'-saved customer
+            // looking at a 6.6'-bed product was seeing both green
+            // CONFIRMED FITMENT AND a red "doesn't match" warning at
+            // once. Same bucket = no warning.
+            const bedBucket = (ft: number): string => {
+              if (!Number.isFinite(ft)) return String(ft);
+              if (ft >= 7.5) return "long";
+              if (ft >= 6.0) return "standard";
+              if (ft >= 5.5) return "short";
+              if (ft >= 4.5) return "compact";
+              return String(ft);
+            };
             const conflict = (() => {
               if (!saved || !productSpec) return false;
               if (s.group === "bed_length") {
                 const a = normalizeBedLen(saved);
                 const b = normalizeBedLen(productSpec);
-                return !!a && !!b && a !== b;
+                if (!a || !b) return false;
+                return bedBucket(parseFloat(a)) !== bedBucket(parseFloat(b));
               }
               return (
                 saved.toUpperCase().replace(/\s+/g, "") !==
