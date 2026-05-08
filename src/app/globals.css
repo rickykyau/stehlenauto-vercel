@@ -21,6 +21,17 @@
   --color-destructive: #ef4444;
   --color-warning: #eab308;
 
+  /* Cycle 14AN (Diana section-tone audit): the home page was running
+   * 6+ consecutive flat-black sections; the eye couldn't parse a break.
+   * These three tokens introduce a warm-off-black stripe and a single
+   * warm-off-white "editorial moment" section. RoughCountry's
+   * dark↔light alternation principle, translated to Stehlen's voice
+   * (no red, yellow remains the sole accent). */
+  --color-surface-warm: #16140f;
+  --color-section-light: #f2f0ed;
+  --color-section-light-fg: #0a0a0a;
+  --color-section-light-muted: #6a665e;
+
   /* Cycle 14AK PR1 (Diana visual audit): --font-display swapped from
    * Geist Mono → Archivo. Mono was carrying display, eyebrows, body, and
    * tabs — that "robotic / DOS prompt" feel was the visual root of the
@@ -428,13 +439,25 @@ h4 { line-height: 1.3; }
     -8px 0;
 }
 
-/* ===== Product image bg (light technical grid) ===== */
+/* ===== Product image bg (light technical grid) =====
+ * Used by collection product cards on dark pages — the light grid
+ * background is intentional studio context for product-isolated-on-
+ * white photography. */
 .product-img-bg {
   background-color: #f4f4f4;
   background-image:
     linear-gradient(0deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+/* Cycle 14AN (Diana): category tile image background, used on the
+ * SHOP BY CATEGORY grid which now sits on the warm off-white
+ * --color-section-light. A slightly darker warm grey makes the
+ * image area read as subtly recessed without the cool grid pattern
+ * that .product-img-bg uses for technical-spec cards. */
+.category-img-bg {
+  background-color: #e8e6e3;
 }
 
 /* ===== Animations ===== */

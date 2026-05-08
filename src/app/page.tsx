@@ -448,10 +448,16 @@ export default async function HomePage() {
           items video clip eventually replacing this. Removed for now;
           add back as a video block when the warehouse delivers footage. */}
 
-      {/* Reactivation banner */}
+      {/* Reactivation banner — Cycle 14AN (Diana): warm-shift from cool
+          --color-surface-2 (#1a1a1a, indistinguishable from body) to
+          --color-surface-warm (#16140f, slight warm undertone). At the
+          same lightness tier it now registers as a distinct stripe
+          instead of disappearing into the body, AND sets up the
+          dark→light tone break against the upcoming light category
+          section below — the RoughCountry warm-off-black principle. */}
       <section
         style={{
-          background: "var(--color-surface-2)",
+          background: "var(--color-surface-warm)",
           borderTop: "1px solid var(--color-border)",
           borderBottom: "1px solid var(--color-border)",
         }}
@@ -495,8 +501,25 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Categories grid */}
-      <section className="container-x" style={{ paddingTop: 64, paddingBottom: 64 }}>
+      {/* Categories grid — Cycle 14AN (Diana section-tone audit): this is
+          THE light-section break in the home page. Six consecutive flat-
+          black sections were reading as one undifferentiated dark wall;
+          flipping this single section to warm off-white gives the eye a
+          place to rest and announces "this is a real catalog, not a
+          billboard." Wrapper carries the bg + border so it reads as one
+          visually distinct stripe; container-x stays inside for layout. */}
+      <section
+        style={{
+          background: "var(--color-section-light)",
+          color: "var(--color-section-light-fg)",
+          borderTop: "1px solid var(--color-border)",
+          borderBottom: "1px solid var(--color-border)",
+        }}
+      >
+        <div
+          className="container-x"
+          style={{ paddingTop: 64, paddingBottom: 72 }}
+        >
         <div
           style={{
             display: "flex",
@@ -506,7 +529,13 @@ export default async function HomePage() {
           }}
         >
           <div>
-            <div className="eyebrow" style={{ marginBottom: 8 }}>
+            <div
+              className="eyebrow"
+              style={{
+                marginBottom: 8,
+                color: "var(--color-section-light-muted)",
+              }}
+            >
               BROWSE
             </div>
             <h2
@@ -525,7 +554,7 @@ export default async function HomePage() {
             className="mono"
             style={{
               fontSize: 12,
-              color: "var(--color-muted)",
+              color: "var(--color-section-light-muted)",
               letterSpacing: "0.08em",
               display: "flex",
               alignItems: "center",
@@ -566,7 +595,14 @@ export default async function HomePage() {
               }}
             >
               <div
-                className="product-img-bg"
+                // Cycle 14AN (Diana): category tiles now use the
+                // category-img-bg class (warm light-grey #e8e6e3) instead
+                // of product-img-bg (#f4f4f4 cool with grid). On the new
+                // light section background, the warm grey reads as a
+                // subtly recessed image area — no false white-frame
+                // around each product photo. Collection product cards
+                // keep product-img-bg unchanged.
+                className="category-img-bg"
                 style={{
                   flex: 1,
                   display: "flex",
@@ -578,10 +614,6 @@ export default async function HomePage() {
                 }}
               >
                 {cat.image ? (
-                  // Cycle 14X+ (owner): padding dropped from 10% → 4%.
-                  // Same fix as the product-card grid — the gray
-                  // .product-img-bg surround read as a thick white frame
-                  // around every category photo. 4% keeps a tiny gap.
                   <Image
                     src={cat.image}
                     alt={cat.name}
@@ -616,14 +648,18 @@ export default async function HomePage() {
                   alignItems: "flex-start",
                   justifyContent: "space-between",
                   gap: 8,
-                  padding: "12px 14px",
+                  // Cycle 14AN (Diana): label strip padding 12/14 → 14/16,
+                  // type 13→15, weight 600→700. At 25vw tile width on
+                  // mobile a 13px mono cap was reading as supporting
+                  // detail. 15/700 reads as a real navigation choice.
+                  padding: "14px 16px",
                 }}
               >
                 <div
                   className="mono"
                   style={{
-                    fontSize: 13,
-                    fontWeight: 600,
+                    fontSize: 15,
+                    fontWeight: 700,
                     letterSpacing: "0.04em",
                     textTransform: "uppercase",
                     lineHeight: 1.3,
@@ -641,6 +677,7 @@ export default async function HomePage() {
               </div>
             </Link>
           ))}
+        </div>
         </div>
       </section>
 
