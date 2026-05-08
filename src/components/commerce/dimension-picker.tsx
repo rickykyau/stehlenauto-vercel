@@ -3,8 +3,35 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
-import { stripsForCategory, type SubModelStripConfig } from "@/lib/fitment/sub-model";
+import {
+  canonicalSubModelValue,
+  stripsForCategory,
+  type SubModelStripConfig,
+} from "@/lib/fitment/sub-model";
 import type { SubModelAnswer, SubModelGroup, Vehicle } from "@/lib/garage/types";
+
+/**
+ * Cycle 14AO-fix6 (Mike NB-O14AO-1): client-side fallback to read the
+ * sub-model cookie directly. Used when Next.js App Router serves a cached
+ * RSC payload after a browser back-nav, leaving the picker's
+ * initialAnswers prop stale relative to what the cookie now holds.
+ * Cookie shape (from garage/cookies.ts writeSubModelCookie):
+ *   { "<vehicle-id>": [{group, value}, ...], ... }
+ */
+function readSubModelCookieClient(vehicleId: string): SubModelAnswer[] {
+  if (typeof document === "undefined") return [];
+  const match = document.cookie.match(/(?:^|;\s*)stehlen_submodel=([^;]+)/);
+  if (!match) return [];
+  try {
+    const all = JSON.parse(decodeURIComponent(match[1])) as Record<
+      string,
+      SubModelAnswer[]
+    >;
+    return all[vehicleId] ?? [];
+  } catch {
+    return [];
+  }
+}
 import { openYmmModal } from "@/components/fitment/ymm-events";
 
 /**
@@ -60,6 +87,58 @@ export function DimensionPicker({
     return () => window.removeEventListener("pageshow", onPageShow);
   }, [router]);
 
+  // Cycle 14AO-fix7 (Mike NB-O14AO-2): when a customer arrives at a URL
+  // with `?dim=...` AND has a vehicle set (e.g., a friend shared a
+  // filtered link), persist those URL answers into the cookie/DB so
+  // future navigations honor the same answer. We do NOT attempt to strip
+  // the `?dim=` from the URL — three approaches (router.replace,
+  // history.replaceState, router.refresh) all fought a Next.js App
+  // Router internal-URL state that re-applied the param mid-hydration.
+  // The functional behavior is unaffected: server merge already prefers
+  // cookie over URL, the picker pill is correct, the grid is correct;
+  // only the address bar carries an extra param. Filed as follow-up #N
+  // for a cleaner shallow-routing approach.
+  useEffect(() => {
+    if (!vehicle?.id) return;
+    if (typeof window === "undefined") return;
+
+    const currentUrl = new URL(window.location.href);
+    const rawDims = currentUrl.searchParams.getAll(DIM_PARAM);
+    if (rawDims.length === 0) return;
+
+    type Entry = { group: SubModelGroup; value: string };
+    const entries: Entry[] = [];
+    const seen = new Set<string>();
+    for (const v of rawDims) {
+      if (v.length > 64) continue;
+      const idx = v.indexOf(":");
+      if (idx < 1) continue;
+      const g = v.slice(0, idx);
+      const val = v.slice(idx + 1);
+      if (!g || !val) continue;
+      if (seen.has(g)) continue;
+      const canonical = canonicalSubModelValue(g, val);
+      if (!canonical) continue;
+      seen.add(g);
+      entries.push({ group: g as SubModelGroup, value: canonical });
+    }
+    if (entries.length === 0) return;
+
+    for (const { group, value } of entries) {
+      void fetch("/api/sub-model", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          vehicleId: vehicle.id,
+          answers: [{ group, value }],
+        }),
+      }).catch(() => undefined);
+    }
+    // Mount-only on vehicle.id. Picks made after mount go through onPick
+    // which already routes cookie/URL correctly per persistence path.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vehicle?.id]);
+
   // Cycle 14AO-fix3 (Mike NB-1): track groups the customer just cleared via
   // "Change". Until the server confirms the clear by no longer reporting
   // that group in initialAnswers, the useEffect below skips re-applying
@@ -82,11 +161,22 @@ export function DimensionPicker({
   const readUrlDims = useCallback((sp: URLSearchParams) => {
     const out: Record<string, string> = {};
     for (const v of sp.getAll(DIM_PARAM)) {
+      if (v.length > 64) continue; // Cycle 14AO-fix5: cap raw param length
       const idx = v.indexOf(":");
       if (idx < 1) continue;
       const g = v.slice(0, idx);
       const val = v.slice(idx + 1);
-      if (g && val && !(g in out)) out[g] = val;
+      if (!g || !val) continue;
+      if (g in out) continue; // first wins
+      // Cycle 14AO-fix5 (Mike R6 NB-NEW-3): allowlist URL value against the
+      // canonical option vocabulary. Earlier the server's parseFilterParams
+      // already did this for the actual product query; the picker did not,
+      // so a crafted URL `?dim=bed_length:NOT_A_REAL_VALUE` rendered the
+      // garbage value as a pill while the grid showed unfiltered results.
+      // Server + client now both reject unknown values.
+      const canonical = canonicalSubModelValue(g, val);
+      if (!canonical) continue;
+      out[g] = canonical;
     }
     return out;
   }, []);
@@ -96,6 +186,17 @@ export function DimensionPicker({
     for (const a of initialAnswers ?? []) out[a.group] = a.value;
     // Layer URL ?dim= over the initial answers (URL wins for guest path).
     Object.assign(out, readUrlDims(params));
+    // Cycle 14AO-fix6 (Mike NB-O14AO-1): when vehicle is set, also read the
+    // cookie directly. App Router caches RSC payloads on client-side
+    // back-nav, so initialAnswers prop can be stale relative to what the
+    // cookie holds. Cookie wins over a stale prop that's missing groups
+    // the cookie reports. Cookie does NOT override a prop that already
+    // has a value (server is fresher than cookie in the normal forward path).
+    if (vehicle?.id) {
+      for (const a of readSubModelCookieClient(vehicle.id)) {
+        if (!(a.group in out)) out[a.group] = a.value;
+      }
+    }
     return out;
   });
 
@@ -147,6 +248,17 @@ export function DimensionPicker({
       for (const [g, val] of Object.entries(urlDims)) {
         if (clearedGroupsRef.current.has(g)) continue;
         next[g] = val;
+      }
+      // Cycle 14AO-fix6 (Mike NB-O14AO-1): cookie fallback for vehicle-set
+      // users when initialAnswers comes back stale (App Router cache
+      // serving an old RSC payload on browser back-nav). Cookie reading
+      // happens here too — not just useState init — so a stale-prop
+      // re-render still picks up the customer's saved answer.
+      if (vehicle?.id) {
+        for (const a of readSubModelCookieClient(vehicle.id)) {
+          if (clearedGroupsRef.current.has(a.group)) continue;
+          if (!(a.group in next)) next[a.group] = a.value;
+        }
       }
       // If a group is in clearedGroupsRef AND no longer in initialAnswers
       // or URL, ensure it's removed from picks too.
@@ -209,12 +321,26 @@ export function DimensionPicker({
             answers: [{ group, value }],
           }),
         });
-        router.refresh();
+        // Cycle 14AO-fix5 (Mike R6 NB-NEW-4): if the URL still has a ?dim=
+        // entry for this group (left over from a prior guest session that
+        // later set a vehicle), strip it. Cookie/DB is now the source of
+        // truth; URL ?dim= would otherwise re-apply on every navigation.
+        const sp = new URLSearchParams(params.toString());
+        const dims = sp.getAll(DIM_PARAM);
+        const stripped = dims.filter((v) => !v.startsWith(`${group}:`));
+        if (stripped.length !== dims.length) {
+          sp.delete(DIM_PARAM);
+          for (const d of stripped) sp.append(DIM_PARAM, d);
+          const qs = sp.toString();
+          router.replace(qs ? `${pathname}?${qs}` : pathname);
+        } else {
+          router.refresh();
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : "save failed");
       }
     },
-    [vehicle, router],
+    [vehicle, params, pathname, router],
   );
 
   const onPick = useCallback(

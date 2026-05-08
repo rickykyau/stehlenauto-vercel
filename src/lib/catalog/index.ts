@@ -796,13 +796,21 @@ async function getSyntheticCollection(
     // Cycle 14AO-fix B-2: synthetic path already used adapted.length, which
     // is the correct post-filter count for synthetics (no second-stage
     // bucketing happens after the slice). Keep it.
+    // Cycle 14AO-fix5 (Mike R6 NB-NEW-5): synthetic collections (best-sellers,
+    // new-arrivals, sale) used to fall back to ROOF_RACK_FILTERS — a mock
+    // shape with no `input` strings on its facets. Sidebar checkboxes
+    // rendered but were entirely non-functional (no URL change, no grid
+    // narrowing). Returning [] makes the sidebar render its honest empty
+    // state ("No additional filters available.") instead of a decorative lie.
+    // Real Shopify-driven facet introspection for synthetic collections is
+    // a future ticket.
     return {
       handle,
       title: cfg.title,
       description: cfg.description,
       products: adapted,
       totalProducts: adapted.length,
-      filters: ROOF_RACK_FILTERS,
+      filters: [],
       fitMeta,
     };
   } catch (err) {
@@ -833,7 +841,39 @@ export async function getCollection(
       }
     })
     .filter((v): v is Record<string, unknown> => v !== null);
-  const wantsFitBoost = Boolean(opts.vehicle && !opts.sort);
+  // Cycle 14AO-fix5 (Mike R6 NB-NEW-1): vehicle filtering must run whenever
+  // a vehicle is set — sorting must NOT bypass it. The previous shape
+  // `wantsFitBoost = vehicle && !sort` meant any explicit sort (price-asc,
+  // newest, etc.) caused the fit-bucket pass to be skipped entirely, so a
+  // 2021 F-150 customer who sorted by price saw 286 mixed-make products.
+  // Now: when vehicle set, ALWAYS run the fit boost (filter + bucket); the
+  // explicit sort still flows to Shopify so within-bucket order is sorted.
+  const wantsFitBoost = Boolean(opts.vehicle);
+  // Cycle 14AO-fix5 (Mike R6 NB-NEW-6): when a vehicle is set, strip stale
+  // year/make/model sidebar filters from the user's URL ?f= input. The
+  // sidebar drops those groups from view (Year/Make/Model are hidden under
+  // a vehicle), but a leftover ?f=year:2018 from before the YMM was set
+  // would keep filtering the grid invisibly with no UI to clear it.
+  const filteredUserInputs = opts.vehicle
+    ? userFilters.filter((input) => {
+        if (typeof input !== "object" || input === null) return true;
+        const obj = input as Record<string, unknown>;
+        // Shopify Storefront ProductFilter shapes: tag-based filters use
+        // {tag: "make:Ford"} / {tag: "year:2018"} etc. Cycle-3 schema.
+        if (typeof obj.tag === "string") {
+          const t = obj.tag.toLowerCase();
+          if (
+            t.startsWith("make:") ||
+            t.startsWith("model:") ||
+            t.startsWith("year:")
+          ) {
+            return false;
+          }
+        }
+        // Productvendor / availability / variantOption filters survive.
+        return true;
+      })
+    : userFilters;
 
   try {
     // Cycle 14b (Mike-2 MAJOR): cycle-9's vehicle-aware boost was broken.
@@ -850,7 +890,12 @@ export async function getCollection(
     // logic that already drives every card chip and the cart banner, so
     // the rendering can never disagree with the ranking.
     const wideFirst = wantsFitBoost ? Math.min(first * 3, 60) : first;
-    const collection = await fetchCollectionPage(handle, wideFirst, userFilters, sortCfg);
+    const collection = await fetchCollectionPage(
+      handle,
+      wideFirst,
+      filteredUserInputs,
+      sortCfg,
+    );
 
     if (!collection) return mockCollection(handle, first);
     const rawAdapted = collection.products.nodes.map(adapt);
