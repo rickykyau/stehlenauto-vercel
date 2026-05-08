@@ -46,9 +46,13 @@ export const metadata: Metadata = {
     url: "/",
     images: [
       {
+        // Cycle 14AM (Diana hero pass): restored from
+        // hero-stehlen-original.jpg.bak (1920×839, 210 KB). Earlier
+        // cycle-14U crop pass shrunk it to 1280×640, which was the
+        // root cause of the visible blur at desktop widths.
         url: "/images/hero-stehlen.jpg",
-        width: 1280,
-        height: 640,
+        width: 1920,
+        height: 839,
         alt: "Stehlen Auto — Heavy-Duty Vehicle Accessories",
       },
     ],
@@ -102,9 +106,17 @@ export default async function HomePage() {
           aria-hidden="true"
           fill
           priority
-          sizes="100vw"
+          // Cycle 14AM (Diana): sizes="100vw" was over-serving the 3840-bucket
+          // and then upscaling a small cached thumbnail. Tuned ladder caps the
+          // request at the actual rendered width per breakpoint. quality=88
+          // delivers ~200KB on the restored 1920×839 source. fetchPriority
+          // hints the browser to prioritize the byte stream over below-fold
+          // assets. objectFit moved to .hero-bg-img CSS where objectPosition
+          // already lives.
+          sizes="(min-width: 1920px) 1920px, (min-width: 1440px) 1440px, (min-width: 1280px) 1280px, 100vw"
+          quality={88}
+          fetchPriority="high"
           className="hero-bg-img"
-          style={{ objectFit: "cover" }}
         />
         <div
           aria-hidden="true"
@@ -151,9 +163,11 @@ export default async function HomePage() {
           style={{
             position: "relative",
             zIndex: 2,
-            paddingTop: 72,
-            paddingBottom: 80,
-            minHeight: 640,
+            // Cycle 14AM (Diana hero pass): padding tightened from 72/80 to
+            // 56/56; minHeight inline override removed so the .hero-section
+            // CSS ladder is the single source of truth for height.
+            paddingTop: 56,
+            paddingBottom: 56,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -229,65 +243,20 @@ export default async function HomePage() {
                 yellow band on the next section is the single source of
                 truth for inline YMM on the home page. */}
 
-            {/* Trust micro-row */}
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 24,
-                marginTop: 20,
-                color: "rgba(255,255,255,0.75)",
-                fontSize: 12,
-              }}
+            {/* Cycle 14AM (Diana + owner): retired the trust micro-row
+                and the dual ghost-button CTA pair from the hero. The
+                trust pills duplicate the full <TrustRow /> mounted below
+                the categories section; carrying them here was visual
+                noise. The two ghost CTAs were splitting attention and
+                violating the one-yellow-accent-per-viewport rule. Now:
+                ONE primary yellow CTA, focused on the slogan above. */}
+            <Link
+              href="/collections"
+              className="btn btn-primary btn-lg"
+              style={{ marginTop: 28 }}
             >
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                <span style={{ color: "var(--color-success)", display: "flex" }}>
-                  <Icons.check size={12} />
-                </span>{" "}
-                Free shipping, no minimum
-              </span>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                <span style={{ color: "var(--color-success)", display: "flex" }}>
-                  <Icons.check size={12} />
-                </span>{" "}
-                30-day returns
-              </span>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                <span style={{ color: "var(--color-success)", display: "flex" }}>
-                  <Icons.check size={12} />
-                </span>{" "}
-                Lifetime warranty
-              </span>
-            </div>
-
-            {/* Secondary CTAs */}
-            <div
-              style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}
-            >
-              <Link
-                href="/collections"
-                className="btn"
-                style={{
-                  background: "rgba(255,255,255,0.06)",
-                  borderColor: "rgba(255,255,255,0.2)",
-                  color: "#fff",
-                  backdropFilter: "blur(8px)",
-                }}
-              >
-                SHOP ALL PARTS <Icons.arrowR size={12} />
-              </Link>
-              <Link
-                href="/collections/best-sellers"
-                className="btn"
-                style={{
-                  background: "transparent",
-                  borderColor: "rgba(255,255,255,0.2)",
-                  color: "#fff",
-                }}
-              >
-                BEST SELLERS
-              </Link>
-            </div>
+              SHOP ALL PARTS <Icons.arrowR size={14} />
+            </Link>
           </div>
         </div>
       </section>

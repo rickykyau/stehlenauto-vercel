@@ -493,8 +493,14 @@ h4 { line-height: 1.3; }
  * Desktop (>= 768px): narrower column on the left so the truck-grille
  * image gets to breathe on the right.
  */
+/* Cycle 14AM (Diana hero pass): height ladder dropped 520/600/640 →
+ * 420/520/560 so the next section (yellow YMM band) peeks above the
+ * 900px-tall fold instead of getting pushed below it. The hero now
+ * carries one fewer block (no trust pills, no dual CTA), so the
+ * remaining stack — eyebrow + 3-line H1 + paragraph + 1 CTA — fits
+ * cleanly at the new lower min-heights. */
 .hero-section {
-  min-height: 520px;
+  min-height: 420px;
 }
 .hero-col {
   width: 100%;
@@ -506,7 +512,7 @@ h4 { line-height: 1.3; }
  * desktop (1024+). */
 @media (min-width: 768px) {
   .hero-section {
-    min-height: 600px;
+    min-height: 520px;
   }
   .hero-col {
     width: 60%;
@@ -515,7 +521,7 @@ h4 { line-height: 1.3; }
 }
 @media (min-width: 1280px) {
   .hero-section {
-    min-height: 640px;
+    min-height: 560px;
   }
   .hero-col {
     width: 40%;
@@ -554,6 +560,7 @@ h4 { line-height: 1.3; }
  * lands the wordmark in the right half of the viewport at every breakpoint.
  * No CSS positioning gymnastics needed. */
 .hero-bg-img {
+  object-fit: cover;
   object-position: center center;
 }
 
