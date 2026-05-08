@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Geist_Mono, Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -27,9 +27,18 @@ const inter = Inter({
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Cycle 14AK PR1 (Diana visual audit): Geist Mono retired from display +
+// prose duty. It was carrying display headlines, eyebrows, PDP body, spec
+// tables, tabs, and buttons — that "robotic / DOS prompt" feel was the
+// visual root of the owner's "font looks robotic" complaint. Archivo
+// keeps the engineered/industrial bones but with humanist proportions —
+// fits Stehlen's lowercase-tag voice ("morning.") without the terminal
+// connotation. JetBrains Mono stays the dedicated mono for SKUs / prices
+// / spec tables only.
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -113,7 +122,7 @@ export default async function RootLayout({
     <ClerkProvider>
       <html
         lang="en"
-        className={`${inter.variable} ${geistMono.variable} ${jetbrainsMono.variable} h-full`}
+        className={`${inter.variable} ${archivo.variable} ${jetbrainsMono.variable} h-full`}
       >
         <body className="min-h-full flex flex-col bg-background text-foreground">
           {/* Server-built Organization JSON-LD; `<` escaped to neutralize script-breakout. */}
