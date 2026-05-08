@@ -1,20 +1,16 @@
 #!/usr/bin/env -S node --experimental-strip-types
 /**
- * Cycle 14AL — composite Stehlen-branded parts onto popular-vehicle
- * photos using Gemini 2.5 Flash Image.
+ * Cycle 14AL final — generate hero-quality "Stehlen build" photos for the
+ * SHOP BY POPULAR VEHICLE tiles on the home page.
  *
- * Auth: prefers GEMINI_API_KEY (direct call to Google AI Studio, free
- * tier covers this 8-image batch). Falls back to VERCEL_OIDC_TOKEN
- * via the Vercel AI Gateway when GEMINI_API_KEY is unset. Note:
- * Vercel AI Gateway free credits are temporarily rate-limited
- * sitewide (Vercel notice, May 2026) — direct path is the
- * recommended option.
+ * Earlier passes were image-EDIT (compositing parts onto stock vehicle
+ * photos). Owner feedback: the tan/red workhorse stock photos are not
+ * "sexy" — generate fresh hero shots from scratch, anchored to the
+ * Stehlen brand hero (matte-black tactical chase rack with hex mesh and
+ * amber LEDs). This pass uses TEXT-TO-IMAGE with the brand hero as a
+ * single style-reference image.
  *
- * Get a free Gemini API key:
- *   https://aistudio.google.com/app/apikey
- *
- * Then add to .env.local:
- *   GEMINI_API_KEY=AIza...
+ * Auth: GEMINI_API_KEY (free tier covers this 8-image batch easily).
  *
  * Usage:
  *   node scripts/regen-popular-vehicle-photos.ts
@@ -24,140 +20,164 @@
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { generateText } from "ai";
 
 const ROOT = process.cwd();
-const SOURCE_DIR = path.join(ROOT, "public", "images", "vehicle-gens");
 const OUT_DIR = path.join(ROOT, "public", "images", "vehicle-gens-modded");
+const BRAND_HERO = path.join(ROOT, "public", "images", "hero-stehlen.jpg");
 
-// AI Gateway routes "provider/model" identifiers; the OIDC token in
-// VERCEL_OIDC_TOKEN auths transparently. Image-output model — same one
-// the AI SDK docs reference as "Nano Banana." If this preview slug
-// retires, swap to the GA version: google/gemini-2.5-flash-image
-const MODEL = "google/gemini-2.5-flash-image-preview";
+// gemini-3-pro-image-preview = Nano Banana Pro (highest fidelity)
+// gemini-3.1-flash-image-preview = Nano Banana 2 (faster/cheaper)
+const GAS_MODEL =
+  process.env.GEMINI_IMAGE_MODEL || "gemini-3-pro-image-preview";
+const GAS_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GAS_MODEL}:generateContent`;
 
+// Each entry is a full creative brief — vehicle, color/trim, setting,
+// lighting, parts. Every truck shares the same matte-black tactical
+// visual language so the row of 8 tiles reads as ONE brand build.
 const VEHICLES: {
   slug: string;
-  sourceFile: string;
-  part: string;
-  detail: string;
+  vehicle: string;
+  setting: string;
+  parts: string;
 }[] = [
   {
     slug: "ford-f-150",
-    sourceFile: "ford-f-150-p702.jpg",
-    // Source photo already has factory running boards visible — switched
-    // the part to something the F-150 source DOESN'T already have so the
-    // edit is actually visible. Tonneau covers the bed which is empty.
-    part: "matte-black hard tri-fold tonneau cover over the truck bed",
-    detail:
-      "covering the empty truck bed flush with the bedrails, low-profile, segmented panels visible from this angle",
+    vehicle:
+      "current-generation Ford F-150 SuperCrew (P702 body, ~2024 model year), matte gunmetal grey paint, blacked-out grille and badges, factory aluminum wheels swapped for matte-black off-road wheels with 35-inch all-terrain tires, slight 2-inch leveling lift",
+    setting:
+      "golden-hour pullout off a forest service road, wet asphalt with reflections, scattered pine trees, Sierra Nevada or Rocky Mountain backdrop softly out of focus, warm sunset light raking across the truck from camera-left, three-quarter front-side angle low-camera",
+    parts:
+      "(1) a matte-black tactical chase rack mounted in the truck bed with hex-mesh side panels, amber LED markers, and a roof-height LED light bar across the top — match the brand hero reference exactly; (2) a matte-black tubular bull guard wrapping the grille with hex-mesh inserts; (3) tubular black rock sliders along the rocker panel; (4) wide-pocket matte-black fender flares with hex-bolt accents",
   },
   {
     slug: "chevrolet-silverado",
-    sourceFile: "chevrolet-silverado-t1xx.jpg",
-    part: "matte-black hard tri-fold tonneau cover",
-    detail:
-      "covering the truck bed flush with the bedrails, low-profile, no visible hinges",
+    vehicle:
+      "current-generation Chevrolet Silverado 1500 LT Trail Boss (T1XX body, ~2024 model year), Shadow Grey Metallic paint, blacked-out grille and badges, factory 18-inch black wheels with 33-inch all-terrain tires",
+    setting:
+      "high-desert pullout at golden hour, hard-packed dirt and red rock formations in the distance, warm low sun raking from camera-left, three-quarter front-side angle, slight low-camera looking up to emphasize stance",
+    parts:
+      "(1) a matte-black tactical chase rack in the truck bed with hex-mesh panels, amber LED markers, and a roof-height LED light bar — match the brand hero reference; (2) a matte-black low-profile front bull bar with integrated 30-inch LED light bar; (3) tubular black rock sliders along the rocker panel; (4) wide-pocket matte-black fender flares",
   },
   {
     slug: "ram-1500",
-    sourceFile: "ram-1500-dt.jpg",
-    part: "soft roll-up tonneau cover in matte black vinyl",
-    detail: "secured along the bed rails with a clean rear edge",
+    vehicle:
+      "current-generation Ram 1500 Rebel Crew Cab (DT body, ~2024 model year), Diamond Black Crystal Pearl paint, factory 18-inch matte-black off-road wheels with 33-inch all-terrain tires, factory air-suspension lift",
+    setting:
+      "industrial concrete lot at blue-hour twilight, overhead clouds catching last warm light, single warm sodium lamp behind camera, wet concrete with shallow puddles reflecting the truck, three-quarter front-side angle",
+    parts:
+      "(1) a matte-black tactical chase rack in the truck bed with hex-mesh panels, amber LED markers, and a roof-height LED light bar — match the brand hero reference; (2) a matte-black grille guard with hex-mesh inserts and full-wrap headlight protection; (3) tubular black rock sliders along the rocker panel",
   },
   {
     slug: "toyota-tacoma",
-    sourceFile: "toyota-tacoma-n400.jpg",
-    part: "tubular black powder-coated nerf-bar running boards",
-    detail: "bolted along the rocker panels, no body modifications",
+    vehicle:
+      "current-generation Toyota Tacoma TRD Pro Double Cab (N400 body, ~2024 model year), Solar Octane orange paint OR Lunar Rock grey (pick whichever reads more cinematically), factory bronze TRD Pro wheels with 33-inch all-terrain tires, factory 1-inch front lift",
+    setting:
+      "Pacific Northwest forest fire road at dawn, mist and pine trees, soft cool morning light from camera-right, three-quarter rear-side angle to emphasize the bed and chase rack — this is the hero angle that should most closely echo the brand reference",
+    parts:
+      "(1) a matte-black tactical chase rack in the truck bed with hex-mesh side panels, amber LED markers, and a roof-height LED light bar across the top — this is the focal point, match the brand hero reference EXACTLY; (2) wide-pocket matte-black fender flares; (3) tubular black rock sliders along the rocker panel",
   },
   {
     slug: "jeep-wrangler",
-    sourceFile: "jeep-wrangler-jl.jpg",
-    part: "tubular rock sliders in textured matte black",
-    detail:
-      "mounted to the frame between the wheel wells, hugging the rocker panel",
+    vehicle:
+      "current-generation Jeep Wrangler Rubicon Unlimited 4-door (JL body, ~2024 model year), Granite Crystal Metallic dark grey paint, hardtop on, factory 17-inch black beadlock-style wheels with 35-inch mud-terrain tires",
+    setting:
+      "sandstone desert canyon trail at late afternoon, warm rim light from low sun behind, wide rocky road bed in foreground, three-quarter front-side angle low-camera",
+    parts:
+      "(1) a matte-black stubby front bumper with integrated winch and dual flush-mount round LED fog lamps; (2) a matte-black low-profile roof rack with hex-mesh side rails and a 40-inch LED light bar at the front edge — match the brand hero's tactical metalwork; (3) wide-pocket matte-black fender flares over all four wheel wells; (4) tubular black rock sliders along the rocker panel",
   },
   {
     slug: "toyota-tundra",
-    sourceFile: "toyota-tundra-3rd-gen.jpg",
-    part: "matte-black hard tri-fold tonneau cover",
-    detail: "covering the truck bed flush with the bedrails, low-profile",
+    vehicle:
+      "current-generation Toyota Tundra 1794 Edition CrewMax (~2024 model year), Magnetic Grey Metallic paint, factory 20-inch black wheels swapped for 18-inch matte-black off-road wheels with 33-inch all-terrain tires, factory 1-inch front lift",
+    setting:
+      "alpine reservoir overlook at sunrise, glassy water and snow-dusted peaks far behind, cool dawn light, three-quarter rear-side angle to feature the bed and chase rack",
+    parts:
+      "(1) a matte-black tactical chase rack in the truck bed with hex-mesh panels, amber LED markers, and a roof-height LED light bar — match the brand hero reference EXACTLY; (2) wide-pocket matte-black fender flares with hex-bolt accents; (3) tubular black rock sliders along the rocker panel",
   },
   {
     slug: "gmc-sierra",
-    sourceFile: "gmc-sierra-t1xx.jpg",
-    part: "oval matte-black side-step running boards",
-    detail: "factory-OEM fitment along the rocker panel",
+    vehicle:
+      "current-generation GMC Sierra 1500 AT4 Crew Cab (T1XX body, ~2024 model year), Onyx Black paint, factory 20-inch dark-finish wheels with 33-inch all-terrain tires, factory 2-inch lift",
+    setting:
+      "abandoned high-plains airstrip at golden hour, wide-open flat horizon with low scrub grass, warm side light raking from camera-left, three-quarter front-side angle",
+    parts:
+      "(1) a matte-black tactical chase rack in the truck bed with hex-mesh panels, amber LED markers, and a roof-height LED light bar visible above the cab — match the brand hero reference; (2) a matte-black grille guard with hex-mesh inserts; (3) wide-pocket matte-black fender flares; (4) oval matte-black side-step running boards along the rocker panel",
   },
   {
     slug: "nissan-frontier",
-    sourceFile: "nissan-frontier-d41.jpg",
-    part: "tubular black powder-coated nerf-bar running boards",
-    detail: "bolted along the rocker panels, no body modifications",
+    vehicle:
+      "current-generation Nissan Frontier PRO-4X Crew Cab (D41 body, ~2024 model year), Tactical Green or Boulder Grey paint (pick whichever reads more cinematically), factory 17-inch black wheels with 33-inch all-terrain tires, factory 1-inch lift",
+    setting:
+      "coastal cliff overlook at golden hour, ocean horizon far behind, scattered tall grass in foreground, warm side light, three-quarter front-side angle low-camera",
+    parts:
+      "(1) a matte-black tactical chase rack in the truck bed with hex-mesh side panels, amber LED markers, and a roof-height LED light bar — match the brand hero reference; (2) tubular black rock sliders with kickout step along the rocker panel; (3) wide-pocket matte-black fender flares; (4) a matte-black front bull bar",
   },
 ];
 
-// Cycle 14AL retry: previous prompt was too conservative — the
-// "preserve existing geometry" line caused the model to return the
-// input image unmodified. Direct imperative tone works better with
-// Gemini 2.5 Flash Image edits.
-const SYSTEM_PROMPT = `Modify the input photograph by visibly installing the specified aftermarket auto part on the vehicle. The added part MUST be clearly visible in the output. Match the original photo's lighting, shadows, and perspective so the part looks factory-installed. Output only the edited photograph — no text, no watermarks, no captions.`;
+const SYSTEM_PROMPT = `You are a senior automotive photographer creating hero-quality marketing images for Stehlen Auto, a premium-tactical truck-accessories brand. Generate a photorealistic hero shot of the specified vehicle build.
+
+Stehlen brand visual language (this is non-negotiable — anchor every part to it):
+- Matte black powder-coated finish across all aftermarket parts
+- Hex-mesh inserts (honeycomb pattern) on tactical bed-mounted pieces
+- Amber LED markers on the chase rack
+- Angular, structural geometry — never curvy, never chrome
+- Premium tactical aesthetic — Yeti / Filson / Tactical Distributors, NOT country-music or lifted-bro
+
+Composition rules:
+- Cinematic golden-hour or blue-hour lighting unless otherwise specified
+- Truck takes 60-70% of the frame, fills it with attitude
+- Shallow background depth-of-field, never busy
+- Wet asphalt or hard-packed dirt under the wheels for visual richness
+- Camera angle as specified per vehicle — usually low, three-quarter
+- Output a single landscape-orientation photograph (16:9 or wider)
+- No text, no watermarks, no captions, no logos in the frame
+- The reference image attached shows Stehlen's signature chase rack — replicate the exact hex-mesh + amber LED + matte-black geometry on the truck's bed-mounted rack`;
+
+type GeminiPart =
+  | { text: string }
+  | { inlineData: { mimeType: string; data: string } };
 
 async function loadEnvLocal(): Promise<void> {
-  // Tiny dotenv: read .env.local and inject into process.env. We avoid
-  // adding a dotenv dep for a one-shot script.
-  const envPath = path.join(ROOT, ".env.local");
   try {
-    const raw = await fs.readFile(envPath, "utf8");
+    const raw = await fs.readFile(path.join(ROOT, ".env.local"), "utf8");
     for (const line of raw.split("\n")) {
       const m = line.match(/^([A-Z][A-Z0-9_]*)=(.*)$/);
       if (!m) continue;
       const [, key, valueRaw] = m;
-      if (process.env[key]) continue; // don't override shell-set values
-      const value = valueRaw.replace(/^["']|["']$/g, "");
-      process.env[key] = value;
+      if (process.env[key]) continue;
+      process.env[key] = valueRaw.replace(/^["']|["']$/g, "");
     }
   } catch {
-    /* no .env.local — fine if shell env covers it */
+    /* no .env.local */
   }
 }
 
-// Direct Google AI Studio path. Free tier handles 8 image edits easily
-// (15 RPM rate limit). Image-out model name confirmed via
-// https://ai.google.dev/gemini-api/docs/image-generation
-// Cycle 14AL: latest image-edit model on the API. Mapping:
-//   gemini-3.1-flash-image-preview = "Nano Banana 2" (newest, what we use)
-//   gemini-3-pro-image-preview     = "Nano Banana Pro" (higher tier)
-//   gemini-2.5-flash-image         = "Nano Banana" (older stable)
-// Override via GEMINI_IMAGE_MODEL env var if a specific quality tier is needed.
-const GAS_MODEL =
-  process.env.GEMINI_IMAGE_MODEL || "gemini-3.1-flash-image-preview";
-const GAS_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GAS_MODEL}:generateContent`;
-
-async function editViaGoogleDirect(
+async function generateOne(
   apiKey: string,
   spec: (typeof VEHICLES)[number],
-  prompt: string,
-  sourceBytes: Buffer,
-): Promise<{ bytes: Buffer; mediaType: string }> {
-  const body = {
-    contents: [
-      {
-        parts: [
-          { text: `${SYSTEM_PROMPT}\n\n${prompt}` },
-          {
-            inlineData: {
-              mimeType: "image/jpeg",
-              data: sourceBytes.toString("base64"),
-            },
-          },
-        ],
+  brandReferenceBytes: Buffer | null,
+): Promise<void> {
+  const prompt = `${SYSTEM_PROMPT}
+
+Vehicle: ${spec.vehicle}
+Setting: ${spec.setting}
+Stehlen parts to feature on the truck: ${spec.parts}
+
+Generate the photograph now.`;
+
+  const parts: GeminiPart[] = [{ text: prompt }];
+  if (brandReferenceBytes) {
+    parts.push({
+      inlineData: {
+        mimeType: "image/jpeg",
+        data: brandReferenceBytes.toString("base64"),
       },
-    ],
-    generationConfig: {
-      responseModalities: ["IMAGE"],
-    },
+    });
+  }
+
+  const body = {
+    contents: [{ parts }],
+    generationConfig: { responseModalities: ["IMAGE"] },
   };
   const res = await fetch(`${GAS_ENDPOINT}?key=${apiKey}`, {
     method: "POST",
@@ -176,106 +196,35 @@ async function editViaGoogleDirect(
     }[];
   };
   const data = (await res.json()) as Resp;
-  const part = data.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
-  if (!part?.inlineData) {
-    throw new Error("Google AI returned no image");
-  }
-  return {
-    bytes: Buffer.from(part.inlineData.data, "base64"),
-    mediaType: part.inlineData.mimeType,
-  };
-}
+  const out = data.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
+  if (!out?.inlineData) throw new Error("Google AI returned no image");
 
-async function editViaGateway(
-  spec: (typeof VEHICLES)[number],
-  prompt: string,
-  sourceBytes: Buffer,
-): Promise<{ bytes: Buffer; mediaType: string }> {
-  const result = await generateText({
-    model: MODEL,
-    system: SYSTEM_PROMPT,
-    messages: [
-      {
-        role: "user",
-        content: [
-          { type: "text", text: prompt },
-          { type: "image", image: sourceBytes },
-        ],
-      },
-    ],
-    providerOptions: {
-      google: {
-        responseModalities: ["IMAGE"],
-      },
-    },
-  });
-  type FileLike = { mediaType?: string; uint8Array?: Uint8Array; base64?: string };
-  const files: FileLike[] = (result as unknown as { files?: FileLike[] }).files ?? [];
-  let imageFile = files.find((f) => f.mediaType?.startsWith("image/"));
-  if (!imageFile) {
-    const contentArr = (result as unknown as {
-      content?: { type: string; mediaType?: string; data?: Uint8Array | string }[];
-    }).content;
-    const fromContent = contentArr?.find(
-      (c) => c.type === "file" && c.mediaType?.startsWith("image/"),
-    );
-    if (fromContent) {
-      imageFile = {
-        mediaType: fromContent.mediaType,
-        uint8Array:
-          fromContent.data instanceof Uint8Array
-            ? fromContent.data
-            : typeof fromContent.data === "string"
-              ? new Uint8Array(Buffer.from(fromContent.data, "base64"))
-              : undefined,
-      };
-    }
-  }
-  if (!imageFile) {
-    throw new Error(
-      `No image returned. Text said: ${result.text?.slice(0, 200) ?? "<empty>"}`,
-    );
-  }
-  const bytes =
-    imageFile.uint8Array ??
-    (imageFile.base64 ? Buffer.from(imageFile.base64, "base64") : null);
-  if (!bytes) throw new Error("Image found but no bytes");
-  return {
-    bytes: Buffer.from(bytes),
-    mediaType: imageFile.mediaType ?? "image/jpeg",
-  };
-}
-
-async function editOne(spec: (typeof VEHICLES)[number]): Promise<void> {
-  const sourcePath = path.join(SOURCE_DIR, spec.sourceFile);
-  const sourceBytes = await fs.readFile(sourcePath);
-
-  const prompt = `Install ${spec.part} on this vehicle. ${spec.detail}. The part must be clearly visible in the output image — running boards extending below the doors, tonneau covers spanning the truck bed, rock sliders along the rocker panel. Show the part as if a customer just had it installed at the dealership.`;
-
-  const apiKey = process.env.GEMINI_API_KEY;
-  const out = apiKey
-    ? await editViaGoogleDirect(apiKey, spec, prompt, sourceBytes)
-    : await editViaGateway(spec, prompt, sourceBytes);
-
-  const ext = out.mediaType.includes("png") ? "png" : "jpg";
+  const bytes = Buffer.from(out.inlineData.data, "base64");
+  const ext = out.inlineData.mimeType.includes("png") ? "png" : "jpg";
   const outPath = path.join(OUT_DIR, `${spec.slug}.${ext}`);
-  await fs.writeFile(outPath, out.bytes);
+  await fs.writeFile(outPath, bytes);
   console.log(
-    `✓ ${spec.slug.padEnd(22)} ${spec.part.slice(0, 50).padEnd(50)} → ${outPath.replace(ROOT + "/", "")}`,
+    `✓ ${spec.slug.padEnd(22)} ${spec.vehicle.slice(0, 60).padEnd(60)} → ${outPath.replace(ROOT + "/", "")}`,
   );
 }
 
 async function main(): Promise<number> {
   await loadEnvLocal();
 
-  if (!process.env.VERCEL_OIDC_TOKEN && !process.env.AI_GATEWAY_API_KEY) {
-    console.error(
-      "FATAL: need VERCEL_OIDC_TOKEN (auto-set on Vercel + via `vercel env pull`) or AI_GATEWAY_API_KEY",
-    );
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.error("FATAL: set GEMINI_API_KEY (https://aistudio.google.com/app/apikey)");
     return 1;
   }
 
   await fs.mkdir(OUT_DIR, { recursive: true });
+
+  let brandReferenceBytes: Buffer | null = null;
+  try {
+    brandReferenceBytes = await fs.readFile(BRAND_HERO);
+  } catch {
+    console.warn("(brand hero image not found — proceeding without style reference)");
+  }
 
   const onlyArg = process.argv.find((a) => a.startsWith("--only="));
   const only = onlyArg?.split("=")[1] ?? null;
@@ -285,22 +234,21 @@ async function main(): Promise<number> {
     return 1;
   }
 
-  console.log(`Editing ${list.length} vehicle photo(s) via ${MODEL}…\n`);
+  console.log(`Generating ${list.length} hero photo(s) via ${GAS_MODEL}…\n`);
   let failed = 0;
   for (const spec of list) {
     try {
-      await editOne(spec);
+      await generateOne(apiKey, spec, brandReferenceBytes);
     } catch (err) {
       console.error(
         `✗ ${spec.slug.padEnd(22)} ${err instanceof Error ? err.message : err}`,
       );
       failed++;
     }
-    await new Promise((r) => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 1200));
   }
 
   console.log(`\nDone. ${list.length - failed} succeeded, ${failed} failed.`);
-  console.log(`Output: ${OUT_DIR.replace(ROOT + "/", "")}/`);
   return failed > 0 ? 1 : 0;
 }
 
