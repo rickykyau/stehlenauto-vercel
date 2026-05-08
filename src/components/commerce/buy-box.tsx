@@ -469,18 +469,34 @@ export function BuyBox({
                       key={opt}
                       type="button"
                       className="btn btn-sm"
-                      onClick={async (e) => {
+                      onClick={(e) => {
                         e.preventDefault();
-                        // Persist the new bed length to the garage
-                        // (best-effort), then hard-navigate so the SSR
-                        // picks up the saved answer. router.push is
-                        // soft-nav and may race the cookie write.
-                        try {
-                          await persist("bed_length", opt);
-                        } catch {
-                          /* ignore — navigation should not block */
+                        // Cycle 14AE (owner): variant chip wasn't
+                        // navigating. The previous version awaited
+                        // persist() which calls router.refresh() — that
+                        // re-renders the React tree mid-click and can
+                        // race / cancel the synchronous window.location
+                        // assignment that follows. Fix: send the persist
+                        // as fire-and-forget (no await, no router.refresh
+                        // dependency), then navigate immediately. The
+                        // destination page reads the cookie SSR-side,
+                        // and the in-flight POST settles in the
+                        // background; the browser doesn't cancel it
+                        // because we're navigating to the same origin.
+                        const handle = target.handle;
+                        if (vehicle?.id) {
+                          // Don't await; don't catch; let it fly.
+                          fetch("/api/sub-model", {
+                            method: "POST",
+                            headers: { "content-type": "application/json" },
+                            body: JSON.stringify({
+                              vehicleId: vehicle.id,
+                              answers: [{ group: "bed_length", value: opt }],
+                            }),
+                            keepalive: true,
+                          }).catch(() => {});
                         }
-                        window.location.href = `/products/${target.handle}`;
+                        window.location.href = `/products/${handle}`;
                       }}
                       style={{
                         flex: "1 1 0",

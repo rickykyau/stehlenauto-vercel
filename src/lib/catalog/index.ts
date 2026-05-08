@@ -455,15 +455,31 @@ function adaptFilters(raw: NonNullable<CollectionNode["products"]["filters"]>): 
       continue;
     }
 
+    // Cycle 14AE (owner): year facet was sorted by descending product
+    // count, so the year list looked random ("2018 (45), 2020 (38),
+    // 2017 (35)…"). For year-shaped facets, sort numerically descending
+    // (newest first — industry standard for auto parts because most
+    // customers have recent vehicles). Other facets keep count-desc
+    // because that surfaces the most-relevant value first.
+    const isYearFacet = /year/i.test(f.label);
+    const sorter = isYearFacet
+      ? (a: { label: string }, b: { label: string }) => {
+          const ay = parseInt(a.label, 10);
+          const by = parseInt(b.label, 10);
+          if (Number.isFinite(ay) && Number.isFinite(by)) return by - ay;
+          return a.label.localeCompare(b.label);
+        }
+      : (a: { count: number }, b: { count: number }) => b.count - a.count;
+
     const items = f.values
       .filter((v) => v.count > 0)
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 12)
       .map((v) => ({
         label: normalizeFilterLabel(v.label),
         count: v.count,
         input: v.input,
-      }));
+      }))
+      .sort(sorter)
+      .slice(0, isYearFacet ? 50 : 12);
     if (items.length === 0) continue;
     groups.push({
       title: f.label.toUpperCase(),
