@@ -786,9 +786,11 @@ export default async function HomePage() {
                   {v.make.toUpperCase()}
                 </div>
                 <div style={{ fontSize: 18, fontWeight: 600 }}>{v.model}</div>
-                <div style={{ fontSize: 11, color: "var(--color-muted)" }}>
-                  {v.years}
-                </div>
+                {/* Cycle 14AL (owner): year range removed from this card.
+                    The customer doesn't browse by year here — they pick a
+                    model, then the vehicle hub asks them for year. Keeping
+                    the year row added visual noise without helping the
+                    decision. */}
                 <div
                   style={{
                     display: "flex",
