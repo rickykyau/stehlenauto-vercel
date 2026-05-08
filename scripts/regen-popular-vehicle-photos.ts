@@ -1,53 +1,41 @@
 #!/usr/bin/env -S node --experimental-strip-types
 /**
  * Cycle 14AL — composite Stehlen-branded parts onto popular-vehicle
- * photos using Gemini 2.5 Flash Image (the editing model formerly
- * known as Nano Banana).
+ * photos using Gemini 2.5 Flash Image.
  *
- * The "SHOP BY POPULAR VEHICLE" tiles on the home page currently use
- * stock photos of unmodified trucks. The owner wants each tile to
- * show the same vehicle WITH a representative Stehlen part on it
- * (running boards on the F-150, tonneau cover on the Silverado, rock
- * sliders on the Wrangler, etc.) so the customer immediately sees
- * "this site is for trucks like mine, customized."
+ * Auth: prefers GEMINI_API_KEY (direct call to Google AI Studio, free
+ * tier covers this 8-image batch). Falls back to VERCEL_OIDC_TOKEN
+ * via the Vercel AI Gateway when GEMINI_API_KEY is unset. Note:
+ * Vercel AI Gateway free credits are temporarily rate-limited
+ * sitewide (Vercel notice, May 2026) — direct path is the
+ * recommended option.
  *
- * Usage:
- *   GEMINI_API_KEY=sk-... node scripts/regen-popular-vehicle-photos.ts
- *
- * Get an API key:
+ * Get a free Gemini API key:
  *   https://aistudio.google.com/app/apikey
  *
- * Outputs:
- *   public/images/vehicle-gens-modded/<slug>.jpg  — composited photos
+ * Then add to .env.local:
+ *   GEMINI_API_KEY=AIza...
  *
- * After it finishes, update src/app/page.tsx POPULAR_VEHICLE_PHOTOS
- * to point at the new paths (script prints the diff to copy).
+ * Usage:
+ *   node scripts/regen-popular-vehicle-photos.ts
+ *   node scripts/regen-popular-vehicle-photos.ts --only=ford-f-150
  *
- * Notes / gotchas:
- *   - Gemini 2.5 Flash Image edits an INPUT image based on a text
- *     prompt. We feed the source vehicle photo and a prompt that names
- *     the part. We do NOT pass a reference photo of the Stehlen
- *     product — the model interprets the part description. If output
- *     looks generic, paste a real product photo URL into the prompt
- *     for that vehicle in PART_BY_VEHICLE below.
- *   - Image-editing models can hallucinate fender lines, wheel arches,
- *     or paint. Spot-check every output before committing. If a
- *     vehicle's output looks wrong, re-run just that one with
- *     `--only=ford-f-150` (or any slug).
- *   - Cost: ~$0.04 per output image at 2025 pricing. 8 images = ~$0.32.
+ * Outputs: public/images/vehicle-gens-modded/<slug>.{jpg,png}
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { generateText } from "ai";
 
 const ROOT = process.cwd();
 const SOURCE_DIR = path.join(ROOT, "public", "images", "vehicle-gens");
 const OUT_DIR = path.join(ROOT, "public", "images", "vehicle-gens-modded");
 
-// One representative Stehlen part per popular vehicle. Each entry:
-//   sourceFile  — current generation photo to start from
-//   slug        — the home-page slug; output is <slug>.jpg
-//   part        — what the model should add (one short noun phrase)
-//   detail      — extra qualifiers (color, style) to keep it on-brand
+// AI Gateway routes "provider/model" identifiers; the OIDC token in
+// VERCEL_OIDC_TOKEN auths transparently. Image-output model — same one
+// the AI SDK docs reference as "Nano Banana." If this preview slug
+// retires, swap to the GA version: google/gemini-2.5-flash-image
+const MODEL = "google/gemini-2.5-flash-image-preview";
+
 const VEHICLES: {
   slug: string;
   sourceFile: string;
@@ -57,9 +45,12 @@ const VEHICLES: {
   {
     slug: "ford-f-150",
     sourceFile: "ford-f-150-p702.jpg",
-    part: "matte-black aluminum running boards",
+    // Source photo already has factory running boards visible — switched
+    // the part to something the F-150 source DOESN'T already have so the
+    // edit is actually visible. Tonneau covers the bed which is empty.
+    part: "matte-black hard tri-fold tonneau cover over the truck bed",
     detail:
-      "factory-OEM fitment along the rocker panel, mounted with no exposed brackets",
+      "covering the empty truck bed flush with the bedrails, low-profile, segmented panels visible from this angle",
   },
   {
     slug: "chevrolet-silverado",
@@ -107,47 +98,60 @@ const VEHICLES: {
   },
 ];
 
-const MODEL = "gemini-2.5-flash-image-preview";
-const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+// Cycle 14AL retry: previous prompt was too conservative — the
+// "preserve existing geometry" line caused the model to return the
+// input image unmodified. Direct imperative tone works better with
+// Gemini 2.5 Flash Image edits.
+const SYSTEM_PROMPT = `Modify the input photograph by visibly installing the specified aftermarket auto part on the vehicle. The added part MUST be clearly visible in the output. Match the original photo's lighting, shadows, and perspective so the part looks factory-installed. Output only the edited photograph — no text, no watermarks, no captions.`;
 
-const SYSTEM_PROMPT = `You are a photo retoucher specializing in automotive aftermarket accessories. You will receive a stock photograph of a vehicle and a description of one Stehlen Auto part to add. Composite the part onto the vehicle photo-realistically:
-- Match the lighting, shadow direction, and color temperature of the original photo.
-- Match the perspective so the part sits on the vehicle naturally.
-- Preserve the vehicle's existing geometry — do NOT redraw the body, wheels, or background.
-- The part should look factory-fitted, not bolted on as an afterthought.
-- Keep the modification subtle and tasteful — Stehlen sells premium parts to professional vehicle owners, not lifted-bro stickers.
-- Output a single edited photograph, no text or watermarks.`;
+async function loadEnvLocal(): Promise<void> {
+  // Tiny dotenv: read .env.local and inject into process.env. We avoid
+  // adding a dotenv dep for a one-shot script.
+  const envPath = path.join(ROOT, ".env.local");
+  try {
+    const raw = await fs.readFile(envPath, "utf8");
+    for (const line of raw.split("\n")) {
+      const m = line.match(/^([A-Z][A-Z0-9_]*)=(.*)$/);
+      if (!m) continue;
+      const [, key, valueRaw] = m;
+      if (process.env[key]) continue; // don't override shell-set values
+      const value = valueRaw.replace(/^["']|["']$/g, "");
+      process.env[key] = value;
+    }
+  } catch {
+    /* no .env.local — fine if shell env covers it */
+  }
+}
 
-type GeminiPart = {
-  text?: string;
-  inlineData?: { mimeType: string; data: string };
-};
-type GeminiResponse = {
-  candidates?: { content?: { parts?: GeminiPart[] } }[];
-  error?: { message: string };
-};
+// Direct Google AI Studio path. Free tier handles 8 image edits easily
+// (15 RPM rate limit). Image-out model name confirmed via
+// https://ai.google.dev/gemini-api/docs/image-generation
+// Cycle 14AL: latest image-edit model on the API. Mapping:
+//   gemini-3.1-flash-image-preview = "Nano Banana 2" (newest, what we use)
+//   gemini-3-pro-image-preview     = "Nano Banana Pro" (higher tier)
+//   gemini-2.5-flash-image         = "Nano Banana" (older stable)
+// Override via GEMINI_IMAGE_MODEL env var if a specific quality tier is needed.
+const GAS_MODEL =
+  process.env.GEMINI_IMAGE_MODEL || "gemini-3.1-flash-image-preview";
+const GAS_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GAS_MODEL}:generateContent`;
 
-async function editOne(
+async function editViaGoogleDirect(
   apiKey: string,
   spec: (typeof VEHICLES)[number],
-): Promise<void> {
-  const sourcePath = path.join(SOURCE_DIR, spec.sourceFile);
-  const sourceBytes = await fs.readFile(sourcePath);
-  const sourceB64 = sourceBytes.toString("base64");
-
-  const prompt = `${SYSTEM_PROMPT}
-
-Add to this vehicle: ${spec.part}.
-Detail: ${spec.detail}.
-
-Brand context: Stehlen Auto. The part should look like a Stehlen-branded aftermarket accessory — clean lines, matte finish, no garish logos visible.`;
-
+  prompt: string,
+  sourceBytes: Buffer,
+): Promise<{ bytes: Buffer; mediaType: string }> {
   const body = {
     contents: [
       {
         parts: [
-          { text: prompt },
-          { inlineData: { mimeType: "image/jpeg", data: sourceB64 } },
+          { text: `${SYSTEM_PROMPT}\n\n${prompt}` },
+          {
+            inlineData: {
+              mimeType: "image/jpeg",
+              data: sourceBytes.toString("base64"),
+            },
+          },
         ],
       },
     ],
@@ -155,42 +159,124 @@ Brand context: Stehlen Auto. The part should look like a Stehlen-branded afterma
       responseModalities: ["IMAGE"],
     },
   };
-
-  const res = await fetch(`${ENDPOINT}?key=${apiKey}`, {
+  const res = await fetch(`${GAS_ENDPOINT}?key=${apiKey}`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(body),
   });
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`Gemini ${res.status}: ${text.slice(0, 400)}`);
+    throw new Error(`Google AI ${res.status}: ${text.slice(0, 400)}`);
   }
-  const data = (await res.json()) as GeminiResponse;
-  if (data.error) throw new Error(`Gemini error: ${data.error.message}`);
-  const image = data.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
-  if (!image?.inlineData) {
-    throw new Error("Gemini returned no image data");
+  type Resp = {
+    candidates?: {
+      content?: {
+        parts?: { inlineData?: { mimeType: string; data: string } }[];
+      };
+    }[];
+  };
+  const data = (await res.json()) as Resp;
+  const part = data.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
+  if (!part?.inlineData) {
+    throw new Error("Google AI returned no image");
   }
-  const outBytes = Buffer.from(image.inlineData.data, "base64");
-  const outPath = path.join(OUT_DIR, `${spec.slug}.jpg`);
-  await fs.writeFile(outPath, outBytes);
+  return {
+    bytes: Buffer.from(part.inlineData.data, "base64"),
+    mediaType: part.inlineData.mimeType,
+  };
+}
+
+async function editViaGateway(
+  spec: (typeof VEHICLES)[number],
+  prompt: string,
+  sourceBytes: Buffer,
+): Promise<{ bytes: Buffer; mediaType: string }> {
+  const result = await generateText({
+    model: MODEL,
+    system: SYSTEM_PROMPT,
+    messages: [
+      {
+        role: "user",
+        content: [
+          { type: "text", text: prompt },
+          { type: "image", image: sourceBytes },
+        ],
+      },
+    ],
+    providerOptions: {
+      google: {
+        responseModalities: ["IMAGE"],
+      },
+    },
+  });
+  type FileLike = { mediaType?: string; uint8Array?: Uint8Array; base64?: string };
+  const files: FileLike[] = (result as unknown as { files?: FileLike[] }).files ?? [];
+  let imageFile = files.find((f) => f.mediaType?.startsWith("image/"));
+  if (!imageFile) {
+    const contentArr = (result as unknown as {
+      content?: { type: string; mediaType?: string; data?: Uint8Array | string }[];
+    }).content;
+    const fromContent = contentArr?.find(
+      (c) => c.type === "file" && c.mediaType?.startsWith("image/"),
+    );
+    if (fromContent) {
+      imageFile = {
+        mediaType: fromContent.mediaType,
+        uint8Array:
+          fromContent.data instanceof Uint8Array
+            ? fromContent.data
+            : typeof fromContent.data === "string"
+              ? new Uint8Array(Buffer.from(fromContent.data, "base64"))
+              : undefined,
+      };
+    }
+  }
+  if (!imageFile) {
+    throw new Error(
+      `No image returned. Text said: ${result.text?.slice(0, 200) ?? "<empty>"}`,
+    );
+  }
+  const bytes =
+    imageFile.uint8Array ??
+    (imageFile.base64 ? Buffer.from(imageFile.base64, "base64") : null);
+  if (!bytes) throw new Error("Image found but no bytes");
+  return {
+    bytes: Buffer.from(bytes),
+    mediaType: imageFile.mediaType ?? "image/jpeg",
+  };
+}
+
+async function editOne(spec: (typeof VEHICLES)[number]): Promise<void> {
+  const sourcePath = path.join(SOURCE_DIR, spec.sourceFile);
+  const sourceBytes = await fs.readFile(sourcePath);
+
+  const prompt = `Install ${spec.part} on this vehicle. ${spec.detail}. The part must be clearly visible in the output image — running boards extending below the doors, tonneau covers spanning the truck bed, rock sliders along the rocker panel. Show the part as if a customer just had it installed at the dealership.`;
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  const out = apiKey
+    ? await editViaGoogleDirect(apiKey, spec, prompt, sourceBytes)
+    : await editViaGateway(spec, prompt, sourceBytes);
+
+  const ext = out.mediaType.includes("png") ? "png" : "jpg";
+  const outPath = path.join(OUT_DIR, `${spec.slug}.${ext}`);
+  await fs.writeFile(outPath, out.bytes);
   console.log(
-    `✓ ${spec.slug.padEnd(22)} ${spec.part.padEnd(60)} → ${outPath.replace(ROOT + "/", "")}`,
+    `✓ ${spec.slug.padEnd(22)} ${spec.part.slice(0, 50).padEnd(50)} → ${outPath.replace(ROOT + "/", "")}`,
   );
 }
 
 async function main(): Promise<number> {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  await loadEnvLocal();
+
+  if (!process.env.VERCEL_OIDC_TOKEN && !process.env.AI_GATEWAY_API_KEY) {
     console.error(
-      "FATAL: set GEMINI_API_KEY (https://aistudio.google.com/app/apikey)",
+      "FATAL: need VERCEL_OIDC_TOKEN (auto-set on Vercel + via `vercel env pull`) or AI_GATEWAY_API_KEY",
     );
     return 1;
   }
 
   await fs.mkdir(OUT_DIR, { recursive: true });
 
-  // CLI: --only=<slug> filters to one vehicle
   const onlyArg = process.argv.find((a) => a.startsWith("--only="));
   const only = onlyArg?.split("=")[1] ?? null;
   const list = only ? VEHICLES.filter((v) => v.slug === only) : VEHICLES;
@@ -203,22 +289,18 @@ async function main(): Promise<number> {
   let failed = 0;
   for (const spec of list) {
     try {
-      await editOne(apiKey, spec);
+      await editOne(spec);
     } catch (err) {
       console.error(
         `✗ ${spec.slug.padEnd(22)} ${err instanceof Error ? err.message : err}`,
       );
       failed++;
     }
-    // Throttle: 1 RPS is plenty for 8 images and keeps us off the rate limit.
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 800));
   }
 
   console.log(`\nDone. ${list.length - failed} succeeded, ${failed} failed.`);
   console.log(`Output: ${OUT_DIR.replace(ROOT + "/", "")}/`);
-  console.log(`\nTo wire the new images, update src/app/page.tsx:`);
-  console.log(`  POPULAR_VEHICLE_PHOTOS map → "/images/vehicle-gens-modded/<slug>.jpg"`);
-  console.log(`(The original /vehicle-gens/ files stay in place for the vehicle hub.)`);
   return failed > 0 ? 1 : 0;
 }
 
