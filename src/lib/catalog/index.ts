@@ -6,7 +6,8 @@ import {
 } from "@/lib/shopify/queries";
 import type { CollectionNode, ProductNode } from "@/lib/shopify/types";
 import { parseFitmentTable } from "@/lib/fitment/metafields";
-import { checkFitment } from "@/lib/fitment/match";
+import { checkFitment, filterByDimensionAnswers } from "@/lib/fitment/match";
+import type { SubModelAnswer } from "@/lib/garage/types";
 import {
   BEST_SELLERS,
   CATEGORIES,
@@ -19,6 +20,7 @@ import {
 } from "./mock";
 import type {
   CatalogProduct,
+  FilterFacet,
   FilterGroup,
   FitmentRow,
   ProductBadge,
@@ -440,11 +442,26 @@ function normalizeFilterLabel(label: string): string {
   return t;
 }
 
-function adaptFilters(raw: NonNullable<CollectionNode["products"]["filters"]>): FilterGroup[] {
+function adaptFilters(
+  raw: NonNullable<CollectionNode["products"]["filters"]>,
+  opts: { hasVehicle: boolean } = { hasVehicle: false },
+): FilterGroup[] {
   const groups: FilterGroup[] = [];
   for (const f of raw) {
     if (!f.values || f.values.length === 0) continue;
     if (f.label === "Product type" || f.label === "Availability") continue;
+
+    // Cycle 14AO (owner): when a vehicle is set, the YMM picker in the header
+    // is the single source of truth for year/make/model. Surfacing them as
+    // sidebar facets lets the customer click "Make: Chevy" inside the filter
+    // and silently override their saved Ford F-150 garage — that's the
+    // "filter competes with YMM" bug. Drop those groups entirely from the
+    // sidebar when a vehicle is set; they reappear when no vehicle is set
+    // so guest browsers can still narrow.
+    if (opts.hasVehicle) {
+      const ll = f.label.toLowerCase();
+      if (ll === "year" || ll === "make" || ll === "model") continue;
+    }
 
     if (f.type === "PRICE_RANGE") {
       groups.push({
@@ -471,9 +488,9 @@ function adaptFilters(raw: NonNullable<CollectionNode["products"]["filters"]>): 
         }
       : (a: { count: number }, b: { count: number }) => b.count - a.count;
 
-    const items = f.values
+    const items: FilterFacet[] = f.values
       .filter((v) => v.count > 0)
-      .map((v) => ({
+      .map<FilterFacet>((v) => ({
         label: normalizeFilterLabel(v.label),
         count: v.count,
         input: v.input,
@@ -481,10 +498,44 @@ function adaptFilters(raw: NonNullable<CollectionNode["products"]["filters"]>): 
       .sort(sorter)
       .slice(0, isYearFacet ? 50 : 12);
     if (items.length === 0) continue;
+
+    // Cycle 14AO (owner): year facet had visible gaps in the middle —
+    // "2025, 2024, 2022, 2020" — because Shopify omits buckets with zero
+    // products. The customer reads gap years as "broken filter," not
+    // "no inventory for that year." Fill the range with greyed-out
+    // 0-count placeholders so the list reads as a continuous timeline.
+    // input is undefined on filler rows; the sidebar disables them.
+    let finalItems: FilterFacet[] = items;
+    if (isYearFacet && items.length >= 2) {
+      const present = new Map<number, FilterFacet>(
+        items
+          .map<[number, FilterFacet]>((it) => [parseInt(it.label, 10), it])
+          .filter(([y]) => Number.isFinite(y)),
+      );
+      const years = Array.from(present.keys());
+      if (years.length >= 2) {
+        const max = Math.max(...years);
+        const min = Math.min(...years);
+        const filled: FilterFacet[] = [];
+        for (let y = max; y >= min; y--) {
+          const hit = present.get(y);
+          if (hit) {
+            filled.push(hit);
+          } else {
+            // Cycle 14AO: gap-filler placeholder. `input` omitted so
+            // FilterSidebar renders the row as disabled/greyed — customer
+            // sees the year in the timeline but learns there's no inventory.
+            filled.push({ label: String(y), count: 0 });
+          }
+        }
+        finalItems = filled;
+      }
+    }
+
     groups.push({
       title: f.label.toUpperCase(),
       type: "check",
-      items,
+      items: finalItems,
     });
   }
   return groups;
@@ -531,6 +582,23 @@ export type CollectionFiltersInput = {
    * toggle on the collection page.
    */
   fitsOnly?: boolean;
+  /**
+   * Cycle 14AO (owner): the customer's saved sub-model answers (bed length,
+   * cab type, trim) — typically loaded from the garage cookie/DB by the
+   * caller. When present, the collection grid drops products that name a
+   * conflicting dimension (e.g. a 6.5'-bed tonneau on a customer who
+   * picked 5.5'). Universal/silent products survive.
+   */
+  subModelAnswers?: SubModelAnswer[];
+  /**
+   * Cycle 14AO (owner): when true (default when vehicle is set), products
+   * that the fitment check positively flags as MISMATCH are dropped from
+   * the response entirely. Universal candidates remain. This makes "set
+   * vehicle = filter" the default behaviour the owner asked for; the prior
+   * implementation only re-ranked, leaving non-fitting products in the
+   * grid behind a manual toggle.
+   */
+  hideMismatches?: boolean;
 };
 
 function bucketByFitment(
@@ -690,24 +758,44 @@ async function getSyntheticCollection(
     let adapted = (data.products?.nodes ?? []).map(adapt);
 
     let fitMeta: CollectionFitMeta | undefined;
+    // Cycle 14AO (owner): default behaviour now hides confirmed mismatches
+    // when a vehicle is set — the owner's "filter is non-functional" complaint
+    // was that setting YMM only re-ranked the grid; products from other
+    // makes still appeared at the bottom. Caller may opt out with
+    // hideMismatches: false (debug/admin) but the default flips on.
+    const hideMismatches = opts.hideMismatches ?? Boolean(opts.vehicle);
+    // Cycle 14AO: dimension answers also filter the grid when set, with or
+    // without a vehicle (guest browsers can pick "5.5' BED" via the
+    // DimensionPicker without committing to a YMM).
+    const dimensionAnswers = opts.subModelAnswers ?? [];
+    if (dimensionAnswers.length > 0) {
+      adapted = filterByDimensionAnswers(adapted, dimensionAnswers);
+    }
     if (opts.vehicle) {
       const verdicts = adapted.map((p) => ({
         p,
-        fits: checkFitment(p, opts.vehicle!),
+        fits: checkFitment(p, opts.vehicle!, dimensionAnswers),
       }));
       const exact = verdicts.filter((v) => v.fits === true).map((v) => v.p);
       const universal = verdicts
         .filter((v) => v.fits === undefined)
         .map((v) => v.p);
       const mismatch = verdicts.filter((v) => v.fits === false).map((v) => v.p);
-      adapted = opts.fitsOnly
-        ? exact.slice(0, first)
-        : [...exact, ...universal, ...mismatch].slice(0, first);
+      if (opts.fitsOnly) {
+        adapted = exact.slice(0, first);
+      } else if (hideMismatches) {
+        adapted = [...exact, ...universal].slice(0, first);
+      } else {
+        adapted = [...exact, ...universal, ...mismatch].slice(0, first);
+      }
       fitMeta = { fitsCount: exact.length, noExactFit: exact.length === 0 };
     } else {
       adapted = adapted.slice(0, first);
     }
 
+    // Cycle 14AO-fix B-2: synthetic path already used adapted.length, which
+    // is the correct post-filter count for synthetics (no second-stage
+    // bucketing happens after the slice). Keep it.
     return {
       handle,
       title: cfg.title,
@@ -765,16 +853,40 @@ export async function getCollection(
     const collection = await fetchCollectionPage(handle, wideFirst, userFilters, sortCfg);
 
     if (!collection) return mockCollection(handle, first);
-    const adapted = collection.products.nodes.map(adapt);
+    const rawAdapted = collection.products.nodes.map(adapt);
     const filters = collection.products.filters
-      ? adaptFilters(collection.products.filters)
+      ? adaptFilters(collection.products.filters, {
+          hasVehicle: Boolean(opts.vehicle),
+        })
       : ROOF_RACK_FILTERS;
+
+    // Cycle 14AO: filter by dimension answers (bed length, cab type, trim)
+    // BEFORE fit-bucketing so the universal pool only contains products
+    // that are still candidate fits given the customer's dimension answer.
+    // Without this, a customer who answered "5.5' BED" still saw 6.5'-bed
+    // tonneaus in the universal bucket of the bucketed grid.
+    const dimensionAnswers = opts.subModelAnswers ?? [];
+    const adapted =
+      dimensionAnswers.length > 0
+        ? filterByDimensionAnswers(rawAdapted, dimensionAnswers)
+        : rawAdapted;
+
+    // Cycle 14AO: hide mismatches by default when a vehicle is set. The
+    // owner's "filter is non-functional" complaint was that the grid only
+    // re-ranked — Tundra tonneaus stayed visible after the F-150 garage
+    // was set. New default: positive fits + universals only; confirmed
+    // mismatches are dropped. Caller can opt-out with hideMismatches:false
+    // for debug/admin views.
+    const hideMismatches = opts.hideMismatches ?? Boolean(opts.vehicle);
 
     let products: CatalogProduct[];
     let fitMeta: CollectionFitMeta | undefined;
 
     if (wantsFitBoost && opts.vehicle) {
-      const verdicts = adapted.map((p) => ({ p, fits: checkFitment(p, opts.vehicle!) }));
+      const verdicts = adapted.map((p) => ({
+        p,
+        fits: checkFitment(p, opts.vehicle!, dimensionAnswers),
+      }));
       let exact = verdicts.filter((v) => v.fits === true).map((v) => v.p);
       const universal = verdicts.filter((v) => v.fits === undefined).map((v) => v.p);
       const mismatch = verdicts.filter((v) => v.fits === false).map((v) => v.p);
@@ -805,9 +917,16 @@ export async function getCollection(
             ...mismatch.map((p) => p.handle),
           ]);
           const padding: CatalogProduct[] = [];
-          for (const p of fallback) {
+          // Cycle 14AO: also dimension-filter the padding pool — without
+          // this we'd re-introduce 6.5' bed tonneaus into the "fits" bucket
+          // for a 5.5'-bed customer.
+          const paddingPool =
+            dimensionAnswers.length > 0
+              ? filterByDimensionAnswers(fallback, dimensionAnswers)
+              : fallback;
+          for (const p of paddingPool) {
             if (seenHandles.has(p.handle)) continue;
-            const fits = checkFitment(p, v);
+            const fits = checkFitment(p, v, dimensionAnswers);
             if (fits === true) padding.push(p);
             seenHandles.add(p.handle);
           }
@@ -817,25 +936,47 @@ export async function getCollection(
         }
       }
 
-      // Cycle 14j (owner): when ?fits=1 is on, hide everything that isn't
-      // a positively-confirmed fit. Otherwise, keep the existing fit-first
-      // ranking with universals second and mismatches last.
-      products = opts.fitsOnly
-        ? exact.slice(0, first)
-        : [...exact, ...universal, ...mismatch].slice(0, first);
+      // Cycle 14AO-fix B-2: count of products that actually match the
+      // active filter set, used as totalProducts so the FILTERS button +
+      // mobile drawer footer don't lie ("286 PRODUCTS" while only 4 fit).
+      let postFilterTotal: number;
+      if (opts.fitsOnly) {
+        products = exact.slice(0, first);
+        postFilterTotal = exact.length;
+      } else if (hideMismatches) {
+        products = [...exact, ...universal].slice(0, first);
+        postFilterTotal = exact.length + universal.length;
+      } else {
+        products = [...exact, ...universal, ...mismatch].slice(0, first);
+        postFilterTotal = exact.length + universal.length + mismatch.length;
+      }
       fitMeta = {
         fitsCount: exact.length,
         noExactFit: exact.length === 0,
       };
+      // Stash for the totalProducts assignment below.
+      (collection as { _postFilterTotal?: number })._postFilterTotal =
+        postFilterTotal;
     } else {
       products = adapted.slice(0, first);
+      // Same trick for the no-vehicle, dimension-only narrowing case so
+      // the count badge tells the truth there too.
+      if (dimensionAnswers.length > 0) {
+        (collection as { _postFilterTotal?: number })._postFilterTotal =
+          adapted.length;
+      }
     }
 
     // Cycle 4 fix (owner): collection-wide total. Before this we returned
     // products.length (= page size) which made every collection lie and read
     // "24 of 24". Sum the Storefront filter values that don't depend on
     // user-picked filter narrowing to derive a real total.
-    const totalProducts = totalFromFilters(collection) ?? products.length;
+    // Cycle 14AO-fix B-2: prefer the post-filter count when bucketing or
+    // dimension-filtering ran — otherwise the badge always reports the
+    // unfiltered collection size.
+    const stash = (collection as { _postFilterTotal?: number })._postFilterTotal;
+    const totalProducts =
+      stash != null ? stash : (totalFromFilters(collection) ?? products.length);
 
     return {
       handle,

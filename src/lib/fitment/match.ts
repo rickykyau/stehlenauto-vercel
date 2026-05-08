@@ -488,6 +488,49 @@ export function checkFitment(
 }
 
 /**
+ * Cycle 14AO (owner): public, vehicle-independent variant of the sub-model
+ * gate. Used by the new DimensionPicker / collection filter pipeline so that
+ * a customer who has *not* set a vehicle can still narrow a category by
+ * "5.5' BED" — we keep products that mention that bed length OR are silent on
+ * bed length (universal candidates), and we hide products that name a
+ * conflicting bed length (e.g. 6.5'). Returns the same tri-state as the
+ * private gate: true / false / "needs_pick" (no contradicting evidence,
+ * caller decides whether to keep silent products).
+ */
+export function checkSubModelMatch(
+  product: Pick<CatalogProduct, "title" | "fitTitle" | "vehicleTags"> & {
+    fitmentTable?: FitmentTable;
+  },
+  answers: SubModelAnswer[] | null | undefined,
+): true | false | "needs_pick" {
+  if (!answers || answers.length === 0) return true;
+  const metafieldGate = metafieldSubGateAllows(product.fitmentTable, answers);
+  if (metafieldGate === false) return false;
+  return subModelGateAllows(
+    {
+      title: product.title,
+      fitTitle: product.fitTitle ?? undefined,
+      vehicleTags: product.vehicleTags,
+    },
+    answers,
+  );
+}
+
+/**
+ * Cycle 14AO (owner): drop products that conflict with the customer's
+ * dimension answers. Universal candidates (silent on the dimension) are kept
+ * — better to show "may fit, verify" than to vanish them from the grid.
+ */
+export function filterByDimensionAnswers<
+  T extends Pick<CatalogProduct, "title" | "fitTitle" | "vehicleTags"> & {
+    fitmentTable?: FitmentTable;
+  },
+>(products: T[], answers: SubModelAnswer[] | null | undefined): T[] {
+  if (!answers || answers.length === 0) return products;
+  return products.filter((p) => checkSubModelMatch(p, answers) !== false);
+}
+
+/**
  * Convenience: re-paint a product list with `fits` resolved against a vehicle.
  * Returns a shallow copy; never mutates input.
  */

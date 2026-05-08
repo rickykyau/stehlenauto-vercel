@@ -14,9 +14,12 @@ import { ProductCard } from "@/components/commerce/product-card";
 import { CollectionToolbar } from "@/components/commerce/collection-toolbar";
 import { FilterSidebar } from "@/components/commerce/filter-sidebar";
 import { MobileFilterDrawer } from "@/components/commerce/mobile-filter-drawer";
+import { DimensionPicker } from "@/components/commerce/dimension-picker";
 import { Icons } from "@/components/ui/icons";
 import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { withFitment } from "@/lib/fitment/match";
+import { stripsForCategory } from "@/lib/fitment/sub-model";
+import type { SubModelAnswer, SubModelGroup } from "@/lib/garage/types";
 import { breadcrumbJsonLd, itemListJsonLd, jsonLdString } from "@/lib/seo/jsonld";
 
 const SITE_URL =
@@ -147,9 +150,17 @@ const ALLOWED_SORTS = new Set<CollectionSort>([
   "title-asc",
 ]);
 
+const VALID_SUB_GROUPS: ReadonlySet<SubModelGroup> = new Set([
+  "bed_length",
+  "cab_type",
+  "trim",
+  "doors",
+]);
+
 function parseFilterParams(sp: Record<string, string | string[] | undefined>): {
   rawInputs: string[];
   sort?: CollectionSort;
+  dimensionAnswers: SubModelAnswer[];
 } {
   const sort =
     typeof sp.sort === "string" && ALLOWED_SORTS.has(sp.sort as CollectionSort)
@@ -168,7 +179,49 @@ function parseFilterParams(sp: Record<string, string | string[] | undefined>): {
       }
     })
     .filter((s): s is string => Boolean(s));
-  return { rawInputs, sort };
+
+  // Cycle 14AO (owner): ?dim=bed_length:5.5%27 BED is the SSR-readable
+  // dimension answer used by guests who haven't set a vehicle. Multiple
+  // dimensions stack as `?dim=bed_length:...&dim=cab_type:...`. Authed users
+  // have their answers in cookie/DB; we still merge URL on top in case a
+  // shared link explicitly carries one.
+  const dimParam = sp.dim;
+  const dimList = Array.isArray(dimParam)
+    ? dimParam
+    : dimParam
+      ? [dimParam]
+      : [];
+  const dimensionAnswers: SubModelAnswer[] = [];
+  const seenGroups = new Set<string>();
+  for (const entry of dimList) {
+    if (typeof entry !== "string") continue;
+    const idx = entry.indexOf(":");
+    if (idx < 1) continue;
+    const group = entry.slice(0, idx);
+    const value = decodeURIComponent(entry.slice(idx + 1));
+    if (!VALID_SUB_GROUPS.has(group as SubModelGroup)) continue;
+    if (!value) continue;
+    if (seenGroups.has(group)) continue;
+    seenGroups.add(group);
+    dimensionAnswers.push({ group: group as SubModelGroup, value });
+  }
+  return { rawInputs, sort, dimensionAnswers };
+}
+
+function mergeAnswers(
+  primary: SubModelAnswer[],
+  fallback: SubModelAnswer[],
+): SubModelAnswer[] {
+  // Primary (cookie/DB) wins per group; fallback (URL ?dim=) fills gaps.
+  const out: SubModelAnswer[] = [...primary];
+  const seen = new Set(out.map((a) => a.group));
+  for (const a of fallback) {
+    if (!seen.has(a.group)) {
+      out.push(a);
+      seen.add(a.group);
+    }
+  }
+  return out;
 }
 
 export default async function CollectionPage({
@@ -180,8 +233,11 @@ export default async function CollectionPage({
 }) {
   const { handle } = await params;
   const sp = await searchParams;
-  const { rawInputs, sort } = parseFilterParams(sp);
+  const { rawInputs, sort, dimensionAnswers: urlAnswers } = parseFilterParams(sp);
   // Cycle 14j (owner): "Show only fits" toggle. Adds ?fits=1 to the URL.
+  // Cycle 14AO retired the toggle (default behaviour now hides mismatches),
+  // but we still honour the URL param so old bookmarks don't break — when
+  // present it forces the strict exact-fits-only path.
   const fitsOnly = sp.fits === "1";
   // Pull the garage vehicle BEFORE fetching so getCollection can re-rank by
   // fitment for the visible page (Mike F-17). Already running per-request.
@@ -189,14 +245,19 @@ export default async function CollectionPage({
   // Cycle 14X+ post-sync (Mike-O15 NEW MAJOR): pass sub-model answers
   // through to the ProductCard fitment gate so a 5.5'-bed customer
   // doesn't see "✓ FITS" badges on 6.5'-bed products.
-  const subModelAnswers = vehicle
+  // Cycle 14AO (owner): merge cookie/DB answers (primary) with URL ?dim=
+  // (fallback for guests). The merged set drives both the server filter
+  // and the DimensionPicker initial state.
+  const cookieAnswers = vehicle
     ? await getSubModelAnswers(vehicle.id ?? "")
     : [];
+  const subModelAnswers = mergeAnswers(cookieAnswers, urlAnswers);
   let collection = await getCollection(handle, 24, {
     rawInputs,
     sort,
     vehicle: vehicle ?? undefined,
     fitsOnly: fitsOnly && !!vehicle,
+    subModelAnswers,
   });
 
   // Cycle-1 fix (Mike M2 / Marcus #6): rather than hard-404 unknown slugs that
@@ -364,6 +425,21 @@ export default async function CollectionPage({
         </div>
       </section>
 
+      {/* Cycle 14AO (owner): "show options before items." When the category
+          is dimension-applicable (tonneau covers → bed length, running
+          boards → cab type, bull guards → trim, etc.) we surface a
+          prominent inline picker between the hero and the toolbar. The grid
+          below already reflects whatever has been picked (server-rendered),
+          so this is a non-blocking refinement step — skip-able, not a
+          gate. Categories with no required dimensions render nothing. */}
+      {stripsForCategory(collection.handle).length > 0 && (
+        <DimensionPicker
+          categoryHandle={collection.handle}
+          vehicle={vehicle ?? undefined}
+          initialAnswers={subModelAnswers}
+        />
+      )}
+
       <CollectionToolbar
         totalProducts={collection.totalProducts}
         vehicle={vehicle}
@@ -394,50 +470,49 @@ export default async function CollectionPage({
               totalProducts={collection.totalProducts}
             />
           )}
-          {/* Cycle 4 (Mike F-17 Option C): when the customer has a vehicle set
-              and Shopify's vehicle-tag query returned zero exact-fits, surface
-              the fact instead of pretending the unfiltered grid is "for them". */}
-          {vehicle && collection.fitMeta?.noExactFit && collection.products.length > 0 && (
+          {/* Cycle 14AO (owner): collection grid now hides confirmed
+              mismatches by default whenever a vehicle is set. The honest
+              messaging splits three ways:
+                · fitsCount > 0  — "N exact fits, plus universal-fit options"
+                · fitsCount === 0 + universals present — "showing universal-
+                  fit options (no exact fits in this collection)"
+                · fitsCount === 0 + zero products  — empty state below
+              The legacy yellow "showing the rest of <category>" banner is
+              gone because we no longer mix in confirmed mismatches.       */}
+          {vehicle && collection.fitMeta && collection.products.length > 0 && (
             <div
-              style={{
-                background: "rgba(245,168,35,0.06)",
-                border: "1px solid rgba(245,168,35,0.3)",
-                borderRadius: "var(--radius-md)",
-                padding: "12px 14px",
-                marginBottom: 16,
-                fontSize: 13,
-              }}
-            >
-              <span
-                className="mono"
-                style={{
-                  fontSize: 11,
-                  letterSpacing: "0.12em",
-                  color: "var(--color-primary)",
-                }}
-              >
-                NO EXACT-FIT MATCHES FOR YOUR{" "}
-                {vehicle.year} {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()} —
-              </span>{" "}
-              showing the rest of {collection.title.toLowerCase()}. Verify
-              fitment on each product page before ordering.
-            </div>
-          )}
-          {vehicle && collection.fitMeta && collection.fitMeta.fitsCount > 0 && (
-            <div
+              id="collection-grid"
               style={{
                 fontSize: 12,
                 color: "var(--color-muted)",
                 marginBottom: 12,
               }}
             >
-              <span style={{ color: "var(--color-success)" }}>
-                {collection.fitMeta.fitsCount} exact fit
-                {collection.fitMeta.fitsCount === 1 ? "" : "s"}
-              </span>{" "}
-              for your {vehicle.year} {vehicle.make} {vehicle.model}
-              {fitsOnly ? " — showing fits only." : " shown first."}
+              {collection.fitMeta.fitsCount > 0 ? (
+                <>
+                  <span style={{ color: "var(--color-success)" }}>
+                    {collection.fitMeta.fitsCount} exact fit
+                    {collection.fitMeta.fitsCount === 1 ? "" : "s"}
+                  </span>{" "}
+                  for your {vehicle.year} {vehicle.make} {vehicle.model}
+                  {fitsOnly
+                    ? " — showing fits only."
+                    : ", plus universal-fit options."}
+                </>
+              ) : (
+                <>
+                  <span className="mono" style={{ letterSpacing: "0.08em" }}>
+                    NO EXACT FITS YET FOR YOUR {vehicle.year}{" "}
+                    {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()}
+                  </span>{" "}
+                  — showing universal-fit options. Verify fitment on each
+                  product page before ordering.
+                </>
+              )}
             </div>
+          )}
+          {!vehicle && (
+            <div id="collection-grid" style={{ height: 0 }} aria-hidden />
           )}
           {collection.products.length === 0 ? (
             <div

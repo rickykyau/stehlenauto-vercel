@@ -41,28 +41,11 @@ export function CollectionToolbar({
     },
     [params, pathname, router],
   );
-  // Cycle 14j (owner): "Show only fits for my vehicle" toggle. Adds ?fits=1
-  // when on, drops it when off. Server reads this and filters the grid to
-  // confirmed fits.
-  //
-  // Cycle 14k (owner phone test): the original implementation used
-  // router.replace() so the filter swap didn't push a history entry.
-  // Result: tapping a card → PDP → browser-back skipped over the filtered
-  // collection and landed on the page BEFORE the user reached the
-  // collection (often the home page). Switch to router.push() so each
-  // filter state is its own history entry — back from PDP returns to the
-  // filtered collection, back again returns to the unfiltered collection,
-  // back again returns to the prior page.
-  const fitsOnly = params.get("fits") === "1";
-  const toggleFitsOnly = useCallback(() => {
-    const sp = new URLSearchParams(params.toString());
-    if (fitsOnly) sp.delete("fits");
-    else sp.set("fits", "1");
-    const qs = sp.toString();
-    startTransition(() => {
-      router.push(qs ? `${pathname}?${qs}` : pathname);
-    });
-  }, [fitsOnly, params, pathname, router]);
+  // Cycle 14AO (owner): the legacy "SHOW ONLY FITS" toggle is gone — the
+  // collection page now hides confirmed mismatches by default whenever a
+  // vehicle is set, so the toggle would just expose the un-filtered grid the
+  // owner wanted dead. The chip below restates the active vehicle context
+  // for clarity but no longer flips a filter.
   const [view, setView] = useState<"grid" | "list">("grid");
   void totalProducts;
 
@@ -106,45 +89,23 @@ export function CollectionToolbar({
           }}
         >
           {vehicle ? (
-            <>
-              {/* Cycle 14AB (Mike-O14AB N-1 MAJOR): the toolbar chip used
-                  to render green "FITS 2021 F-150" the instant YMM was
-                  set, even when the page below said "NO EXACT-FIT
-                  MATCHES." Two contradictory signals in the same
-                  viewport. Soften to a neutral-info chip that just states
-                  the filter context — the per-product card badges and the
-                  "SHOW ONLY FITS" toggle do the actual fitment claim. */}
-              <span
-                className="chip"
-                style={{
-                  cursor: "default",
-                  background: "var(--color-surface-2)",
-                  borderColor: "var(--color-border)",
-                  color: "var(--color-foreground)",
-                }}
-              >
-                <Icons.truck size={10} /> FILTERING FOR {vehicle.year}{" "}
-                {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()}
-              </span>
-              {/* Cycle 14j (owner): toggle to filter the grid down to ONLY
-                  exact fits for the garage vehicle. Until this shipped the
-                  green chip looked like a filter but was just a label. */}
-              <button
-                type="button"
-                onClick={toggleFitsOnly}
-                aria-pressed={fitsOnly}
-                className="chip"
-                style={{
-                  cursor: "pointer",
-                  background: fitsOnly ? "var(--color-foreground)" : "transparent",
-                  color: fitsOnly ? "var(--color-background)" : "var(--color-foreground)",
-                  borderColor: fitsOnly ? "var(--color-foreground)" : "var(--color-border)",
-                  minHeight: 32,
-                }}
-              >
-                {fitsOnly ? "✓ SHOWING FITS ONLY · TAP TO SHOW ALL" : "SHOW ONLY FITS"}
-              </button>
-            </>
+            <button
+              type="button"
+              onClick={openYmmModal}
+              className="chip"
+              aria-label={`Filtering for ${vehicle.year} ${vehicle.make} ${vehicle.model} — tap to change vehicle`}
+              style={{
+                cursor: "pointer",
+                background: "var(--color-surface-2)",
+                borderColor: "var(--color-border)",
+                color: "var(--color-foreground)",
+                minHeight: 32,
+              }}
+            >
+              <Icons.truck size={10} /> FILTERING FOR {vehicle.year}{" "}
+              {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()} · TAP
+              TO CHANGE
+            </button>
           ) : (
             <button
               type="button"
