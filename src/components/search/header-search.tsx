@@ -179,7 +179,15 @@ export function HeaderSearch() {
         </span>
       </form>
 
-      {open && q.trim().length >= 2 && suggestions.length > 0 && (
+      {/* Cycle 14AE (Mike-O14AE N-4 FAIL): the dropdown survived a
+          navigate-to-/search even with setOpen(false) in submit and
+          pathname-effect. HeaderSearch is mounted in the layout and
+          its state can carry across SPA nav before effects flush.
+          Hard-render-gate on pathname so the dropdown CANNOT render
+          on /search regardless of `open` state. The /search page has
+          its own canonical SearchInput below — typeahead overlay
+          here would only block clicks. */}
+      {open && pathname !== "/search" && q.trim().length >= 2 && suggestions.length > 0 && (
         <div
           style={{
             position: "absolute",

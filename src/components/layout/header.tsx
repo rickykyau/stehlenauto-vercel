@@ -113,12 +113,19 @@ export function Header({
           >
             {vehicle ? (
               <>
+                {/* Cycle 14AE (Mike-O14AE NW-2 FAIL): the 14AD/AE fix
+                    only changed components/ui/vehicle-pill.tsx — but
+                    the desktop header has its OWN inline vehicle pill
+                    that was still rendering green. Fix the source of
+                    the green dot here too. Match sidebar + VehiclePill:
+                    neutral muted-grey, no fit claim. */}
                 <span
+                  aria-hidden
                   style={{
                     width: 8,
                     height: 8,
                     borderRadius: "50%",
-                    background: "var(--color-success)",
+                    background: "var(--color-muted)",
                   }}
                 />
                 <span

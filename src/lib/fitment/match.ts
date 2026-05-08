@@ -377,12 +377,13 @@ export function checkFitment(
     subModelAnswers,
   );
   if (subGate === false) return false;
-  // Cycle 14AA (Mike-O14AA F-2 MAJOR): product mentions a sub-model attr the
-  // customer hasn't answered → surface as "yellow / verify" not green "fits".
-  // Returning undefined keeps the row in fits-first ordering on the collection
-  // but flips the badge from green to a "Likely fits — confirm bed length"
-  // tone, which is the honest answer.
-  if (subGate === "needs_pick") return undefined;
+  // Cycle 14AE (Mike-O14AE NF-2 MAJOR): if the make/model already
+  // disqualifies the product (Tundra tonneau on Silverado garage), we
+  // must NOT short-circuit to "needs_pick" yellow — it's a confirmed
+  // DOES NOT FIT regardless of bed length. Hold the needs_pick decision
+  // until the end; if make/model proves a hard mismatch first, return
+  // false. Cycle 14AA was returning undefined eagerly here.
+  const needsPick = subGate === "needs_pick";
 
   // Structured tags (Shopify cycle-3 schema: `make:Jeep`, `model:Wrangler`,
   // `year:2014`) — ~49% of catalog. When present they're authoritative.
@@ -468,6 +469,12 @@ export function checkFitment(
     const re = siblingsByMake[makeKey];
     if (re && re.test(haystack)) return false;
   }
+
+  // Cycle 14AE (Mike-O14AE NF-2): all hard-mismatch paths above returned
+  // false. If the only ambiguity is an unanswered sub-model question on
+  // a product the customer's vehicle COULD plausibly match, surface as
+  // yellow "verify" — not silently green.
+  if (needsPick) return undefined;
 
   return undefined;
 }

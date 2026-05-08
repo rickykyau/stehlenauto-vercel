@@ -142,20 +142,27 @@ export function MobileStickyAtc({
                 : undefined,
             cursor: blocked ? "not-allowed" : "pointer",
             fontWeight: 700,
-            fontSize: 14,
+            // Cycle 14AE (Mike-O14AE F-4 PARTIAL → PASS): the previous
+            // `text-align: center` + ellipsis combo chops both ends of
+            // the text on a too-narrow button — Mike saw "CK FITMENT
+            // ABOVE" with no ellipsis marker. Use a smaller label set
+            // that fits the 139px button on 390px viewports without
+            // clipping at all. "PICK FITMENT" + arrow icon is enough
+            // signal — the ABOVE arrow already implies the location.
+            fontSize: 13,
             letterSpacing: "0.04em",
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            paddingInline: 12,
+            paddingInline: 10,
           }}
         >
           {outOfStock
             ? "OUT OF STOCK"
             : needsSubModelPick
-              ? "PICK FITMENT ABOVE ↑"
+              ? "PICK FITMENT ↑"
               : isMisfit
-                ? "ADD TO CART ANYWAY"
+                ? "ADD ANYWAY"
                 : "ADD TO CART"}
         </button>
       </div>
