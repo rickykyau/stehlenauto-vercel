@@ -28,9 +28,20 @@
    * dark↔light alternation principle, translated to Stehlen's voice
    * (no red, yellow remains the sole accent). */
   --color-surface-warm: #16140f;
-  --color-section-light: #f2f0ed;
+  /* Cycle 14AN-fix2 (Diana round 3): section bg moved from near-white
+   * #f2f0ed to a warm cream mid-tone #e6e0d6. The original was so
+   * close to pure white that tile bg + image-recess collapsed into a
+   * single flat plane — the only thing structuring the grid was a
+   * dark muted-grey cluster border that read as a cage. With a true
+   * warm cream now, tile bgs (matching the section) are lifted by a
+   * subtle box-shadow instead of contained by a hard frame, and the
+   * stair-step from the warm-dark reactivation banner above stays
+   * sharp on a shared warm hue axis. The muted token shifts lighter
+   * (#8a8278) to keep eyebrow + VIEW ALL labels at AA contrast on
+   * the warmer bg without crashing into body-text weight. */
+  --color-section-light: #e6e0d6;
   --color-section-light-fg: #0a0a0a;
-  --color-section-light-muted: #6a665e;
+  --color-section-light-muted: #8a8278;
 
   /* Cycle 14AK PR1 (Diana visual audit): --font-display swapped from
    * Geist Mono → Archivo. Mono was carrying display, eyebrows, body, and
@@ -457,7 +468,11 @@ h4 { line-height: 1.3; }
  * image area read as subtly recessed without the cool grid pattern
  * that .product-img-bg uses for technical-spec cards. */
 .category-img-bg {
-  background-color: #e8e6e3;
+  /* Cycle 14AN-fix2: shifted from #e8e6e3 to #dbd5ca to preserve the
+   * ~6-point lightness recess against the new warmer section bg
+   * #e6e0d6 — without this the photo area would sit flush with the
+   * tile/section plane and lose its subtle inset reading. */
+  background-color: #dbd5ca;
 }
 
 /* ===== Animations ===== */

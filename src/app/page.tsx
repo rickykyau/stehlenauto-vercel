@@ -569,14 +569,14 @@ export default async function HomePage() {
         <div
           className="grid grid-cols-2 md:grid-cols-4"
           style={{
-            gap: 1,
-            // Cycle 14AN-fix (Diana recovery): grid gap was painting the
-            // dark --color-border (#2a2a2a) between tiles — fine on the
-            // old all-dark page, but a harsh dark slash on the new
-            // light section. Switched to the warm mid-grey muted token
-            // so the 1px seams recede.
-            background: "var(--color-section-light-muted)",
-            border: "1px solid var(--color-section-light-muted)",
+            // Cycle 14AN-fix2 (Diana round 3): killed the cluster border
+            // and the painted dark gap entirely. With the section now at
+            // a true warm cream (#e6e0d6) and the tile bg matching it,
+            // tile separation comes from a per-tile box-shadow lift, not
+            // a containing rectangle. 12px gap lets the section bg
+            // breathe between tiles instead of a 1px dark seam — closer
+            // to RoughCountry's open-grid pattern, no cage.
+            gap: 12,
           }}
         >
           {categories.map((cat) => (
@@ -584,13 +584,13 @@ export default async function HomePage() {
               key={cat.slug}
               href={`/collections/${cat.slug}`}
               style={{
-                // Cycle 14AN-fix (Diana recovery): tile wrapper bg
-                // matches the section now (--color-section-light) so the
-                // tiles read as integrated to the light section instead
-                // of dark Polaroids glued onto warm-off-white. The
-                // category-img-bg recess on the inner div gives the
-                // image area subtle separation; the light label strip
-                // below the image now picks up dark text correctly.
+                // Cycle 14AN-fix2 (Diana round 3): tile bg still matches
+                // section so the tile and section share one warm-cream
+                // plane. Replaced the dark cluster border with a
+                // per-tile shadow lift — 1px hairline at 6% black plus a
+                // 3px ambient drop. On the new #e6e0d6 cream, this casts
+                // visibly (the prior near-white bg ate the same shadow);
+                // hover bumps it for tap affordance.
                 background: "var(--color-section-light)",
                 color: "var(--color-section-light-fg)",
                 padding: 0,
@@ -599,6 +599,8 @@ export default async function HomePage() {
                 position: "relative",
                 overflow: "hidden",
                 aspectRatio: "1.05",
+                boxShadow:
+                  "0 1px 3px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(0, 0, 0, 0.06)",
               }}
             >
               <div
