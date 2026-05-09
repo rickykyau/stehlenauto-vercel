@@ -347,60 +347,131 @@ export default async function CollectionPage({
           }}
         />
       ) : null}
-      {/* Hero */}
+      {/* Hero — Cycle 14AP (Diana): full-width banner instead of side-by-
+          side card. The previous 320px image card was a postage-stamp
+          competing with a 44px headline; image + title had no visual
+          relationship and the watermarked stock JPG read as catalog
+          clip-art. New shape: bleed-edge 5:1 banner image with gradient
+          scrim + breadcrumb overlay (desktop), title + tightened
+          description below in the warm section. Mobile drops the image
+          entirely and lets the title carry the header — the warehouse
+          stock photo adds zero trust on mobile, only weight. Switch
+          background to --color-surface-warm so the hero differentiates
+          from the dark header chrome above. */}
       <section
         style={{
-          background: "var(--color-surface)",
+          background: "var(--color-surface-warm)",
           borderBottom: "1px solid var(--color-border)",
         }}
       >
-        <div
-          className="container-x"
-          style={{ paddingTop: 32, paddingBottom: 32 }}
-        >
-          <nav
-            aria-label="Breadcrumb"
-            style={{
-              display: "flex",
-              gap: 6,
-              alignItems: "center",
-              fontSize: 12,
-              color: "var(--color-muted)",
-              marginBottom: 14,
-            }}
-          >
-            <Link href="/">Home</Link>
-            <Icons.chevRight size={10} />
-            <Link href="/collections">Shop</Link>
-            <Icons.chevRight size={10} />
-            <span style={{ color: "var(--color-foreground)" }}>
-              {collection.title}
-            </span>
-          </nav>
-          {/* Cycle 14N (owner): collection hero used to render just the
-              title plus an optional one-liner. New visitors who clicked
-              "Tonneau Covers" had no idea what one is. Add a representative
-              photo + a 2-3-sentence shopper-friendly explainer to the right
-              of the title on tablet+, stacked below the title on mobile. */}
-          {(() => {
-            const hero = getCategoryHero(collection.handle);
-            const explainer =
-              (collection.description && collection.description.trim()) ||
-              hero.explainer ||
-              "";
-            return (
+        {(() => {
+          const hero = getCategoryHero(collection.handle);
+          const explainer =
+            (collection.description && collection.description.trim()) ||
+            hero.explainer ||
+            "";
+          return (
+            <>
+              {/* Banner image — full-width, 5:1 desktop only */}
+              {hero.image && (
+                <div
+                  className="hidden md:block"
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    aspectRatio: "5 / 1",
+                    overflow: "hidden",
+                    background: "var(--color-surface-2)",
+                  }}
+                >
+                  <Image
+                    src={hero.image}
+                    alt={collection.title}
+                    fill
+                    priority
+                    sizes="100vw"
+                    style={{ objectFit: "cover", objectPosition: "center 40%" }}
+                  />
+                  {/* Left-to-right gradient scrim so the breadcrumb stays
+                      legible against any image content. */}
+                  <div
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(to right, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 55%, transparent 100%)",
+                    }}
+                  />
+                  <div
+                    className="container-x"
+                    style={{
+                      position: "absolute",
+                      bottom: 16,
+                      left: 0,
+                      right: 0,
+                    }}
+                  >
+                    <nav
+                      aria-label="Breadcrumb"
+                      style={{
+                        display: "flex",
+                        gap: 6,
+                        alignItems: "center",
+                        fontSize: 12,
+                        color: "rgba(255,255,255,0.55)",
+                      }}
+                    >
+                      <Link href="/">Home</Link>
+                      <Icons.chevRight size={10} />
+                      <Link href="/collections">Shop</Link>
+                      <Icons.chevRight size={10} />
+                      <span style={{ color: "rgba(255,255,255,0.85)" }}>
+                        {collection.title}
+                      </span>
+                    </nav>
+                  </div>
+                </div>
+              )}
+
               <div
-                className="grid grid-cols-1 md:grid-cols-[1fr_320px]"
-                style={{ gap: 32, alignItems: "center" }}
+                className="container-x"
+                style={{
+                  paddingTop: hero.image ? 20 : 32,
+                  paddingBottom: 28,
+                }}
               >
-                <div>
+                {/* Mobile-only breadcrumb (no banner overlay on mobile) */}
+                <nav
+                  aria-label="Breadcrumb"
+                  className={hero.image ? "md:hidden" : ""}
+                  style={{
+                    display: "flex",
+                    gap: 6,
+                    alignItems: "center",
+                    fontSize: 12,
+                    color: "var(--color-muted-warm)",
+                    marginBottom: 12,
+                  }}
+                >
+                  <Link href="/">Home</Link>
+                  <Icons.chevRight size={10} />
+                  <Link href="/collections">Shop</Link>
+                  <Icons.chevRight size={10} />
+                  <span style={{ color: "var(--color-foreground)" }}>
+                    {collection.title}
+                  </span>
+                </nav>
+
+                <div style={{ maxWidth: 760 }}>
                   <h1
                     className="display-h3"
                     style={{
                       fontFamily: "var(--font-display)",
-                      fontSize: 44,
+                      fontSize: "clamp(28px, 5vw, 48px)",
                       textTransform: "uppercase",
                       letterSpacing: "-0.01em",
+                      lineHeight: 1.0,
                     }}
                   >
                     {collection.title}
@@ -408,42 +479,21 @@ export default async function CollectionPage({
                   {explainer && (
                     <p
                       style={{
-                        color: "var(--color-muted)",
-                        fontSize: 14,
-                        marginTop: 12,
+                        color: "var(--color-muted-warm)",
+                        fontSize: 15,
+                        marginTop: 10,
                         lineHeight: 1.6,
-                        maxWidth: 640,
+                        maxWidth: 560,
                       }}
                     >
                       {explainer}
                     </p>
                   )}
                 </div>
-                {hero.image && (
-                  <div
-                    style={{
-                      width: "100%",
-                      aspectRatio: "4 / 3",
-                      position: "relative",
-                      borderRadius: "var(--radius-md)",
-                      overflow: "hidden",
-                      background: "var(--color-surface-2)",
-                      border: "1px solid var(--color-border)",
-                    }}
-                  >
-                    <Image
-                      src={hero.image}
-                      alt={collection.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 320px"
-                      style={{ objectFit: "cover" }}
-                    />
-                  </div>
-                )}
               </div>
-            );
-          })()}
-        </div>
+            </>
+          );
+        })()}
       </section>
 
       {/* Cycle 14AO + 14AP (owner): "show options before items," gated.

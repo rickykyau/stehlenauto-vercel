@@ -42,6 +42,13 @@
   --color-section-light: #e6e0d6;
   --color-section-light-fg: #0a0a0a;
   --color-section-light-muted: #8a8278;
+  /* Cycle 14AP (Diana): warm-tinted secondary text used on
+   * --color-surface-warm sections (collection-page hero, reactivation
+   * banner). The default --color-muted (#a0a0a0) is cool-grey and reads
+   * "fine print" on warm surfaces. #c0bdb8 is a warm-adjusted
+   * lighter step that matches the warm-dark hue and stays at 9.1:1
+   * contrast on #16140f — well above AA. */
+  --color-muted-warm: #c0bdb8;
 
   /* Cycle 14AK PR1 (Diana visual audit): --font-display swapped from
    * Geist Mono → Archivo. Mono was carrying display, eyebrows, body, and
