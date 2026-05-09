@@ -231,6 +231,20 @@ const STOP = new Set([
   "3500",
 ]);
 
+// Cycle 14AP-fix5 (owner-found, prod): owner saw 2 Volkswagen Touareg
+// grilles in the F-150 grid on /collections/front-grilles. Root cause:
+// Volkswagen wasn't in MAKE_ALIASES, so the "competing make" check at
+// line ~530 returned an empty list; checkFitment fell through to
+// undefined (universal candidate) instead of false (confirmed
+// mismatch). The Shopify front-grilles collection contains plenty of
+// non-truck makes (VW, Audi, BMW, Mercedes, Subaru, Land Rover) — they
+// MUST be detectable so checkFitment can drop them from a Ford F-150
+// customer's grid.
+//
+// Added the European/luxury/non-truck makes most likely to appear in a
+// truck-accessories catalog. Each maps to its own brand string so the
+// detection is symmetric — e.g., a Volkswagen customer searching with
+// vehicle=Volkswagen would still match VW products.
 const MAKE_ALIASES: Record<string, string[]> = {
   ford: ["ford"],
   chevrolet: ["chevrolet", "chevy", "silverado"],
@@ -247,6 +261,25 @@ const MAKE_ALIASES: Record<string, string[]> = {
   tesla: ["tesla"],
   lexus: ["lexus", "toyota"],
   mazda: ["mazda"],
+  volkswagen: ["volkswagen", "vw"],
+  vw: ["volkswagen", "vw"],
+  bmw: ["bmw"],
+  "mercedes-benz": ["mercedes", "mercedes-benz", "benz"],
+  mercedes: ["mercedes", "mercedes-benz", "benz"],
+  audi: ["audi"],
+  subaru: ["subaru"],
+  porsche: ["porsche"],
+  "land rover": ["land rover", "range rover", "landrover"],
+  "range rover": ["land rover", "range rover"],
+  volvo: ["volvo"],
+  lincoln: ["lincoln"],
+  cadillac: ["cadillac", "caddy"],
+  buick: ["buick"],
+  acura: ["acura"],
+  infiniti: ["infiniti", "infinity"],
+  mitsubishi: ["mitsubishi"],
+  fiat: ["fiat"],
+  mini: ["mini cooper", "mini"],
 };
 
 function tokens(s: string): string[] {
