@@ -88,6 +88,133 @@ export function stripsForCategory(
 }
 
 /**
+ * Cycle 14AP-fix7 (owner): per-vehicle dimension availability. The
+ * generic chip strips list every option in the catalog (6 bed lengths,
+ * 3 cab types, 3 trims) — but a 2021 Ford F-150 customer is only sold
+ * in 5.5'/6.5'/8' beds. Showing them 4.6' and 5' and 6' is noise that
+ * implies "maybe my truck has this and I just don't know" — wrong, and
+ * trust-eroding.
+ *
+ * This lookup keys off "<make> <model>" (case-insensitive, post-
+ * normalize) and returns the ACTUALLY-OFFERED option list for each
+ * sub-model group. When a vehicle isn't in the table, callers fall
+ * back to the full STRIPS option set (current behaviour) so we don't
+ * regress unknown vehicles.
+ *
+ * Source: industry-standard manufacturer trim catalogs as of MY2024.
+ * Light-duty pickups + popular SUVs covered; HD trucks (F-250+) and
+ * heavy-class trucks (3500+) lean to longer beds; mid-size trucks
+ * (Tacoma / Frontier / Ranger / Colorado / Canyon) lean to compact.
+ */
+const VEHICLE_BED_LENGTHS: Record<string, string[]> = {
+  // Half-ton domestic
+  "ford f-150": ["5.5' BED", "6.5' BED", "8' BED"],
+  "chevrolet silverado 1500": ["5.5' BED", "6.5' BED", "8' BED"],
+  "chevrolet silverado": ["5.5' BED", "6.5' BED", "8' BED"],
+  "gmc sierra 1500": ["5.5' BED", "6.5' BED", "8' BED"],
+  "gmc sierra": ["5.5' BED", "6.5' BED", "8' BED"],
+  "ram 1500": ["5.5' BED", "6.5' BED"],
+  "dodge ram 1500": ["5.5' BED", "6.5' BED"],
+  // Heavy-duty domestic
+  "ford f-250": ["6.5' BED", "8' BED"],
+  "ford f-350": ["6.5' BED", "8' BED"],
+  "ford f-450": ["8' BED"],
+  "chevrolet silverado 2500": ["6.5' BED", "8' BED"],
+  "chevrolet silverado 3500": ["6.5' BED", "8' BED"],
+  "gmc sierra 2500": ["6.5' BED", "8' BED"],
+  "gmc sierra 3500": ["6.5' BED", "8' BED"],
+  "ram 2500": ["6.5' BED", "8' BED"],
+  "ram 3500": ["6.5' BED", "8' BED"],
+  // Half-ton import
+  "toyota tundra": ["5.5' BED", "6.5' BED", "8' BED"],
+  "nissan titan": ["5.5' BED", "6.5' BED"],
+  // Mid-size
+  "toyota tacoma": ["5' BED", "6' BED"],
+  "ford ranger": ["5' BED", "6' BED"],
+  "chevrolet colorado": ["5' BED", "6' BED"],
+  "gmc canyon": ["5' BED", "6' BED"],
+  "nissan frontier": ["4.6' BED", "5' BED", "6' BED"],
+  "honda ridgeline": ["5' BED"],
+};
+
+const VEHICLE_CAB_TYPES: Record<string, string[]> = {
+  // Most half-ton + HD trucks: all three configs
+  "ford f-150": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  "ford f-250": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  "ford f-350": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  "chevrolet silverado 1500": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  "chevrolet silverado": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  "chevrolet silverado 2500": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  "chevrolet silverado 3500": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  "gmc sierra 1500": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  "gmc sierra": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  // Ram drops Regular Cab on 1500 starting 2019
+  "ram 1500": ["CREW CAB", "SUPERCAB"],
+  "ram 2500": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  "ram 3500": ["CREW CAB", "SUPERCAB", "REGULAR CAB"],
+  // Toyota — Tundra is Crew/Super only modern
+  "toyota tundra": ["CREW CAB", "SUPERCAB"],
+  "toyota tacoma": ["CREW CAB", "SUPERCAB"],
+  // Mid-size import
+  "nissan frontier": ["CREW CAB", "SUPERCAB"],
+  "nissan titan": ["CREW CAB", "SUPERCAB"],
+  // Honda Ridgeline is Crew only
+  "honda ridgeline": ["CREW CAB"],
+};
+
+function vehicleKey(make: string, model: string): string {
+  return `${make} ${model}`.toLowerCase().trim();
+}
+
+/**
+ * Cycle 14AP-fix7 (owner): subset the strip's options to ONLY what the
+ * vehicle is actually sold with. Unknown vehicles (not in the lookup)
+ * get the full option set so the picker still works. Returns null when
+ * no vehicle is set so callers know to use the full set explicitly.
+ */
+export function availableOptionsForVehicle(
+  group: SubModelGroup,
+  vehicle: { make: string; model: string } | null | undefined,
+): string[] | null {
+  if (!vehicle) return null;
+  const key = vehicleKey(vehicle.make, vehicle.model);
+  if (group === "bed_length") {
+    return VEHICLE_BED_LENGTHS[key] ?? null;
+  }
+  if (group === "cab_type") {
+    return VEHICLE_CAB_TYPES[key] ?? null;
+  }
+  // trim and doors: keep all options (trim varies by model-year too
+  // narrowly to maintain a static lookup; door count rarely needed)
+  return null;
+}
+
+/**
+ * Cycle 14AP-fix7 (owner): like stripsForCategory() but with each
+ * strip's options narrowed to what the vehicle is actually sold with.
+ * When the vehicle is unknown to the lookup, falls back to the full
+ * option set. When a strip has only ONE available option for the
+ * vehicle (e.g., Honda Ridgeline → 5' BED only, or 5' BED + CREW CAB),
+ * the option list still contains that single value — the picker can
+ * decide whether to render a single-chip row or auto-select.
+ */
+export function availableStripsForCategory(
+  category: string | undefined,
+  vehicle: { make: string; model: string } | null | undefined,
+): SubModelStripConfig[] {
+  const base = stripsForCategory(category);
+  if (!vehicle) return base;
+  return base.map((s) => {
+    const allowed = availableOptionsForVehicle(s.group, vehicle);
+    if (!allowed || allowed.length === 0) return s;
+    // Keep the canonical option ordering from STRIPS but narrow to
+    // intersection with the vehicle's allowed list.
+    const filtered = s.options.filter((opt) => allowed.includes(opt));
+    return filtered.length > 0 ? { ...s, options: filtered } : s;
+  });
+}
+
+/**
  * Cycle 14AP (owner): convert a (group, optionLabel) pair into a stable
  * slug used for chip-image filenames under /public/images/dimensions/.
  * Examples:

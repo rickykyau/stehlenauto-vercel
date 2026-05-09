@@ -5,9 +5,9 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
 import {
+  availableStripsForCategory,
   canonicalSubModelValue,
   dimensionChipSlug,
-  stripsForCategory,
   type SubModelStripConfig,
 } from "@/lib/fitment/sub-model";
 import type { SubModelAnswer, SubModelGroup, Vehicle } from "@/lib/garage/types";
@@ -413,7 +413,15 @@ export function DimensionPicker({
     [vehicle, clearDb, clearUrlDim],
   );
 
-  const strips: SubModelStripConfig[] = stripsForCategory(categoryHandle);
+  // Cycle 14AP-fix7 (owner): narrow the chip options to what the vehicle
+  // is actually sold with. 2021 Ford F-150 only has 5.5'/6.5'/8' beds,
+  // so showing 4.6'/5'/6' is noise that implies "maybe my truck has one
+  // of these and I just don't know" — wrong, and trust-eroding. Falls
+  // back to the full option set when vehicle is null or unknown.
+  const strips: SubModelStripConfig[] = availableStripsForCategory(
+    categoryHandle,
+    vehicle ?? null,
+  );
   if (strips.length === 0) return null;
 
   // Cycle 14AP-fix4 (owner POC): on /collections/front-grilles ONLY,

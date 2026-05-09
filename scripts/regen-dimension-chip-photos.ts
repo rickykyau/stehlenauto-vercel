@@ -32,52 +32,73 @@ const GAS_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${
 // Camera angle and framing are fixed across the full set so the chip row
 // reads as a coherent comparison strip, not a random gallery.
 const CHIPS: { slug: string; subject: string; framing: string; intent: string }[] = [
-  // ─── BED LENGTH (6 options) ───────────────────────────────────────────
-  // Pure side profile of a generic modern American pickup, varying only
-  // the bed length. Camera position, distance, lighting, paint colour
-  // identical across all 6 so the customer's eye reads the BED size as
-  // the only variable. White seamless studio background.
+  // ─── BED LENGTH (6 options) ─────────────────────────────────────────
+  // Cycle 14AP-fix6 (owner): the prior pass produced mixed orientations
+  // (some left-facing, some right-facing), mixed truck models, mixed
+  // backgrounds, and AI artifacts (2 heads / 2 tails). Locking down:
+  //
+  //   * Vehicle: ONE anonymous matte-black American pickup, no badges,
+  //     no manufacturer logos, no light bars, completely stock.
+  //   * Orientation: ALL chips face LEFT (cab on the left edge of the
+  //     frame, bed extends to the RIGHT). Customer's eye learns to read
+  //     bed length on the right half of every card.
+  //   * Camera: pure side profile, dead-level, eye-line height, single
+  //     focal length (~85mm equivalent — no wide-angle distortion),
+  //     identical distance from vehicle.
+  //   * Background: PURE WHITE seamless studio cyclorama, no horizon,
+  //     no ground plane shadow other than a soft contact shadow under
+  //     the tires.
+  //   * Lighting: single soft top-down key light, no rim lights, no
+  //     amber accents, no environmental light. Flat product-photography
+  //     style — the BED RATIO is the only thing that should vary.
+  //   * Crop: vehicle takes 80% of frame width, 8% padding top/bottom,
+  //     5% padding left/right.
+  //
+  // The bed-vs-cab ratio is the only visual differentiator. Each chip
+  // also gets an SVG measurement overlay applied client-side in the
+  // picker UI, so even if Gemini's photo is approximate the dimension
+  // is reinforced numerically.
   {
     slug: "bed-length-4-6-bed",
     subject:
-      "modern matte-black American pickup truck (anonymous styling — no badges, no manufacturer logo) with a noticeably SHORT 4.6-foot truck bed (compact / utility-bed length, common on Nissan Frontier D40)",
-    framing: "pure side profile, dead-level camera, full vehicle in frame with 10% padding above and below, white seamless studio background, soft top-down studio lighting, tires on flat ground",
-    intent: "Customer should immediately read 'this is the SHORTEST bed option'. The bed length is the visual subject — exaggerate the front cab to bed ratio so the bed reads as compact.",
+      "ONE anonymous matte-black American pickup truck, no badges, no logos, regular cab (2-door), with a 4.6-foot truck bed — clearly the SHORTEST configuration. Cab + 2-door area takes ~60% of the side profile width, bed takes ~40%. Stock factory wheels. No light bars, no roof racks, no aftermarket parts.",
+    framing: "PURE LEFT SIDE PROFILE — vehicle FACING LEFT (cab on LEFT edge of frame, bed extends to the RIGHT). Dead-level camera at vehicle eye-line. Pure white seamless cyclorama background, soft top-down studio key light only. Vehicle 80% of frame width. Soft contact shadow under tires.",
+    intent: "Shortest bed — bed takes ~40% of side profile. The right-half of the chip is the bed; the left-half is the cab + door. Same truck silhouette as the other 5 chips.",
   },
   {
     slug: "bed-length-5-bed",
     subject:
-      "modern matte-black American pickup truck (anonymous styling) with a 5-foot truck bed (compact, often paired with crew-cab configurations on mid-size trucks)",
-    framing: "pure side profile, dead-level camera, full vehicle in frame, white seamless studio background, identical lighting and angle to the other bed-length chips",
-    intent: "Slightly longer bed than 4.6'. Customer reads it as 'short bed, crew cab'.",
+      "EXACT SAME anonymous matte-black American pickup truck as the other bed-length chips, no badges, no logos, regular cab (2-door), now with a 5-foot truck bed. Cab + 2-door area takes ~58% of side profile, bed takes ~42%. Same wheels, same colour, same trim — only the bed length has changed.",
+    framing: "IDENTICAL framing to the other bed-length chips: PURE LEFT SIDE PROFILE, vehicle facing LEFT, cab on LEFT edge, bed extends RIGHT. Pure white seamless cyclorama, same lighting, same camera distance, same eye-line.",
+    intent: "Slightly longer bed than 4.6'. Bed-to-cab ratio shifts ~2% bigger. Same truck.",
   },
   {
     slug: "bed-length-5-5-bed",
     subject:
-      "modern matte-black American pickup truck (anonymous styling) with a 5.5-foot truck bed (the classic SHORT bed on a half-ton crew cab — Ford F-150 SuperCrew 5.5-ft, Silverado 1500 5.8-ft)",
-    framing: "pure side profile, dead-level camera, full vehicle in frame, white seamless studio background, identical lighting and angle to the other bed-length chips",
-    intent: "Most popular short-bed option. Customer reads 'this is my F-150 SuperCrew bed'.",
+      "EXACT SAME anonymous matte-black American pickup truck silhouette, regular cab (2-door), now with a 5.5-foot truck bed. Cab takes ~55% of profile, bed takes ~45%. Same vehicle, same wheels, same paint — only the bed dimension changes.",
+    framing: "IDENTICAL framing — pure left side profile, vehicle facing LEFT, white cyclorama, same lighting and camera as all other bed-length chips.",
+    intent: "Most-common short-bed option. Bed reads as a meaningful step longer than 5'.",
   },
   {
     slug: "bed-length-6-bed",
     subject:
-      "modern matte-black American pickup truck (anonymous styling) with a 6-foot truck bed (Toyota Tacoma long bed, mid-size standard)",
-    framing: "pure side profile, dead-level camera, full vehicle in frame, white seamless studio background, identical lighting and angle to the other bed-length chips",
-    intent: "Mid-length. Customer reads 'between short and standard'.",
+      "EXACT SAME anonymous matte-black American pickup truck silhouette, regular cab (2-door), now with a 6-foot truck bed. Cab takes ~52% of profile, bed takes ~48%. Same everything else.",
+    framing: "IDENTICAL framing — pure left side profile, vehicle facing LEFT, white cyclorama.",
+    intent: "Mid-length bed. Customer reads it as roughly bed = cab.",
   },
   {
     slug: "bed-length-6-5-bed",
     subject:
-      "modern matte-black American pickup truck (anonymous styling) with a 6.5-foot truck bed (the classic STANDARD bed on a half-ton — Ford F-150 6.5-ft, Silverado 1500 6.6-ft)",
-    framing: "pure side profile, dead-level camera, full vehicle in frame, white seamless studio background, identical lighting and angle to the other bed-length chips",
-    intent: "Standard bed. Customer reads 'this is the regular F-150 / Silverado bed'.",
+      "EXACT SAME anonymous matte-black American pickup truck silhouette, regular cab (2-door), now with a 6.5-foot truck bed. Cab takes ~48% of profile, bed takes ~52% — bed slightly LONGER than cab now. Same vehicle, same wheels, same paint.",
+    framing: "IDENTICAL framing — pure left side profile, vehicle facing LEFT, white cyclorama.",
+    intent: "Standard half-ton bed. Bed becomes the visually larger half — the tipping point in the comparison strip.",
   },
   {
     slug: "bed-length-8-bed",
     subject:
-      "modern matte-black American pickup truck (anonymous styling) with a noticeably LONG 8-foot truck bed (full work-truck bed, common on F-250/F-350 single cab and 3500-class)",
-    framing: "pure side profile, dead-level camera, full vehicle in frame with 10% padding above and below, white seamless studio background, identical lighting and angle to the other bed-length chips",
-    intent: "Customer reads 'this is the LONGEST bed' — the bed should clearly dominate the side profile and visually overshadow the cab.",
+      "EXACT SAME anonymous matte-black American pickup truck silhouette, regular cab (2-door), now with a noticeably LONG 8-foot truck bed. Cab takes ~38% of profile, bed takes ~62% — bed clearly DOMINATES the side profile. Same vehicle.",
+    framing: "IDENTICAL framing — pure left side profile, vehicle facing LEFT, white cyclorama, same lighting.",
+    intent: "Longest bed. Bed is visually almost twice the width of the cab — customer immediately reads it as the LONGEST option in the strip.",
   },
 
   // ─── CAB TYPE (3 options) ─────────────────────────────────────────────
@@ -131,66 +152,78 @@ const CHIPS: { slug: string; subject: string; framing: string; intent: string }[
     intent: "Customer reads 'aggressive premium / off-road package — that's my Raptor / TRD Pro'.",
   },
 
-  // ─── FRONT-GRILLE POC (Cycle 14AP-fix4, owner) ───────────────────────
-  // Per-category override for front-grilles ONLY. Shows the SAME Ford
-  // F-150 in the SAME 3/4-front camera angle across all 6 photos so
-  // the customer compares apples-to-apples. Each trim has a STOCK
-  // photo (factory grille) AND a STEHLEN photo (matte-black hex-mesh
-  // Stehlen grille mounted in place of the factory unit). The picker
-  // adds a toggle button to swap between the two views — gives the
-  // customer a real-time preview of what their truck would look like
-  // with the Stehlen grille installed.
+  // ─── FRONT-GRILLE POC (Cycle 14AP-fix6 — owner round 2) ─────────────
+  // Round 1 came back with mixed orientations (BASE faced right, MID
+  // faced left), mixed truck models (HEAVY-DUTY rendered a CHASE RACK
+  // not a truck — Gemini got confused by "Raptor-style"), and a
+  // STEHLEN wordmark on the grille that owner specifically didn't want
+  // ("our actual products do not have it").
   //
-  // Naming convention: front-grille-trim-<value>-<view>
-  //   view = "stock" | "stehlen"
-  //
-  // Vehicle anchor: 2024 Ford F-150 SuperCrew, three-quarter front-side
-  // angle, eye-level camera, plain white seamless studio background,
-  // soft top-down lighting from above-camera-left. Trim differentiation
-  // is ONLY in the grille zone, paint, wheels, and bumper styling — body
-  // shape and stance stay identical so the customer's eye locks on the
-  // grille area where the product fits.
+  // Locked-down round 2:
+  //   * Vehicle: 2024 Ford F-150 SuperCrew 4-door — IDENTICAL silhouette
+  //     across all 6 photos. NO mention of "Raptor" / "Trail Boss" /
+  //     "TRD Pro" / "Rebel" — those words trip Gemini into rendering
+  //     completely different vehicles.
+  //   * Angle: 3/4 front-side, FACING LEFT — vehicle is angled so the
+  //     grille is visible on the LEFT side of the frame, body extends
+  //     to the RIGHT. ALL 6 use this same angle, same camera height,
+  //     same camera distance.
+  //   * Background: pure white seamless studio cyclorama, soft top-
+  //     down key light, soft contact shadow under tires only. NO
+  //     environment, NO mountains, NO desert.
+  //   * Trim diff: paint colour + bumper finish + wheel style ONLY.
+  //     Body shape, stance, ride height, and camera framing all
+  //     identical so the only thing that changes between trim levels
+  //     is the colour story and the trim-package surface treatment.
+  //   * Grille (Stehlen view): matte-black hex-mesh aftermarket grille
+  //     replacing the factory chrome surround. NO Stehlen wordmark.
+  //     NO embossed branding. Just a matte-black hex-mesh face — what
+  //     the actual product looks like.
+  //   * Within each trim pair (base-stock + base-stehlen), the camera
+  //     position, lighting, paint, wheels, and bumper are IDENTICAL.
+  //     The ONLY visual difference is the grille area. Customer toggles
+  //     and sees a true 1:1 swap.
   {
     slug: "front-grille-trim-base-stock",
     subject:
-      "2024 Ford F-150 XL work-truck trim (BASE), oxford white paint, factory chrome front bumper, factory steel-mesh grille with chrome surround, factory steel wheels, fleet/commercial appearance, three-quarter front-side angle showing the front grille area clearly. STOCK FACTORY — no aftermarket parts.",
-    framing: "three-quarter front-side angle, eye-level camera, full vehicle in frame with 8% padding, plain white seamless studio background, soft top-down lighting from above-camera-left — identical framing to ALL other front-grille-trim-* photos",
-    intent: "Same F-150 silhouette as the other two trims; customer reads 'BASE / WORK trim — chrome bumper, steel grille, white work truck'. The grille area is the visual focal point.",
+      "2024 Ford F-150 SuperCrew 4-door pickup truck in BASE / XL work-truck trim. Oxford white paint. Factory chrome front bumper. Factory chrome-surround grille with horizontal silver bars. Factory 17-inch steel wheels with hub caps. Standard ride height (no lift). NO aftermarket parts of any kind. NO chase rack, NO bed accessories, NO roof rack, NO light bar.",
+    framing: "Three-quarter front-side view, vehicle FACING LEFT — grille on the LEFT half of the frame, body extending to the RIGHT. Eye-level camera, ~85mm focal length (no wide-angle distortion), camera ~15ft from vehicle. Full vehicle in frame with 8% padding all sides. Pure white seamless studio cyclorama (no horizon, no environment). Single soft top-down studio key light, soft contact shadow under tires. The grille area is the visual focal point.",
+    intent: "Same Ford F-150 silhouette as the other two trims; only paint + bumper + wheels differ. Customer reads 'BASE / WORK trim — chrome bumper, steel wheels, white paint'.",
   },
   {
     slug: "front-grille-trim-base-stehlen",
     subject:
-      "EXACT same 2024 Ford F-150 XL work-truck (oxford white, chrome bumper, steel wheels) BUT with a matte-black STEHLEN aftermarket front grille installed in place of the factory chrome-surround grille. The Stehlen grille has a hex-mesh insert with a row of three amber LED markers across the upper crossbar and a STEHLEN wordmark embossed in the lower-center mesh. Everything else about the vehicle is identical to the stock photo.",
-    framing: "IDENTICAL framing, camera position, lighting, paint, wheels to front-grille-trim-base-stock — only the grille has been replaced. The customer should be able to mentally swap between this and the stock photo and see ONLY the grille difference.",
-    intent: "Customer toggles from STOCK and immediately sees what their work-trim F-150 would look like with the Stehlen hex-mesh grille bolted on.",
+      "EXACT SAME 2024 Ford F-150 SuperCrew 4-door in BASE / XL trim — oxford white paint, chrome bumper, factory steel wheels — BUT with a matte-black hex-mesh aftermarket front grille installed in place of the factory chrome-surround grille. Hex-mesh has a clean honeycomb pattern, no badging, no wordmark, no LED markers, no decoration. Just a matte-black hex grille face. Everything else about the vehicle is byte-for-byte identical to the BASE stock photo: same angle, same paint, same bumper, same wheels, same lighting.",
+    framing: "IDENTICAL framing, camera position, lighting, vehicle position, paint, bumper, and wheels to front-grille-trim-base-stock. The customer must be able to flip back and forth between the two photos and see ONLY the grille change.",
+    intent: "Customer toggles from STOCK and sees what their white work-trim F-150 looks like with a matte-black hex-mesh grille bolted on. The chrome-to-black grille swap is the only visible change.",
   },
   {
     slug: "front-grille-trim-mid-stock",
     subject:
-      "2024 Ford F-150 XLT mid-trim, lightning blue metallic paint, body-color front bumper, factory body-color grille with chrome accents and Ford BLUE OVAL badge, factory 18-inch alloy wheels, mainstream consumer appearance, three-quarter front-side angle showing the front grille area clearly. STOCK FACTORY — no aftermarket parts.",
-    framing: "three-quarter front-side angle, eye-level camera, full vehicle in frame with 8% padding, plain white seamless studio background, soft top-down lighting from above-camera-left — identical framing to ALL other front-grille-trim-* photos",
-    intent: "Same F-150 silhouette; customer reads 'XLT / mid-trim — body-color bumper, factory grille with chrome'. Grille zone is the focus.",
+      "2024 Ford F-150 SuperCrew 4-door pickup truck in MID-TIER / XLT trim. Atlas blue metallic paint. Factory body-color (blue) front bumper. Factory body-color grille with chrome horizontal bars. Factory 18-inch alloy wheels. Standard ride height. NO aftermarket parts.",
+    framing: "IDENTICAL framing to front-grille-trim-base-stock — three-quarter front-side view, vehicle facing LEFT, grille on LEFT half of frame, eye-level camera, same focal length, same distance, pure white seamless studio cyclorama, same lighting.",
+    intent: "Same F-150 silhouette as BASE; only paint colour + bumper finish + wheel style change. Customer reads 'XLT / MID trim — blue paint, body-color bumper, alloy wheels'.",
   },
   {
     slug: "front-grille-trim-mid-stehlen",
     subject:
-      "EXACT same 2024 Ford F-150 XLT (lightning blue, body-color bumper, alloy wheels) BUT with a matte-black STEHLEN aftermarket front grille installed in place of the factory body-color grille. Stehlen grille has hex-mesh insert with three amber LED markers across the top and STEHLEN wordmark embossed lower-center. Everything else identical to the mid-trim stock photo.",
-    framing: "IDENTICAL framing, camera position, lighting, paint, wheels to front-grille-trim-mid-stock — only the grille is swapped.",
-    intent: "Mid-trim customer sees their XLT F-150 with the Stehlen grille bolted on.",
+      "EXACT SAME 2024 Ford F-150 SuperCrew XLT — atlas blue metallic, body-color bumper, alloy wheels — BUT with the SAME matte-black hex-mesh aftermarket grille from the BASE stehlen photo installed in place of the factory grille. Hex-mesh face, no badging, no wordmark, no LEDs. Same grille design as base-stehlen so the toggle reads consistently.",
+    framing: "IDENTICAL framing, camera position, lighting, paint, bumper, and wheels to front-grille-trim-mid-stock. Only the grille has been swapped to matte-black hex-mesh.",
+    intent: "Mid-trim customer sees their blue XLT F-150 with the matte-black hex grille bolted on.",
   },
   {
     slug: "front-grille-trim-heavy-duty-stock",
     subject:
-      "2024 Ford F-150 Raptor-style HEAVY-DUTY / off-road trim, agate black metallic paint, blacked-out front bumper, factory matte-black grille with FORD wordmark across the top, factory 17-inch beadlock-style off-road wheels, slight factory lift, fender flares, aggressive premium stance, three-quarter front-side angle showing the front grille area clearly. STOCK FACTORY — no aftermarket parts.",
-    framing: "three-quarter front-side angle, eye-level camera, full vehicle in frame with 8% padding, plain white seamless studio background, soft top-down lighting from above-camera-left — identical framing to ALL other front-grille-trim-* photos",
-    intent: "Same F-150 silhouette; customer reads 'Raptor / heavy-duty trim — black-on-black, off-road wheels, lifted'. Grille zone is the focus.",
+      "2024 Ford F-150 SuperCrew 4-door pickup truck in HEAVY-DUTY / OFF-ROAD trim package (Lariat / Tremor styling — NOT Raptor, NOT Trail Boss, NOT Rebel). Agate black metallic paint. Blacked-out front bumper. Factory matte-black grille with chrome horizontal bars and Ford blue-oval badge. Factory 18-inch matte-black off-road wheels with all-terrain tires. Slight 2-inch factory lift. NO chase rack, NO bed accessories, NO roof rack — this is JUST the truck.",
+    framing: "IDENTICAL framing to front-grille-trim-base-stock — three-quarter front-side view, vehicle facing LEFT, grille on LEFT half of frame, eye-level camera, pure white seamless studio cyclorama, same lighting. Vehicle takes the same 80% of frame width as the other trims.",
+    intent: "Same F-150 silhouette as BASE and MID; only paint + bumper + wheels change. Customer reads 'HEAVY-DUTY / off-road trim — black-on-black, off-road wheels, slightly lifted'. The truck must be RECOGNIZABLY THE SAME F-150, not a different vehicle.",
   },
   {
     slug: "front-grille-trim-heavy-duty-stehlen",
     subject:
-      "EXACT same 2024 Ford F-150 Raptor-style heavy-duty trim (agate black, blacked-out bumper, off-road wheels) BUT with a matte-black STEHLEN aftermarket front grille installed in place of the factory grille. Stehlen grille has hex-mesh insert with three amber LED markers across the top crossbar and STEHLEN wordmark embossed lower-center. The black-on-black aesthetic of the truck and the matte-black Stehlen grille blend tactically. Everything else identical to the heavy-duty stock photo.",
-    framing: "IDENTICAL framing, camera position, lighting, paint, wheels to front-grille-trim-heavy-duty-stock — only the grille is swapped.",
-    intent: "Premium-trim customer sees their Raptor-style F-150 with the Stehlen grille bolted on — the matte-black-on-matte-black is the strongest visual sell.",
+      "EXACT SAME 2024 Ford F-150 SuperCrew heavy-duty trim — agate black, blacked-out bumper, matte-black off-road wheels, slight factory lift — BUT with the SAME matte-black hex-mesh aftermarket grille from the BASE and MID stehlen photos installed. Hex-mesh face, no badging, no wordmark, no LEDs. Same grille design across all 3 stehlen photos for visual consistency. The black-on-black aesthetic blends the new grille seamlessly with the truck.",
+    framing: "IDENTICAL framing, camera position, lighting, paint, bumper, and wheels to front-grille-trim-heavy-duty-stock. Only the grille has been swapped to matte-black hex-mesh.",
+    intent: "Premium-trim customer sees their black F-150 with the matte-black hex grille bolted on — the all-black look is the strongest visual sell.",
   },
 ];
 
