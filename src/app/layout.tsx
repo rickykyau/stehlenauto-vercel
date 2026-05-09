@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
@@ -111,7 +112,22 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [vehicle, cart] = await Promise.all([getCurrentVehicle(), getCart()]);
+  const [vehicle, cart, user] = await Promise.all([
+    getCurrentVehicle(),
+    getCart(),
+    // Cycle 14AP-fix16 (owner): pass auth state to Header so the
+    // signed-in state is VISIBLE. Owner had no idea they were signed
+    // in — the header showed no sign-in/sign-out cue at all, only a
+    // GARAGE icon. The signed-in vs guest distinction matters for
+    // YMM persistence (DB vs cookie) and customer needs to know which.
+    currentUser().catch(() => null),
+  ]);
+  const signedInLabel = user
+    ? user.primaryEmailAddress?.emailAddress ??
+      user.username ??
+      user.firstName ??
+      "ACCOUNT"
+    : null;
   // Cycle 14X+ post-sync (Mike-O14 follow-up): pass sub-model answers
   // into the drawer so per-line fitment matches the PDP gate.
   const subModelAnswers = vehicle
@@ -135,6 +151,7 @@ export default async function RootLayout({
           <Header
             vehicle={vehicle ?? undefined}
             cartCount={cart?.totalQuantity ?? 0}
+            signedInLabel={signedInLabel}
           />
           <div className="flex-1">{children}</div>
           <Footer />

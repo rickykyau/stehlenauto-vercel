@@ -13,9 +13,18 @@ import { YmmButton } from "@/components/fitment/ymm-button";
 export function Header({
   vehicle,
   cartCount = 0,
+  signedInLabel = null,
 }: {
   vehicle?: Vehicle;
   cartCount?: number;
+  /**
+   * Cycle 14AP-fix16 (owner): when truthy, the customer is signed in
+   * via Clerk and we render an explicit "SIGNED IN AS X" badge in the
+   * header so the auth state is visible. When null, render a "SIGN IN"
+   * button instead. Owner had no idea they were signed in because the
+   * header showed nothing — only a plain GARAGE icon link.
+   */
+  signedInLabel?: string | null;
 }) {
   return (
     <header>
@@ -279,36 +288,80 @@ export function Header({
 
             <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
               <VehiclePill vehicle={vehicle} />
-              <Link
-                href="/account"
-                prefetch={false}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 2,
-                  minWidth: 44,
-                  minHeight: 44,
-                  color: "var(--color-foreground)",
-                }}
-                aria-label="Garage"
-              >
-                {/* Cycle 14c (Mike-3 minor): tablet header GARAGE/CART tap
-                    targets were 25-38px wide. Locking to 44px square min so
-                    iPad Mini users can tap without missing. */}
-                <Icons.garage size={20} />
-                <span
-                  className="mono"
+              {/* Cycle 14AP-fix16 (owner): explicit auth-state indicator.
+                  Signed-in: show a small primary-yellow dot on the
+                  GARAGE icon + replace the "GARAGE" label with the
+                  user's email/handle so it's unmistakably clear they
+                  are signed in (and as whom). Signed-out: a SIGN IN
+                  pill takes the same slot. Owner reported having no
+                  idea they were signed in because the header had zero
+                  visible auth cue. */}
+              {signedInLabel ? (
+                <Link
+                  href="/account"
+                  prefetch={false}
                   style={{
-                    fontSize: 9,
-                    letterSpacing: "0.1em",
-                    color: "var(--color-muted)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 2,
+                    minWidth: 44,
+                    minHeight: 44,
+                    color: "var(--color-foreground)",
+                    position: "relative",
                   }}
+                  aria-label={`Account — signed in as ${signedInLabel}`}
+                  title={`Signed in as ${signedInLabel}`}
                 >
-                  GARAGE
-                </span>
-              </Link>
+                  <div style={{ position: "relative" }}>
+                    <Icons.garage size={20} />
+                    <span
+                      aria-hidden
+                      style={{
+                        position: "absolute",
+                        top: -2,
+                        right: -2,
+                        width: 8,
+                        height: 8,
+                        background: "var(--color-primary)",
+                        borderRadius: "50%",
+                        border: "2px solid var(--color-background)",
+                      }}
+                    />
+                  </div>
+                  <span
+                    className="mono"
+                    style={{
+                      fontSize: 9,
+                      letterSpacing: "0.1em",
+                      color: "var(--color-primary)",
+                      maxWidth: 110,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {signedInLabel.toUpperCase()}
+                  </span>
+                </Link>
+              ) : (
+                <Link
+                  href="/sign-in"
+                  prefetch={false}
+                  className="chip"
+                  style={{
+                    fontSize: 11,
+                    cursor: "pointer",
+                    minHeight: 32,
+                    fontWeight: 700,
+                  }}
+                  aria-label="Sign in"
+                >
+                  SIGN IN
+                </Link>
+              )}
               <CartTrigger
                 ariaLabel="Cart"
                 style={{
