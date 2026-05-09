@@ -265,7 +265,43 @@ async function generateOne(
   spec: (typeof CHIPS)[number],
   brandReferenceBytes: Buffer | null,
 ): Promise<void> {
-  const prompt = `${SYSTEM_PROMPT}
+  // Cycle 14AP-fix8 (owner): for "-stehlen" front-grille variants, use
+  // image-EDIT mode — read the corresponding "-stock" photo from disk
+  // and ask Gemini to ONLY swap the grille, keeping the rest of the
+  // photo byte-identical. Two text-to-image calls cannot produce
+  // identical output (Gemini is stochastic); image-edit is the only
+  // way to get a true 1:1 toggle pair.
+  const isStehlenVariant = spec.slug.endsWith("-stehlen");
+  let editBaseBytes: Buffer | null = null;
+  if (isStehlenVariant) {
+    const stockSlug = spec.slug.replace(/-stehlen$/, "-stock");
+    const stockPath = path.join(OUT_DIR, `${stockSlug}.jpg`);
+    try {
+      editBaseBytes = await fs.readFile(stockPath);
+    } catch {
+      throw new Error(
+        `image-edit base photo not found at ${stockPath} — generate the -stock variant first`,
+      );
+    }
+  }
+
+  const prompt = isStehlenVariant
+    ? `EDIT MODE: this photo is the BASE. You are editing it. Replace the factory front grille on the truck with a matte-black hex-mesh aftermarket grille (clean honeycomb pattern, no badging, no wordmark, no LED markers, no decoration — just a matte-black hex grille face).
+
+ABSOLUTE REQUIREMENTS — keep these IDENTICAL to the input photo:
+- The vehicle (same Ford F-150, same trim, same paint colour)
+- The bumper (same finish, same shape, same position)
+- The wheels and tires (same exact wheels, same exact tires)
+- The camera angle, position, and focal length
+- The lighting (same key light direction, same intensity, same shadows)
+- The background (pure white seamless cyclorama — same)
+- The vehicle's position in the frame (same composition, same crop)
+- Every other body panel, badge, mirror, headlight, fender — UNCHANGED
+
+The ONLY pixels that should change are inside the front grille opening. The customer must be able to flip back and forth between this output and the input and see ONLY the grille difference.
+
+Output: the edited photo as a 3:2 landscape image.`
+    : `${SYSTEM_PROMPT}
 
 Subject: ${spec.subject}
 Framing: ${spec.framing}
@@ -274,6 +310,16 @@ Intent (what the customer must instantly read): ${spec.intent}
 Generate the photo now.`;
 
   const parts: GeminiPart[] = [{ text: prompt }];
+  if (isStehlenVariant && editBaseBytes) {
+    // For edit mode the input photo is the primary content — pass it
+    // BEFORE the brand reference so Gemini treats it as the subject.
+    parts.push({
+      inlineData: {
+        mimeType: "image/jpeg",
+        data: editBaseBytes.toString("base64"),
+      },
+    });
+  }
   if (brandReferenceBytes) {
     parts.push({
       inlineData: {
