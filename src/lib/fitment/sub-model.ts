@@ -88,6 +88,27 @@ export function stripsForCategory(
 }
 
 /**
+ * Cycle 14AP (owner): convert a (group, optionLabel) pair into a stable
+ * slug used for chip-image filenames under /public/images/dimensions/.
+ * Examples:
+ *   ("bed_length", "5.5' BED")   → "bed-length-5-5"
+ *   ("cab_type", "CREW CAB")     → "cab-type-crew-cab"
+ *   ("trim", "HEAVY-DUTY")       → "trim-heavy-duty"
+ *
+ * The image generation script (scripts/regen-dimension-chip-photos.ts)
+ * uses the same slug so the picker can build the path predictably.
+ */
+export function dimensionChipSlug(group: SubModelGroup, value: string): string {
+  const groupSlug = group.replace(/_/g, "-");
+  const valueSlug = value
+    .toLowerCase()
+    .replace(/'/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return `${groupSlug}-${valueSlug}`;
+}
+
+/**
  * Cycle 14AO-fix3 (Mike NB-5): allowlist check used by the URL ?dim= parser
  * so a customer can't inject arbitrary text into the picker pill via a
  * crafted shared link. Case-insensitive match against the canonical option

@@ -1,10 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
 import {
   canonicalSubModelValue,
+  dimensionChipSlug,
   stripsForCategory,
   type SubModelStripConfig,
 } from "@/lib/fitment/sub-model";
@@ -58,6 +60,13 @@ type Props = {
   categoryHandle: string;
   vehicle?: Vehicle;
   initialAnswers?: SubModelAnswer[];
+  /**
+   * Cycle 14AP (owner): when true, the picker tells the customer this
+   * answer is required to unlock the grid below. Renders a more prominent
+   * "Pick to see products" callout and a SKIP link that adds ?skip=1 to
+   * the URL so the server can render the grid past the gate.
+   */
+  gated?: boolean;
 };
 
 const DIM_PARAM = "dim";
@@ -66,6 +75,7 @@ export function DimensionPicker({
   categoryHandle,
   vehicle,
   initialAnswers,
+  gated,
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
@@ -524,7 +534,7 @@ export function DimensionPicker({
               <div key={s.group}>
                 <div
                   style={{
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: 600,
                     marginBottom: 4,
                   }}
@@ -535,38 +545,96 @@ export function DimensionPicker({
                   style={{
                     fontSize: 13,
                     color: "var(--color-muted)",
-                    marginBottom: 12,
+                    marginBottom: 14,
                     maxWidth: 720,
                     lineHeight: 1.5,
                   }}
                 >
                   {COPY[s.group].helper}
                 </div>
+                {/* Cycle 14AP (owner): visual chip cards with photo + label.
+                    3:2 aspect, label below image (per Diana's spec). Image
+                    src points at /images/dimensions/<group>-<slug>.jpg —
+                    when the file is missing the next/image onError handler
+                    falls back to a plain text-only chip so the picker
+                    keeps working before the Gemini batch fully populates
+                    the directory. Desktop: 3 per row at md+; mobile: 2
+                    per row. */}
                 <div
-                  style={{
-                    display: "flex",
-                    gap: 8,
-                    flexWrap: "wrap",
-                  }}
+                  className="grid grid-cols-2 md:grid-cols-3"
+                  style={{ gap: 12 }}
                 >
-                  {s.options.map((opt) => (
-                    <button
-                      key={opt}
-                      type="button"
-                      onClick={() => onPick(s.group, opt)}
-                      disabled={pending}
-                      className="chip"
-                      style={{
-                        cursor: pending ? "wait" : "pointer",
-                        minHeight: 40,
-                        paddingLeft: 14,
-                        paddingRight: 14,
-                        fontSize: 13,
-                      }}
-                    >
-                      {opt}
-                    </button>
-                  ))}
+                  {s.options.map((opt) => {
+                    const slug = dimensionChipSlug(s.group, opt);
+                    const imgSrc = `/images/dimensions/${slug}.jpg`;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => onPick(s.group, opt)}
+                        disabled={pending}
+                        aria-label={`Pick ${opt}`}
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          background: "var(--color-surface)",
+                          border: "1px solid var(--color-border)",
+                          borderRadius: "var(--radius-md)",
+                          overflow: "hidden",
+                          padding: 0,
+                          cursor: pending ? "wait" : "pointer",
+                          color: "var(--color-foreground)",
+                          textAlign: "left",
+                          transition: "border-color .15s, transform .15s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor =
+                            "var(--color-primary)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor =
+                            "var(--color-border)";
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: "relative",
+                            width: "100%",
+                            aspectRatio: "3 / 2",
+                            background: "var(--color-surface-2)",
+                          }}
+                        >
+                          <Image
+                            src={imgSrc}
+                            alt={opt}
+                            fill
+                            sizes="(max-width: 768px) 50vw, 33vw"
+                            style={{ objectFit: "cover" }}
+                            // Cycle 14AP: silently swap to the placeholder
+                            // bg when the image hasn't been generated yet.
+                            // Browser hides the broken-image icon by setting
+                            // src to a transparent 1x1 via CSS fallback.
+                            onError={(e) => {
+                              (e.currentTarget as HTMLImageElement).style.display = "none";
+                            }}
+                          />
+                        </div>
+                        <div
+                          style={{
+                            padding: "10px 12px",
+                            fontFamily: "var(--font-display)",
+                            fontSize: 13,
+                            fontWeight: 600,
+                            letterSpacing: "0.06em",
+                            textTransform: "uppercase",
+                            textAlign: "center",
+                          }}
+                        >
+                          {opt}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             );
@@ -586,11 +654,21 @@ export function DimensionPicker({
         )}
 
         {strips.some((s) => !picks[s.group]) && (
-          <div style={{ marginTop: 14 }}>
+          <div style={{ marginTop: 18 }}>
             <button
               type="button"
               onClick={() => {
-                // Anchor-jump to the grid below; no value cleared.
+                // Cycle 14AP (owner): when gated, "Skip" must add ?skip=1
+                // to the URL so the server-side gate opens. When not gated,
+                // it's just an anchor scroll.
+                if (gated) {
+                  const sp = new URLSearchParams(params.toString());
+                  sp.set("skip", "1");
+                  startTransition(() => {
+                    router.push(`${pathname}?${sp.toString()}`);
+                  });
+                  return;
+                }
                 if (typeof document !== "undefined") {
                   const grid = document.getElementById("collection-grid");
                   grid?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -609,6 +687,18 @@ export function DimensionPicker({
             >
               Skip — show all options →
             </button>
+            {gated && (
+              <div
+                style={{
+                  marginTop: 8,
+                  fontSize: 12,
+                  color: "var(--color-muted)",
+                  fontStyle: "italic",
+                }}
+              >
+                Pick to see only the parts that fit, or skip to browse all.
+              </div>
+            )}
           </div>
         )}
       </div>

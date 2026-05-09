@@ -261,6 +261,18 @@ export default async function CollectionPage({
     ? await getSubModelAnswers(vehicle.id ?? "")
     : [];
   const subModelAnswers = mergeAnswers(cookieAnswers, urlAnswers);
+  // Cycle 14AP (owner): server-side gate. Hide toolbar + grid until the
+  // customer answers all required dimensions OR explicitly clicks SKIP
+  // (which sets ?skip=1 in URL). Categories with no required dimensions
+  // are open by default. Computed once so the picker, toolbar, and grid
+  // wrappers below all stay in sync.
+  const requiredGroupsForGate = stripsForCategory(handle).map((s) => s.group);
+  const skipped = sp.skip === "1";
+  const allRequiredAnswered = requiredGroupsForGate.every((g) =>
+    subModelAnswers.some((a) => a.group === g),
+  );
+  const gateOpen =
+    requiredGroupsForGate.length === 0 || allRequiredAnswered || skipped;
   let collection = await getCollection(handle, 24, {
     rawInputs,
     sort,
@@ -434,28 +446,37 @@ export default async function CollectionPage({
         </div>
       </section>
 
-      {/* Cycle 14AO (owner): "show options before items." When the category
-          is dimension-applicable (tonneau covers → bed length, running
-          boards → cab type, bull guards → trim, etc.) we surface a
-          prominent inline picker between the hero and the toolbar. The grid
-          below already reflects whatever has been picked (server-rendered),
-          so this is a non-blocking refinement step — skip-able, not a
-          gate. Categories with no required dimensions render nothing. */}
-      {stripsForCategory(collection.handle).length > 0 && (
-        <DimensionPicker
-          categoryHandle={collection.handle}
-          vehicle={vehicle ?? undefined}
-          initialAnswers={subModelAnswers}
+      {/* Cycle 14AO + 14AP (owner): "show options before items," gated.
+          When category is dimension-applicable AND customer hasn't
+          answered the required dimensions AND hasn't clicked SKIP, we
+          render the picker only — toolbar + grid are hidden until they
+          pick or skip. Trades small friction for fitment accuracy: F-150
+          customer no longer scrolls past bed-length and sees 8' bed mats. */}
+      {(() => {
+        const requiredGroups = stripsForCategory(collection.handle).map(
+          (s) => s.group,
+        );
+        if (requiredGroups.length === 0) return null;
+        return (
+          <DimensionPicker
+            categoryHandle={collection.handle}
+            vehicle={vehicle ?? undefined}
+            initialAnswers={subModelAnswers}
+            gated={!gateOpen}
+          />
+        );
+      })()}
+
+      {gateOpen && (
+        <CollectionToolbar
+          totalProducts={collection.totalProducts}
+          vehicle={vehicle}
         />
       )}
 
-      <CollectionToolbar
-        totalProducts={collection.totalProducts}
-        vehicle={vehicle}
-      />
-
-      {/* Body */}
-      <div
+      {/* Body — only when the gate is open. Closed = picker is the entire
+          above-fold and the customer must engage before browsing. */}
+      {gateOpen && <div
         className="container-x grid grid-cols-1 md:grid-cols-[264px_1fr]"
         style={{ gap: 32, paddingTop: 24, paddingBottom: 64 }}
       >
@@ -752,7 +773,7 @@ export default async function CollectionPage({
             </>
           )}
         </div>
-      </div>
+      </div>}
     </main>
   );
 }
