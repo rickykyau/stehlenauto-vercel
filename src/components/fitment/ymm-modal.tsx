@@ -178,18 +178,26 @@ export function YmmModal() {
       const onShoppingPage = /^\/(collections|products|search|cart|checkout|account)/.test(
         pathname ?? "",
       );
-      // Cycle 14AP-fix12 (owner-found, prod): router.refresh() was not
-      // reliably re-rendering the header layout with the new vehicle on
-      // shopping pages — owner reported switching from F-150 to Tacoma
-      // 3 times and seeing the F-150 chip persist. Replace the soft
-      // refresh with window.location.reload() across the board so the
-      // root layout's getCurrentVehicle() always re-runs against the
-      // freshly-written cookie. Slower scroll-jump but guaranteed.
+      // Cycle 14AP-fix13 (owner-found, prod, round 2): the previous fix
+      // switched to window.location.reload() but owner STILL reports
+      // "stuck on 2021 Ford F-150" after switching. Verified
+      // server-side: API returns Set-Cookie with the new vehicle, and
+      // a curl with that cookie correctly renders the new vehicle in
+      // the layout. So the browser is either:
+      //   (a) caching the previous HTML and serving it on reload
+      //   (b) sending a stale cookie back
+      // Force-bust both: navigate to the same path with a unique query
+      // param. This forces the browser to skip its disk/HTTP cache and
+      // do a clean GET — the server gets the fresh request, the cookie
+      // header on that request includes the just-Set value, the layout
+      // re-renders with the new vehicle.
+      const cacheBust = `_v=${Date.now()}`;
       if (pathname && /^\/vehicle\//.test(pathname)) {
-        // On a vehicle hub — navigate to the new vehicle's hub URL.
-        window.location.href = `/vehicle/${slug}`;
+        window.location.href = `/vehicle/${slug}?${cacheBust}`;
       } else {
-        window.location.reload();
+        const base = pathname ?? "/";
+        const sep = base.includes("?") ? "&" : "?";
+        window.location.href = `${base}${sep}${cacheBust}`;
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
