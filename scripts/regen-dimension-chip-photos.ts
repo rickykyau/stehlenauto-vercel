@@ -225,6 +225,37 @@ const CHIPS: { slug: string; subject: string; framing: string; intent: string }[
     framing: "IDENTICAL framing, camera position, lighting, paint, bumper, and wheels to front-grille-trim-heavy-duty-stock. Only the grille has been swapped to matte-black hex-mesh.",
     intent: "Premium-trim customer sees their black F-150 with the matte-black hex grille bolted on — the all-black look is the strongest visual sell.",
   },
+
+  // ─── BULL-GUARDS POC EXPANSION (Cycle 14AP-fix17, owner) ────────────
+  // Same image-edit approach as front-grilles, different product. The
+  // 3 STOCK photos are NOT generated here — the picker reads the
+  // front-grille-trim-{X}-stock.jpg files (those are F-150 in 3 trims
+  // with no aftermarket parts, perfect baseline for either grille OR
+  // bull-guard image-edits). Only the 3 "+ stehlen bull guard" image-
+  // edits are new. Each takes the corresponding front-grille stock as
+  // input and adds a matte-black tubular bull guard mounted to the
+  // front bumper, with no grille change.
+  {
+    slug: "bull-guard-trim-base-stehlen",
+    subject:
+      "EDIT MODE: take the input photo (a 2024 Ford F-150 XL work-truck in oxford white with chrome bumper) and ADD a matte-black tubular bull guard mounted to the front bumper. The bull guard is a tubular steel structure that wraps around the front grille area with a horizontal cross-bar across the top, vertical uprights on either side framing the grille opening, and a bottom rail. Hex-mesh insert visible behind the upright tubes. Matte-black powder-coat finish on all bull guard tubing. NO LED light bar. NO wordmark. Mounted via the factory tow hook holes. Everything else about the truck (paint, wheels, bumper, grille, lighting, camera angle) stays IDENTICAL to the input photo.",
+    framing: "IDENTICAL framing, camera position, lighting, paint, wheels, and grille to front-grille-trim-base-stock. Only ADDITION is the matte-black tubular bull guard on the front bumper. Customer can flip back and forth between input and output and see ONLY the bull guard appear.",
+    intent: "Customer toggles from STOCK and immediately sees what their work-trim F-150 would look like with a Stehlen tubular bull guard bolted to the front bumper.",
+  },
+  {
+    slug: "bull-guard-trim-mid-stehlen",
+    subject:
+      "EDIT MODE: take the input photo (a 2024 Ford F-150 XLT in atlas blue with chrome bumper) and ADD the SAME matte-black tubular bull guard from the BASE bull-guard photo to the front bumper. Same bull guard design, same matte-black tubing, same hex-mesh insert. No LED bar, no wordmark. Everything else identical to the input photo.",
+    framing: "IDENTICAL framing, camera position, lighting, paint, wheels, bumper, and grille to front-grille-trim-mid-stock. Only ADDITION is the matte-black tubular bull guard.",
+    intent: "Mid-trim customer sees their blue XLT F-150 with the same Stehlen bull guard.",
+  },
+  {
+    slug: "bull-guard-trim-heavy-duty-stehlen",
+    subject:
+      "EDIT MODE: take the input photo (a 2024 Ford F-150 Limited / Platinum trim in agate black with body-color bumper) and ADD the SAME matte-black tubular bull guard from the BASE and MID bull-guard photos to the front bumper. Same bull guard design across all 3 stehlen photos. No LED bar, no wordmark. The black-on-black aesthetic of the truck and the matte-black bull guard blend tactically.",
+    framing: "IDENTICAL framing, camera position, lighting, paint, wheels, bumper, and grille to front-grille-trim-heavy-duty-stock. Only ADDITION is the matte-black tubular bull guard.",
+    intent: "Premium-trim customer sees their black F-150 with the matte-black bull guard — strongest visual sell.",
+  },
 ];
 
 const SYSTEM_PROMPT = `You are a senior automotive product photographer creating COMPARISON CHIP photos for a truck-parts e-commerce filter UI. Each photo is a small chip the customer clicks to identify their vehicle's bed length / cab type / trim.
@@ -274,7 +305,14 @@ async function generateOne(
   const isStehlenVariant = spec.slug.endsWith("-stehlen");
   let editBaseBytes: Buffer | null = null;
   if (isStehlenVariant) {
-    const stockSlug = spec.slug.replace(/-stehlen$/, "-stock");
+    // Cycle 14AP-fix17: bull-guard-trim-X-stehlen variants reuse the
+    // front-grille-trim-X-stock.jpg as the image-edit base. Same F-150
+    // 3-trim baseline; the only difference is what the edit ADDS
+    // (a bull guard vs a swapped grille). Avoids regenerating
+    // identical stock photos for every product family.
+    const stockSlug = spec.slug
+      .replace(/^bull-guard-/, "front-grille-")
+      .replace(/-stehlen$/, "-stock");
     const stockPath = path.join(OUT_DIR, `${stockSlug}.jpg`);
     try {
       editBaseBytes = await fs.readFile(stockPath);

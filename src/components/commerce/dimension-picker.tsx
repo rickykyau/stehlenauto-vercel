@@ -448,13 +448,28 @@ export function DimensionPicker({
   );
   if (strips.length === 0) return null;
 
-  // Cycle 14AP-fix4 (owner POC): on /collections/front-grilles ONLY,
-  // each chip card has TWO photos — the same vehicle silhouette in stock
-  // form AND with the Stehlen aftermarket grille installed. Customer
-  // toggles between "STOCK" and "WITH STEHLEN GRILLE" to see what their
-  // truck would look like with the part bolted on. POC ships for front-
-  // grilles only; if it lands well we expand to other categories.
-  const FRONT_GRILLE_POC = categoryHandle === "front-grilles";
+  // Cycle 14AP-fix17 (owner expansion): the trim image-edit toggle now
+  // applies to multiple categories. Each entry maps a category handle
+  // to the image filename prefix and the "stehlen" toggle label. The
+  // 3 stock photos are shared (front-grille-trim-{X}-stock.jpg) — only
+  // the +stehlen image-edit pair differs per product family.
+  const TOGGLE_CONFIG: Record<
+    string,
+    { prefix: string; stehlenLabel: string; productNoun: string }
+  > = {
+    "front-grilles": {
+      prefix: "front-grille",
+      stehlenLabel: "+ Stehlen Grille",
+      productNoun: "grille",
+    },
+    "bull-guards-grille-guards": {
+      prefix: "bull-guard",
+      stehlenLabel: "+ Stehlen Bull Guard",
+      productNoun: "bull guard",
+    },
+  };
+  const toggleCfg = TOGGLE_CONFIG[categoryHandle];
+  const FRONT_GRILLE_POC = Boolean(toggleCfg);
 
   // Cycle 14AO: copy decisions per dimension. Uppercase action verb +
   // sentence-case helper text, mirroring Tire-Rack-style configurators.
@@ -542,8 +557,8 @@ export function DimensionPicker({
                   src: "/images/dimensions/front-grille-trim-base-stock.jpg",
                 },
                 {
-                  label: "+ STEHLEN GRILLE",
-                  src: "/images/dimensions/front-grille-trim-base-stehlen.jpg",
+                  label: (toggleCfg?.stehlenLabel ?? "+ Stehlen Grille").toUpperCase(),
+                  src: `/images/dimensions/${toggleCfg?.prefix ?? "front-grille"}-trim-base-stehlen.jpg`,
                 },
               ] as const
             ).map((side) => (
@@ -651,7 +666,7 @@ export function DimensionPicker({
             === "trim" check inside the modal. */}
         {zoomChip && (() => {
           const slug = dimensionChipSlug(zoomChip.group, zoomChip.value);
-          const src = `/images/dimensions/front-grille-${slug}-${grilleView}.jpg`;
+          const src = `/images/dimensions/${grilleView === "stock" ? "front-grille" : (toggleCfg?.prefix ?? "front-grille")}-${slug}-${grilleView}.jpg`;
           return (
             <div
               role="dialog"
@@ -741,12 +756,12 @@ export function DimensionPicker({
                 >
                   <span style={{ fontWeight: 700 }}>FORD F-150</span>
                   <span style={{ opacity: 0.6, marginLeft: 12 }}>
-                    · {grilleView === "stock" ? "Stock truck" : "+ Stehlen grille"}
+                    · {grilleView === "stock" ? "Stock truck" : toggleCfg?.stehlenLabel ?? "+ Stehlen Grille"}
                   </span>
                 </div>
                 <div
                   role="group"
-                  aria-label="Toggle stock vs Stehlen grille"
+                  aria-label={`Toggle stock vs ${toggleCfg?.productNoun ?? "grille"}`}
                   style={{
                     display: "inline-flex",
                     border: "1px solid rgba(255,255,255,0.3)",
@@ -777,7 +792,7 @@ export function DimensionPicker({
                       >
                         {view === "stock"
                           ? "Stock truck"
-                          : "+ Stehlen grille"}
+                          : toggleCfg?.stehlenLabel ?? "+ Stehlen Grille"}
                       </button>
                     );
                   })}
@@ -909,7 +924,7 @@ export function DimensionPicker({
                         >
                           {view === "stock"
                             ? "Stock truck"
-                            : "+ Stehlen grille"}
+                            : toggleCfg?.stehlenLabel ?? "+ Stehlen Grille"}
                         </button>
                       );
                     })}
@@ -935,8 +950,8 @@ export function DimensionPicker({
                     // chip has stock + stehlen variants of the same
                     // F-150 silhouette; toggle swaps between them.
                     const imgSrc =
-                      FRONT_GRILLE_POC && s.group === "trim"
-                        ? `/images/dimensions/front-grille-${slug}-${grilleView}.jpg`
+                      toggleCfg && s.group === "trim"
+                        ? `/images/dimensions/${grilleView === "stock" ? "front-grille" : toggleCfg.prefix}-${slug}-${grilleView}.jpg`
                         : `/images/dimensions/${slug}.jpg`;
                     // Cycle 14AP-fix12: active-chip treatment. The
                     // currently-picked option gets a primary-yellow
@@ -1253,14 +1268,14 @@ export function DimensionPicker({
                 <span style={{ fontWeight: 700 }}>{zoomChip.value}</span>
                 {showToggle && (
                   <span style={{ opacity: 0.6, marginLeft: 12 }}>
-                    · {grilleView === "stock" ? "Stock truck" : "+ Stehlen grille"}
+                    · {grilleView === "stock" ? "Stock truck" : toggleCfg?.stehlenLabel ?? "+ Stehlen Grille"}
                   </span>
                 )}
               </div>
               {showToggle && (
                 <div
                   role="group"
-                  aria-label="Toggle stock vs Stehlen grille"
+                  aria-label={`Toggle stock vs ${toggleCfg?.productNoun ?? "grille"}`}
                   style={{
                     display: "inline-flex",
                     border: "1px solid rgba(255,255,255,0.3)",
@@ -1291,7 +1306,7 @@ export function DimensionPicker({
                       >
                         {view === "stock"
                           ? "Stock truck"
-                          : "+ Stehlen grille"}
+                          : toggleCfg?.stehlenLabel ?? "+ Stehlen Grille"}
                       </button>
                     );
                   })}
