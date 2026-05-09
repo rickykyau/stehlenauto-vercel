@@ -139,15 +139,34 @@ export function YmmModal() {
   };
 
   const onPickModel = async (m: string) => {
-    if (!year || !make) return;
-    if (isLocked()) return;
+    if (!year || !make) {
+      console.warn("[ymm] onPickModel called with no year/make", { year, make });
+      return;
+    }
+    // Cycle 14AP-fix14 (owner-found, prod, round 3): removed the
+    // isLocked() guard on this terminal step. The 280ms lockout is
+    // useful for advancing between Year → Make → Model steps to
+    // prevent a double-click jumping two steps, but on the FINAL save
+    // step it can silently swallow the user's actual save click if
+    // they tap fast. Owner reported "doesn't change" 3+ times — the
+    // lockout was likely the cause.
     setSaving(true);
     setError(null);
+    console.log("[ymm] saving vehicle", { year, make, model: m });
     try {
       const res = await fetch("/api/garage", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ year, make, model: m }),
+        // Explicit credentials per the spec — cookies must round-trip
+        // even on cross-origin scenarios (and same-origin shouldn't
+        // hurt).
+        credentials: "include",
+        cache: "no-store",
+      });
+      console.log("[ymm] /api/garage response", {
+        status: res.status,
+        ok: res.ok,
       });
       if (!res.ok) {
         const body = (await res.json().catch(() => null)) as
@@ -155,6 +174,10 @@ export function YmmModal() {
           | null;
         throw new Error(body?.error ?? "Couldn't save vehicle.");
       }
+      const body = (await res.json().catch(() => null)) as
+        | { vehicle?: { id?: string } }
+        | null;
+      console.log("[ymm] save OK, server returned vehicle", body?.vehicle);
       track("select_vehicle", {
         vehicle_year: year,
         vehicle_make: make,
@@ -192,13 +215,19 @@ export function YmmModal() {
       // header on that request includes the just-Set value, the layout
       // re-renders with the new vehicle.
       const cacheBust = `_v=${Date.now()}`;
+      let target: string;
       if (pathname && /^\/vehicle\//.test(pathname)) {
-        window.location.href = `/vehicle/${slug}?${cacheBust}`;
+        target = `/vehicle/${slug}?${cacheBust}`;
       } else {
         const base = pathname ?? "/";
         const sep = base.includes("?") ? "&" : "?";
-        window.location.href = `${base}${sep}${cacheBust}`;
+        target = `${base}${sep}${cacheBust}`;
       }
+      console.log("[ymm] navigating to", target);
+      // Use replace() so the cache-busted URL doesn't pollute history
+      // (back button skips it). Both .href and .replace bypass disk
+      // cache when the URL is unique.
+      window.location.replace(target);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
