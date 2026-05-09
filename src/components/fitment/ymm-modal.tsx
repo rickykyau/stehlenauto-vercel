@@ -178,16 +178,17 @@ export function YmmModal() {
       const onShoppingPage = /^\/(collections|products|search|cart|checkout|account)/.test(
         pathname ?? "",
       );
-      if (onShoppingPage) {
-        // Vehicle-aware page; soft refresh re-runs SSR with the new
-        // cookie. Faster, no scroll-jump.
-        router.refresh();
-      } else if (pathname && /^\/vehicle\//.test(pathname)) {
-        // On a different vehicle hub already; navigate to the new hub.
+      // Cycle 14AP-fix12 (owner-found, prod): router.refresh() was not
+      // reliably re-rendering the header layout with the new vehicle on
+      // shopping pages — owner reported switching from F-150 to Tacoma
+      // 3 times and seeing the F-150 chip persist. Replace the soft
+      // refresh with window.location.reload() across the board so the
+      // root layout's getCurrentVehicle() always re-runs against the
+      // freshly-written cookie. Slower scroll-jump but guaranteed.
+      if (pathname && /^\/vehicle\//.test(pathname)) {
+        // On a vehicle hub — navigate to the new vehicle's hub URL.
         window.location.href = `/vehicle/${slug}`;
       } else {
-        // Home, content, help, legal, etc — stay put. Hard-reload so
-        // the root layout re-renders with the new vehicle.
         window.location.reload();
       }
     } catch (err) {

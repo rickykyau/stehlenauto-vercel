@@ -47,8 +47,14 @@ export function ClearFiltersLink({
           ),
         );
       }
+      // Cycle 14AP-fix12 (owner): router.push to the same URL is a NO-OP
+      // (Next.js dedupes identical-URL navigations). On the empty-state
+      // CLEAR FILTERS link, the customer is already at /collections/<handle>
+      // so router.push does nothing visible. Use window.location.href to
+      // force a real navigation that re-runs SSR and reads the
+      // just-cleared cookie.
       startTransition(() => {
-        router.push(`/collections/${collectionHandle}`);
+        window.location.href = `/collections/${collectionHandle}`;
       });
     },
     [vehicle?.id, answeredGroups, collectionHandle, router],

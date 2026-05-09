@@ -480,6 +480,316 @@ export function DimensionPicker({
     },
   };
 
+  // Cycle 14AP-fix11 (owner + Jordan): branched flow on the front-grilles
+  // POC. Vehicle-set customers see the 3-chip trim picker (existing
+  // Path A). Guests see a single before/after comparison of one F-150
+  // with stock vs Stehlen grille — no chips to pick, no gate. Jordan's
+  // call: a guest who hasn't picked a truck doesn't need to commit to
+  // a trim, they need to UNDERSTAND the product. Side-by-side does
+  // that job in one view.
+  if (FRONT_GRILLE_POC && !vehicle) {
+    return (
+      <section
+        aria-label="See what a Stehlen front grille looks like on your truck"
+        style={{
+          background: "var(--color-surface)",
+          borderTop: "1px solid var(--color-border)",
+          borderBottom: "1px solid var(--color-border)",
+        }}
+      >
+        <div
+          className="container-x"
+          style={{ paddingTop: 24, paddingBottom: 28 }}
+        >
+          <div
+            className="eyebrow"
+            style={{ color: "var(--color-muted)", marginBottom: 8 }}
+          >
+            BEFORE → AFTER
+          </div>
+          <div
+            style={{
+              fontSize: 18,
+              fontWeight: 600,
+              marginBottom: 4,
+            }}
+          >
+            See what a Stehlen front grille does to a stock truck
+          </div>
+          <div
+            style={{
+              fontSize: 13,
+              color: "var(--color-muted)",
+              marginBottom: 18,
+              maxWidth: 720,
+              lineHeight: 1.5,
+            }}
+          >
+            Same Ford F-150, same angle, same lighting — only the grille
+            changes. Browse the catalog below for grilles that fit your
+            truck.
+          </div>
+
+          {/* Side-by-side desktop, stacked mobile (Jordan's spec). */}
+          <div
+            className="grid grid-cols-1 md:grid-cols-2"
+            style={{ gap: 12 }}
+          >
+            {(
+              [
+                {
+                  label: "STOCK TRUCK",
+                  src: "/images/dimensions/front-grille-trim-base-stock.jpg",
+                },
+                {
+                  label: "+ STEHLEN GRILLE",
+                  src: "/images/dimensions/front-grille-trim-base-stehlen.jpg",
+                },
+              ] as const
+            ).map((side) => (
+              <div key={side.label}>
+                <div
+                  className="mono"
+                  style={{
+                    fontSize: 11,
+                    letterSpacing: "0.12em",
+                    color: "var(--color-muted)",
+                    marginBottom: 8,
+                    fontWeight: 700,
+                  }}
+                >
+                  {side.label}
+                </div>
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    aspectRatio: "3 / 2",
+                    background: "var(--color-surface-2)",
+                    border: "1px solid var(--color-border)",
+                    borderRadius: "var(--radius-md)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <Image
+                    src={side.src}
+                    alt={`Ford F-150 ${side.label}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Reuse the zoom modal — open with the BASE chip
+                      // context so the modal's stock/stehlen toggle
+                      // works against the base pair.
+                      setGrilleView(
+                        side.label === "STOCK TRUCK" ? "stock" : "stehlen",
+                      );
+                      setZoomChip({ group: "trim", value: "BASE" });
+                    }}
+                    aria-label={`Enlarge ${side.label} photo`}
+                    style={{
+                      position: "absolute",
+                      top: 10,
+                      right: 10,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      padding: "8px 12px",
+                      background: "rgba(10,10,10,0.85)",
+                      backdropFilter: "blur(6px)",
+                      border: "1px solid rgba(255,255,255,0.25)",
+                      borderRadius: 4,
+                      color: "#fff",
+                      cursor: "pointer",
+                      fontFamily: "var(--font-display)",
+                      fontSize: 11,
+                      fontWeight: 700,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    <Icons.search size={14} />
+                    <span>Enlarge</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Vehicle-setting nudge per Jordan's spec — not a gate, just
+              a clear CTA toward the YMM modal so customers who DO
+              know their truck can narrow before they hit the PDP. */}
+          <div
+            style={{
+              marginTop: 18,
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              flexWrap: "wrap",
+            }}
+          >
+            <button
+              type="button"
+              onClick={openYmmModal}
+              className="chip"
+              style={{ cursor: "pointer", fontSize: 12 }}
+            >
+              <Icons.truck size={10} /> SET YOUR VEHICLE FOR EXACT-FIT GRILLES →
+            </button>
+            <span style={{ fontSize: 12, color: "var(--color-muted)" }}>
+              or scroll down to browse all grilles
+            </span>
+          </div>
+        </div>
+
+        {/* Reuse the same zoom modal that Path A uses, so the toggle
+            and ESC handling stay consistent. The trim/value passed in
+            ("BASE") doesn't matter — only the FRONT_GRILLE_POC + group
+            === "trim" check inside the modal. */}
+        {zoomChip && (() => {
+          const slug = dimensionChipSlug(zoomChip.group, zoomChip.value);
+          const src = `/images/dimensions/front-grille-${slug}-${grilleView}.jpg`;
+          return (
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Front grille preview"
+              onClick={() => setZoomChip(null)}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 90,
+                background: "rgba(10,10,10,0.94)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "20px 20px 96px",
+                cursor: "zoom-out",
+              }}
+            >
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setZoomChip(null);
+                }}
+                aria-label="Close"
+                style={{
+                  position: "absolute",
+                  top: 16,
+                  right: 16,
+                  width: 44,
+                  height: 44,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "rgba(255,255,255,0.1)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  borderRadius: 4,
+                  color: "#fff",
+                  cursor: "pointer",
+                }}
+              >
+                <Icons.close size={20} />
+              </button>
+              <div
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  position: "relative",
+                  width: "min(95vw, 1400px)",
+                  maxHeight: "78vh",
+                  aspectRatio: "3 / 2",
+                  cursor: "default",
+                }}
+              >
+                <Image
+                  key={src}
+                  src={src}
+                  alt="Ford F-150 grille preview"
+                  fill
+                  sizes="95vw"
+                  style={{ objectFit: "contain" }}
+                  priority
+                />
+              </div>
+              <div
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  position: "absolute",
+                  bottom: 24,
+                  left: 0,
+                  right: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 14,
+                  cursor: "default",
+                }}
+              >
+                <div
+                  style={{
+                    color: "rgba(255,255,255,0.85)",
+                    fontSize: 14,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    fontFamily: "var(--font-display)",
+                  }}
+                >
+                  <span style={{ fontWeight: 700 }}>FORD F-150</span>
+                  <span style={{ opacity: 0.6, marginLeft: 12 }}>
+                    · {grilleView === "stock" ? "Stock truck" : "+ Stehlen grille"}
+                  </span>
+                </div>
+                <div
+                  role="group"
+                  aria-label="Toggle stock vs Stehlen grille"
+                  style={{
+                    display: "inline-flex",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    borderRadius: 6,
+                    overflow: "hidden",
+                  }}
+                >
+                  {(["stock", "stehlen"] as const).map((view) => {
+                    const active = grilleView === view;
+                    return (
+                      <button
+                        key={view}
+                        type="button"
+                        onClick={() => setGrilleView(view)}
+                        aria-pressed={active}
+                        style={{
+                          background: active ? "#fff" : "transparent",
+                          color: active ? "#0a0a0a" : "#fff",
+                          border: 0,
+                          padding: "10px 18px",
+                          fontSize: 12,
+                          fontWeight: 700,
+                          letterSpacing: "0.1em",
+                          textTransform: "uppercase",
+                          fontFamily: "var(--font-display)",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {view === "stock"
+                          ? "Stock truck"
+                          : "+ Stehlen grille"}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+      </section>
+    );
+  }
+
   return (
     <section
       aria-label="Refine by your vehicle dimensions"
@@ -523,57 +833,15 @@ export function DimensionPicker({
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {strips.map((s) => {
             const value = picks[s.group];
-            if (value) {
-              return (
-                <div
-                  key={s.group}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <span
-                    className="mono"
-                    style={{
-                      fontSize: 11,
-                      letterSpacing: "0.12em",
-                      color: "var(--color-muted)",
-                    }}
-                  >
-                    {s.label}:
-                  </span>
-                  <span
-                    className="chip"
-                    style={{
-                      background: "var(--color-foreground)",
-                      color: "var(--color-background)",
-                      borderColor: "var(--color-foreground)",
-                    }}
-                  >
-                    {value}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => onChange(s.group)}
-                    disabled={pending}
-                    style={{
-                      background: "transparent",
-                      border: 0,
-                      color: "var(--color-primary)",
-                      fontSize: 12,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      cursor: pending ? "wait" : "pointer",
-                      padding: "4px 6px",
-                    }}
-                  >
-                    Change
-                  </button>
-                </div>
-              );
-            }
+            // Cycle 14AP-fix12 (owner): keep the FULL chip grid + toggle
+            // visible at all times — even after the customer has picked
+            // an answer. The previous "collapse to pill" mode hid the
+            // before/after toggle and the comparison strip the moment
+            // the customer answered, which defeated the point of the
+            // visual picker. Now: render the chip grid always; the
+            // selected chip gets a yellow-border "active" treatment so
+            // the customer knows which one is picked. Click any other
+            // chip to change.
             return (
               <div key={s.group}>
                 <div
@@ -670,18 +938,29 @@ export function DimensionPicker({
                       FRONT_GRILLE_POC && s.group === "trim"
                         ? `/images/dimensions/front-grille-${slug}-${grilleView}.jpg`
                         : `/images/dimensions/${slug}.jpg`;
+                    // Cycle 14AP-fix12: active-chip treatment. The
+                    // currently-picked option gets a primary-yellow
+                    // border + a "✓ SELECTED" pill in the bottom-left
+                    // corner so the customer can see which chip is
+                    // active without losing the comparison strip.
+                    const isActive = picks[s.group] === opt;
                     return (
                       <button
                         key={opt}
                         type="button"
                         onClick={() => onPick(s.group, opt)}
                         disabled={pending}
-                        aria-label={`Pick ${opt}`}
+                        aria-label={isActive ? `${opt} selected` : `Pick ${opt}`}
+                        aria-pressed={isActive}
                         style={{
                           display: "flex",
                           flexDirection: "column",
                           background: "var(--color-surface)",
-                          border: "1px solid var(--color-border)",
+                          border: `2px solid ${
+                            isActive
+                              ? "var(--color-primary)"
+                              : "var(--color-border)"
+                          }`,
                           borderRadius: "var(--radius-md)",
                           overflow: "hidden",
                           padding: 0,
@@ -689,14 +968,19 @@ export function DimensionPicker({
                           color: "var(--color-foreground)",
                           textAlign: "left",
                           transition: "border-color .15s, transform .15s",
+                          position: "relative",
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.borderColor =
-                            "var(--color-primary)";
+                          if (!isActive) {
+                            e.currentTarget.style.borderColor =
+                              "var(--color-primary)";
+                          }
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.borderColor =
-                            "var(--color-border)";
+                          if (!isActive) {
+                            e.currentTarget.style.borderColor =
+                              "var(--color-border)";
+                          }
                         }}
                       >
                         <div
@@ -773,9 +1057,20 @@ export function DimensionPicker({
                             letterSpacing: "0.06em",
                             textTransform: "uppercase",
                             textAlign: "center",
+                            background: isActive
+                              ? "var(--color-primary)"
+                              : "transparent",
+                            color: isActive
+                              ? "var(--color-background)"
+                              : "var(--color-foreground)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 6,
                           }}
                         >
-                          {opt}
+                          {isActive && <Icons.check size={11} sw={3} />}
+                          <span>{opt}</span>
                         </div>
                       </button>
                     );
