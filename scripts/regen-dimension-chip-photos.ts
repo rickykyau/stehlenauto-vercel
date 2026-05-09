@@ -38,42 +38,42 @@ const CHIPS: { slug: string; subject: string; framing: string; intent: string }[
   // identical across all 6 so the customer's eye reads the BED size as
   // the only variable. White seamless studio background.
   {
-    slug: "bed-length-4-6",
+    slug: "bed-length-4-6-bed",
     subject:
       "modern matte-black American pickup truck (anonymous styling — no badges, no manufacturer logo) with a noticeably SHORT 4.6-foot truck bed (compact / utility-bed length, common on Nissan Frontier D40)",
     framing: "pure side profile, dead-level camera, full vehicle in frame with 10% padding above and below, white seamless studio background, soft top-down studio lighting, tires on flat ground",
     intent: "Customer should immediately read 'this is the SHORTEST bed option'. The bed length is the visual subject — exaggerate the front cab to bed ratio so the bed reads as compact.",
   },
   {
-    slug: "bed-length-5",
+    slug: "bed-length-5-bed",
     subject:
       "modern matte-black American pickup truck (anonymous styling) with a 5-foot truck bed (compact, often paired with crew-cab configurations on mid-size trucks)",
     framing: "pure side profile, dead-level camera, full vehicle in frame, white seamless studio background, identical lighting and angle to the other bed-length chips",
     intent: "Slightly longer bed than 4.6'. Customer reads it as 'short bed, crew cab'.",
   },
   {
-    slug: "bed-length-5-5",
+    slug: "bed-length-5-5-bed",
     subject:
       "modern matte-black American pickup truck (anonymous styling) with a 5.5-foot truck bed (the classic SHORT bed on a half-ton crew cab — Ford F-150 SuperCrew 5.5-ft, Silverado 1500 5.8-ft)",
     framing: "pure side profile, dead-level camera, full vehicle in frame, white seamless studio background, identical lighting and angle to the other bed-length chips",
     intent: "Most popular short-bed option. Customer reads 'this is my F-150 SuperCrew bed'.",
   },
   {
-    slug: "bed-length-6",
+    slug: "bed-length-6-bed",
     subject:
       "modern matte-black American pickup truck (anonymous styling) with a 6-foot truck bed (Toyota Tacoma long bed, mid-size standard)",
     framing: "pure side profile, dead-level camera, full vehicle in frame, white seamless studio background, identical lighting and angle to the other bed-length chips",
     intent: "Mid-length. Customer reads 'between short and standard'.",
   },
   {
-    slug: "bed-length-6-5",
+    slug: "bed-length-6-5-bed",
     subject:
       "modern matte-black American pickup truck (anonymous styling) with a 6.5-foot truck bed (the classic STANDARD bed on a half-ton — Ford F-150 6.5-ft, Silverado 1500 6.6-ft)",
     framing: "pure side profile, dead-level camera, full vehicle in frame, white seamless studio background, identical lighting and angle to the other bed-length chips",
     intent: "Standard bed. Customer reads 'this is the regular F-150 / Silverado bed'.",
   },
   {
-    slug: "bed-length-8",
+    slug: "bed-length-8-bed",
     subject:
       "modern matte-black American pickup truck (anonymous styling) with a noticeably LONG 8-foot truck bed (full work-truck bed, common on F-250/F-350 single cab and 3500-class)",
     framing: "pure side profile, dead-level camera, full vehicle in frame with 10% padding above and below, white seamless studio background, identical lighting and angle to the other bed-length chips",

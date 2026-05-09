@@ -366,7 +366,7 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
     "Bed-mounted chase racks and sport bars. Bed-length aware.",
   "molle-panels": "MOLLE panel kits for the truck bed. Modular, bolt-on.",
   "under-seat-storage":
-    "Lockable under-seat storage organizers. Vehicle-specific fitment.",
+    "Lockable cab organizers, console mounts, and small-item accessories — vehicle-specific fitment.",
 };
 
 /**
@@ -399,7 +399,7 @@ const CATEGORY_HERO_EXPLAINERS: Record<string, string> = {
   "molle-panels":
     "MOLLE panels are the perforated steel plates with PALS webbing slots that turn your truck bed into a modular gear-mounting system. Bolt them to the bed sides and snap on pouches, jerry-can holders, axe mounts, etc. Build a chase setup in an afternoon.",
   "under-seat-storage":
-    "Under-seat storage is the lockable organizer that drops into the dead space below your rear seat — perfect for tools, recovery gear, jumper cables, or anything you don't want rolling around the cab. Vehicle-specific molds (no cutting), drop-in install in five minutes.",
+    "Cab and console accessories — lockable under-seat organizers, dash mounts, console trays, USB chargers, and small-item storage. The miscellaneous bucket: anything that bolts inside the cab without modifying the vehicle.",
 };
 
 /**
@@ -407,13 +407,14 @@ const CATEGORY_HERO_EXPLAINERS: Record<string, string> = {
  * /public/images/categories/ (30 high-res JPGs from the merch team).
  * We pick the most representative image per category slug.
  */
-// Cycle 14AO-fix8 (owner-found, prod): truck-bed-mats and floor-mats both
-// pointed at MUD FLAPS.jpg — neither is a mud flap. molle-panels pointed
-// at ROOF RACKS.jpg — wrong family entirely. Re-mapped to the available
-// in-tree assets that ARE the right product family. Bed mats use the
-// MOLLE-panel image as the closest "inside-the-bed" hero until the merch
-// team uploads a real bed-mat asset (TODO: warehouse photo upload).
-// Floor mats now use RUBBER FLOOR MATS.jpg (correct asset existed all along).
+// Cycle 14AP-fix3 (owner): truck-bed-mats and molle-panels were pointing
+// at the SAME TRUCK BED MOLLE PANELS.jpg — customer saw duplicate tiles
+// in the home grid AND landed on identical hero on the collection pages.
+// Repointed truck-bed-mats to its own freshly-generated TRUCK BED MAT.jpg
+// (rubber bed mat fitted in a truck bed, distinct from the MOLLE panel).
+// Also: under-seat-storage renamed to "Accessories" in mock.ts; hero
+// asset rebranded from console-organizer to a multi-item accessories
+// vignette at ACCESSORIES.jpg.
 const CATEGORY_HERO_IMAGE: Record<string, string> = {
   "tonneau-covers": "/images/categories/TONNEAU COVER - LOCK & ROLL UP.jpg",
   "trailer-hitches": "/images/categories/HITCH STEPS.jpg",
@@ -421,13 +422,13 @@ const CATEGORY_HERO_IMAGE: Record<string, string> = {
     "/images/categories/BULL BAR - ADVANCE SERIES.jpg",
   "front-grilles": "/images/categories/FRONT GRILLES.jpg",
   headlights: "/images/categories/FULL LED PROJECTOR HEADLIGHTS.jpg",
-  "truck-bed-mats": "/images/categories/TRUCK BED MOLLE PANELS.jpg",
+  "truck-bed-mats": "/images/categories/TRUCK BED MAT.jpg",
   "running-boards-side-steps":
     "/images/categories/MODULAR STYLE RUNNING BOARDS.jpg",
   "roof-racks-baskets": "/images/categories/ROOF RACKS.jpg",
   "chase-racks-sport-bars": "/images/categories/CHASE RACKS.jpg",
   "molle-panels": "/images/categories/TRUCK BED MOLLE PANELS.jpg",
-  "under-seat-storage": "/images/categories/CONSOLE ORGANIZER.jpg",
+  "under-seat-storage": "/images/categories/ACCESSORIES.jpg",
   "floor-mats": "/images/categories/RUBBER FLOOR MATS.jpg",
 };
 

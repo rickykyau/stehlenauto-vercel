@@ -50,85 +50,85 @@ const CATEGORIES: {
     filename: "TONNEAU COVER - LOCK & ROLL UP.jpg",
     category: "Tonneau Covers",
     subject:
-      "a matte-black soft roll-up tonneau cover, partially unrolled across a truck-bed silhouette so the customer reads 'bed-mounted snap-on cover'. Tactical hex-pattern stitching visible on the underside flap. Lock latch on the rolled end has a subtle amber LED indicator.",
-    accent: "matte-black vinyl with hex-bolt aluminum end caps; one amber LED indicator on the lock latch",
+      "a matte-black soft roll-up tonneau cover, partially unrolled across a truck-bed silhouette so the customer reads 'bed-mounted snap-on cover'. Tactical hex-pattern stitching visible on the underside flap. Lock latch on the rolled end has a subtle amber LED indicator. The aluminum end cap has a STEHLEN wordmark heat-stamped into it (matching the brand-hero reference) — small but legible.",
+    accent: "matte-black vinyl with hex-bolt aluminum end caps; one amber LED indicator on the lock latch; STEHLEN wordmark on aluminum end cap",
   },
   {
     filename: "HITCH STEPS.jpg",
     category: "Trailer Hitches",
     subject:
-      "a matte-black Class IV trailer hitch receiver with a tactical hex-shape stamped into the receiver tube. Welds visible along the seam. Rear of a truck silhouette barely visible behind, dark and out of focus.",
-    accent: "tactical-grade matte-black powder coat with hex-mesh detail on the safety chain anchors",
+      "a matte-black Class IV trailer hitch receiver with a tactical hex-shape stamped into the receiver tube. Welds visible along the seam. STEHLEN wordmark laser-etched on the side of the receiver tube facing camera. Rear of a truck silhouette barely visible behind, dark and out of focus.",
+    accent: "tactical-grade matte-black powder coat; STEHLEN wordmark laser-etched on receiver tube",
   },
   {
     filename: "BULL BAR - ADVANCE SERIES.jpg",
     category: "Bull Guards & Grille Guards",
     subject:
-      "a matte-black tubular bull guard with skid plate and integrated 30-inch LED light bar across the top crossmember. Hex-mesh insert behind the front grille opening. Mounted to the front of an anonymous matte-black truck silhouette.",
-    accent: "amber LED bezel on the LED bar housing; hex-mesh inserts in the guard openings",
+      "a matte-black tubular bull guard with skid plate and integrated 30-inch LED light bar across the top crossmember. Hex-mesh insert behind the front grille opening. STEHLEN wordmark laser-etched into the lower skid plate, white/silver text on matte black. Mounted to the front of an anonymous matte-black truck silhouette.",
+    accent: "amber LED bezel on the LED bar housing; hex-mesh inserts in the guard openings; STEHLEN on skid plate",
   },
   {
     filename: "FRONT GRILLES.jpg",
     category: "Front Grilles",
     subject:
-      "a matte-black aftermarket front grille with hex-mesh insert and a row of three tactical amber LED markers across the upper crossbar. Standalone product shot, slight three-quarter angle so the depth of the mesh is visible.",
-    accent: "hex-mesh insert with amber LED markers across the top edge — match the brand hero's tactical visual language",
+      "a matte-black aftermarket front grille with hex-mesh insert and a row of three tactical amber LED markers across the upper crossbar. STEHLEN wordmark embossed in the lower-center of the grille mesh. Standalone product shot, slight three-quarter angle so the depth of the mesh is visible.",
+    accent: "hex-mesh insert with amber LED markers across the top edge; STEHLEN wordmark embossed in lower-center mesh",
   },
   {
     filename: "FULL LED PROJECTOR HEADLIGHTS.jpg",
     category: "Headlights",
     subject:
-      "a pair of matte-black housing LED projector headlights with a halo-DRL ring and a stacked-element projector inside. Powered on, casting a warm amber glow. Floating against a dark gradient background.",
-    accent: "matte-black housing with amber DRL halo and projector lens; clean tactical bezel detailing",
+      "a pair of matte-black housing LED projector headlights with a halo-DRL ring and a stacked-element projector inside. Powered on, casting a warm amber glow. STEHLEN wordmark molded into the lower bezel of each housing. Floating against a dark gradient background.",
+    accent: "matte-black housing with amber DRL halo and projector lens; STEHLEN molded into lower bezel",
   },
   {
-    filename: "MUD FLAPS.jpg",
-    category: "Truck Bed Mats (used as floor-mat / mud-flap fallback)",
+    filename: "TRUCK BED MAT.jpg",
+    category: "Truck Bed Mats — DISTINCT from MOLLE PANELS",
     subject:
-      "a matte-black heavy-duty rubber bed mat lying flat on a dark studio floor. Aggressive geometric channel pattern across the surface. Slight angled view so the texture and the cut-to-fit edge are both visible.",
-    accent: "matte-black rubber with deep angular channel pattern; one corner curled up to show thickness",
+      "a matte-black heavy-duty rubber bed mat fitted across the FLOOR of a pickup truck bed, viewed from the open tailgate end. Aggressive geometric channel pattern molded across the surface. The bed walls are visible left and right but in shadow — the mat itself is the hero. STEHLEN wordmark molded into the front edge of the mat near the cab wall, embossed into the rubber so it reads as part of the molding. NO MOLLE panels visible — this is purely the bed-floor mat product.",
+    accent: "molded rubber channel pattern; STEHLEN embossed in front edge of mat",
   },
   {
     filename: "MODULAR STYLE RUNNING BOARDS.jpg",
     category: "Running Boards & Side Steps",
     subject:
-      "a matte-black modular running board with hex-pattern non-slip step surface and integrated amber LED courtesy light underneath. Mounted along the rocker panel of an anonymous matte-black truck silhouette, dark side lighting.",
-    accent: "amber LED underneath; hex-pattern non-slip tread surface",
+      "a matte-black modular running board with hex-pattern non-slip step surface and integrated amber LED courtesy light underneath. STEHLEN wordmark laser-etched into the step pad surface, silver-on-matte-black. Mounted along the rocker panel of an anonymous matte-black truck silhouette, dark side lighting.",
+    accent: "amber LED underneath; hex-pattern non-slip tread; STEHLEN laser-etched in step pad",
   },
   {
     filename: "ROOF RACKS.jpg",
     category: "Roof Racks & Baskets",
     subject:
-      "a matte-black low-profile roof rack with hex-mesh side rails and a 40-inch LED light bar mounted at the front edge, glowing warm amber. Mounted to the roof of an anonymous matte-black truck or SUV silhouette.",
-    accent: "amber LED light bar; hex-mesh rail panels",
+      "a matte-black low-profile roof rack with hex-mesh side rails and a 40-inch LED light bar mounted at the front edge, glowing warm amber. STEHLEN wordmark laser-etched on the side rail facing camera. Mounted to the roof of an anonymous matte-black truck or SUV silhouette.",
+    accent: "amber LED light bar; hex-mesh rail panels; STEHLEN on side rail",
   },
   {
     filename: "CHASE RACKS.jpg",
     category: "Chase Racks & Sport Bars",
     subject:
-      "the Stehlen brand-hero chase rack: a matte-black tactical bed-mounted structure with hex-mesh side panels, amber LED corner markers, and a roof-height LED light bar across the top. Mounted in the bed of an anonymous matte-black truck. Match the brand-hero reference image EXACTLY in geometry and finish.",
-    accent: "EXACT match to the brand hero — hex mesh + amber LED + matte black",
+      "the Stehlen brand-hero chase rack: a matte-black tactical bed-mounted structure with hex-mesh side panels, amber LED corner markers, and a roof-height LED light bar across the top. STEHLEN wordmark prominently displayed on the hex-mesh side panel facing camera (matching the brand hero EXACTLY — this is the showcase product for the brand mark). Mounted in the bed of an anonymous matte-black truck.",
+    accent: "EXACT match to the brand hero — hex mesh + amber LED + matte black + STEHLEN wordmark on hex panel",
   },
   {
     filename: "TRUCK BED MOLLE PANELS.jpg",
-    category: "MOLLE Panels (also reused for truck-bed-mats)",
+    category: "MOLLE Panels — DISTINCT from bed mats",
     subject:
-      "a matte-black MOLLE panel kit mounted to the inside wall of a truck bed. PALS webbing slots cleanly cut in a regular grid, with two amber LED indicators glowing low on the panel. Dark moody bed environment behind, shallow depth of field.",
-    accent: "PALS webbing grid; amber LED indicators integrated low",
+      "a matte-black MOLLE panel kit mounted to the inside WALL of a truck bed (the vertical bed-side panel, NOT the floor). PALS webbing slots cleanly cut in a regular grid, with two amber LED indicators glowing low on the panel. STEHLEN wordmark laser-etched into the corner mounting plate of the panel. Dark moody bed environment behind, shallow depth of field. NO floor mat visible.",
+    accent: "PALS webbing grid; amber LED indicators; STEHLEN on corner mounting plate",
   },
   {
-    filename: "CONSOLE ORGANIZER.jpg",
-    category: "Under Seat Storage",
+    filename: "ACCESSORIES.jpg",
+    category: "Accessories — multi-item vignette (replaces under-seat-storage)",
     subject:
-      "a matte-black lockable under-seat storage organizer, three-quarter angle, lid open showing molded compartments inside. Tactical hex-pattern texture on the lid surface. One amber LED inside the open compartment lighting up the contents subtly.",
-    accent: "hex-pattern lid texture; amber LED interior accent",
+      "a curated tactical vignette of multiple Stehlen cab accessories arranged on a dark studio surface: a matte-black lockable under-seat organizer (lid open showing molded compartments), a matte-black phone/tablet dash mount, a USB charging port plate with amber LED, and a small console-tray insert. Items grouped tightly together so the customer reads 'collection of cab accessories'. STEHLEN wordmark visible on at least two items (heat-stamped on organizer lid + laser-etched on the dash mount). Single warm key light from upper-left.",
+    accent: "matte-black multi-item collection with amber LED on charging port; STEHLEN wordmark on organizer lid and dash mount",
   },
   {
     filename: "RUBBER FLOOR MATS.jpg",
     category: "Floor Mats",
     subject:
-      "a matte-black heavy-duty molded rubber floor mat (driver-side), three-quarter angle, raised channel ridges to capture water and dirt. Tactical hex-pattern detail along the heel pad. Dark studio floor.",
-    accent: "deep channel ridges; hex-pattern heel pad",
+      "a matte-black heavy-duty molded rubber floor mat (driver-side), three-quarter angle, raised channel ridges to capture water and dirt. STEHLEN wordmark molded into the heel pad — embossed into the rubber so it reads as part of the molding. Dark studio floor.",
+    accent: "deep channel ridges; STEHLEN embossed in heel pad",
   },
 ];
 
