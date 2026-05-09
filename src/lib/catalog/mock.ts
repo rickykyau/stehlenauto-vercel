@@ -34,7 +34,7 @@ export const CATEGORIES: Category[] = [
     slug: "bull-guards-grille-guards",
     name: "Bull Guards & Grille Guards",
     count: 186,
-    image: "/images/categories/BULL BAR - ADVANCE SERIES W: LED LIGHT BAR.jpg",
+    image: "/images/categories/BULL BAR - ADVANCE SERIES.jpg",
   },
   {
     slug: "front-grilles",
@@ -46,7 +46,7 @@ export const CATEGORIES: Category[] = [
     slug: "headlights",
     name: "Headlights",
     count: 160,
-    image: "/images/categories/LED CRYSTAL STYLE HEADLIGHTS.jpg",
+    image: "/images/categories/FULL LED PROJECTOR HEADLIGHTS.jpg",
   },
   {
     slug: "truck-bed-mats",

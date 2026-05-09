@@ -347,23 +347,19 @@ export default async function CollectionPage({
           }}
         />
       ) : null}
-      {/* Hero — Cycle 14AP (Diana): full-width banner instead of side-by-
-          side card. The previous 320px image card was a postage-stamp
-          competing with a 44px headline; image + title had no visual
-          relationship and the watermarked stock JPG read as catalog
-          clip-art. New shape: bleed-edge 5:1 banner image with gradient
-          scrim + breadcrumb overlay (desktop), title + tightened
-          description below in the warm section. Mobile drops the image
-          entirely and lets the title carry the header — the warehouse
-          stock photo adds zero trust on mobile, only weight. Switch
-          background to --color-surface-warm so the hero differentiates
-          from the dark header chrome above. */}
-      <section
-        style={{
-          background: "var(--color-surface-warm)",
-          borderBottom: "1px solid var(--color-border)",
-        }}
-      >
+      {/* Hero — Cycle 14AP-fix2 (Diana round 2 per owner): the prior 5:1
+          banner + warm-cream text-section combo read as a "guillotine"
+          cut (image fragment up top, unrelated text below) AND rendered
+          the breadcrumb twice because the inline `display: flex` style
+          was overriding `md:hidden`. New shape: ONE unified hero unit —
+          2.5:1 banner with title + description overlaid on a bottom
+          gradient scrim. The warm text section disappears entirely,
+          eliminating both the tonal cut and the breadcrumb dup. Banner
+          is the LCP; reduces aspect to give the product enough room to
+          read as a deliberate hero rather than a cropped strip. Falls
+          back to a dark surface-2 card with min-height 160 when no
+          hero image exists for the slug. */}
+      <section style={{ position: "relative" }}>
         {(() => {
           const hero = getCategoryHero(collection.handle);
           const explainer =
@@ -371,107 +367,97 @@ export default async function CollectionPage({
             hero.explainer ||
             "";
           return (
-            <>
-              {/* Banner image — full-width, 5:1 desktop only */}
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                aspectRatio: hero.image ? "2.5 / 1" : undefined,
+                minHeight: hero.image ? undefined : 160,
+                background: "var(--color-surface-2)",
+                overflow: "hidden",
+              }}
+            >
               {hero.image && (
-                <div
-                  className="hidden md:block"
-                  style={{
-                    position: "relative",
-                    width: "100%",
-                    aspectRatio: "5 / 1",
-                    overflow: "hidden",
-                    background: "var(--color-surface-2)",
-                  }}
-                >
-                  <Image
-                    src={hero.image}
-                    alt={collection.title}
-                    fill
-                    priority
-                    sizes="100vw"
-                    style={{ objectFit: "cover", objectPosition: "center 40%" }}
-                  />
-                  {/* Left-to-right gradient scrim so the breadcrumb stays
-                      legible against any image content. */}
-                  <div
-                    aria-hidden
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background:
-                        "linear-gradient(to right, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 55%, transparent 100%)",
-                    }}
-                  />
-                  <div
-                    className="container-x"
-                    style={{
-                      position: "absolute",
-                      bottom: 16,
-                      left: 0,
-                      right: 0,
-                    }}
-                  >
-                    <nav
-                      aria-label="Breadcrumb"
-                      style={{
-                        display: "flex",
-                        gap: 6,
-                        alignItems: "center",
-                        fontSize: 12,
-                        color: "rgba(255,255,255,0.55)",
-                      }}
-                    >
-                      <Link href="/">Home</Link>
-                      <Icons.chevRight size={10} />
-                      <Link href="/collections">Shop</Link>
-                      <Icons.chevRight size={10} />
-                      <span style={{ color: "rgba(255,255,255,0.85)" }}>
-                        {collection.title}
-                      </span>
-                    </nav>
-                  </div>
-                </div>
+                <Image
+                  src={hero.image}
+                  alt={collection.title}
+                  fill
+                  priority
+                  sizes="100vw"
+                  style={{ objectFit: "cover", objectPosition: "center 40%" }}
+                />
               )}
 
+              {/* Bottom-heavy gradient scrim so the overlaid title +
+                  description sit on a near-black anchor, regardless of
+                  what the image shows behind. */}
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: hero.image
+                    ? "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.55) 45%, rgba(10,10,10,0.15) 100%)"
+                    : "none",
+                }}
+              />
+
+              {/* Single content overlay — same on mobile + desktop. No
+                  more dual-render breadcrumb; one nav anchored to the
+                  scrim, controlled by stacking inside the absolute
+                  container. */}
               <div
                 className="container-x"
                 style={{
-                  paddingTop: hero.image ? 20 : 32,
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
                   paddingBottom: 28,
+                  paddingTop: 24,
                 }}
               >
-                {/* Mobile-only breadcrumb (no banner overlay on mobile) */}
                 <nav
                   aria-label="Breadcrumb"
-                  className={hero.image ? "md:hidden" : ""}
                   style={{
                     display: "flex",
                     gap: 6,
                     alignItems: "center",
                     fontSize: 12,
-                    color: "var(--color-muted-warm)",
+                    color: "rgba(255,255,255,0.55)",
                     marginBottom: 12,
                   }}
                 >
-                  <Link href="/">Home</Link>
+                  <Link
+                    href="/"
+                    style={{ color: "rgba(255,255,255,0.55)" }}
+                  >
+                    Home
+                  </Link>
                   <Icons.chevRight size={10} />
-                  <Link href="/collections">Shop</Link>
+                  <Link
+                    href="/collections"
+                    style={{ color: "rgba(255,255,255,0.55)" }}
+                  >
+                    Shop
+                  </Link>
                   <Icons.chevRight size={10} />
-                  <span style={{ color: "var(--color-foreground)" }}>
+                  <span style={{ color: "rgba(255,255,255,0.85)" }}>
                     {collection.title}
                   </span>
                 </nav>
 
-                <div style={{ maxWidth: 760 }}>
+                <div style={{ maxWidth: 680 }}>
                   <h1
                     className="display-h3"
                     style={{
                       fontFamily: "var(--font-display)",
-                      fontSize: "clamp(28px, 5vw, 48px)",
+                      fontSize: "clamp(28px, 4vw, 44px)",
                       textTransform: "uppercase",
                       letterSpacing: "-0.01em",
                       lineHeight: 1.0,
+                      color: "#fff",
+                      textShadow: "0 2px 16px rgba(0,0,0,0.5)",
                     }}
                   >
                     {collection.title}
@@ -479,11 +465,11 @@ export default async function CollectionPage({
                   {explainer && (
                     <p
                       style={{
-                        color: "var(--color-muted-warm)",
+                        color: "rgba(255,255,255,0.72)",
                         fontSize: 15,
                         marginTop: 10,
                         lineHeight: 1.6,
-                        maxWidth: 560,
+                        maxWidth: 520,
                       }}
                     >
                       {explainer}
@@ -491,7 +477,7 @@ export default async function CollectionPage({
                   )}
                 </div>
               </div>
-            </>
+            </div>
           );
         })()}
       </section>
