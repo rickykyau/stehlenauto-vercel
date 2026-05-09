@@ -63,6 +63,25 @@ export async function saveVehicle(v: {
   const { userId } = await auth();
   if (userId && dbConfigured) {
     try {
+      // Cycle 14AP-fix15 (owner-found, prod, signed-in path):
+      // when an authed customer saved a SECOND vehicle (e.g., F-150
+      // first, then Tacoma), both DB rows ended up with
+      // `isPrimary = true`. getCurrentVehicle's `orderBy(isPrimary,
+      // createdAt)` defaults to ASC, so within the matching set
+      // the OLDEST primary row was returned first — the user kept
+      // seeing the F-150 because it was inserted first. The cookie
+      // path was correct (Tacoma) but DB took precedence for authed
+      // users. Mike's incognito Playwright test passed because
+      // guests never hit the DB branch — the bug was invisible
+      // until owner reported it as a signed-in user.
+      //
+      // Fix: demote ALL existing vehicles for this user to
+      // isPrimary=false BEFORE inserting/updating the new pick as
+      // primary. Single source of truth — exactly one primary row.
+      await db()
+        .update(vehicles)
+        .set({ isPrimary: false })
+        .where(eq(vehicles.userId, userId));
       await db()
         .insert(vehicles)
         .values({
