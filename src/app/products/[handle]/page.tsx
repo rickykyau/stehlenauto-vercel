@@ -24,7 +24,11 @@ import { YmmButton } from "@/components/fitment/ymm-button";
 import { getCurrentVehicle } from "@/lib/garage/server";
 import { getSubModelAnswers } from "@/lib/garage/server";
 import { checkFitment, getFitmentReason, withFitment } from "@/lib/fitment/match";
-import { stripsForCategory } from "@/lib/fitment/sub-model";
+import {
+  buildStripConfig,
+  requiredGroupsForCategory,
+} from "@/lib/fitment/sub-model";
+import { getDimensionOptions } from "@/lib/fitment/dimensions";
 import { getWarehouseNote, normalizeNoteHtml } from "@/lib/fitment/warehouse-notes";
 import { getBedLengthSiblings } from "@/lib/fitment/siblings";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
@@ -177,9 +181,14 @@ export default async function PdpPage({
       );
     return true;
   };
-  const requiredStrips = stripsForCategory(
-    product.categoryHandle ?? product.category,
-  ).filter((s) => productMentionsStripGroup(s.group));
+  // Cycle 14AQ (owner): build strips from per-vehicle CA fitment data.
+  // Drops trim/bed/cab options that don't apply to the customer's actual
+  // vehicle. Then filter by product-title mention (cycle 14M behaviour).
+  const _categoryHandle = product.categoryHandle ?? product.category;
+  const requiredStrips = requiredGroupsForCategory(_categoryHandle)
+    .map((g) => buildStripConfig(g, getDimensionOptions(vehicle, g)))
+    .filter((s) => s.options.length > 0)
+    .filter((s) => productMentionsStripGroup(s.group));
   const allStripsAnswered = requiredStrips.every((s) =>
     subModelAnswers.some((a) => a.group === s.group && a.value),
   );
@@ -1037,6 +1046,7 @@ export default async function PdpPage({
             vehicle={vehicle}
             initialAnswers={subModelAnswers}
             bedLengthSiblings={bedLengthSiblings}
+            strips={requiredStrips}
           />
 
           {/* Trust micro list */}

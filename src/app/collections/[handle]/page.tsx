@@ -19,7 +19,12 @@ import { ClearFiltersLink } from "@/components/commerce/clear-filters-link";
 import { Icons } from "@/components/ui/icons";
 import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { withFitment } from "@/lib/fitment/match";
-import { canonicalSubModelValue, stripsForCategory } from "@/lib/fitment/sub-model";
+import {
+  buildStripConfig,
+  canonicalSubModelValue,
+  requiredGroupsForCategory,
+} from "@/lib/fitment/sub-model";
+import { getDimensionOptions, getDimensionsForVehicle } from "@/lib/fitment/dimensions";
 import type { SubModelAnswer, SubModelGroup } from "@/lib/garage/types";
 import { breadcrumbJsonLd, itemListJsonLd, jsonLdString } from "@/lib/seo/jsonld";
 
@@ -204,15 +209,12 @@ function parseFilterParams(sp: Record<string, string | string[] | undefined>): {
     if (!VALID_SUB_GROUPS.has(group as SubModelGroup)) continue;
     if (!rawValue) continue;
     if (seenGroups.has(group)) continue; // first wins (matches client picker)
-    // Cycle 14AO-fix3 (Mike NB-5): allowlist value against the canonical
-    // option vocabulary. A crafted shared link with `?dim=bed_length:invalid+value`
-    // used to render the unsanitized text inside the picker pill;
-    // canonicalSubModelValue rejects unknown values and the picker shows
-    // the question instead.
-    const canonical = canonicalSubModelValue(group, rawValue);
-    if (!canonical) continue;
+    // Cycle 14AQ: per-vehicle allowlist match happens AFTER the vehicle is
+    // loaded (see further down). At URL-parse time we only enforce length +
+    // basic char hygiene already applied above. Unknown values get filtered
+    // when we know what the vehicle's actual options are.
     seenGroups.add(group);
-    dimensionAnswers.push({ group: group as SubModelGroup, value: canonical });
+    dimensionAnswers.push({ group: group as SubModelGroup, value: rawValue });
   }
   return { rawInputs, sort, dimensionAnswers };
 }
@@ -260,13 +262,33 @@ export default async function CollectionPage({
   const cookieAnswers = vehicle
     ? await getSubModelAnswers(vehicle.id ?? "")
     : [];
-  const subModelAnswers = mergeAnswers(cookieAnswers, urlAnswers);
+  const mergedRaw = mergeAnswers(cookieAnswers, urlAnswers);
+  // Cycle 14AQ (owner): canonicalize merged answers against the per-vehicle
+  // option list from data/ymm_dimensions.json. Drops crafted-URL nonsense
+  // (?dim=trim:Banana) and stale cookies (5.5' BED on a vehicle that's
+  // never been sold with that bed). Without a vehicle, accept the raw
+  // value (categories that don't gate on vehicle still work for guests).
+  const subModelAnswers: SubModelAnswer[] = vehicle
+    ? mergedRaw
+        .map((a) => {
+          const opts = getDimensionOptions(vehicle, a.group);
+          const canonical = canonicalSubModelValue(opts, a.value);
+          return canonical ? { ...a, value: canonical } : null;
+        })
+        .filter((a): a is SubModelAnswer => a !== null)
+    : mergedRaw;
   // Cycle 14AP (owner): server-side gate. Hide toolbar + grid until the
   // customer answers all required dimensions OR explicitly clicks SKIP
   // (which sets ?skip=1 in URL). Categories with no required dimensions
   // are open by default. Computed once so the picker, toolbar, and grid
   // wrappers below all stay in sync.
-  const requiredGroupsForGate = stripsForCategory(handle).map((s) => s.group);
+  // Cycle 14AQ: a group only "needs answering" if the customer's vehicle
+  // has at least one option for it. A 2018 Wrangler with no trim data in
+  // CA fitment shouldn't be force-gated on a question we can't ask.
+  const requiredGroupsForGate = requiredGroupsForCategory(handle).filter((g) => {
+    if (!vehicle) return true;
+    return getDimensionOptions(vehicle, g).length > 0;
+  });
   const skipped = sp.skip === "1";
   const allRequiredAnswered = requiredGroupsForGate.every((g) =>
     subModelAnswers.some((a) => a.group === g),
@@ -489,16 +511,24 @@ export default async function CollectionPage({
           pick or skip. Trades small friction for fitment accuracy: F-150
           customer no longer scrolls past bed-length and sees 8' bed mats. */}
       {(() => {
-        const requiredGroups = stripsForCategory(collection.handle).map(
-          (s) => s.group,
-        );
-        if (requiredGroups.length === 0) return null;
+        // Cycle 14AQ: build per-vehicle strip configs from CA fitment data.
+        // Each strip carries the actual options for THIS vehicle (real trim
+        // names like "SLE / Denali", not hardcoded "BASE / MID / HEAVY-DUTY").
+        // Strips with zero options are dropped — picker won't render a chip
+        // row for a question we can't answer for this vehicle.
+        const groups = requiredGroupsForCategory(collection.handle);
+        if (groups.length === 0) return null;
+        const strips = groups
+          .map((g) => buildStripConfig(g, getDimensionOptions(vehicle, g)))
+          .filter((s) => s.options.length > 0);
+        if (strips.length === 0) return null;
         return (
           <DimensionPicker
             categoryHandle={collection.handle}
             vehicle={vehicle ?? undefined}
             initialAnswers={subModelAnswers}
             gated={!gateOpen}
+            strips={strips}
           />
         );
       })()}
@@ -613,7 +643,7 @@ export default async function CollectionPage({
                 // there's no inventory; CLEAR FILTERS then loops because
                 // dropping ?f= doesn't change anything.
                 const categoryDimGroups = new Set(
-                  stripsForCategory(collection.handle).map((s) => s.group),
+                  requiredGroupsForCategory(collection.handle),
                 );
                 const relevantDimensionAnswers = subModelAnswers.filter((a) =>
                   categoryDimGroups.has(a.group),

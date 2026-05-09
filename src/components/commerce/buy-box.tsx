@@ -6,10 +6,7 @@ import { Icons } from "@/components/ui/icons";
 import type { CatalogProduct } from "@/lib/catalog/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
 import type { SubModelAnswer, SubModelGroup } from "@/lib/garage/types";
-import {
-  stripsForCategory,
-  type SubModelStripConfig,
-} from "@/lib/fitment/sub-model";
+import { type SubModelStripConfig } from "@/lib/fitment/sub-model";
 import { track } from "@/lib/analytics/client";
 import { WishlistButton } from "./wishlist-button";
 
@@ -80,6 +77,7 @@ export function BuyBox({
   vehicle,
   initialAnswers = [],
   bedLengthSiblings = null,
+  strips: stripsFromServer = [],
 }: {
   product: CatalogProduct;
   vehicle?: Vehicle;
@@ -92,17 +90,24 @@ export function BuyBox({
    * for this product family.
    */
   bedLengthSiblings?: BedLengthSiblingsEntry;
+  /**
+   * Cycle 14AQ (owner): strip configs are now built server-side from CA
+   * fitment data (per-vehicle real options), not derived client-side from
+   * a hardcoded option list. The server passes the relevant strips for
+   * this product+vehicle. We still client-side filter by product title to
+   * drop strips whose dimension isn't actually called out in the title
+   * (cycle 14M behaviour preserved).
+   */
+  strips?: SubModelStripConfig[];
 }) {
-  // Cycle 14f (Mike-6 MAJOR F-8): stripsForCategory is keyed on the Shopify
-  // collection handle (e.g. "tonneau-covers"), not product.category (the
-  // lowercased productType). Prefer categoryHandle.
-  // Cycle 14M (owner): then drop any strip whose dimension isn't actually
+  // Cycle 14M (owner): drop any strip whose dimension isn't actually
   // mentioned in the product title — those products fit any value of that
   // dimension (e.g. a "Bull Guard - Ford F-150 Expedition" doesn't specify
   // trim), so asking the customer to pick is a confusing dead-end where
   // changing the chip never changes the SKU/price.
-  const allStrips = stripsForCategory(product.categoryHandle ?? product.category);
-  const strips = allStrips.filter((s) => productMentionsGroup(s.group, product));
+  const strips = stripsFromServer.filter((s) =>
+    productMentionsGroup(s.group, product),
+  );
   const [qty, setQty] = useState(1);
   // Pre-fill ONLY from real answers the customer already saved for this vehicle.
   // We deliberately do NOT seed s.options[0] — auto-defaulting silently passes
