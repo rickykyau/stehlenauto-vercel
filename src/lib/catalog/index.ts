@@ -310,6 +310,39 @@ export type CollectionResult = {
   fitMeta?: CollectionFitMeta;
 };
 
+/**
+ * Cycle 14AO-fix8 (owner-found, prod): explicit search-seed phrase per real
+ * Shopify category slug, used by getCollection's "fits fallback search"
+ * when the wide-pool returned fewer exact-fit products than the page size.
+ *
+ * Earlier the seed was `handle.split("-")[0]` which produced unsafe
+ * generic words for slugs like "truck-bed-mats" → "truck" or
+ * "front-grilles" → "front" — Shopify's free-text search returned every
+ * F-150 truck product (trailer hitches, side steps, storage boxes), all
+ * of which passed the make/model/year fitment check and got dumped into
+ * the EXACT-FITS bucket. Result: the Truck Bed Mats grid showed storage
+ * organizers and trailer hitches with green "FITS YOUR 2021 FORD F-150"
+ * badges. Direct trust kill.
+ *
+ * Each seed is the most specific phrase that uniquely identifies the
+ * category in customer-facing product titles. Slugs not listed here skip
+ * the fallback entirely (synthetic / make-collection / unknown).
+ */
+const CATEGORY_FALLBACK_KEYWORD: Record<string, string> = {
+  "tonneau-covers": "tonneau",
+  "trailer-hitches": "trailer hitch",
+  "bull-guards-grille-guards": "bull guard",
+  "front-grilles": "grille insert",
+  headlights: "headlight",
+  "running-boards-side-steps": "running board",
+  "truck-bed-mats": "bed mat",
+  "floor-mats": "floor mat",
+  "roof-racks-baskets": "roof rack",
+  "chase-racks-sport-bars": "chase rack",
+  "molle-panels": "molle panel",
+  "under-seat-storage": "under seat",
+};
+
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "tonneau-covers":
     "Bed covers that protect cargo from weather, theft, and prying eyes. Lock & roll-up, tri-fold, and hidden-snap styles. Bed-length-gated fitment.",
@@ -374,6 +407,13 @@ const CATEGORY_HERO_EXPLAINERS: Record<string, string> = {
  * /public/images/categories/ (30 high-res JPGs from the merch team).
  * We pick the most representative image per category slug.
  */
+// Cycle 14AO-fix8 (owner-found, prod): truck-bed-mats and floor-mats both
+// pointed at MUD FLAPS.jpg — neither is a mud flap. molle-panels pointed
+// at ROOF RACKS.jpg — wrong family entirely. Re-mapped to the available
+// in-tree assets that ARE the right product family. Bed mats use the
+// MOLLE-panel image as the closest "inside-the-bed" hero until the merch
+// team uploads a real bed-mat asset (TODO: warehouse photo upload).
+// Floor mats now use RUBBER FLOOR MATS.jpg (correct asset existed all along).
 const CATEGORY_HERO_IMAGE: Record<string, string> = {
   "tonneau-covers": "/images/categories/TONNEAU COVER - LOCK & ROLL UP.jpg",
   "trailer-hitches": "/images/categories/HITCH STEPS.jpg",
@@ -381,14 +421,14 @@ const CATEGORY_HERO_IMAGE: Record<string, string> = {
     "/images/categories/BULL BAR - ADVANCE SERIES.jpg",
   "front-grilles": "/images/categories/FRONT GRILLES.jpg",
   headlights: "/images/categories/FULL LED PROJECTOR HEADLIGHTS.jpg",
-  "truck-bed-mats": "/images/categories/MUD FLAPS.jpg",
+  "truck-bed-mats": "/images/categories/TRUCK BED MOLLE PANELS.jpg",
   "running-boards-side-steps":
     "/images/categories/MODULAR STYLE RUNNING BOARDS.jpg",
   "roof-racks-baskets": "/images/categories/ROOF RACKS.jpg",
   "chase-racks-sport-bars": "/images/categories/CHASE RACKS.jpg",
-  "molle-panels": "/images/categories/ROOF RACKS.jpg",
+  "molle-panels": "/images/categories/TRUCK BED MOLLE PANELS.jpg",
   "under-seat-storage": "/images/categories/CONSOLE ORGANIZER.jpg",
-  "floor-mats": "/images/categories/MUD FLAPS.jpg",
+  "floor-mats": "/images/categories/RUBBER FLOOR MATS.jpg",
 };
 
 export function getCategoryHero(handle: string): {
@@ -952,16 +992,32 @@ export async function getCollection(
       if (exact.length < first) {
         try {
           const v = opts.vehicle;
-          // Use the first word of model (drops trim suffix like "1500")
-          // and the first word of the collection handle for a tight Shopify
-          // search seed — long titles (e.g. "Tonneau Covers for Trucks,
-          // SUVs & Jeeps") return 0 hits.
+          // Use the first word of model (drops trim suffix like "1500"),
+          // and a CATEGORY-SPECIFIC keyword phrase so the fallback search
+          // doesn't grossly over-match.
+          //
+          // Cycle 14AO-fix8 (owner-found, prod): handle.split("-")[0] for
+          // "truck-bed-mats" yielded "truck" → search "Ford F-150 truck"
+          // → returned every F-150 product (trailer hitches, side steps,
+          // storage boxes) which all passed checkFitment by year+make+model
+          // tags and got dumped into the EXACT-FITS bucket. Customer saw
+          // "FITS YOUR 2021 FORD F-150" stamped on storage boxes inside
+          // the Truck Bed Mats grid. Same risk on "front-grilles" (yields
+          // "front") and any future multi-word slug starting with a
+          // generic word. Fix: explicit keyword map per real category
+          // slug + post-fetch productType guard so only same-category
+          // products survive into the padding pool.
           const shortModel = v.model.split(/\s+/)[0] ?? v.model;
-          const shortCat = handle.split("-")[0] ?? handle;
-          const fallback = await searchProducts(
-            `${v.make} ${shortModel} ${shortCat}`,
-            48,
-          );
+          const seedKeyword = CATEGORY_FALLBACK_KEYWORD[handle];
+          // Unknown / synthetic / make-collection slugs: skip the fallback
+          // entirely rather than risk surfacing wrong-category products.
+          // The wide-pool already exhausted the collection.
+          const fallback: CatalogProduct[] = seedKeyword
+            ? await searchProducts(
+                `${v.make} ${shortModel} ${seedKeyword}`,
+                48,
+              )
+            : [];
           const seenHandles = new Set([
             ...exact.map((p) => p.handle),
             ...universal.map((p) => p.handle),
@@ -971,10 +1027,30 @@ export async function getCollection(
           // Cycle 14AO: also dimension-filter the padding pool — without
           // this we'd re-introduce 6.5' bed tonneaus into the "fits" bucket
           // for a 5.5'-bed customer.
-          const paddingPool =
+          const dimFilteredFallback =
             dimensionAnswers.length > 0
               ? filterByDimensionAnswers(fallback, dimensionAnswers)
               : fallback;
+          // Cycle 14AO-fix8 (owner-found, prod): also category-filter the
+          // padding pool so a Shopify free-text search seeded with our
+          // CATEGORY_FALLBACK_KEYWORD can't bleed wrong-category products
+          // into "exact fits". Truck Bed Mats grid was seeing storage
+          // organizers, trailer hitches, and side steps because their
+          // F-150 tags passed checkFitment. Now we additionally require
+          // the product's resolved categoryHandle to match `handle`, OR
+          // (for products with no resolvable categoryHandle) the productType
+          // string to contain the seedKeyword.
+          const seedKw = (seedKeyword ?? "").toLowerCase();
+          const paddingPool = dimFilteredFallback.filter((p) => {
+            if (p.categoryHandle === handle) return true;
+            // Backstop for products our categoryHandleFor mapper doesn't
+            // recognize: keyword match against the productType / category
+            // text. Empty seedKw means no fallback ran in the first place.
+            if (seedKw && p.category && p.category.toLowerCase().includes(seedKw)) {
+              return true;
+            }
+            return false;
+          });
           for (const p of paddingPool) {
             if (seenHandles.has(p.handle)) continue;
             const fits = checkFitment(p, v, dimensionAnswers);
