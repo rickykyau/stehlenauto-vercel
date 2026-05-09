@@ -187,7 +187,7 @@ const CHIPS: { slug: string; subject: string; framing: string; intent: string }[
     slug: "front-grille-trim-base-stock",
     subject:
       "2024 Ford F-150 SuperCrew 4-door pickup truck in BASE / XL work-truck trim. Oxford white paint. Factory chrome front bumper. Factory chrome-surround grille with horizontal silver bars. Factory 17-inch steel wheels with hub caps. Standard ride height (no lift). NO aftermarket parts of any kind. NO chase rack, NO bed accessories, NO roof rack, NO light bar.",
-    framing: "Three-quarter front-side view, vehicle FACING LEFT — grille on the LEFT half of the frame, body extending to the RIGHT. Eye-level camera, ~85mm focal length (no wide-angle distortion), camera ~15ft from vehicle. Full vehicle in frame with 8% padding all sides. Pure white seamless studio cyclorama (no horizon, no environment). Single soft top-down studio key light, soft contact shadow under tires. The grille area is the visual focal point.",
+    framing: "Three-quarter front-side view, vehicle FACING LEFT — grille on the LEFT half of the frame, body extending to the RIGHT. Eye-level camera, ~85mm focal length (no wide-angle distortion). VEHICLE TAKES EXACTLY 75% OF THE FRAME WIDTH — centered horizontally, with 12.5% empty padding on the LEFT and 12.5% on the RIGHT. Vertical: vehicle takes 65% of frame height, centered vertically, with 17.5% padding above the roof and 17.5% below the tires. Pure flat white background — NO cyclorama curve visible, NO wall-to-floor joint, NO horizon line, NO environment, NO ceiling, NO shadows other than a soft contact shadow directly under the tires. Single soft top-down studio key light. The frame must look like a clean catalog product shot floating on white, not a studio room.",
     intent: "Same Ford F-150 silhouette as the other two trims; only paint + bumper + wheels differ. Customer reads 'BASE / WORK trim — chrome bumper, steel wheels, white paint'.",
   },
   {
@@ -201,8 +201,8 @@ const CHIPS: { slug: string; subject: string; framing: string; intent: string }[
     slug: "front-grille-trim-mid-stock",
     subject:
       "2024 Ford F-150 SuperCrew 4-door pickup truck in MID-TIER / XLT trim. Atlas blue metallic paint. Factory body-color (blue) front bumper. Factory body-color grille with chrome horizontal bars. Factory 18-inch alloy wheels. Standard ride height. NO aftermarket parts.",
-    framing: "IDENTICAL framing to front-grille-trim-base-stock — three-quarter front-side view, vehicle facing LEFT, grille on LEFT half of frame, eye-level camera, same focal length, same distance, pure white seamless studio cyclorama, same lighting.",
-    intent: "Same F-150 silhouette as BASE; only paint colour + bumper finish + wheel style change. Customer reads 'XLT / MID trim — blue paint, body-color bumper, alloy wheels'.",
+    framing: "IDENTICAL framing to front-grille-trim-base-stock — three-quarter front-side view, vehicle facing LEFT, grille on LEFT half of frame, eye-level camera, same focal length. VEHICLE TAKES EXACTLY 75% OF THE FRAME WIDTH, centered horizontally with 12.5% padding left and right. Same vertical centering. Pure flat white background — NO cyclorama curve, NO wall-to-floor joint, NO horizon, NO environment, NO ceiling. Soft contact shadow under tires only.",
+    intent: "Same F-150 silhouette as BASE; only paint colour + bumper finish + wheel style change. Customer reads 'XLT / MID trim — blue paint, body-color bumper, alloy wheels'. CRITICAL: vehicle must occupy the EXACT SAME 75% frame width as the BASE chip — the white BASE truck appeared smaller in the previous round because it had more empty padding around it. Match the BASE chip zoom level pixel-precisely.",
   },
   {
     slug: "front-grille-trim-mid-stehlen",
@@ -216,7 +216,7 @@ const CHIPS: { slug: string; subject: string; framing: string; intent: string }[
     subject:
       "2024 Ford F-150 SuperCrew 4-door pickup truck in HEAVY-DUTY / OFF-ROAD trim package (Lariat / Tremor styling — NOT Raptor, NOT Trail Boss, NOT Rebel). Agate black metallic paint. Blacked-out front bumper. Factory matte-black grille with chrome horizontal bars and Ford blue-oval badge. Factory 18-inch matte-black off-road wheels with all-terrain tires. Slight 2-inch factory lift. NO chase rack, NO bed accessories, NO roof rack — this is JUST the truck.",
     framing: "IDENTICAL framing to front-grille-trim-base-stock — three-quarter front-side view, vehicle facing LEFT, grille on LEFT half of frame, eye-level camera, pure white seamless studio cyclorama, same lighting. Vehicle takes the same 80% of frame width as the other trims.",
-    intent: "Same F-150 silhouette as BASE and MID; only paint + bumper + wheels change. Customer reads 'HEAVY-DUTY / off-road trim — black-on-black, off-road wheels, slightly lifted'. The truck must be RECOGNIZABLY THE SAME F-150, not a different vehicle.",
+    intent: "Same F-150 silhouette as BASE and MID; only paint + bumper + wheels change. Customer reads 'HEAVY-DUTY / off-road trim — black-on-black, off-road wheels, slightly lifted'. The truck must be RECOGNIZABLY THE SAME F-150, not a different vehicle. CRITICAL: vehicle must occupy the EXACT SAME 75% frame width as the BASE and MID chips. All three trim chips MUST share the same zoom level so the customer sees one truck silhouette in three colour stories, not three different truck sizes.",
   },
   {
     slug: "front-grille-trim-heavy-duty-stehlen",
@@ -285,6 +285,28 @@ async function generateOne(
     }
   }
 
+  // Cycle 14AP-fix9 (owner): for the front-grille MID and HEAVY-DUTY stock
+  // variants, lock the camera framing to whatever the BASE stock photo
+  // produced — pass BASE as a "framing reference" so Gemini matches the
+  // zoom level / camera position / background crop instead of drifting.
+  // This addresses owner's complaint that the white BASE truck looked
+  // smaller than the other two trims.
+  let framingReferenceBytes: Buffer | null = null;
+  const NEEDS_BASE_FRAMING = new Set([
+    "front-grille-trim-mid-stock",
+    "front-grille-trim-heavy-duty-stock",
+  ]);
+  if (NEEDS_BASE_FRAMING.has(spec.slug)) {
+    const basePath = path.join(OUT_DIR, "front-grille-trim-base-stock.jpg");
+    try {
+      framingReferenceBytes = await fs.readFile(basePath);
+    } catch {
+      // No base yet — generate without framing reference. Caller should
+      // generate base FIRST so this branch can attach the reference.
+      framingReferenceBytes = null;
+    }
+  }
+
   const prompt = isStehlenVariant
     ? `EDIT MODE: this photo is the BASE. You are editing it. Replace the factory front grille on the truck with a matte-black hex-mesh aftermarket grille (clean honeycomb pattern, no badging, no wordmark, no LED markers, no decoration — just a matte-black hex grille face).
 
@@ -301,7 +323,28 @@ ABSOLUTE REQUIREMENTS — keep these IDENTICAL to the input photo:
 The ONLY pixels that should change are inside the front grille opening. The customer must be able to flip back and forth between this output and the input and see ONLY the grille difference.
 
 Output: the edited photo as a 3:2 landscape image.`
-    : `${SYSTEM_PROMPT}
+    : framingReferenceBytes
+      ? `${SYSTEM_PROMPT}
+
+You are generating a NEW photo, but you must MATCH the framing of the attached reference image PIXEL-PRECISELY. The reference image is a Ford F-150 in BASE trim shot for a comparison-chip set; this photo will sit next to it in a 3-chip row, and the customer's eye must read all 3 chips as ONE truck silhouette in three colour stories — NOT three different truck sizes.
+
+MATCH FROM REFERENCE — these MUST be identical:
+- Camera angle (three-quarter front-side, vehicle facing LEFT)
+- Camera height (eye-level)
+- Focal length and distance from vehicle
+- Vehicle position in frame (centered horizontally and vertically)
+- Vehicle size — the truck must occupy the EXACT SAME percentage of the frame width as in the reference (~75%)
+- Background — pure flat white, no cyclorama curve, no environment
+- Lighting direction and intensity
+
+DIFFER FROM REFERENCE — these are the trim-specific changes:
+${spec.subject}
+
+Framing: ${spec.framing}
+Intent: ${spec.intent}
+
+Generate the photo now, matching the reference's framing exactly but with the trim-specific paint / bumper / wheels described above.`
+      : `${SYSTEM_PROMPT}
 
 Subject: ${spec.subject}
 Framing: ${spec.framing}
@@ -320,7 +363,17 @@ Generate the photo now.`;
       },
     });
   }
-  if (brandReferenceBytes) {
+  if (framingReferenceBytes) {
+    // Framing-anchor reference for MID/HEAVY-DUTY stocks — Gemini must
+    // match this image's composition, zoom, and lighting.
+    parts.push({
+      inlineData: {
+        mimeType: "image/jpeg",
+        data: framingReferenceBytes.toString("base64"),
+      },
+    });
+  }
+  if (brandReferenceBytes && !isStehlenVariant && !framingReferenceBytes) {
     parts.push({
       inlineData: {
         mimeType: "image/jpeg",

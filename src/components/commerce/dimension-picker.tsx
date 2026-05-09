@@ -86,6 +86,28 @@ export function DimensionPicker({
   // Only used on /collections/front-grilles. Hook lives at top-level so
   // it's never conditionally invoked.
   const [grilleView, setGrilleView] = useState<"stock" | "stehlen">("stock");
+  // Cycle 14AP-fix9 (owner): click-to-zoom modal. Stores the source URL
+  // and label of the chip image to display fullscreen, or null when
+  // closed. ESC + click-outside dismiss.
+  const [zoomSrc, setZoomSrc] = useState<{
+    src: string;
+    label: string;
+    caption?: string;
+  } | null>(null);
+
+  // Cycle 14AP-fix9: ESC closes the zoom modal.
+  useEffect(() => {
+    if (!zoomSrc) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setZoomSrc(null);
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [zoomSrc]);
   // Optimistic local state so the UI reacts instantly while the server round-
   // trip is in flight. Initial pull from props (cookie/DB or URL).
   // Cycle 14AO-fix4 (Mike NF-1): when the browser restores this page from
@@ -697,6 +719,48 @@ export function DimensionPicker({
                               (e.currentTarget as HTMLImageElement).style.display = "none";
                             }}
                           />
+                          {/* Cycle 14AP-fix9 (owner): zoom icon overlay.
+                              Click chip body = pick trim. Click zoom icon
+                              = open fullscreen modal so the customer can
+                              see the before/after detail without
+                              committing to a pick. stopPropagation keeps
+                              the icon click from triggering onPick. */}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              setZoomSrc({
+                                src: imgSrc,
+                                label: opt,
+                                caption: FRONT_GRILLE_POC && s.group === "trim"
+                                  ? grilleView === "stock"
+                                    ? "Stock truck"
+                                    : "+ Stehlen grille"
+                                  : undefined,
+                              });
+                            }}
+                            aria-label={`Zoom ${opt} photo`}
+                            style={{
+                              position: "absolute",
+                              top: 8,
+                              right: 8,
+                              width: 32,
+                              height: 32,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              background: "rgba(10,10,10,0.65)",
+                              backdropFilter: "blur(4px)",
+                              border: "1px solid rgba(255,255,255,0.2)",
+                              borderRadius: 4,
+                              color: "rgba(255,255,255,0.9)",
+                              cursor: "pointer",
+                              padding: 0,
+                            }}
+                          >
+                            <Icons.search size={14} />
+                          </button>
                         </div>
                         <div
                           style={{
@@ -781,6 +845,96 @@ export function DimensionPicker({
           </div>
         )}
       </div>
+
+      {/* Cycle 14AP-fix9 (owner): fullscreen click-to-zoom modal. Click
+          backdrop or X or press ESC to close. Caption shows the trim
+          label + STOCK/STEHLEN view tag so the customer knows which
+          state of the toggle they're zoomed into. */}
+      {zoomSrc && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${zoomSrc.label} preview`}
+          onClick={() => setZoomSrc(null)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 90,
+            background: "rgba(10,10,10,0.92)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 20,
+            cursor: "zoom-out",
+          }}
+        >
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setZoomSrc(null);
+            }}
+            aria-label="Close"
+            style={{
+              position: "absolute",
+              top: 16,
+              right: 16,
+              width: 40,
+              height: 40,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "rgba(255,255,255,0.1)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              borderRadius: 4,
+              color: "#fff",
+              cursor: "pointer",
+            }}
+          >
+            <Icons.close size={18} />
+          </button>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative",
+              width: "min(95vw, 1400px)",
+              maxHeight: "85vh",
+              aspectRatio: "3 / 2",
+              cursor: "default",
+            }}
+          >
+            <Image
+              src={zoomSrc.src}
+              alt={zoomSrc.label}
+              fill
+              sizes="95vw"
+              style={{ objectFit: "contain" }}
+              priority
+            />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              bottom: 24,
+              left: 0,
+              right: 0,
+              textAlign: "center",
+              color: "rgba(255,255,255,0.85)",
+              fontSize: 14,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              fontFamily: "var(--font-display)",
+            }}
+          >
+            <span style={{ fontWeight: 700 }}>{zoomSrc.label}</span>
+            {zoomSrc.caption && (
+              <span style={{ opacity: 0.6, marginLeft: 12 }}>
+                · {zoomSrc.caption}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
