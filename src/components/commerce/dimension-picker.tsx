@@ -82,6 +82,10 @@ export function DimensionPicker({
   const params = useSearchParams();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  // Cycle 14AP-fix4 (owner POC): "stock" vs "with Stehlen grille" toggle.
+  // Only used on /collections/front-grilles. Hook lives at top-level so
+  // it's never conditionally invoked.
+  const [grilleView, setGrilleView] = useState<"stock" | "stehlen">("stock");
   // Optimistic local state so the UI reacts instantly while the server round-
   // trip is in flight. Initial pull from props (cookie/DB or URL).
   // Cycle 14AO-fix4 (Mike NF-1): when the browser restores this page from
@@ -412,6 +416,14 @@ export function DimensionPicker({
   const strips: SubModelStripConfig[] = stripsForCategory(categoryHandle);
   if (strips.length === 0) return null;
 
+  // Cycle 14AP-fix4 (owner POC): on /collections/front-grilles ONLY,
+  // each chip card has TWO photos — the same vehicle silhouette in stock
+  // form AND with the Stehlen aftermarket grille installed. Customer
+  // toggles between "STOCK" and "WITH STEHLEN GRILLE" to see what their
+  // truck would look like with the part bolted on. POC ships for front-
+  // grilles only; if it lands well we expand to other categories.
+  const FRONT_GRILLE_POC = categoryHandle === "front-grilles";
+
   // Cycle 14AO: copy decisions per dimension. Uppercase action verb +
   // sentence-case helper text, mirroring Tire-Rack-style configurators.
   const COPY: Record<SubModelGroup, { ask: string; helper: string }> = {
@@ -552,6 +564,58 @@ export function DimensionPicker({
                 >
                   {COPY[s.group].helper}
                 </div>
+                {/* Cycle 14AP-fix4 (owner POC): on /collections/front-grilles
+                    only, render a STOCK / WITH STEHLEN GRILLE toggle above
+                    the chip grid so the customer can see a before/after
+                    preview of the same F-150 silhouette. Toggle is local
+                    state — purely visual, no server roundtrip. */}
+                {FRONT_GRILLE_POC && s.group === "trim" && (
+                  <div
+                    role="group"
+                    aria-label="Toggle stock vs Stehlen grille preview"
+                    style={{
+                      display: "inline-flex",
+                      gap: 0,
+                      marginBottom: 12,
+                      border: "1px solid var(--color-border)",
+                      borderRadius: "var(--radius-sm)",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {(["stock", "stehlen"] as const).map((view) => {
+                      const active = grilleView === view;
+                      return (
+                        <button
+                          key={view}
+                          type="button"
+                          onClick={() => setGrilleView(view)}
+                          aria-pressed={active}
+                          style={{
+                            background: active
+                              ? "var(--color-foreground)"
+                              : "transparent",
+                            color: active
+                              ? "var(--color-background)"
+                              : "var(--color-foreground)",
+                            border: 0,
+                            padding: "8px 14px",
+                            fontSize: 12,
+                            fontWeight: 600,
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase",
+                            cursor: "pointer",
+                            fontFamily: "var(--font-display)",
+                          }}
+                        >
+                          {view === "stock"
+                            ? "Stock truck"
+                            : "+ Stehlen grille"}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
                 {/* Cycle 14AP (owner): visual chip cards with photo + label.
                     3:2 aspect, label below image (per Diana's spec). Image
                     src points at /images/dimensions/<group>-<slug>.jpg —
@@ -566,7 +630,14 @@ export function DimensionPicker({
                 >
                   {s.options.map((opt) => {
                     const slug = dimensionChipSlug(s.group, opt);
-                    const imgSrc = `/images/dimensions/${slug}.jpg`;
+                    // Cycle 14AP-fix4 (owner POC): per-category override
+                    // for /collections/front-grilles trim picker. Each
+                    // chip has stock + stehlen variants of the same
+                    // F-150 silhouette; toggle swaps between them.
+                    const imgSrc =
+                      FRONT_GRILLE_POC && s.group === "trim"
+                        ? `/images/dimensions/front-grille-${slug}-${grilleView}.jpg`
+                        : `/images/dimensions/${slug}.jpg`;
                     return (
                       <button
                         key={opt}

@@ -130,6 +130,68 @@ const CHIPS: { slug: string; subject: string; framing: string; intent: string }[
     framing: "three-quarter front-side angle, eye-level camera, full vehicle in frame, plain white seamless studio background, identical lighting to the other trim chips",
     intent: "Customer reads 'aggressive premium / off-road package — that's my Raptor / TRD Pro'.",
   },
+
+  // ─── FRONT-GRILLE POC (Cycle 14AP-fix4, owner) ───────────────────────
+  // Per-category override for front-grilles ONLY. Shows the SAME Ford
+  // F-150 in the SAME 3/4-front camera angle across all 6 photos so
+  // the customer compares apples-to-apples. Each trim has a STOCK
+  // photo (factory grille) AND a STEHLEN photo (matte-black hex-mesh
+  // Stehlen grille mounted in place of the factory unit). The picker
+  // adds a toggle button to swap between the two views — gives the
+  // customer a real-time preview of what their truck would look like
+  // with the Stehlen grille installed.
+  //
+  // Naming convention: front-grille-trim-<value>-<view>
+  //   view = "stock" | "stehlen"
+  //
+  // Vehicle anchor: 2024 Ford F-150 SuperCrew, three-quarter front-side
+  // angle, eye-level camera, plain white seamless studio background,
+  // soft top-down lighting from above-camera-left. Trim differentiation
+  // is ONLY in the grille zone, paint, wheels, and bumper styling — body
+  // shape and stance stay identical so the customer's eye locks on the
+  // grille area where the product fits.
+  {
+    slug: "front-grille-trim-base-stock",
+    subject:
+      "2024 Ford F-150 XL work-truck trim (BASE), oxford white paint, factory chrome front bumper, factory steel-mesh grille with chrome surround, factory steel wheels, fleet/commercial appearance, three-quarter front-side angle showing the front grille area clearly. STOCK FACTORY — no aftermarket parts.",
+    framing: "three-quarter front-side angle, eye-level camera, full vehicle in frame with 8% padding, plain white seamless studio background, soft top-down lighting from above-camera-left — identical framing to ALL other front-grille-trim-* photos",
+    intent: "Same F-150 silhouette as the other two trims; customer reads 'BASE / WORK trim — chrome bumper, steel grille, white work truck'. The grille area is the visual focal point.",
+  },
+  {
+    slug: "front-grille-trim-base-stehlen",
+    subject:
+      "EXACT same 2024 Ford F-150 XL work-truck (oxford white, chrome bumper, steel wheels) BUT with a matte-black STEHLEN aftermarket front grille installed in place of the factory chrome-surround grille. The Stehlen grille has a hex-mesh insert with a row of three amber LED markers across the upper crossbar and a STEHLEN wordmark embossed in the lower-center mesh. Everything else about the vehicle is identical to the stock photo.",
+    framing: "IDENTICAL framing, camera position, lighting, paint, wheels to front-grille-trim-base-stock — only the grille has been replaced. The customer should be able to mentally swap between this and the stock photo and see ONLY the grille difference.",
+    intent: "Customer toggles from STOCK and immediately sees what their work-trim F-150 would look like with the Stehlen hex-mesh grille bolted on.",
+  },
+  {
+    slug: "front-grille-trim-mid-stock",
+    subject:
+      "2024 Ford F-150 XLT mid-trim, lightning blue metallic paint, body-color front bumper, factory body-color grille with chrome accents and Ford BLUE OVAL badge, factory 18-inch alloy wheels, mainstream consumer appearance, three-quarter front-side angle showing the front grille area clearly. STOCK FACTORY — no aftermarket parts.",
+    framing: "three-quarter front-side angle, eye-level camera, full vehicle in frame with 8% padding, plain white seamless studio background, soft top-down lighting from above-camera-left — identical framing to ALL other front-grille-trim-* photos",
+    intent: "Same F-150 silhouette; customer reads 'XLT / mid-trim — body-color bumper, factory grille with chrome'. Grille zone is the focus.",
+  },
+  {
+    slug: "front-grille-trim-mid-stehlen",
+    subject:
+      "EXACT same 2024 Ford F-150 XLT (lightning blue, body-color bumper, alloy wheels) BUT with a matte-black STEHLEN aftermarket front grille installed in place of the factory body-color grille. Stehlen grille has hex-mesh insert with three amber LED markers across the top and STEHLEN wordmark embossed lower-center. Everything else identical to the mid-trim stock photo.",
+    framing: "IDENTICAL framing, camera position, lighting, paint, wheels to front-grille-trim-mid-stock — only the grille is swapped.",
+    intent: "Mid-trim customer sees their XLT F-150 with the Stehlen grille bolted on.",
+  },
+  {
+    slug: "front-grille-trim-heavy-duty-stock",
+    subject:
+      "2024 Ford F-150 Raptor-style HEAVY-DUTY / off-road trim, agate black metallic paint, blacked-out front bumper, factory matte-black grille with FORD wordmark across the top, factory 17-inch beadlock-style off-road wheels, slight factory lift, fender flares, aggressive premium stance, three-quarter front-side angle showing the front grille area clearly. STOCK FACTORY — no aftermarket parts.",
+    framing: "three-quarter front-side angle, eye-level camera, full vehicle in frame with 8% padding, plain white seamless studio background, soft top-down lighting from above-camera-left — identical framing to ALL other front-grille-trim-* photos",
+    intent: "Same F-150 silhouette; customer reads 'Raptor / heavy-duty trim — black-on-black, off-road wheels, lifted'. Grille zone is the focus.",
+  },
+  {
+    slug: "front-grille-trim-heavy-duty-stehlen",
+    subject:
+      "EXACT same 2024 Ford F-150 Raptor-style heavy-duty trim (agate black, blacked-out bumper, off-road wheels) BUT with a matte-black STEHLEN aftermarket front grille installed in place of the factory grille. Stehlen grille has hex-mesh insert with three amber LED markers across the top crossbar and STEHLEN wordmark embossed lower-center. The black-on-black aesthetic of the truck and the matte-black Stehlen grille blend tactically. Everything else identical to the heavy-duty stock photo.",
+    framing: "IDENTICAL framing, camera position, lighting, paint, wheels to front-grille-trim-heavy-duty-stock — only the grille is swapped.",
+    intent: "Premium-trim customer sees their Raptor-style F-150 with the Stehlen grille bolted on — the matte-black-on-matte-black is the strongest visual sell.",
+  },
 ];
 
 const SYSTEM_PROMPT = `You are a senior automotive product photographer creating COMPARISON CHIP photos for a truck-parts e-commerce filter UI. Each photo is a small chip the customer clicks to identify their vehicle's bed length / cab type / trim.
