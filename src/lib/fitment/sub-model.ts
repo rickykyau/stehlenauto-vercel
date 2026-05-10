@@ -41,9 +41,12 @@ export type SubModelStripConfig = {
 };
 
 const GROUP_LABELS: Record<SubModelGroup, string> = {
-  bed_length: "YOUR TRUCK'S BED LENGTH",
-  cab_type: "YOUR TRUCK'S CAB TYPE",
-  trim: "YOUR TRUCK'S TRIM",
+  // Cycle 14AR-fix6 (Jordan F-3): "truck" → "vehicle" across customer
+  // copy. Stehlen sells to truck/SUV/Jeep customers; "your truck" tells
+  // a Wrangler or 4Runner owner the site wasn't built for them.
+  bed_length: "YOUR VEHICLE'S BED LENGTH",
+  cab_type: "YOUR VEHICLE'S CAB TYPE",
+  trim: "YOUR VEHICLE'S TRIM",
   doors: "YOUR VEHICLE'S DOOR COUNT",
 };
 

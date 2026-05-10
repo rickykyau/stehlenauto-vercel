@@ -35,7 +35,7 @@ const VALUES = [
   {
     Icon: Icons.shield,
     head: "FITMENT GUARANTEED",
-    body: "If our part doesn't fit your truck, we eat the return. Every time.",
+    body: "If our part doesn't fit your vehicle, we eat the return. Every time.",
   },
   {
     Icon: Icons.truck,

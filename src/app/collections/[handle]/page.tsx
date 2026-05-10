@@ -716,7 +716,7 @@ export default async function CollectionPage({
                         href={`/vehicle/${vehicle.year}-${vehicle.make.toLowerCase()}-${vehicle.model.toLowerCase().replace(/\s+/g, "-")}`}
                         style={{ color: "var(--color-primary)" }}
                       >
-                        all parts that fit your truck
+                        all parts that fit your vehicle
                       </Link>
                       , or{" "}
                       <Link

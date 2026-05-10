@@ -77,14 +77,14 @@ const POLICIES: Record<string, PolicyContent> = {
   "fitment-guarantee": {
     title: "Fitment Guarantee",
     description:
-      "If our part doesn't fit your truck, we eat the return. Every time, no exceptions.",
+      "If our part doesn't fit your vehicle, we eat the return. Every time, no exceptions.",
     updated: "March 2026",
     sections: [
       {
         heading: "What's covered",
         body: [
           "Every product page lists exactly which years, makes, models, and sub-models a part fits. Save your vehicle in the Garage and we filter the catalog automatically.",
-          "If a Stehlen part listed as fitting your verified Year/Make/Model/sub-model doesn't bolt up to your truck — for any reason — we cover return shipping and refund 100%.",
+          "If a Stehlen part listed as fitting your verified Year/Make/Model/sub-model doesn't bolt up to your vehicle — for any reason — we cover return shipping and refund 100%.",
         ],
       },
       {

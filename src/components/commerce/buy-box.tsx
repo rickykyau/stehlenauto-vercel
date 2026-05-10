@@ -116,7 +116,21 @@ export function BuyBox({
     const init: Partial<Record<SubModelGroup, string>> = {};
     for (const s of strips) {
       const saved = initialAnswers.find((a) => a.group === s.group)?.value;
-      if (saved) init[s.group] = saved;
+      if (saved) {
+        init[s.group] = saved;
+        continue;
+      }
+      // Cycle 14AR-fix6 (Jordan F-4): when a strip has exactly ONE option
+      // (e.g., a 6.5'-bed-only product whose chip strip lists only "6.5'
+      // BED"), there is no choice for the customer to make — auto-pick
+      // the only option so ATC is enabled immediately. Forcing the
+      // customer to manually tap the lone chip just to unlock Add to
+      // Cart is friction with no value. Multi-option strips still
+      // require a manual pick (no silent defaulting), preserving the
+      // P0-1 / F-2 guard against false-fitment claims.
+      if (s.options.length === 1) {
+        init[s.group] = s.options[0];
+      }
     }
     return init;
   });
@@ -378,12 +392,12 @@ export function BuyBox({
                   {bedLengthSiblings && s.group === "bed_length" ? (
                     <>
                       Use the chips below to switch to the matching product
-                      for your truck, or tap <strong>ADD TO CART ANYWAY</strong>{" "}
+                      for your vehicle, or tap <strong>ADD TO CART ANYWAY</strong>{" "}
                       if you&apos;re buying for a different vehicle.
                     </>
                   ) : (
                     <>
-                      If your truck actually has a {productSpec}{" "}
+                      If your vehicle actually has a {productSpec}{" "}
                       {friendlyType}, this is the right product — your saved
                       spec will update on add-to-cart. Otherwise, tap{" "}
                       <strong>ADD TO CART ANYWAY</strong> if you&apos;re
@@ -410,7 +424,7 @@ export function BuyBox({
                   This product is engineered for a {productSpec} {friendlyType}.
                 </strong>{" "}
                 Pick yours so we can verify it fits — the chip is asking about
-                your truck, not the cover.
+                your vehicle, not the cover.
               </div>
             );
           })()}

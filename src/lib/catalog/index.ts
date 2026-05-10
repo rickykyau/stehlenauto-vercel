@@ -434,7 +434,7 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
  */
 const CATEGORY_HERO_EXPLAINERS: Record<string, string> = {
   "tonneau-covers":
-    "A tonneau cover is a hard or soft cover that snaps, folds, or rolls over your truck bed to keep cargo dry, lock it away from thieves, and cut wind drag at highway speed. We carry roll-up vinyl, hard tri-fold, and lock-and-roll styles — every model is bed-length-specific, so pick yours and we'll show only covers that bolt right on.",
+    "A tonneau cover is a hard or soft cover that snaps, folds, or rolls over your vehicle's bed to keep cargo dry, lock it away from thieves, and cut wind drag at highway speed. We carry roll-up vinyl, hard tri-fold, and lock-and-roll styles — every model is bed-length-specific, so pick yours and we'll show only covers that bolt right on.",
   "trailer-hitches":
     "A trailer hitch is the receiver that bolts to your frame so you can pull a trailer, mount a bike rack, or hook a recovery strap. Class I (light, 200 lb tongue) through Class V (heavy-duty, 1,200+ lb tongue) — we fit pickups, SUVs, crossovers, and more. Pick your vehicle and we'll show only the receiver class your frame can take.",
   "bull-guards-grille-guards":
@@ -444,7 +444,7 @@ const CATEGORY_HERO_EXPLAINERS: Record<string, string> = {
   headlights:
     "Headlights are the most-used safety system on your vehicle. We carry LED crystal projectors that triple usable light over halogen, OEM-style replacements that just bolt in, and sealed-beam upgrades. Wiring harnesses included where the upgrade swaps from halogen to LED.",
   "truck-bed-mats":
-    "A bed mat is a heavy rubber or composite liner that drops into your truck bed and stops cargo from sliding around — and stops the bed itself from getting scratched, dented, or rusted. Custom-cut to your bed's exact length and width. No drilling, no spray-in mess. Pulls out for clean-out in 30 seconds.",
+    "A bed mat is a heavy rubber or composite liner that drops into your vehicle's bed and stops cargo from sliding around — and stops the bed itself from getting scratched, dented, or rusted. Custom-cut to your bed's exact length and width. No drilling, no spray-in mess. Pulls out for clean-out in 30 seconds.",
   "running-boards-side-steps":
     "Running boards (or side steps) are the bolt-on platform that helps you and your passengers step into a lifted truck or SUV — and protect the rocker panel from rocks and debris. Drop-step, modular, OE-style, and rock-slider variants. Cab-type-specific (Crew/SuperCrew/Regular).",
   "floor-mats":
@@ -454,7 +454,7 @@ const CATEGORY_HERO_EXPLAINERS: Record<string, string> = {
   "chase-racks-sport-bars":
     "A chase rack is the bed-mounted tube structure behind the cab that carries lights, antennas, jacks, jerry cans, and anything else you don't want loose in the bed. Sport bars are the lighter cosmetic version. Bed-length-specific, drilling-free bolt-on.",
   "molle-panels":
-    "MOLLE panels are the perforated steel plates with PALS webbing slots that turn your truck bed into a modular gear-mounting system. Bolt them to the bed sides and snap on pouches, jerry-can holders, axe mounts, etc. Build a chase setup in an afternoon.",
+    "MOLLE panels are the perforated steel plates with PALS webbing slots that turn your vehicle's bed into a modular gear-mounting system. Bolt them to the bed sides and snap on pouches, jerry-can holders, axe mounts, etc. Build a chase setup in an afternoon.",
   "under-seat-storage":
     "Cab and console accessories — lockable under-seat organizers, dash mounts, console trays, USB chargers, and small-item storage. The miscellaneous bucket: anything that bolts inside the cab without modifying the vehicle.",
 };

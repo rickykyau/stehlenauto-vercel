@@ -65,12 +65,12 @@ function readSubModelCookieClient(vehicleId: string): SubModelAnswer[] {
 
 const COPY: Record<SubModelGroup, { ask: string; helper: string }> = {
   bed_length: {
-    ask: "Which bed length fits your truck?",
+    ask: "Which bed length fits your vehicle?",
     helper:
       "Bed length is measured from the back of the cab to the tailgate. Picking yours shows only covers that bolt right on.",
   },
   cab_type: {
-    ask: "Which cab type does your truck have?",
+    ask: "Which cab type does your vehicle have?",
     helper:
       "Crew, Super, or Regular. Running boards and side steps are cab-specific — picking yours hides anything that won't reach your doors.",
   },
