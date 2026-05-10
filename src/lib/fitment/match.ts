@@ -535,7 +535,21 @@ export function checkFitment(
       return a === b || a.includes(b) || b.includes(a);
     });
     const yearMatch = table!.years.includes(yearStr);
-    if (makeMatch && modelMatch && yearMatch) return true;
+    if (makeMatch && modelMatch && yearMatch) {
+      // Cycle 14AR-fix4 (QA-found BUG-14AR-P3-1 P1): the metafield-first
+      // branch was returning true on a YMM match WITHOUT honoring the
+      // sub-model gate. A 5.5'-bed F-150 customer who hadn't picked their
+      // bed length still saw green "✓ FITS YOUR 2021 FORD F-150" on a
+      // 6.5' tonneau cover in the collection grid — even though the PDP
+      // correctly blocked Add to Cart with "SELECT YOUR TRUCK'S BED
+      // LENGTH". Cross-surface contradiction; the customer trusts the
+      // collection badge and adds the wrong-bed cover to cart.
+      // The pre-existing subModelGateAllows() call already computed
+      // needsPick correctly (line ~502); we just have to defer to it
+      // here so the metafield path doesn't bypass the sub-model gate.
+      if (needsPick) return undefined;
+      return true;
+    }
     // Metafield is complete and disagrees → confident NO. Owner-directed:
     // CA data is the single source of truth.
     return false;
