@@ -120,7 +120,12 @@ export function MobileMenu() {
               </Link>
             ))}
             <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 8 }}>
-              <Link href="/account" prefetch={false} className="btn btn-block" onClick={() => setOpen(false)}>
+              {/* Cycle 14AR-fix7 (QA-found BUG-14AZ-3 P2): href was /account
+                  which middleware bounces to /sign-in?redirect_url=/account
+                  — after sign-in user landed on /account dashboard instead
+                  of returning to the page they were browsing. Direct link
+                  to /sign-in lets Clerk capture the actual referrer. */}
+              <Link href="/sign-in" prefetch={false} className="btn btn-block" onClick={() => setOpen(false)}>
                 Sign In
               </Link>
               <Link href="/help" className="btn btn-block" onClick={() => setOpen(false)}>

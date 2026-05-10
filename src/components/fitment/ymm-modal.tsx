@@ -81,6 +81,12 @@ export function YmmModal() {
   };
   const wipeGarage = async () => {
     resetLocalState();
+    // Cycle 14AR-fix7 (QA-found BUG-YMM-1 P2): RESET cleared the cookie
+    // but left the modal open re-rendering the year picker. User had
+    // no visual confirmation the reset took. Close the modal so the
+    // header pill shows "SELECT YOUR VEHICLE" — the implicit success
+    // signal.
+    setOpen(false);
     try {
       await fetch("/api/garage", { method: "DELETE" });
       router.refresh();
