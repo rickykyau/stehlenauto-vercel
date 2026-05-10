@@ -187,9 +187,19 @@ export function Footer() {
             >
               {col.items.map((it) => (
                 <li key={it.label}>
+                  {/* Cycle 14AR-fix12 (BUG-14AZ-5): min 44px touch target per
+                      WCAG 2.5.5. Auto-parts buyers tap in driveways with gloves.
+                      display:inline-flex + minHeight:44 + alignItems:center gives
+                      the hit zone without changing visual line density. */}
                   <Link
                     href={it.href}
-                    style={{ fontSize: 13, color: "var(--color-muted)" }}
+                    style={{
+                      fontSize: 13,
+                      color: "var(--color-muted)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      minHeight: 44,
+                    }}
                   >
                     {it.label}
                   </Link>
