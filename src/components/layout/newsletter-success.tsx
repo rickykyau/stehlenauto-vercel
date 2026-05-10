@@ -52,10 +52,13 @@ export function NewsletterSuccess() {
 
     if (triggered || pending) {
       setShown(true);
-      const t = setTimeout(() => {
-        setShown(false);
-        clearCookie(COOKIE_NAME);
-      }, 12000);
+      // Cycle 14AR-fix29 (Ren R14 P2): the previous setTimeout also called
+      // clearCookie. During cross-page navigation the timer could fire
+      // before useEffect cleanup canceled it, blasting the cookie before
+      // the destination page hydrated. Now: the timer only hides the
+      // visual toast — cookie expiry is handled exclusively by the
+      // server-set max-age=60 (and the explicit dismiss button below).
+      const t = setTimeout(() => setShown(false), 12000);
       return () => clearTimeout(t);
     }
   }, []);

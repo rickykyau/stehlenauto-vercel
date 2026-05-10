@@ -23,6 +23,21 @@ export const dynamic = "force-dynamic";
 
 type VehicleParams = { slug: string };
 
+// Cycle 14AR-fix28/fix29: make initialisms that should always render
+// fully uppercase in titles + h1. Hoisted to module scope so both the
+// POPULAR_VEHICLES early-return branch and the slug-fallback titleCase
+// helper can share it.
+const MAKE_UPPERCASE = new Set([
+  "gmc",
+  "bmw",
+  "kia",
+  "ram",
+  "fca",
+  "vw",
+  "mb",
+  "amg",
+]);
+
 function parseSlug(
   slug: string,
 ): { make: string; model: string; year?: string } | null {
@@ -42,7 +57,19 @@ function parseSlug(
       `${v.make.toLowerCase()}-${v.model.toLowerCase().replace(/\s+/g, "-")}` ===
       remainder,
   );
-  if (match) return { make: match.make, model: match.model, year: yearStr };
+  if (match) {
+    // Cycle 14AR-fix29 (Ren R14 P3): POPULAR_VEHICLES.make stores brand-
+    // styled casing ("Ram", "GMC"). h1 uppercases everything via
+    // `make.toUpperCase()` in JSX, but generateMetadata uses make
+    // verbatim — yields title "Ram 1500 Accessories" while h1 reads
+    // "RAM". Normalize known initialisms before returning.
+    const m = match.make.toLowerCase();
+    return {
+      make: MAKE_UPPERCASE.has(m) ? match.make.toUpperCase() : match.make,
+      model: match.model,
+      year: yearStr,
+    };
+  }
   // Fallback: split on first hyphen, treat as make-model.
   const parts = remainder.split("-");
   if (parts.length < 2) return null;
@@ -53,11 +80,8 @@ function parseSlug(
   // them as initialisms (JL, JK, DT, DS, RS, SS) and keep them
   // uppercase. Multi-word actual model names (e.g. "Grand Cherokee")
   // preserve title-case.
-  // Cycle 14AR-fix28 (Mike R13 F-4 + F-5): make initialisms (GMC, BMW,
-  // KIA, RAM) were rendering as "Gmc", "Bmw" etc. in h1 + page <title>.
-  // titleCase still applies for two-word makes ("Land Rover" must stay
-  // capitalized normally).
-  const MAKE_UPPERCASE = new Set(["gmc", "bmw", "kia", "ram", "fca", "vw", "mb", "amg"]);
+  // Cycle 14AR-fix28 (Mike R13 F-4 + F-5): make initialisms uppercase via
+  // the module-scope MAKE_UPPERCASE set (hoisted in fix29).
   const titleCase = (s: string) =>
     MAKE_UPPERCASE.has(s.toLowerCase())
       ? s.toUpperCase()
