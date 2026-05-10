@@ -115,7 +115,19 @@ export async function POST(req: Request) {
     const referer = req.headers.get("referer") || "/";
     const u = new URL(referer);
     u.searchParams.set("subscribed", "1");
-    return NextResponse.redirect(u, 303);
+    const res = NextResponse.redirect(u, 303);
+    // Cycle 14AR-fix26 (Mike R11 F-2): set the toast-pending cookie on the
+    // redirect itself so it's present on the very first byte of the next
+    // page render — no client-side useEffect race. The NewsletterSuccess
+    // component still reads + clears it; this just guarantees the cookie
+    // is there before the customer even sees the page after subscribing.
+    res.cookies.set("stehlen_newsletter_subscribed", "1", {
+      maxAge: 12,
+      path: "/",
+      sameSite: "lax",
+      httpOnly: false,
+    });
+    return res;
   }
   return NextResponse.json({ ok: true });
 }

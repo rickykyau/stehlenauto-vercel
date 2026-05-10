@@ -46,9 +46,23 @@ function parseSlug(
   // Fallback: split on first hyphen, treat as make-model.
   const parts = remainder.split("-");
   if (parts.length < 2) return null;
+  // Cycle 14AR-fix26 (Mike R11 F-3 + F-4): a slug like "wrangler-jl"
+  // used to render as "Wrangler Jl" (h1 + page title + categories
+  // lookup all wrong because the canonical CA model is "Wrangler JL").
+  // For trailing 2-3 letter tokens following a multi-word model, treat
+  // them as initialisms (JL, JK, DT, DS, RS, SS) and keep them
+  // uppercase. Multi-word actual model names (e.g. "Grand Cherokee")
+  // preserve title-case.
+  const titleCase = (s: string) =>
+    s.replace(/\b\w/g, (c) => c.toUpperCase());
+  const modelTokens = parts.slice(1);
+  const formatted = modelTokens.map((tok, i) => {
+    if (i > 0 && /^[a-z]{2,3}$/.test(tok)) return tok.toUpperCase();
+    return titleCase(tok);
+  });
   return {
-    make: parts[0]!.replace(/\b\w/g, (c) => c.toUpperCase()),
-    model: parts.slice(1).join(" ").replace(/\b\w/g, (c) => c.toUpperCase()),
+    make: titleCase(parts[0]!),
+    model: formatted.join(" "),
     year: yearStr,
   };
 }

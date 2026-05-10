@@ -41,9 +41,27 @@ export async function getMakes(year: string): Promise<string[]> {
   return Object.keys(tree[year] ?? {}).sort();
 }
 
+/**
+ * Cycle 14AR-fix26 (Mike R11 F-1 BLOCKER): the CA fitment ingestion
+ * sometimes captures a fitment NOTE as if it were a model name (e.g.
+ * 'Gladiator:Will Fit 5 Ft ( 60.3" ) Bed Models Only'). Real model names
+ * never contain colons, semicolons, or parentheses; defensively filter
+ * them out at the API edge so the YMM picker only shows clean OEM names.
+ * Also dedupe just in case the noisy variants drown a real entry.
+ */
+function isCleanModelName(name: string): boolean {
+  if (!name) return false;
+  if (/[:;()]/.test(name)) return false;
+  if (/will\s+fit|will\s+not\s+fit|requires?\s+/i.test(name)) return false;
+  if (name.length > 40) return false;
+  return true;
+}
+
 export async function getModels(year: string, make: string): Promise<string[]> {
   const tree = await load();
-  return Object.keys(tree[year]?.[make] ?? {}).sort();
+  return Object.keys(tree[year]?.[make] ?? {})
+    .filter(isCleanModelName)
+    .sort();
 }
 
 export async function vehicleExists(
