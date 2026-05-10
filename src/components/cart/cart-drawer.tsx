@@ -286,34 +286,65 @@ export function CartDrawer({
                         line fitment chip — drawer was emitting only the
                         global MIXED FITMENT banner. Match the cart-page
                         treatment so the buyer can identify which line
-                        is the misfit at a glance. */}
-                    {vehicle && fitments[idx] !== undefined && (
-                      <div
-                        className="mono"
-                        style={{
-                          display: "inline-block",
-                          marginTop: 4,
-                          padding: "1px 6px",
-                          fontSize: 9,
-                          letterSpacing: "0.08em",
-                          borderRadius: "var(--radius-sm)",
-                          background:
-                            fitments[idx] === true
-                              ? "rgba(34,197,94,0.15)"
-                              : "rgba(239,68,68,0.15)",
-                          color:
-                            fitments[idx] === true
-                              ? "var(--color-success)"
-                              : "var(--color-destructive)",
-                          border:
-                            fitments[idx] === true
-                              ? "1px solid rgba(34,197,94,0.4)"
-                              : "1px solid rgba(239,68,68,0.4)",
-                        }}
-                      >
-                        {fitments[idx] === true ? "✓ FITS" : "✗ DOES NOT FIT"}
-                      </div>
-                    )}
+                        is the misfit at a glance.
+                        Cycle 14AR-fix2 (QA-found BUG-14AR-6): cart
+                        drawer's checkFitment receives only title +
+                        empty vehicleTags (no metafield), so for
+                        products without obvious title tokens the
+                        verdict is undefined → no badge → customer
+                        sees neighboring lines with badges and the
+                        just-added line with NONE, suggesting a bug.
+                        Always render a badge when vehicle is set:
+                        green FITS, red DOES NOT FIT, or yellow VERIFY
+                        FITMENT for the undecidable case (instead of
+                        rendering nothing). The follow-up real fix is
+                        to enrich cart lines with full fitmentTable on
+                        the API side so undecidable count goes to ~0. */}
+                    {vehicle && (() => {
+                      const fit = fitments[idx];
+                      const bg =
+                        fit === true
+                          ? "rgba(34,197,94,0.15)"
+                          : fit === false
+                            ? "rgba(239,68,68,0.15)"
+                            : "rgba(245,168,35,0.15)";
+                      const fg =
+                        fit === true
+                          ? "var(--color-success)"
+                          : fit === false
+                            ? "var(--color-destructive)"
+                            : "var(--color-primary)";
+                      const border =
+                        fit === true
+                          ? "1px solid rgba(34,197,94,0.4)"
+                          : fit === false
+                            ? "1px solid rgba(239,68,68,0.4)"
+                            : "1px solid rgba(245,168,35,0.4)";
+                      const label =
+                        fit === true
+                          ? "✓ FITS"
+                          : fit === false
+                            ? "✗ DOES NOT FIT"
+                            : "VERIFY FITMENT ON PDP";
+                      return (
+                        <div
+                          className="mono"
+                          style={{
+                            display: "inline-block",
+                            marginTop: 4,
+                            padding: "1px 6px",
+                            fontSize: 9,
+                            letterSpacing: "0.08em",
+                            borderRadius: "var(--radius-sm)",
+                            background: bg,
+                            color: fg,
+                            border,
+                          }}
+                        >
+                          {label}
+                        </div>
+                      );
+                    })()}
                     {line.variantTitle && (
                       <div
                         className="mono"

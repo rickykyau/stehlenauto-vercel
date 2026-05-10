@@ -8,6 +8,7 @@ import { Stars } from "@/components/ui/stars";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
 import { fitmentTableToRows } from "@/lib/fitment/metafields";
+import { filterRetailValues } from "@/lib/fitment/retail-filter";
 import type { CatalogProduct, FitmentRow, ProductReview } from "@/lib/catalog/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
 
@@ -444,6 +445,16 @@ export function PdpTabs({
                     {Object.entries(product.fitmentTable.subattributes).map(
                       ([key, values]) => {
                         if (!values || values.length === 0) return null;
+                        // Cycle 14AR-fix2 (QA-found BUG-14AR-2): filter
+                        // fleet/foreign-market entries (SSV, Police
+                        // Responder, Pursuit, Edicion Especial, etc.)
+                        // for trim and submodel groups before render.
+                        // Same blocklist as the picker's data source.
+                        const displayValues =
+                          key === "trims" || key === "submodels"
+                            ? filterRetailValues(values as string[])
+                            : (values as string[]);
+                        if (displayValues.length === 0) return null;
                         const label = SUBATTR_LABELS[key] ?? key.toUpperCase();
                         return (
                           <div
@@ -473,7 +484,7 @@ export function PdpTabs({
                                 flexWrap: "wrap",
                               }}
                             >
-                              {values.map((v) => (
+                              {displayValues.map((v) => (
                                 <span
                                   key={v}
                                   style={{

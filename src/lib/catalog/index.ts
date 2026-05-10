@@ -7,6 +7,7 @@ import {
 import type { CollectionNode, ProductNode } from "@/lib/shopify/types";
 import { parseFitmentTable } from "@/lib/fitment/metafields";
 import { checkFitment, filterByDimensionAnswers } from "@/lib/fitment/match";
+import { getProductHandlesForVehicle } from "@/lib/fitment/products-by-ymm";
 import type { SubModelAnswer } from "@/lib/garage/types";
 import {
   BEST_SELLERS,
@@ -342,6 +343,62 @@ const CATEGORY_FALLBACK_KEYWORD: Record<string, string> = {
   "molle-panels": "molle panel",
   "under-seat-storage": "under seat",
 };
+
+/**
+ * Cycle 14AR-fix2 (QA-found BUG-14AR-3+4): substring patterns to match a
+ * canonical-fit handle against a category. Used by the "ensure all fits
+ * are visible" merge in getCollection. The CA snapshot keys often
+ * encode the category in the handle slug (e.g. "...-bull-guard-...",
+ * "...-front-grille-..."). When promoting a canonical-fit handle from
+ * the per-YMM index into the collection grid, we must drop handles that
+ * belong to a different category — otherwise a Lincoln Navigator bull
+ * guard could leak into /collections/headlights for a 2021 F-150
+ * customer just because both fit the same vehicle.
+ *
+ * Patterns are matched case-insensitive against the handle. ALL patterns
+ * for a category are OR'd; ANY match qualifies.
+ */
+const CATEGORY_HANDLE_PATTERNS: Record<string, RegExp[]> = {
+  "tonneau-covers": [/\btonneau\b/, /\bbed[\s-]?cover\b/],
+  "trailer-hitches": [
+    /\btrailer[\s-]?hitch\b/,
+    /\bhitch[\s-]?receiver\b/,
+    /\bball[\s-]?mount\b/,
+    /\bclass[\s-]?\d[\s-]?(trailer|hitch)\b/,
+  ],
+  "bull-guards-grille-guards": [
+    /\bbull[\s-]?guard\b/,
+    /\bgrille[\s-]?guard\b/,
+    /\bbull[\s-]?bar\b/,
+  ],
+  "front-grilles": [
+    /\bfront[\s-]?grille\b/,
+    /\bfront[\s-]?grill\b/,
+    /\bgrille[\s-]?insert\b/,
+    /\bgrille[\s-]?shell\b/,
+    /\bbadgeless[\s-]?grille\b/,
+  ],
+  headlights: [/\bheadlight\b/, /\bhead[\s-]?lamp\b/, /\bhalo[\s-]?headlight\b/],
+  "running-boards-side-steps": [
+    /\brunning[\s-]?board\b/,
+    /\bside[\s-]?step\b/,
+    /\bnerf[\s-]?bar\b/,
+    /\bstep[\s-]?bar\b/,
+  ],
+  "truck-bed-mats": [/\bbed[\s-]?mat\b/, /\bbedmat\b/, /\bbed[\s-]?liner\b/],
+  "floor-mats": [/\bfloor[\s-]?mat\b/, /\bfloor[\s-]?liner\b/],
+  "roof-racks-baskets": [/\broof[\s-]?rack\b/, /\broof[\s-]?basket\b/],
+  "chase-racks-sport-bars": [/\bchase[\s-]?rack\b/, /\bsport[\s-]?bar\b/],
+  "molle-panels": [/\bmolle\b/],
+  "under-seat-storage": [/\bunder[\s-]?seat\b/, /\bunderseat\b/],
+};
+
+function handleMatchesCategory(handle: string, category: string): boolean {
+  const patterns = CATEGORY_HANDLE_PATTERNS[category];
+  if (!patterns || patterns.length === 0) return false;
+  const h = handle.toLowerCase();
+  return patterns.some((re) => re.test(h));
+}
 
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "tonneau-covers":
@@ -982,6 +1039,60 @@ export async function getCollection(
       let exact = verdicts.filter((v) => v.fits === true).map((v) => v.p);
       const universal = verdicts.filter((v) => v.fits === undefined).map((v) => v.p);
       const mismatch = verdicts.filter((v) => v.fits === false).map((v) => v.p);
+
+      // Cycle 14AR-fix2 (QA-found BUG-14AR-3+4): merge canonical-fit
+      // products from the per-YMM index. The wide-pool fetch is capped
+      // at 60 products sorted by BEST_SELLING — slow-selling products
+      // that fit the customer's vehicle (Lincoln Navigator bull guard,
+      // CURT hitches, brand-new 2021+ grilles) systematically failed
+      // to appear in the grid even though their CA fitment data marks
+      // them as fits. The PDP for those same products correctly says
+      // "FITS YOUR ..." so a determined customer who deep-links could
+      // buy them — but the browse path was hiding revenue.
+      //
+      // Source of truth: data/products_by_ymm.json built from CA
+      // fitmentRaw. Filter to handles matching this category (so a
+      // bull guard doesn't leak into front-grilles), drop handles
+      // already in the wide-pool (deduped), batch-fetch the rest from
+      // Shopify, run them through checkFitment, and merge confirmed
+      // fits into the exact bucket.
+      try {
+        const canonicalHandles = getProductHandlesForVehicle(opts.vehicle);
+        if (canonicalHandles.length > 0) {
+          const wideHandles = new Set(adapted.map((p) => p.handle));
+          const missing = canonicalHandles
+            .filter((h) => handleMatchesCategory(h, handle))
+            .filter((h) => !wideHandles.has(h))
+            // Cap to keep the parallel-fetch fan-out reasonable. 80 is
+            // 2× the largest realistic per-vehicle/per-category fit list.
+            .slice(0, 80);
+          if (missing.length > 0) {
+            const fetched = await Promise.all(
+              missing.map((h) => getProduct(h).catch(() => null)),
+            );
+            const merged: CatalogProduct[] = fetched.filter(
+              (p): p is CatalogProduct => p !== null,
+            );
+            // Apply the same dimension-answer filter the wide pool went
+            // through, so a 5.5'-bed customer doesn't see 6.5' tonneau
+            // canonicals leak into "exact fits".
+            const dimMerged =
+              dimensionAnswers.length > 0
+                ? filterByDimensionAnswers(merged, dimensionAnswers)
+                : merged;
+            for (const p of dimMerged) {
+              if (wideHandles.has(p.handle)) continue;
+              const fits = checkFitment(p, opts.vehicle!, dimensionAnswers);
+              if (fits === true) {
+                exact.push(p);
+                wideHandles.add(p.handle);
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error("[catalog] canonical-fits merge failed:", err);
+      }
 
       // Cycle 14j (owner phone test): a 2021 F-150 garage on
       // /collections/tonneau-covers showed only "1 exact fit" even though the

@@ -43,6 +43,11 @@ ROOT = Path(__file__).parent.parent
 SNAPSHOT = ROOT / "data" / "ca_fitment_snapshot.json"
 TREE_OUT = ROOT / "data" / "ymm_tree.json"
 DIMS_OUT = ROOT / "data" / "ymm_dimensions.json"
+# Cycle 14AR-fix2 (QA-found BUG-14AR-3+4): per-YMM list of every product
+# handle that fits, sourced from CA fitmentRaw. Used by the collection
+# page to ensure slow-selling fitting products aren't hidden by the
+# top-N BEST_SELLING wide-pool cap.
+PRODUCTS_BY_YMM_OUT = ROOT / "data" / "products_by_ymm.json"
 
 # Body style anchors — trim is everything before the FIRST occurrence of one
 # of these tokens. Order matters: longer multi-word anchors first so they're
@@ -273,6 +278,8 @@ def main() -> None:
 
     skipped_lines = 0
     parsed_lines = 0
+    # Cycle 14AR-fix2: per-YMM → set of product handles that fit
+    products_by_ymm: dict[str, set[str]] = defaultdict(set)
 
     for handle, entry in snapshot.items():
         raw = entry.get("fitmentRaw", "")
@@ -322,6 +329,8 @@ def main() -> None:
             parsed_lines += 1
 
             key = f"{year_s}|{make}|{model}"
+            # Cycle 14AR-fix2: record this product as fitting this YMM
+            products_by_ymm[key].add(handle)
             d = dims[key]
             if submodel:
                 trim = extract_trim(submodel)
@@ -381,6 +390,14 @@ def main() -> None:
     print(f"Writing {DIMS_OUT}...")
     with DIMS_OUT.open("w") as f:
         json.dump(dims_out, f, indent=2)
+
+    # Cycle 14AR-fix2: per-YMM list of fitting product handles
+    products_by_ymm_out: dict[str, list[str]] = {
+        k: sorted(products_by_ymm[k]) for k in sorted(products_by_ymm.keys())
+    }
+    print(f"Writing {PRODUCTS_BY_YMM_OUT}...")
+    with PRODUCTS_BY_YMM_OUT.open("w") as f:
+        json.dump(products_by_ymm_out, f, indent=2)
 
     # Print summary stats
     total_year = len(tree_out)
