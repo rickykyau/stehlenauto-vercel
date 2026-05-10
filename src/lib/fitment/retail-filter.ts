@@ -97,5 +97,18 @@ export function filterRetailValues(
   values: string[] | undefined | null,
 ): string[] {
   if (!values) return [];
-  return values.filter((v) => isRetailTrim(v));
+  return values
+    .map(cleanSubattributeValue)
+    .filter((v) => isRetailTrim(v));
+}
+
+/**
+ * Cycle 14AR-fix27 (Ren R12 P3): the CA fitment ingestion sometimes
+ * leaves a trailing pipe-separator + dashes in submodel values
+ * (e.g. "Unlimited Black and Tan Sport Utility 2-Door|--"). Strip
+ * everything after the first pipe; collapse trailing whitespace.
+ */
+export function cleanSubattributeValue(v: string): string {
+  if (!v) return v;
+  return v.split("|")[0]?.trim() ?? "";
 }

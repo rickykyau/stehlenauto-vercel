@@ -8,7 +8,10 @@ import { Stars } from "@/components/ui/stars";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
 import { fitmentTableToRows } from "@/lib/fitment/metafields";
-import { filterRetailValues } from "@/lib/fitment/retail-filter";
+import {
+  cleanSubattributeValue,
+  filterRetailValues,
+} from "@/lib/fitment/retail-filter";
 import type { CatalogProduct, FitmentRow, ProductReview } from "@/lib/catalog/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
 
@@ -496,10 +499,16 @@ export function PdpTabs({
                         // Responder, Pursuit, Edicion Especial, etc.)
                         // for trim and submodel groups before render.
                         // Same blocklist as the picker's data source.
+                        // Cycle 14AR-fix27 (Ren R12 P3): all subattribute
+                        // values can carry the CA "|--" suffix artifact.
+                        // filterRetailValues already strips it for trims +
+                        // submodels (where it's also dropping fleet rows);
+                        // for the other groups (bedLengths, cabTypes,
+                        // doors, etc.) just clean each value.
                         const displayValues =
                           key === "trims" || key === "submodels"
                             ? filterRetailValues(values as string[])
-                            : (values as string[]);
+                            : (values as string[]).map(cleanSubattributeValue);
                         if (displayValues.length === 0) return null;
                         const label = SUBATTR_LABELS[key] ?? key.toUpperCase();
                         return (
