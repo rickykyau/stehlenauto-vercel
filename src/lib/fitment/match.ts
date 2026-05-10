@@ -457,20 +457,48 @@ export function getFitmentReason(
 }
 
 /**
- * Cycle 14AR-fix22: detect explicit exclusion language in a product's
- * warehouse fitment note. When present, downgrade an otherwise-positive
- * metafield-driven match to `undefined` (yellow VERIFY) so the customer
- * reads the note before trusting the green badge. The merch team writes
- * these notes precisely BECAUSE the metafield can't capture body-style /
- * trim-level / engine-package nuance — "WILL NOT fit 2019+ DT body" is
- * the canonical case from Mike R7.
+ * Cycle 14AR-fix22 + fix23 (Ren R8 P1 regression): detect warehouse-note
+ * exclusions that ARE vehicle-disambiguating (year range / body style /
+ * generation), as opposed to sub-variant exclusions (Lightning, EcoBoost,
+ * Heritage trim packages) that don't apply unless the customer's vehicle
+ * IS that sub-variant.
+ *
+ * fix22 fired on any "will not fit", which over-triggered: the standard
+ * 2021 F-150 customer was getting yellow VERIFY on a tonneau whose note
+ * only excluded Lightning models. fix23 narrows the trigger to year/body/
+ * gen exclusions that actually overlap a YMM-known vehicle.
+ *
+ * Returns:
+ *   "downgrade" — exclusion language present AND it disambiguates the
+ *      vehicle along an axis YMM can't capture (year, body, generation).
+ *      Caller should drop fitment from `true` to `undefined`.
+ *   "ignore"    — no exclusion language OR exclusion only references a
+ *      sub-variant token (Lightning/EcoBoost/Heritage/etc.) which the
+ *      generic YMM-based green verdict can't speak to.
  */
-function notesIndicateExclusion(notesHtml: string | null | undefined): boolean {
-  if (!notesHtml) return false;
+function notesIndicateExclusion(
+  notesHtml: string | null | undefined,
+): "downgrade" | "ignore" {
+  if (!notesHtml) return "ignore";
   const text = notesHtml.toLowerCase().replace(/<[^>]+>/g, " ");
-  return /\b(will not fit|won['’]?t fit|does not fit|doesn['’]?t fit|not compatible with|not for the|not for these)\b/.test(
-    text,
-  );
+  const exclusionRegex = /\b(will not fit|won['’]?t fit|does not fit|doesn['’]?t fit|not compatible with|not for the|not for these)\b([^.;!?\n]+)/g;
+  let match: RegExpExecArray | null;
+  while ((match = exclusionRegex.exec(text)) !== null) {
+    const clause = match[2] ?? "";
+    // Year-range exclusions: "will not fit 2019+", "won't fit 2015-2020",
+    // "will not fit 2019 model year onward"
+    const hasYear = /\b(19|20)\d{2}\b/.test(clause);
+    // Body/generation exclusions: DT, DS, P552, T1XX, K2XX, "new body
+    // style", "old body style", "Classic" (Ram-specific generation
+    // marker), "Heritage" only when paired with body context — generally
+    // a body/year discriminator.
+    const hasBodyOrGen =
+      /\b(body|body style|generation|gen|chassis|platform|dt body|ds body|new body|old body|classic body|p\d{3,4}|t\d{1,2}xx|k\d{1,2}xx)\b/.test(
+        clause,
+      ) || /\bclassic\b/.test(clause);
+    if (hasYear || hasBodyOrGen) return "downgrade";
+  }
+  return "ignore";
 }
 
 /**
@@ -593,7 +621,8 @@ export function checkFitment(
       // language, we can't trust the year×model match alone. Downgrade to
       // undefined so the UI renders yellow "VERIFY FITMENT" and the
       // customer reads the note before adding to cart.
-      if (notesIndicateExclusion(table?.notesHtml)) return undefined;
+      if (notesIndicateExclusion(table?.notesHtml) === "downgrade")
+        return undefined;
       return true;
     }
     // Metafield is complete and disagrees → confident NO. Owner-directed:

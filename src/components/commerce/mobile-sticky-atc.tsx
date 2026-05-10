@@ -134,10 +134,21 @@ export function MobileStickyAtc({
       onScroll();
       return () => window.removeEventListener("scroll", onScroll);
     }
+    // Cycle 14AR-fix23 (Ren R8 OBS): sticky must appear AFTER the customer
+    // has seen the ATC button at least once — otherwise on tall PDPs where
+    // the buy-box starts below the initial fold, the sticky paints from
+    // page load and duplicates the not-yet-seen ATC. Track first-sighting
+    // and only show sticky on subsequent exits.
+    let hasBeenSeen = false;
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          setVisible(!entry.isIntersecting);
+          if (entry.isIntersecting) {
+            hasBeenSeen = true;
+            setVisible(false);
+          } else if (hasBeenSeen) {
+            setVisible(true);
+          }
         }
       },
       { threshold: 0 },
