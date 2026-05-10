@@ -108,6 +108,32 @@ export function BuyBox({
   const strips = stripsFromServer.filter((s) =>
     productMentionsGroup(s.group, product),
   );
+
+  // Cycle 14AR-fix12 (owner-found): when bedLengthSiblings is NULL (no
+  // entry in data/sibling_index.json — typical for product families
+  // that exist in only ONE bed length, e.g. our HSS+TBL combo only
+  // ships in 6'), but the product itself has a specific bed length
+  // we can extract from the title (e.g. "6 ft Bed Tonneau Cover"),
+  // synthesize a "virtual siblings" object with empty siblings list
+  // and the product's actual bed as currentBedLength. The chip
+  // rendering path then uniformly treats it as a variant picker:
+  // the matching bed is active/enabled, every other bed is rendered
+  // disabled with X overlay (no sibling target). This kills the
+  // path where 5' chip looked enabled, click rewrote saved bed, ATC
+  // ANYWAY added the wrong product.
+  const effectiveBedLengthSiblings = (() => {
+    if (bedLengthSiblings) return bedLengthSiblings;
+    // Try to extract bed length from product title "6 ft Bed" / "5.5' Bed"
+    const m = product.title?.match(
+      /\b(\d+(?:\.\d+)?)\s*(?:ft|')\s*Bed\b/i,
+    );
+    if (!m) return null;
+    return {
+      currentBedLength: m[1],
+      siblings: [] as BedLengthSibling[],
+    };
+  })();
+
   const [qty, setQty] = useState(1);
   // Pre-fill ONLY from real answers the customer already saved for this vehicle.
   // We deliberately do NOT seed s.options[0] — auto-defaulting silently passes
@@ -152,16 +178,48 @@ export function BuyBox({
   // tapping ADD TO CART added a qty=0 / $0 ghost line item that polluted
   // the cart through checkout. Block the ATC when inventory is 0.
   const outOfStock = product.inventory <= 0;
-  const canAdd = missingStrips.length === 0 && !outOfStock;
+
+  // Cycle 14AR-fix12 (owner-found): bed-length mismatch is a HARD block.
+  // The "ADD TO CART ANYWAY" affordance was designed for make/model
+  // mismatches (gift purchases, second vehicles not in the garage). It
+  // does NOT apply to bed-length mismatch — a 6' tonneau on a 5' bed
+  // is physically useless, no "anyway" justifies it. Owner reported
+  // adding a 6' tonneau to cart with a 5' saved bed via "ADD TO CART
+  // ANYWAY" — that path returns or trust-eroding rage. Detect bed
+  // mismatch by comparing the picked bed to the product's title-derived
+  // bed length, or by reading product.fitmentTable.subattributes.bedLengths
+  // and comparing to the customer's bed pick. If mismatch → disable ATC.
+  const bedPick = picks.bed_length ? chipToBedLen(picks.bed_length) : null;
+  const productBedLengths =
+    product.fitmentTable?.subattributes?.bedLengths
+      ?.map((b) => chipToBedLen(b))
+      ?.filter(Boolean) ?? [];
+  // Title-derived bed length as fallback when metafield is empty
+  const titleBedMatch = product.title?.match(
+    /\b(\d+(?:\.\d+)?)\s*(?:ft|')\s*Bed\b/i,
+  );
+  const titleBedLength = titleBedMatch ? titleBedMatch[1] : null;
+  const productBeds = productBedLengths.length > 0
+    ? productBedLengths
+    : titleBedLength ? [titleBedLength] : [];
+  const bedMismatch =
+    bedPick !== null &&
+    productBeds.length > 0 &&
+    !productBeds.includes(bedPick);
+
+  const canAdd =
+    missingStrips.length === 0 && !outOfStock && !bedMismatch;
   const blockedCopy =
     outOfStock
       ? "OUT OF STOCK"
-      : missingStrips.length > 0
-        ? `SELECT ${missingStrips[0].label}`
-        : null;
-  // Misfit no longer blocks; the button label changes so the customer
-  // sees they're knowingly buying a non-matching part.
-  const addCtaLabel = explicitMisfit ? "ADD TO CART ANYWAY" : "ADD TO CART";
+      : bedMismatch
+        ? `WRONG BED LENGTH FOR YOUR VEHICLE`
+        : missingStrips.length > 0
+          ? `SELECT ${missingStrips[0].label}`
+          : null;
+  // Misfit no longer blocks make/model; bed mismatch DOES block.
+  const addCtaLabel =
+    explicitMisfit && !bedMismatch ? "ADD TO CART ANYWAY" : "ADD TO CART";
 
   const persist = async (group: SubModelGroup, value: string) => {
     if (!vehicle?.id) return;
@@ -435,24 +493,27 @@ export function BuyBox({
               // length, the chips become a real product variant picker.
               // Click a non-current chip → navigate to the sibling's PDP
               // (CB Item Name + price + media all update because it's a
-              // different product). Hide chips for bed lengths that don't
-              // exist in the catalog for this product family.
-              const isBedStripWithSiblings =
-                s.group === "bed_length" && bedLengthSiblings;
-              const visibleOptions = s.options.filter((opt) => {
-                if (!isBedStripWithSiblings) return true;
-                const bed = chipToBedLen(opt);
-                if (bed === bedLengthSiblings!.currentBedLength) return true;
-                return bedLengthSiblings!.siblings.some(
-                  (sib) => sib.bedLength === bed,
-                );
-              });
-              return visibleOptions.map((opt) => {
+              // different product).
+              //
+              // Cycle 14AR-fix12 (owner-found): for bed-length-specific
+              // products WITHOUT a sibling for some bed lengths (e.g. our
+              // HSS+TBL combo only ships in 6' — no 5' variant), DON'T
+              // hide the 5' chip. Instead show it Amazon-style: visible
+              // but DISABLED with a strikethrough so the customer knows
+              // (a) the catalog doesn't carry a 5' version of this
+              // product, and (b) clicking it does NOT silently change
+              // their saved bed length. Previous behavior: 5' chip
+              // looked enabled, click rewrote saved bed to 5', product
+              // now misfits, ATC offered "ADD TO CART ANYWAY" — owner
+              // bought wrong-bed cover. That path is dead now.
+              const isBedStrip = s.group === "bed_length";
+              const isBedStripWithSiblings = isBedStrip && effectiveBedLengthSiblings;
+              return s.options.map((opt) => {
                 const active = picks[s.group] === opt;
                 if (isBedStripWithSiblings) {
                   const bed = chipToBedLen(opt);
                   const isCurrent =
-                    bed === bedLengthSiblings!.currentBedLength;
+                    bed === effectiveBedLengthSiblings!.currentBedLength;
                   if (isCurrent) {
                     // Cycle 14AC (Mike-O14AC NW-1 BLOCKER): when this is
                     // a single-bed-option product (no siblings to
@@ -486,10 +547,40 @@ export function BuyBox({
                       </button>
                     );
                   }
-                  const target = bedLengthSiblings!.siblings.find(
+                  const target = effectiveBedLengthSiblings!.siblings.find(
                     (sib) => sib.bedLength === bed,
                   );
-                  if (!target) return null;
+                  if (!target) {
+                    // Cycle 14AR-fix12 (owner-found): no sibling product
+                    // exists for THIS bed length in this product family.
+                    // Render Amazon-style: chip visible but disabled with
+                    // strike-through. Tooltip explains why. Click does
+                    // nothing — critically, does NOT rewrite the saved
+                    // bed length (which was the bug owner reported).
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        disabled
+                        title={`No ${opt} variant of this product — we don't carry it in this size yet`}
+                        className="btn btn-sm"
+                        style={{
+                          flex: "1 1 0",
+                          background: "var(--color-surface)",
+                          color: "var(--color-muted-2)",
+                          borderColor: "var(--color-border)",
+                          textAlign: "center",
+                          cursor: "not-allowed",
+                          textDecoration: "line-through",
+                          opacity: 0.55,
+                          position: "relative",
+                        }}
+                      >
+                        <span aria-hidden style={{ marginRight: 4 }}>✕</span>
+                        {opt}
+                      </button>
+                    );
+                  }
                   // Cycle 14X+ post-sync (Sam re-review HIGH): chip-link
                   // navigation used to fire a plain <Link> with no
                   // sub-model persist. The destination PDP would then
