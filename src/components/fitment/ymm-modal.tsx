@@ -201,38 +201,32 @@ export function YmmModal() {
       // updates. First-time customers from the home band can use the
       // SHOP PARTS THAT FIT button (cycle 14AA F-7) to reach the hub
       // explicitly.
+      // Cycle 14AR-fix11 (F-6 clean URL): replaced `_v=${Date.now()}` cache-bust
+      // with a clean-pathname navigate. window.location.replace() with only the
+      // pathname forces a fresh network GET (browser cannot serve cached HTML when
+      // the navigation is triggered by replace() with a new Set-Cookie round-trip
+      // from the just-completed /api/garage POST). No _v= param means analytics
+      // path tracking is clean and ?dim= / ?f= parsers don't see collisions.
+      // Existing filters (?sort=, ?f=, ?dim=) are preserved; only the stale _v=
+      // and now-vestigial ?skip= are stripped so they don't reintroduce the gate.
+      // vehicle/[slug] pages navigate to the new slug (unchanged behaviour).
       const slug = `${make.toLowerCase()}-${m
         .toLowerCase()
         .replace(/\s+/g, "-")}`;
-      const onShoppingPage = /^\/(collections|products|search|cart|checkout|account)/.test(
-        pathname ?? "",
-      );
-      // Cycle 14AP-fix13 (owner-found, prod, round 2): the previous fix
-      // switched to window.location.reload() but owner STILL reports
-      // "stuck on 2021 Ford F-150" after switching. Verified
-      // server-side: API returns Set-Cookie with the new vehicle, and
-      // a curl with that cookie correctly renders the new vehicle in
-      // the layout. So the browser is either:
-      //   (a) caching the previous HTML and serving it on reload
-      //   (b) sending a stale cookie back
-      // Force-bust both: navigate to the same path with a unique query
-      // param. This forces the browser to skip its disk/HTTP cache and
-      // do a clean GET — the server gets the fresh request, the cookie
-      // header on that request includes the just-Set value, the layout
-      // re-renders with the new vehicle.
-      const cacheBust = `_v=${Date.now()}`;
       let target: string;
       if (pathname && /^\/vehicle\//.test(pathname)) {
-        target = `/vehicle/${slug}?${cacheBust}`;
+        target = `/vehicle/${slug}`;
       } else {
         const base = pathname ?? "/";
-        const sep = base.includes("?") ? "&" : "?";
-        target = `${base}${sep}${cacheBust}`;
+        const existingParams = new URLSearchParams(window.location.search);
+        existingParams.delete("_v");    // strip stale cache-bust from prior cycle
+        existingParams.delete("skip");  // vestigial gate skip param
+        const qs = existingParams.toString();
+        target = qs ? `${base}?${qs}` : base;
       }
       console.log("[ymm] navigating to", target);
-      // Use replace() so the cache-busted URL doesn't pollute history
-      // (back button skips it). Both .href and .replace bypass disk
-      // cache when the URL is unique.
+      // replace() skips history stack (back button skips the pre-vehicle page)
+      // and triggers a fresh network GET for the target URL.
       window.location.replace(target);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -246,37 +240,41 @@ export function YmmModal() {
   const list = step === "year" ? years : step === "make" ? makes : models;
 
   return (
+    // Cycle 14AR-fix10 (F-1): ymm-backdrop + ymm-panel CSS classes drive the
+    // mobile bottom-sheet layout via media queries in globals.css. On mobile
+    // (≤767px): backdrop aligns flex-end, panel is full-width with top-only
+    // border-radius and max-height 80vh. On desktop (≥768px): centered overlay
+    // at 520px max-width. No window.innerWidth — avoids SSR hydration mismatch.
     <div
       role="dialog"
       aria-modal="true"
       aria-label="Select your vehicle"
       onClick={close}
-      className="anim-fade-in"
+      className="anim-fade-in ymm-backdrop"
       style={{
         position: "fixed",
         inset: 0,
         zIndex: 70,
         background: "rgba(0,0,0,0.7)",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 24,
       }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
+        className="ymm-panel"
         style={{
-          width: "100%",
-          maxWidth: 520,
-          maxHeight: "85vh",
           background: "var(--color-surface)",
           border: "1px solid var(--color-border)",
-          borderRadius: "var(--radius-lg)",
           boxShadow: "0 24px 64px rgba(0,0,0,0.6)",
           display: "flex",
           flexDirection: "column",
+          overflow: "hidden",
         }}
       >
+        {/* Drag handle — visible on mobile only (hidden via CSS ≥768px) */}
+        <div className="ymm-drag-handle" aria-hidden>
+          <div className="ymm-drag-handle-bar" />
+        </div>
         <div
           style={{
             display: "flex",
