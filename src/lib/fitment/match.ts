@@ -501,6 +501,31 @@ export function checkFitment(
   // false. Cycle 14AA was returning undefined eagerly here.
   const needsPick = subGate === "needs_pick";
 
+  // Cycle 14AR-fix13 (regression from 14AR-fix4): tighten the needsPick
+  // signal to bed-length only. fix4 added `if (needsPick) return undefined`
+  // inside the metafield-first branch to fix the Tacoma 5.5'/6.5' tonneau
+  // false-positive (P3-1). Worked for bed-length, but `subModelGateAllows`
+  // also raises needs_pick for trim/cab when productTrims/productCabs
+  // extracts non-empty arrays from the title — and those extractors are
+  // unreliable: "Mark LT" in a Lincoln Navigator product title trips the
+  // trim regex (LT) even though it's part of a model name, not a Ford
+  // trim restriction. Result: Lincoln Navigator/F-150 product (CA covers
+  // 2003-2026 F-150) returned undefined → "CHECK FITMENT" yellow instead
+  // of green "✓ FITS YOUR 2021 FORD F-150". Owner caught.
+  //
+  // Solution: only treat needsPick as "actually need to pick" when the
+  // product title carries a CONCRETE bed-length reference (e.g. "5.5 ft
+  // Bed", "6' Bed") AND the customer hasn't supplied one. Bed length is
+  // the only sub-model where the title-string regex is dependable —
+  // numbers + "ft Bed" tokens don't appear coincidentally. Trim and cab
+  // gating fall through to the metafield gate above (which compares the
+  // customer's pick to the metafield's allowed-values list).
+  const haystackForNeedsPick = [product.title ?? "", product.fitTitle ?? ""]
+    .join(" ");
+  const titleHasBedLength = extractBedLengths(haystackForNeedsPick).length > 0;
+  const noBedAnswer = !subModelAnswers?.some((a) => a.group === "bed_length");
+  const reliableNeedsPick = needsPick && titleHasBedLength && noBedAnswer;
+
   // Cycle 14AR-fix1 (QA-found BUG-14AR-1 P0 BLOCKER): the metafield-driven
   // fitment table (built from CA ACES data via sync-ca-fitment.ts) is the
   // AUTHORITATIVE source of truth. Shopify vehicleTags are populated from
@@ -536,18 +561,14 @@ export function checkFitment(
     });
     const yearMatch = table!.years.includes(yearStr);
     if (makeMatch && modelMatch && yearMatch) {
-      // Cycle 14AR-fix4 (QA-found BUG-14AR-P3-1 P1): the metafield-first
-      // branch was returning true on a YMM match WITHOUT honoring the
-      // sub-model gate. A 5.5'-bed F-150 customer who hadn't picked their
-      // bed length still saw green "✓ FITS YOUR 2021 FORD F-150" on a
-      // 6.5' tonneau cover in the collection grid — even though the PDP
-      // correctly blocked Add to Cart with "SELECT YOUR TRUCK'S BED
-      // LENGTH". Cross-surface contradiction; the customer trusts the
-      // collection badge and adds the wrong-bed cover to cart.
-      // The pre-existing subModelGateAllows() call already computed
-      // needsPick correctly (line ~502); we just have to defer to it
-      // here so the metafield path doesn't bypass the sub-model gate.
-      if (needsPick) return undefined;
+      // Cycle 14AR-fix13: use the tightened reliableNeedsPick (bed-length
+      // only) instead of the broad needsPick. See its definition above
+      // for the full reasoning — title-derived trim/cab heuristics are
+      // unreliable and were turning legitimate FITS into "CHECK FITMENT"
+      // for products like Lincoln Navigator (Mark LT triggered the trim
+      // regex). Bed length is the only dimension where title-string
+      // detection is dependable enough to gate on.
+      if (reliableNeedsPick) return undefined;
       return true;
     }
     // Metafield is complete and disagrees → confident NO. Owner-directed:
