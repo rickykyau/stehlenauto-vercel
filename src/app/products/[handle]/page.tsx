@@ -1305,6 +1305,7 @@ export default async function PdpPage({
       <MobileStickyAtc
         product={productWithFit}
         needsSubModelPick={!!vehicle && !allStripsAnswered && requiredStrips.length > 0}
+        requiredStripGroups={vehicle ? requiredStrips.map((s) => s.group) : []}
       />
     </main>
   );

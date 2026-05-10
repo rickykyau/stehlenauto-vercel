@@ -246,6 +246,13 @@ export function BuyBox({
   const onPick = (group: SubModelGroup, value: string) => {
     setPicks((p) => ({ ...p, [group]: value }));
     void persist(group, value);
+    // Cycle 14AR-fix16 (Mike R3 F-1 MAJOR): notify MobileStickyAtc that
+    // sub-model state changed so it can re-derive blocked state from the
+    // cookie immediately, without waiting for router.refresh() to re-stream
+    // server props to the client island.
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("stehlen:submodel:change"));
+    }
   };
 
   const onAdd = async (opts?: { redirectToCheckout?: boolean }) => {

@@ -10,6 +10,7 @@ import {
 } from "@/lib/catalog";
 import { ROOF_RACK_FILTERS } from "@/lib/catalog/mock";
 import { CATEGORIES } from "@/lib/catalog/mock";
+import { getAvailableCategoriesForVehicle } from "@/lib/catalog/vehicle-categories";
 import { ProductCard } from "@/components/commerce/product-card";
 import { CollectionToolbar } from "@/components/commerce/collection-toolbar";
 import { FilterSidebar } from "@/components/commerce/filter-sidebar";
@@ -547,6 +548,19 @@ export default async function CollectionPage({
           .map((g) => buildStripConfig(g, getDimensionOptions(vehicle, g)))
           .filter((s) => s.options.length > 0);
         if (strips.length === 0) return null;
+        // Cycle 14AR-fix16 (Mike R3 F-3 MAJOR): if THIS category has zero
+        // products for the customer's vehicle, suppress the dimension
+        // picker — answering "Which bed length?" leads to a dead-end zero-
+        // results page either way. The category-level "we don't carry this
+        // for your vehicle yet" empty state is the right thing to show.
+        if (vehicle) {
+          const availableForVehicle = getAvailableCategoriesForVehicle(
+            vehicle.year,
+            vehicle.make,
+            vehicle.model,
+          );
+          if (!availableForVehicle.has(collection.handle)) return null;
+        }
         return (
           <DimensionPicker
             categoryHandle={collection.handle}

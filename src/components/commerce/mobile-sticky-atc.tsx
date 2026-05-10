@@ -4,6 +4,26 @@ import { useEffect, useState } from "react";
 import type { CatalogProduct } from "@/lib/catalog/types";
 
 const STICKY_HEIGHT_VAR = "--stehlen-sticky-atc-height";
+const SUBMODEL_COOKIE = "stehlen_submodel";
+
+function readSubmodelCookie(): Record<string, string> {
+  if (typeof document === "undefined") return {};
+  const raw = document.cookie
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${SUBMODEL_COOKIE}=`))
+    ?.slice(SUBMODEL_COOKIE.length + 1);
+  if (!raw) return {};
+  try {
+    const parsed = JSON.parse(decodeURIComponent(raw));
+    if (parsed && typeof parsed === "object") {
+      return parsed as Record<string, string>;
+    }
+  } catch {
+    // ignore
+  }
+  return {};
+}
 
 /**
  * Mobile-only fixed-bottom ATC bar.
@@ -17,6 +37,7 @@ const STICKY_HEIGHT_VAR = "--stehlen-sticky-atc-height";
 export function MobileStickyAtc({
   product,
   needsSubModelPick = false,
+  requiredStripGroups = [],
 }: {
   product: CatalogProduct;
   /**
@@ -29,11 +50,44 @@ export function MobileStickyAtc({
    * required strips for this vehicle.
    */
   needsSubModelPick?: boolean;
+  /**
+   * Cycle 14AR-fix16 (Mike R3 F-1 MAJOR): server-computed needsSubModelPick
+   * is frozen at SSR time. After the customer picks a bed-length chip in
+   * BuyBox, router.refresh() doesn't always re-render this client island
+   * with fresh props before they scroll past the fold. Sticky bar then
+   * shows "PICK FITMENT ↑" while BuyBox's main ATC is correctly active.
+   *
+   * Pass the required-strip groups so the sticky can re-derive its
+   * blocked state directly from the stehlen_submodel cookie + a
+   * "stehlen:submodel:change" custom event dispatched by BuyBox.
+   */
+  requiredStripGroups?: string[];
 }) {
   const [visible, setVisible] = useState(false);
+  const [clientNeedsPick, setClientNeedsPick] = useState<boolean | null>(null);
   const isMisfit = product.fits === false;
   const outOfStock = product.inventory <= 0;
   const blocked = outOfStock;
+  // Client-derived state wins after first read; SSR prop is the fallback for
+  // initial paint before useEffect runs.
+  const effectiveNeedsPick =
+    clientNeedsPick !== null ? clientNeedsPick : needsSubModelPick;
+
+  useEffect(() => {
+    if (requiredStripGroups.length === 0) {
+      setClientNeedsPick(false);
+      return;
+    }
+    const recompute = () => {
+      const answers = readSubmodelCookie();
+      const allAnswered = requiredStripGroups.every((g) => !!answers[g]);
+      setClientNeedsPick(!allAnswered);
+    };
+    recompute();
+    const handler = () => recompute();
+    window.addEventListener("stehlen:submodel:change", handler);
+    return () => window.removeEventListener("stehlen:submodel:change", handler);
+  }, [requiredStripGroups]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -110,7 +164,7 @@ export function MobileStickyAtc({
           type="button"
           onClick={onClick}
           className={
-            blocked || isMisfit || needsSubModelPick ? "btn" : "btn btn-primary"
+            blocked || isMisfit || effectiveNeedsPick ? "btn" : "btn btn-primary"
           }
           disabled={blocked}
           style={{
@@ -123,19 +177,19 @@ export function MobileStickyAtc({
             // primary yellow.
             background: blocked
               ? "#3a3a3a"
-              : needsSubModelPick
+              : effectiveNeedsPick
                 ? "rgba(245,168,35,0.12)"
                 : isMisfit
                   ? "transparent"
                   : undefined,
             color: blocked
               ? "rgba(255,255,255,0.6)"
-              : needsSubModelPick
+              : effectiveNeedsPick
                 ? "var(--color-primary)"
                 : isMisfit
                   ? "var(--color-foreground)"
                   : undefined,
-            borderColor: needsSubModelPick
+            borderColor: effectiveNeedsPick
               ? "var(--color-primary)"
               : isMisfit
                 ? "var(--color-border)"
@@ -159,7 +213,7 @@ export function MobileStickyAtc({
         >
           {outOfStock
             ? "OUT OF STOCK"
-            : needsSubModelPick
+            : effectiveNeedsPick
               ? "PICK FITMENT ↑"
               : isMisfit
                 ? "ADD ANYWAY"
