@@ -501,8 +501,49 @@ export function checkFitment(
   // false. Cycle 14AA was returning undefined eagerly here.
   const needsPick = subGate === "needs_pick";
 
-  // Structured tags (Shopify cycle-3 schema: `make:Jeep`, `model:Wrangler`,
-  // `year:2014`) — ~49% of catalog. When present they're authoritative.
+  // Cycle 14AR-fix1 (QA-found BUG-14AR-1 P0 BLOCKER): the metafield-driven
+  // fitment table (built from CA ACES data via sync-ca-fitment.ts) is the
+  // AUTHORITATIVE source of truth. Shopify vehicleTags are populated from
+  // the product's slug-encoded year range (e.g., "2003-2014-lincoln...") —
+  // which is often NARROWER than the actual coverage in CA fitment data
+  // (which can extend to 2026). The previous implementation trusted
+  // Shopify tags as authoritative, causing false-negative "DOES NOT FIT"
+  // verdicts for products whose CA data clearly says they fit the
+  // customer's vehicle.
+  //
+  // Owner directive (cycle 14AR): the fitment data wins over Shopify tags.
+  // When the metafield has a complete YMM picture (years + makes + models
+  // all populated), use it as the sole source for the make/model/year
+  // verdict. Tags become a fallback for products with sparse/missing
+  // metafield only.
+  const table = product.fitmentTable;
+  const hasCompleteMetafield =
+    !!table &&
+    table.years.length > 0 &&
+    table.makes.length > 0 &&
+    table.models.length > 0;
+  if (hasCompleteMetafield) {
+    const yearStr = String(vehicle.year);
+    const makeKey = vehicle.make.toLowerCase();
+    const aliases = MAKE_ALIASES[makeKey] ?? [makeKey];
+    const makeMatch = table!.makes.some((m) =>
+      aliases.includes(m.toLowerCase()),
+    );
+    const modelMatch = table!.models.some((m) => {
+      const a = m.toLowerCase();
+      const b = vehicle.model.toLowerCase();
+      return a === b || a.includes(b) || b.includes(a);
+    });
+    const yearMatch = table!.years.includes(yearStr);
+    if (makeMatch && modelMatch && yearMatch) return true;
+    // Metafield is complete and disagrees → confident NO. Owner-directed:
+    // CA data is the single source of truth.
+    return false;
+  }
+
+  // Structured Shopify tags (cycle-3 schema: `make:Jeep`, `model:Wrangler`,
+  // `year:2014`) — fallback when metafield is sparse. ~49% of catalog
+  // historically had structured tags but no metafield.
   const tags = product.vehicleTags ?? [];
   const tagSet = new Set(tags.map((t) => t.toLowerCase().trim()));
   if (tagSet.size > 0) {
