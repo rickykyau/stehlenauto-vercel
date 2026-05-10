@@ -565,7 +565,23 @@ export function PdpTabs({
                         ? fitment
                         : deriveFitmentRowsFromTitle(product.title);
                   return collapseFitmentRows(raw);
-                })().map((row) => (
+                })().map((row) => {
+                  // Cycle 14AR-fix20 (owner): inline trim + excluded-submodel
+                  // detail per row so the customer doesn't have to mentally
+                  // cross-reference the chip block above. "2015-2024 Ford F-150
+                  // — Fits XLT, Lariat, Raptor (excludes Lightning)".
+                  const sub = product.fitmentTable?.subattributes;
+                  const fitTrims = sub?.trims
+                    ? filterRetailValues(sub.trims as string[])
+                    : [];
+                  const excludedSubmodels = (sub?.excludedSubmodels ?? []) as string[];
+                  const fitsLine = fitTrims.length > 0
+                    ? `Fits ${fitTrims.join(", ")}`
+                    : null;
+                  const excludesLine = excludedSubmodels.length > 0
+                    ? `Excludes ${excludedSubmodels.join(", ")}`
+                    : null;
+                  return (
                   <div
                     key={`${row.years}-${row.cab}`}
                     style={{
@@ -586,7 +602,33 @@ export function PdpTabs({
                     >
                       {row.years}
                     </span>
-                    <span style={{ fontSize: 13 }}>{row.cab}</span>
+                    <span
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2,
+                        fontSize: 13,
+                      }}
+                    >
+                      <span>{row.cab}</span>
+                      {(fitsLine || excludesLine) && row.fits && (
+                        <span
+                          style={{
+                            fontSize: 11,
+                            color: "var(--color-muted)",
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          {fitsLine}
+                          {fitsLine && excludesLine && " · "}
+                          {excludesLine && (
+                            <span style={{ color: "var(--color-destructive)" }}>
+                              {excludesLine}
+                            </span>
+                          )}
+                        </span>
+                      )}
+                    </span>
                     <span
                       style={{
                         display: "inline-flex",
@@ -610,7 +652,8 @@ export function PdpTabs({
                       </span>
                     </span>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
             <div>
