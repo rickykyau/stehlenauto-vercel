@@ -185,15 +185,18 @@ export function DimensionPicker({
     [canonicalize],
   );
 
+  // Cycle 14AR-fix25 (Ren R10 P2 hydration): the useState initializer used
+  // to also read document.cookie (via readSubModelCookieClient). On SSR
+  // that returned [] (no document), on client first render it returned the
+  // saved picks — resulting in a hydration mismatch (React error #418) on
+  // every collection page load whose category renders the picker. Now:
+  // initialize ONLY from server-provided initialAnswers + the URL params,
+  // both of which are deterministic SSR↔client. The cookie hydration is
+  // moved into the useEffect below so it runs strictly post-hydration.
   const [picks, setPicks] = useState<Record<string, string>>(() => {
     const out: Record<string, string> = {};
     for (const a of initialAnswers ?? []) out[a.group] = a.value;
     Object.assign(out, readUrlDims(params));
-    if (vehicle?.id) {
-      for (const a of readSubModelCookieClient(vehicle.id)) {
-        if (!(a.group in out)) out[a.group] = a.value;
-      }
-    }
     return out;
   });
 

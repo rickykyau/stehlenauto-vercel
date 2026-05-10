@@ -2,16 +2,34 @@
 
 import { useEffect, useState } from "react";
 
-const STORAGE_KEY = "stehlen_newsletter_subscribed_pending";
+const COOKIE_NAME = "stehlen_newsletter_subscribed";
+
+function readCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${name}=`));
+  return match ? match.slice(name.length + 1) : null;
+}
+
+function writeCookie(name: string, value: string, maxAgeSec: number) {
+  if (typeof document === "undefined") return;
+  document.cookie = `${name}=${value}; max-age=${maxAgeSec}; path=/; SameSite=Lax`;
+}
+
+function clearCookie(name: string) {
+  if (typeof document === "undefined") return;
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+}
 
 /**
- * Cycle 14AR-fix17 (Ren R4 P2): post-subscribe redirect to /?subscribed=1
- * triggers a hard navigation. The previous useEffect-only implementation
- * raced with the 8s auto-dismiss timer — if Playwright (or a real user)
- * checked the page right at the boundary, the toast was already gone.
- * Persist the flag to sessionStorage on read so a subsequent navigation
- * (or scroll) still surfaces the confirmation. The toast lives until
- * the user dismisses it (the X) OR the 12s timer expires.
+ * Cycle 14AR-fix25 (Ren R10 P2): the previous sessionStorage approach
+ * didn't survive the 303 redirect → hard nav → second hard nav chain
+ * that newsletter subscriptions go through. Switched to a short-lived
+ * cookie which is the only client-side store guaranteed to survive every
+ * navigation type and Playwright context behavior. Cookie expires after
+ * 12s; the component clears it on dismiss or after the timer fires.
  */
 export function NewsletterSuccess() {
   const [shown, setShown] = useState(false);
@@ -23,33 +41,20 @@ export function NewsletterSuccess() {
     const params = new URLSearchParams(window.location.search);
     if (params.get("subscribed") === "1") {
       triggered = true;
-      try {
-        sessionStorage.setItem(STORAGE_KEY, "1");
-      } catch {
-        // ignore — sessionStorage may be unavailable in some contexts
-      }
+      writeCookie(COOKIE_NAME, "1", 12);
       params.delete("subscribed");
       const q = params.toString();
       const url = window.location.pathname + (q ? `?${q}` : "");
       window.history.replaceState(null, "", url);
     }
 
-    let pending = false;
-    try {
-      pending = sessionStorage.getItem(STORAGE_KEY) === "1";
-    } catch {
-      // ignore
-    }
+    const pending = readCookie(COOKIE_NAME) === "1";
 
     if (triggered || pending) {
       setShown(true);
       const t = setTimeout(() => {
         setShown(false);
-        try {
-          sessionStorage.removeItem(STORAGE_KEY);
-        } catch {
-          // ignore
-        }
+        clearCookie(COOKIE_NAME);
       }, 12000);
       return () => clearTimeout(t);
     }
@@ -59,11 +64,7 @@ export function NewsletterSuccess() {
 
   const dismiss = () => {
     setShown(false);
-    try {
-      sessionStorage.removeItem(STORAGE_KEY);
-    } catch {
-      // ignore
-    }
+    clearCookie(COOKIE_NAME);
   };
 
   return (
