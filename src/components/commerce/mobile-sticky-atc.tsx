@@ -116,13 +116,17 @@ export function MobileStickyAtc({
   }, [requiredStripGroups]);
 
   useEffect(() => {
-    // Cycle 14AR-fix18 (Mike R5 BLOCKER): the previous scrollY > 720 threshold
-    // was a guess at "past the hero buy-box" — on shorter PDPs (or PDPs where
-    // the gallery loads tall above the buy-box) the user never scrolled far
-    // enough to surface the sticky bar at all. Switch to IntersectionObserver
-    // on the buy-box anchor: when the anchor scrolls out of view, show the
-    // sticky. When it scrolls back into view, hide it. Robust to any layout.
-    const anchor = document.querySelector<HTMLElement>("[data-buy-box-anchor]");
+    // Cycle 14AR-fix18 (Mike R5 BLOCKER): IntersectionObserver on the buy-box
+    // anchor — sticky shows when the anchor scrolls out of view.
+    // Cycle 14AR-fix21 (Ren R6 OBS): the buy-box-anchor wraps the entire
+    // 989px buy-box column on mobile. The IO didn't fire until the WHOLE
+    // column scrolled out, which on tall PDPs meant the sticky surfaced
+    // far past the visible content. Prefer the tighter [data-atc-anchor]
+    // (the ATC button itself) and drop the rootMargin so the sticky
+    // appears the moment the ATC button leaves the viewport.
+    const anchor =
+      document.querySelector<HTMLElement>("[data-atc-anchor]") ??
+      document.querySelector<HTMLElement>("[data-buy-box-anchor]");
     if (!anchor || typeof IntersectionObserver === "undefined") {
       // Fallback: show after a modest scroll if the anchor isn't found.
       const onScroll = () => setVisible(window.scrollY > 400);
@@ -133,11 +137,10 @@ export function MobileStickyAtc({
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          // Show sticky once the buy-box scrolls out of view; hide when back in.
           setVisible(!entry.isIntersecting);
         }
       },
-      { threshold: 0, rootMargin: "0px 0px -20% 0px" },
+      { threshold: 0 },
     );
     io.observe(anchor);
     return () => io.disconnect();

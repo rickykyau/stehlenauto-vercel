@@ -760,6 +760,7 @@ export function BuyBox({
           type="button"
           onClick={() => onAdd()}
           disabled={adding || !canAdd}
+          data-atc-anchor
           // Cycle 14X+ (owner): misfit no longer disables the button —
           // gift purchases / multi-vehicle households / friend-of-friend
           // buying are all real. Style the misfit-allow button as a
