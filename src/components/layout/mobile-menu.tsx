@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Icons } from "@/components/ui/icons";
 import { Logo } from "@/components/ui/logo";
 import { MEGA_SECTIONS } from "./mega-menu-data";
+import { openYmmModal } from "@/components/fitment/ymm-events";
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
@@ -93,6 +94,48 @@ export function MobileMenu() {
                 <Icons.close size={20} />
               </button>
             </div>
+            {/* Cycle 14AR-fix8 (QA-found BUG-YMM-2 / Jordan F-11): mobile
+                hamburger had no garage / vehicle entry. The header pill
+                below the top bar IS the primary trigger, but first-time
+                users who associate "garage" with "settings/account" look
+                inside the hamburger drawer. Adding a YMM button at the
+                top costs nothing and adds a discovery path. */}
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                openYmmModal();
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                padding: "18px 20px",
+                background: "var(--color-surface-2)",
+                border: 0,
+                borderBottom: "1px solid var(--color-border)",
+                color: "var(--color-foreground)",
+                cursor: "pointer",
+              }}
+            >
+              <span
+                style={{ display: "inline-flex", alignItems: "center", gap: 10 }}
+              >
+                <Icons.truck size={16} />
+                <span
+                  className="mono"
+                  style={{
+                    fontSize: 13,
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Select your vehicle
+                </span>
+              </span>
+              <Icons.chevRight size={16} />
+            </button>
             {MEGA_SECTIONS.map((section) => (
               <Link
                 key={section.label}

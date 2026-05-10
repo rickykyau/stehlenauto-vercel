@@ -308,6 +308,38 @@ export function YmmModal() {
               {step === "make" && `Step 2 of 3 · Make · ${year}`}
               {step === "model" && `Step 3 of 3 · Model · ${year} ${make}`}
             </p>
+            {/* Cycle 14AR-fix8 (Jordan F-13): visual progress bar — 3-segment
+                strip showing how close the user is to finishing the YMM
+                pick. Reduces mid-flow abandonment, particularly on Step 3
+                (Model) where the list is long. Active+completed segments
+                are primary-yellow; remaining are border-grey. */}
+            <div
+              aria-hidden
+              style={{
+                display: "flex",
+                gap: 4,
+                marginTop: 8,
+                width: 120,
+              }}
+            >
+              {(["year", "make", "model"] as const).map((s, i) => {
+                const stepIdx = step === "year" ? 0 : step === "make" ? 1 : 2;
+                const done = i <= stepIdx;
+                return (
+                  <div
+                    key={s}
+                    style={{
+                      flex: 1,
+                      height: 3,
+                      borderRadius: 2,
+                      background: done
+                        ? "var(--color-primary)"
+                        : "var(--color-border)",
+                    }}
+                  />
+                );
+              })}
+            </div>
           </div>
           <button
             type="button"
@@ -409,6 +441,70 @@ export function YmmModal() {
               No options found.
             </div>
           )}
+          {/* Cycle 14AR-fix8 (Jordan F-5): popular-makes shortcut. The make
+              list is alphabetical with 20+ entries — Ford, Chevrolet, GMC,
+              Ram, Toyota, Jeep are buried at various positions and account
+              for the majority of Stehlen's traffic. Shortcut row at the
+              top of Step 2 cuts ~60% of scrolling for the demographic. */}
+          {!loading && step === "make" && list && list.length > 0 && (
+            (() => {
+              const POPULAR = ["Ford", "Chevrolet", "Ram", "Toyota", "Jeep", "GMC"];
+              const present = POPULAR.filter((p) => list!.includes(p));
+              if (present.length === 0) return null;
+              return (
+                <div
+                  style={{
+                    padding: "12px 24px",
+                    borderBottom: "1px solid var(--color-border)",
+                  }}
+                >
+                  <div
+                    className="mono"
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: "0.12em",
+                      color: "var(--color-muted)",
+                      marginBottom: 8,
+                    }}
+                  >
+                    POPULAR
+                  </div>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(3, 1fr)",
+                      gap: 8,
+                    }}
+                  >
+                    {present.map((m) => (
+                      <button
+                        key={m}
+                        type="button"
+                        disabled={saving}
+                        onClick={() => void onPickMake(m)}
+                        style={{
+                          minHeight: 44,
+                          padding: "0 10px",
+                          background: "var(--color-surface-2)",
+                          border: "1px solid var(--color-border-2)",
+                          borderRadius: "var(--radius-md)",
+                          color: "var(--color-foreground)",
+                          fontSize: 13,
+                          fontFamily: "var(--font-display)",
+                          fontWeight: 600,
+                          letterSpacing: "0.04em",
+                          cursor: saving ? "wait" : "pointer",
+                        }}
+                      >
+                        {m.toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()
+          )}
+
           {!loading && list && list.length > 0 && (
             <ul
               style={{

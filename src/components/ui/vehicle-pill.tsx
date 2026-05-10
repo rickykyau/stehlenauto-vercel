@@ -32,7 +32,12 @@ export function VehiclePill({
   }
   return (
     <YmmButton
-      ariaLabel="Change vehicle"
+      // Cycle 14AR-fix8 (QA-found BUG-14AZ-4 P3): the collection toolbar
+      // ALSO has a "Change vehicle" affordance (aria-label "Filtering
+      // for X — tap to change vehicle"). Two buttons with similar
+      // aria-labels per page broke screen-reader landmark navigation.
+      // Distinct, header-specific phrasing.
+      ariaLabel="Change vehicle in garage"
       style={{
         display: "inline-flex",
         alignItems: "center",
