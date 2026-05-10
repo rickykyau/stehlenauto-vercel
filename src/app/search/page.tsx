@@ -130,9 +130,26 @@ export default async function SearchPage({
                   color: "var(--color-muted)",
                 }}
               >
-                {filtered.length} MATCHES
-                {vehicle &&
-                  ` · FITTING ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
+                {(() => {
+                  // Cycle 14AR-fix24 (Mike R9 F-1): the previous header read
+                  // "9 MATCHES · FITTING 2017 CHEVROLET SILVERADO 1500"
+                  // even when every visible card was DOES NOT FIT — Mike
+                  // saw the match count, expected at least one fit, and
+                  // hit a wall of red badges. Now: count only the
+                  // vehicle-fitting hits and pivot the copy on whether
+                  // any are confirmed fits.
+                  const fitsCount = vehicle
+                    ? withFitment(filtered, vehicle, subModelAnswers).filter(
+                        (p) => p.fits === true,
+                      ).length
+                    : 0;
+                  if (vehicle) {
+                    return fitsCount > 0
+                      ? `${filtered.length} RESULTS · ${fitsCount} FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                      : `${filtered.length} RESULTS · NONE FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`;
+                  }
+                  return `${filtered.length} RESULTS`;
+                })()}
               </span>
             </div>
           )}

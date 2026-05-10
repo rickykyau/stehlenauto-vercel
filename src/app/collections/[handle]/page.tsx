@@ -251,9 +251,17 @@ export default async function CollectionPage({
   // but we still honour the URL param so old bookmarks don't break — when
   // present it forces the strict exact-fits-only path.
   const fitsOnly = sp.fits === "1";
+  // Cycle 14AR-fix24 (Mike R9 F-2): when the empty-state link surfaces
+  // ?clear_vehicle=1, treat this view as anonymous WITHOUT wiping the
+  // saved garage cookie. The customer still has their truck saved when
+  // they navigate back to /collections; this URL param is just a
+  // single-page browse-all escape hatch.
+  const clearVehicleForView = sp.clear_vehicle === "1";
   // Pull the garage vehicle BEFORE fetching so getCollection can re-rank by
   // fitment for the visible page (Mike F-17). Already running per-request.
-  const vehicle = (await getCurrentVehicle()) ?? undefined;
+  const vehicle = clearVehicleForView
+    ? undefined
+    : ((await getCurrentVehicle()) ?? undefined);
   // Cycle 14X+ post-sync (Mike-O15 NEW MAJOR): pass sub-model answers
   // through to the ProductCard fitment gate so a 5.5'-bed customer
   // doesn't see "✓ FITS" badges on 6.5'-bed products.
@@ -747,7 +755,21 @@ export default async function CollectionPage({
                   body = (
                     <>
                       We don&apos;t carry this category for your vehicle
-                      yet. Check{" "}
+                      yet. {/* Cycle 14AR-fix24 (Mike R9 F-2 MAJOR): without
+                      a browse-all escape hatch, the customer can't tell if
+                      this is "we don't stock it for K2XX Silverado" vs
+                      "the filter is broken". Surface a clear-vehicle link
+                      so they can see the catalog and decide for themselves. */}
+                      <Link
+                        href={`/collections/${collection.handle}?clear_vehicle=1`}
+                        style={{
+                          color: "var(--color-primary)",
+                          fontWeight: 600,
+                        }}
+                      >
+                        Browse all {collection.title.toLowerCase()}
+                      </Link>
+                      , see{" "}
                       <Link
                         href={`/vehicle/${vehicle.year}-${vehicle.make.toLowerCase()}-${vehicle.model.toLowerCase().replace(/\s+/g, "-")}`}
                         style={{ color: "var(--color-primary)" }}
