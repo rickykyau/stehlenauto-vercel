@@ -66,6 +66,52 @@ function extractSpecRowsFromHtml(html: string): [string, string][] {
 }
 
 /**
+ * Cycle 14AR-fix19 (owner): collapse contiguous-year rows that share the
+ * same make/model + fitment verdict into a single year-range row. The raw
+ * fitmentTableToRows() output is one row per year, which produces 10+
+ * identical "2015 Ford F-150 FITS" / "2016 Ford F-150 FITS" rows. Customers
+ * scan a single "2015-2024 Ford F-150 FITS" row faster and trust it more.
+ *
+ * Grouping key: `${cab}|${fits}`. Within a group, we sort years numerically,
+ * find runs where every step is +1, and emit "FROM-TO" for runs ≥2 / a bare
+ * year for singletons. Non-numeric year strings (rare — usually pass-through
+ * like "All Years") are kept as-is and never merged.
+ */
+function collapseFitmentRows(rows: FitmentRow[]): FitmentRow[] {
+  if (rows.length <= 1) return rows;
+  type Group = { key: string; cab: string; fits: boolean; years: number[]; nonNumeric: string[] };
+  const groups = new Map<string, Group>();
+  for (const r of rows) {
+    const key = `${r.cab}|${r.fits ? 1 : 0}`;
+    const g = groups.get(key) ?? { key, cab: r.cab, fits: r.fits, years: [], nonNumeric: [] };
+    const yr = parseInt(r.years, 10);
+    if (Number.isFinite(yr) && /^\d{4}$/.test(r.years.trim())) {
+      g.years.push(yr);
+    } else {
+      g.nonNumeric.push(r.years);
+    }
+    groups.set(key, g);
+  }
+  const out: FitmentRow[] = [];
+  for (const g of groups.values()) {
+    const sorted = [...new Set(g.years)].sort((a, b) => a - b);
+    let i = 0;
+    while (i < sorted.length) {
+      let j = i;
+      while (j + 1 < sorted.length && sorted[j + 1] === sorted[j] + 1) j++;
+      const label =
+        i === j ? String(sorted[i]) : `${sorted[i]}-${sorted[j]}`;
+      out.push({ years: label, cab: g.cab, fits: g.fits });
+      i = j + 1;
+    }
+    for (const nn of g.nonNumeric) {
+      out.push({ years: nn, cab: g.cab, fits: g.fits });
+    }
+  }
+  return out;
+}
+
+/**
  * Cycle 14V (owner): when there's no per-product fitment table, derive a
  * single row from the product title — most product titles already encode
  * "YYYY-YYYY Make Model …" which is enough to render an honest "Fits ____"
@@ -512,13 +558,13 @@ export function PdpTabs({
                         ...r,
                       }))
                     : [];
-                  return (
+                  const raw =
                     metafieldRows.length > 0
                       ? metafieldRows
                       : fitment.length > 0
                         ? fitment
-                        : deriveFitmentRowsFromTitle(product.title)
-                  );
+                        : deriveFitmentRowsFromTitle(product.title);
+                  return collapseFitmentRows(raw);
                 })().map((row) => (
                   <div
                     key={`${row.years}-${row.cab}`}
