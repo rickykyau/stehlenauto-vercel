@@ -1,4 +1,5 @@
 import "server-only";
+import { cookies } from "next/headers";
 import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { db, dbConfigured } from "@/lib/db/client";
@@ -166,14 +167,31 @@ export async function clearSubModelAnswer(
   vid: string,
   group: SubModelAnswer["group"],
 ): Promise<void> {
-  // Cookie: read existing, drop the matching group, write back.
+  // Cycle 14AQ-fix1 (QA-found BUG-14AQ-A2/A3): writeSubModelCookie does a
+  // GROUP-MERGE — it only overwrites groups present in the incoming array.
+  // Calling writeSubModelCookie(vid, []) was a no-op because the merge had
+  // nothing to overwrite, so the cookie kept the original answer. Both the
+  // picker "Change" link and the empty-state "CLEAR FILTERS" link looked
+  // dead because the cookie re-applied the cleared answer on next render.
+  // Direct cookie write (bypass the merge helper) so the clear actually
+  // sticks. If the per-vehicle slot becomes empty after the drop, remove
+  // the slot entirely so the cookie payload doesn't grow unboundedly.
   const all = await readSubModelCookie();
   const current = all[vid] ?? [];
   const filtered = current.filter((a) => a.group !== group);
-  // Re-write only the answers we kept; writeSubModelCookie merges by group.
-  // Special case: if `filtered` is empty, the cookie write helper still
-  // updates the per-vehicle slot to [] cleanly.
-  await writeSubModelCookie(vid, filtered);
+  if (filtered.length === 0) {
+    delete all[vid];
+  } else {
+    all[vid] = filtered;
+  }
+  const store = await cookies();
+  store.set("stehlen_submodel", JSON.stringify(all), {
+    httpOnly: false,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24 * 365,
+    path: "/",
+  });
 
   const { userId } = await auth();
   if (userId && dbConfigured) {

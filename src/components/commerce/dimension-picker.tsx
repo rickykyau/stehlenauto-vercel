@@ -356,153 +356,149 @@ export function DimensionPicker({
     <section
       aria-label="Refine for your vehicle"
       style={{
-        background: gated ? "var(--color-surface-2)" : "var(--color-surface)",
-        borderTop: "1px solid var(--color-border)",
-        borderBottom: "1px solid var(--color-border)",
+        background: "var(--color-background)",
+        padding: "16px 0 24px",
       }}
     >
-      <div className="container-x" style={{ paddingTop: 24, paddingBottom: 28 }}>
-        <div
-          className="eyebrow"
-          style={{ color: "var(--color-muted)", marginBottom: 8 }}
-        >
-          REFINE FOR YOUR VEHICLE
-        </div>
-        {!vehicle && (
-          <div style={{ marginBottom: 14, fontSize: 13 }}>
-            <button
-              type="button"
-              onClick={openYmmModal}
-              className="chip"
-              style={{ cursor: "pointer", fontSize: 12 }}
-            >
-              <Icons.truck size={10} /> SET YOUR VEHICLE FOR EXACT-FIT OPTIONS →
-            </button>
-          </div>
-        )}
-
-        {strips.map((s) => {
-          const picked = picks[s.group];
-          const copy = COPY[s.group];
-          return (
-            <div
-              key={s.group}
-              style={{
-                marginBottom: 18,
-                paddingBottom: 16,
-                borderBottom: "1px solid var(--color-border)",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  gap: 12,
-                  flexWrap: "wrap",
-                  marginBottom: 6,
-                }}
-              >
-                <div style={{ fontSize: 16, fontWeight: 600 }}>{copy.ask}</div>
-                {picked && (
-                  <button
-                    type="button"
-                    onClick={() => onChange(s.group)}
-                    style={{
-                      background: "none",
-                      border: 0,
-                      color: "var(--color-muted)",
-                      cursor: "pointer",
-                      fontSize: 12,
-                      textDecoration: "underline",
-                      padding: 0,
-                    }}
-                  >
-                    Change
-                  </button>
-                )}
-              </div>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: "var(--color-muted)",
-                  marginBottom: 12,
-                  maxWidth: 720,
-                  lineHeight: 1.5,
-                }}
-              >
-                {copy.helper}
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 8,
-                }}
-              >
-                {s.options.map((opt) => {
-                  const isPicked = picked === opt;
-                  return (
-                    <button
-                      key={opt}
-                      type="button"
-                      onClick={() => onPick(s.group, opt)}
-                      disabled={pending}
-                      aria-pressed={isPicked}
-                      className="chip"
-                      style={{
-                        cursor: pending ? "wait" : "pointer",
-                        fontSize: 12,
-                        fontWeight: isPicked ? 700 : 500,
-                        background: isPicked
-                          ? "var(--color-primary)"
-                          : "var(--color-background)",
-                        color: isPicked
-                          ? "var(--color-on-primary, #1a1a1a)"
-                          : "var(--color-foreground)",
-                        borderColor: isPicked
-                          ? "var(--color-primary)"
-                          : "var(--color-border)",
-                        padding: "6px 14px",
-                      }}
-                    >
-                      {isPicked && <Icons.check size={11} />} {opt.toUpperCase()}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-
-        {error && (
+      <div className="container-x">
+        <div className={`dim-card${gated ? " dim-card-gated" : ""}`}>
           <div
-            role="alert"
+            className="eyebrow"
             style={{
-              marginTop: 8,
-              fontSize: 12,
-              color: "var(--color-danger, #b91c1c)",
+              color: gated ? "var(--color-primary)" : "var(--color-muted)",
+              marginBottom: 12,
             }}
           >
-            {error}
+            {gated ? "SELECTION REQUIRED" : "REFINE FOR YOUR VEHICLE"}
           </div>
-        )}
-        {gated && (
-          <div style={{ marginTop: 4, fontSize: 12 }}>
-            <a
-              href={(() => {
-                const sp = new URLSearchParams(params.toString());
-                sp.set("skip", "1");
-                return `${pathname}?${sp.toString()}`;
-              })()}
+          {!vehicle && (
+            <div style={{ marginBottom: 16 }}>
+              <button
+                type="button"
+                onClick={openYmmModal}
+                className="chip"
+                style={{ cursor: "pointer", fontSize: 12 }}
+              >
+                <Icons.truck size={10} /> SET YOUR VEHICLE FOR EXACT-FIT OPTIONS →
+              </button>
+            </div>
+          )}
+
+          {strips.map((s, idx) => {
+            const picked = picks[s.group];
+            const copy = COPY[s.group];
+            const isLast = idx === strips.length - 1;
+            return (
+              <div
+                key={s.group}
+                style={{
+                  marginBottom: isLast ? 0 : 24,
+                  paddingBottom: isLast ? 0 : 20,
+                  borderBottom: isLast
+                    ? "none"
+                    : "1px solid var(--color-border)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    gap: 12,
+                    flexWrap: "wrap",
+                    marginBottom: 8,
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: 17,
+                      fontWeight: 600,
+                      color: "var(--color-foreground)",
+                    }}
+                  >
+                    {copy.ask}
+                  </div>
+                  {picked && (
+                    <button
+                      type="button"
+                      onClick={() => onChange(s.group)}
+                      style={{
+                        background: "none",
+                        border: 0,
+                        color: "var(--color-primary)",
+                        cursor: "pointer",
+                        fontSize: 13,
+                        textDecoration: "underline",
+                        padding: 0,
+                        fontWeight: 600,
+                      }}
+                    >
+                      Change
+                    </button>
+                  )}
+                </div>
+                <div
+                  style={{
+                    fontSize: 14,
+                    color: "var(--color-muted)",
+                    marginBottom: 16,
+                    maxWidth: 680,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {copy.helper}
+                </div>
+                <div className="dim-chip-grid">
+                  {s.options.map((opt) => {
+                    const isPicked = picked === opt;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => onPick(s.group, opt)}
+                        disabled={pending}
+                        aria-pressed={isPicked}
+                        className="dim-chip-btn"
+                      >
+                        {isPicked && <Icons.check size={12} />} {opt.toUpperCase()}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+
+          {error && (
+            <div
+              role="alert"
               style={{
-                color: "var(--color-muted)",
-                textDecoration: "underline",
+                marginTop: 12,
+                fontSize: 13,
+                color: "var(--color-destructive)",
               }}
             >
-              Skip and browse all options
-            </a>
-          </div>
-        )}
+              {error}
+            </div>
+          )}
+          {gated && (
+            <div style={{ marginTop: 16, fontSize: 13 }}>
+              <a
+                href={(() => {
+                  const sp = new URLSearchParams(params.toString());
+                  sp.set("skip", "1");
+                  return `${pathname}?${sp.toString()}`;
+                })()}
+                style={{
+                  color: "var(--color-muted-2)",
+                  textDecoration: "underline",
+                }}
+              >
+                Skip and browse all options
+              </a>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

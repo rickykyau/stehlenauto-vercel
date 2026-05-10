@@ -47,15 +47,15 @@ export function ClearFiltersLink({
           ),
         );
       }
-      // Cycle 14AP-fix12 (owner): router.push to the same URL is a NO-OP
-      // (Next.js dedupes identical-URL navigations). On the empty-state
-      // CLEAR FILTERS link, the customer is already at /collections/<handle>
-      // so router.push does nothing visible. Use window.location.href to
-      // force a real navigation that re-runs SSR and reads the
-      // just-cleared cookie.
-      startTransition(() => {
-        window.location.href = `/collections/${collectionHandle}`;
-      });
+      // Cycle 14AQ-fix1 (QA-found BUG-14AQ-A3): window.location.href to
+      // the SAME URL the user is already on is a no-op in modern browsers
+      // (Chrome/Safari dedupe identical-URL same-origin assignments and
+      // skip the network round-trip). The previous "fix" wrapped this in
+      // startTransition expecting that to help — it doesn't, because there
+      // is no React state update to defer. Append a one-shot cache-bust
+      // query so the URL is genuinely different, forcing a real navigation
+      // that re-runs SSR with the just-cleared cookie + DB row.
+      window.location.href = `/collections/${collectionHandle}?_=${Date.now()}`;
     },
     [vehicle?.id, answeredGroups, collectionHandle, router],
   );

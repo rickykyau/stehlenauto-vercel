@@ -202,6 +202,44 @@ def extract_doors(submodel: str) -> str | None:
     return None
 
 
+# Cycle 14AQ-fix1 (owner): retail-shopper trim filter. Stehlen sells to
+# retail consumers modifying their personal trucks/SUVs/Jeeps — landscapers,
+# weekend builders, mechanics. The CA fitment data carries fleet / police /
+# government variants AND foreign-market (Mexico/Latin America) trims that
+# poison the picker for our actual audience. Drop any trim whose name is
+# (a) a known fleet/government variant, (b) a Spanish-language / non-US
+# market designator, or (c) a generic "Special" prefix without a real trim
+# meaning.
+FLEET_TRIM_BLOCKLIST = {
+    "SSV", "Special Service", "Police", "Police Responder",
+    "Police Interceptor", "Police Pursuit", "Pursuit", "Taxi",
+    "Cab Forward", "Cab & Chassis", "Stripped Chassis", "Commercial",
+    "Crew Cab Stripped Chassis",
+}
+FOREIGN_MARKET_TRIM_BLOCKLIST = {
+    "Edicion Especial", "Edicion Limitada", "Edicion",
+    "WT Doble Cabina", "Doble Cabina", "Cabina Doble",
+    "GT Milenio", "Milenio", "Sport Tipo R", "Tipo R",
+}
+RETAIL_TRIM_BLOCKLIST = FLEET_TRIM_BLOCKLIST | FOREIGN_MARKET_TRIM_BLOCKLIST
+
+
+def is_retail_trim(trim: str) -> bool:
+    """True if this trim should be shown to a retail consumer."""
+    if not trim or len(trim) > 40:
+        return False
+    if trim in RETAIL_TRIM_BLOCKLIST:
+        return False
+    # Catch any trim whose name STARTS with a known fleet/foreign keyword
+    # (covers variants like "SSV-AWD", "Police Pursuit Sedan", etc.)
+    lower = trim.lower()
+    for kw in ("ssv", "police ", "pursuit", "edicion ", "doble cabina",
+               "cabina doble", "special service", "milenio"):
+        if lower.startswith(kw) or lower == kw.strip():
+            return False
+    return True
+
+
 def normalize_make(make: str) -> str:
     """Title-case but preserve known acronyms (GMC, BMW, etc.)."""
     upper_overrides = {"gmc", "bmw", "kia", "fiat", "mini"}
@@ -287,7 +325,7 @@ def main() -> None:
             d = dims[key]
             if submodel:
                 trim = extract_trim(submodel)
-                if trim:
+                if trim and is_retail_trim(trim):
                     d["trims"].add(trim)
                 cab = extract_cab(submodel)
                 if cab:

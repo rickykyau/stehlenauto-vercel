@@ -5273,7 +5273,6 @@
   "2000|Pontiac|Sunfire": {
     "trims": [
       "Base",
-      "GT Milenio",
       "SE"
     ],
     "bedLengths": [],
@@ -7772,7 +7771,6 @@
   "2003|Volkswagen|Jetta": {
     "trims": [
       "Confortline",
-      "Edicion Limitada",
       "Europa",
       "Europa Wolfsburg",
       "GL",
@@ -18624,8 +18622,7 @@
       "LS",
       "LT",
       "LTZ",
-      "PPV",
-      "SSV"
+      "PPV"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -18679,7 +18676,6 @@
   "2012|Dodge|Charger": {
     "trims": [
       "Enforcer",
-      "Pursuit",
       "R/T",
       "SE",
       "SXT",
@@ -19919,8 +19915,7 @@
       "LS",
       "LT",
       "LTZ",
-      "PPV",
-      "SSV"
+      "PPV"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -19962,7 +19957,6 @@
   "2013|Dodge|Charger": {
     "trims": [
       "Enforcer",
-      "Pursuit",
       "R/T",
       "SE",
       "SXT",
@@ -21182,9 +21176,7 @@
       "LS",
       "LT",
       "LTZ",
-      "PPV",
-      "Police",
-      "SSV"
+      "PPV"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -21226,7 +21218,6 @@
   "2014|Dodge|Charger": {
     "trims": [
       "Enforcer",
-      "Pursuit",
       "R/T",
       "SE",
       "SXT",
@@ -22314,7 +22305,6 @@
       "LS",
       "LT",
       "LTZ",
-      "SSV",
       "WT"
     ],
     "bedLengths": [
@@ -22996,7 +22986,6 @@
       "SLT",
       "ST",
       "SXT",
-      "Special Service",
       "Sport",
       "Tradesman"
     ],
@@ -23483,7 +23472,6 @@
       "LS",
       "LT",
       "LTZ",
-      "SSV",
       "WT"
     ],
     "bedLengths": [
@@ -23645,7 +23633,6 @@
       "Lariat",
       "Limited",
       "Platinum",
-      "SSV",
       "XL",
       "XLT"
     ],
@@ -24124,7 +24111,6 @@
       "SLT",
       "ST",
       "SXT",
-      "Special Service",
       "Sport",
       "Tradesman"
     ],
@@ -24268,7 +24254,6 @@
   },
   "2016|Toyota|Tacoma": {
     "trims": [
-      "Edicion Especial",
       "Limited",
       "SR",
       "SR5",
@@ -24559,7 +24544,6 @@
       "LS",
       "LT",
       "LTZ",
-      "SSV",
       "WT"
     ],
     "bedLengths": [
@@ -24723,7 +24707,6 @@
       "Limited",
       "Platinum",
       "Raptor",
-      "SSV",
       "XL",
       "XLT"
     ],
@@ -25272,7 +25255,6 @@
       "SLT",
       "ST",
       "SXT",
-      "Special Service",
       "Sport",
       "Tradesman"
     ],
@@ -25423,7 +25405,6 @@
   },
   "2017|Toyota|Tacoma": {
     "trims": [
-      "Edicion Especial",
       "Limited",
       "SR",
       "SR5",
@@ -25764,7 +25745,6 @@
       "LS",
       "LT",
       "LTZ",
-      "SSV",
       "WT"
     ],
     "bedLengths": [
@@ -25880,11 +25860,9 @@
       "Citadel",
       "Enforcer",
       "GT",
-      "Pursuit",
       "R/T",
       "SXT",
-      "SXT Plus",
-      "Special Service"
+      "SXT Plus"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -25930,9 +25908,7 @@
       "Lariat",
       "Limited",
       "Platinum",
-      "Police Responder",
       "Raptor",
-      "SSV",
       "XL",
       "XLT"
     ],
@@ -26446,7 +26422,6 @@
       "SLT",
       "ST",
       "SXT",
-      "Special Service",
       "Sport",
       "Tradesman"
     ],
@@ -26605,7 +26580,6 @@
   },
   "2018|Toyota|Tacoma": {
     "trims": [
-      "Edicion Especial",
       "Limited",
       "SR",
       "SR5",
@@ -26857,9 +26831,7 @@
       "LT Trail Boss",
       "LTZ",
       "RST",
-      "SSV",
-      "WT",
-      "WT Doble Cabina"
+      "WT"
     ],
     "bedLengths": [
       "5.8' BED",
@@ -26966,11 +26938,9 @@
       "Citadel Platinum",
       "Enforcer",
       "GT",
-      "Pursuit",
       "R/T",
       "SXT",
-      "SXT Plus",
-      "Special Service"
+      "SXT Plus"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -27016,9 +26986,7 @@
       "Lariat",
       "Limited",
       "Platinum",
-      "Police Responder",
       "Raptor",
-      "SSV",
       "XL",
       "XLT"
     ],
@@ -27581,7 +27549,6 @@
       "SLT",
       "ST",
       "SXT Plus",
-      "Special Service",
       "Tradesman",
       "Warlock"
     ],
@@ -27692,7 +27659,6 @@
   },
   "2019|Toyota|Tacoma": {
     "trims": [
-      "Edicion Especial",
       "Limited",
       "SR",
       "SR5",
@@ -27877,9 +27843,7 @@
       "LT Trail Boss",
       "LTZ",
       "RST",
-      "SSV",
-      "WT",
-      "WT Doble Cabina"
+      "WT"
     ],
     "bedLengths": [
       "5.8' BED",
@@ -27981,11 +27945,9 @@
       "Enforcer",
       "GT",
       "GT Plus",
-      "Pursuit",
       "R/T",
       "SXT",
       "SXT Plus",
-      "Special Service",
       "Touring"
     ],
     "bedLengths": [],
@@ -28012,9 +27974,7 @@
       "Lariat",
       "Limited",
       "Platinum",
-      "Police Responder",
       "Raptor",
-      "SSV",
       "XL",
       "XLT"
     ],
@@ -28543,7 +28503,6 @@
       "Rebel",
       "SLT",
       "ST",
-      "Special Service",
       "Sport",
       "Tradesman"
     ],
@@ -28563,7 +28522,6 @@
       "Express",
       "SLT",
       "ST",
-      "Special Service",
       "Tradesman",
       "Warlock"
     ],
@@ -28683,7 +28641,6 @@
   },
   "2020|Toyota|Tacoma": {
     "trims": [
-      "Edicion Especial",
       "Limited",
       "SR",
       "SR5",
@@ -28854,7 +28811,6 @@
       "LT Trail Boss",
       "LTZ",
       "RST",
-      "SSV",
       "WT"
     ],
     "bedLengths": [
@@ -28957,11 +28913,9 @@
       "Enforcer",
       "GT",
       "GT Plus",
-      "Pursuit",
       "R/T",
       "SXT",
-      "SXT Plus",
-      "Special Service"
+      "SXT Plus"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -28981,9 +28935,7 @@
       "Lariat",
       "Limited",
       "Platinum",
-      "Police Responder",
       "Raptor",
-      "SSV",
       "Tremor",
       "XL",
       "XLT"
@@ -29513,7 +29465,6 @@
       "Rebel",
       "SLT",
       "ST",
-      "Special Service",
       "Sport",
       "TRX",
       "TRX Launch Edition",
@@ -29535,7 +29486,6 @@
       "Express",
       "Night Edition",
       "SLT",
-      "Special Service",
       "Tradesman",
       "Warlock"
     ],
@@ -29667,7 +29617,6 @@
   },
   "2021|Toyota|Tacoma": {
     "trims": [
-      "Edicion Especial",
       "Limited",
       "Nightshade",
       "SR",
@@ -29860,7 +29809,6 @@
       "LT Trail Boss",
       "LTZ",
       "RST",
-      "SSV",
       "WT"
     ],
     "bedLengths": [
@@ -29950,12 +29898,10 @@
       "Enforcer",
       "GT",
       "GT Plus",
-      "Pursuit",
       "R/T",
       "R/T Hemi Orange",
       "R/T Plus",
-      "SXT",
-      "Special Service"
+      "SXT"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -29975,9 +29921,7 @@
       "Lariat",
       "Limited",
       "Platinum",
-      "Police Responder",
       "Raptor",
-      "SSV",
       "Tremor",
       "XL",
       "XLT"
@@ -30542,7 +30486,6 @@
     "trims": [
       "Express",
       "SLT",
-      "Special Service",
       "Tradesman",
       "Warlock"
     ],
@@ -30683,7 +30626,6 @@
   "2022|Toyota|Tacoma": {
     "trims": [
       "Base",
-      "Edicion Especial",
       "Limited",
       "Nightshade",
       "SR",
@@ -30916,14 +30858,12 @@
       "GT",
       "GT Plus",
       "GT Premium",
-      "Pursuit",
       "R/T",
       "R/T Hemi Orange",
       "R/T Plus",
       "R/T Premium",
       "SXT",
-      "SXT Plus",
-      "Special Service"
+      "SXT Plus"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -30943,10 +30883,8 @@
       "Lariat",
       "Limited",
       "Platinum",
-      "Police Responder",
       "Raptor",
       "Raptor R",
-      "SSV",
       "Tremor",
       "XL",
       "XLT"
@@ -31431,7 +31369,6 @@
     "trims": [
       "Express",
       "SLT",
-      "Special Service",
       "Tradesman",
       "Warlock"
     ],
@@ -31571,7 +31508,6 @@
   "2023|Toyota|Tacoma": {
     "trims": [
       "Base",
-      "Edicion Especial",
       "Limited",
       "Nightshade",
       "SR",
@@ -31797,13 +31733,11 @@
       "GT",
       "GT Plus",
       "GT Premium",
-      "Pursuit",
       "R/T",
       "R/T Plus",
       "R/T Premium",
       "SXT",
-      "SXT Plus",
-      "Special Service"
+      "SXT Plus"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -31823,7 +31757,6 @@
       "Lariat",
       "Platinum",
       "Raptor",
-      "SSV",
       "STX",
       "Tremor",
       "XL",
@@ -32474,11 +32407,9 @@
       "Enforcer",
       "GT",
       "GT Plus",
-      "Pursuit",
       "R/T",
       "R/T Plus",
-      "R/T Premium",
-      "Special Service"
+      "R/T Premium"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -32492,7 +32423,6 @@
       "Lariat",
       "Platinum",
       "Raptor",
-      "SSV",
       "STX",
       "Tremor",
       "XL",
@@ -32796,7 +32726,6 @@
       "Lone Star",
       "RHO",
       "Rebel",
-      "Special Service",
       "Sport",
       "Tradesman",
       "Tradesman HFE",
@@ -32996,11 +32925,9 @@
       "GT",
       "GT Plus",
       "GT Premium",
-      "Pursuit",
       "R/T",
       "R/T Plus",
-      "R/T Premium",
-      "Special Service"
+      "R/T Premium"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -33014,7 +32941,6 @@
       "Lariat",
       "Platinum",
       "Raptor",
-      "SSV",
       "STX",
       "Tremor",
       "XL",
@@ -33225,7 +33151,6 @@
       "Longhorn",
       "RHO",
       "Rebel",
-      "Special Service",
       "Sport",
       "Sport S",
       "Tradesman",
