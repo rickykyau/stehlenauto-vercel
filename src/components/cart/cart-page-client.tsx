@@ -129,12 +129,19 @@ export function CartPageClient({
     () =>
       lines.map((l) =>
         checkFitment(
-          { title: l.productTitle, fitTitle: l.productTitle, vehicleTags: [] },
+          {
+            title: l.productTitle,
+            // Cycle 14AR-fix3 (BUG-14AR-6 follow-up): mirror the cart
+            // drawer — use server-enriched per-line fitment data so the
+            // verdict is confident (FITS / DOES NOT FIT) instead of
+            // sliding to the title-string path that misses many products.
+            fitTitle: l.fitTitle ?? l.productTitle,
+            vehicleTags: l.vehicleTags ?? [],
+            fitmentTable: l.fitmentTable,
+          },
           vehicle ?? null,
           // Cycle 14X+ post-sync (Sam re-review M-6): pass sub-model
-          // answers so cart fitment status matches the PDP gate. A
-          // 5.5'-bed customer with a 6.5' tonneau in cart now correctly
-          // shows MIXED FITMENT, not green ALL ITEMS FIT.
+          // answers so cart fitment status matches the PDP gate.
           subModelAnswers,
         ),
       ),

@@ -8,6 +8,7 @@ import {
   CART_LINES_UPDATE,
   CART_QUERY,
 } from "@/lib/shopify/cart-queries";
+import { getProduct } from "@/lib/catalog";
 import type { Cart, CartLine, Money } from "./types";
 
 const CART_COOKIE = "stehlen_cart_id";
@@ -75,6 +76,54 @@ function adapt(cart: ShopifyCart): Cart {
   };
 }
 
+/**
+ * Cycle 14AR-fix3 (BUG-14AR-6 follow-up): enrich each cart line with
+ * the per-product fitment data so the drawer + cart page checkFitment
+ * calls can return a confident verdict (FITS / DOES NOT FIT) instead
+ * of falling back to the title-string path which often returned
+ * undefined → no badge → cart line looked broken to the customer.
+ *
+ * Strategy: dedupe by handle (a customer with two of the same product
+ * counts as 1 fetch), Promise.all the getProduct calls, attach
+ * fitmentTable + vehicleTags + fitTitle to each line. Failures are
+ * non-fatal — the line just keeps its existing minimal data.
+ *
+ * Cost: 1-3 extra Shopify GET-product calls per cart action, all
+ * concurrent. Typical add-to-cart now adds ~150-300ms; acceptable.
+ */
+async function enrichLinesWithFitment(cart: Cart): Promise<Cart> {
+  const uniqueHandles = Array.from(
+    new Set(cart.lines.map((l) => l.productHandle).filter(Boolean)),
+  );
+  if (uniqueHandles.length === 0) return cart;
+  try {
+    const products = await Promise.all(
+      uniqueHandles.map((h) => getProduct(h).catch(() => null)),
+    );
+    const byHandle = new Map<
+      string,
+      { fitmentTable?: import("@/lib/catalog/types").FitmentTable; vehicleTags?: string[]; fitTitle?: string }
+    >();
+    products.forEach((p, i) => {
+      if (!p) return;
+      byHandle.set(uniqueHandles[i], {
+        fitmentTable: p.fitmentTable,
+        vehicleTags: p.vehicleTags,
+        fitTitle: p.fitTitle ?? undefined,
+      });
+    });
+    const enrichedLines = cart.lines.map((l) => {
+      const meta = byHandle.get(l.productHandle);
+      if (!meta) return l;
+      return { ...l, ...meta };
+    });
+    return { ...cart, lines: enrichedLines };
+  } catch (err) {
+    console.error("[cart] enrichLinesWithFitment failed:", err);
+    return cart;
+  }
+}
+
 async function readCartId() {
   const store = await cookies();
   return store.get(CART_COOKIE)?.value ?? null;
@@ -118,7 +167,7 @@ export async function getCart(): Promise<Cart | null> {
       await clearCartId();
       return null;
     }
-    return adapt(data.cart);
+    return enrichLinesWithFitment(adapt(data.cart));
   } catch (err) {
     console.error("[cart] getCart fell back:", err);
     return null;
@@ -148,7 +197,7 @@ export async function addToCart(
     }
     if (!created.cartCreate.cart) return null;
     await writeCartId(created.cartCreate.cart.id);
-    return adapt(created.cartCreate.cart);
+    return enrichLinesWithFitment(adapt(created.cartCreate.cart));
   }
 
   const updated = await shopifyFetch<{
@@ -165,7 +214,9 @@ export async function addToCart(
       updated.cartLinesAdd.userErrors.map((e) => e.message).join("; "),
     );
   }
-  return updated.cartLinesAdd.cart ? adapt(updated.cartLinesAdd.cart) : null;
+  return updated.cartLinesAdd.cart
+    ? enrichLinesWithFitment(adapt(updated.cartLinesAdd.cart))
+    : null;
 }
 
 export async function updateLine(
@@ -184,7 +235,9 @@ export async function updateLine(
     cartId: id,
     lines: [{ id: lineId, quantity }],
   });
-  return data.cartLinesUpdate.cart ? adapt(data.cartLinesUpdate.cart) : null;
+  return data.cartLinesUpdate.cart
+    ? enrichLinesWithFitment(adapt(data.cartLinesUpdate.cart))
+    : null;
 }
 
 export async function removeLine(lineId: string): Promise<Cart | null> {
@@ -200,5 +253,7 @@ export async function removeLine(lineId: string): Promise<Cart | null> {
     cartId: id,
     lineIds: [lineId],
   });
-  return data.cartLinesRemove.cart ? adapt(data.cartLinesRemove.cart) : null;
+  return data.cartLinesRemove.cart
+    ? enrichLinesWithFitment(adapt(data.cartLinesRemove.cart))
+    : null;
 }

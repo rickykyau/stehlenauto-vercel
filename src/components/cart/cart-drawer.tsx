@@ -111,12 +111,21 @@ export function CartDrawer({
     () =>
       lines.map((l) =>
         checkFitment(
-          { title: l.productTitle, fitTitle: l.productTitle, vehicleTags: [] },
+          {
+            title: l.productTitle,
+            // Cycle 14AR-fix3 (BUG-14AR-6 follow-up): cart lines are now
+            // server-enriched with the per-product fitTitle, vehicleTags,
+            // and fitmentTable so checkFitment has everything it needs to
+            // return a confident verdict (FITS / DOES NOT FIT) instead of
+            // falling all the way to the title-string path. The yellow
+            // VERIFY FITMENT bucket should drop to ~0 with this in place.
+            fitTitle: l.fitTitle ?? l.productTitle,
+            vehicleTags: l.vehicleTags ?? [],
+            fitmentTable: l.fitmentTable,
+          },
           vehicle ?? null,
           // Cycle 14X+ post-sync (Mike-O14 follow-up): pass sub-model
-          // answers so the drawer fitment matches the PDP gate. Without
-          // this a 5.5'-bed customer with a 6.5' tonneau would get a
-          // soft "fits" verdict in the drawer.
+          // answers so the drawer fitment matches the PDP gate.
           subModelAnswers,
         ),
       ),
