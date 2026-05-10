@@ -8,6 +8,10 @@ import { YmmButton } from "@/components/fitment/ymm-button";
 import { YearPicker } from "./year-picker";
 import { CATEGORIES, POPULAR_VEHICLES, PRODUCTS } from "@/lib/catalog/mock";
 import { searchProducts } from "@/lib/catalog";
+import {
+  getAvailableCategoriesForMakeModel,
+  getAvailableCategoriesForVehicle,
+} from "@/lib/catalog/vehicle-categories";
 import { withFitment } from "@/lib/fitment/match";
 import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { breadcrumbJsonLd, jsonLdString } from "@/lib/seo/jsonld";
@@ -213,7 +217,6 @@ export default async function VehicleHubPage({
   const v = parseSlug(slug);
   if (!v) notFound();
   const { make, model } = v;
-  const cats = CATEGORIES.slice(0, 8);
   const generations = GENERATIONS_BY_VEHICLE[slug] ?? [];
   // Cycle 5 (Mike): cross-sell rail used to render PRODUCTS.slice(0, 4),
   // which is mock F-150 SuperCrew roof racks shown on EVERY hub including
@@ -275,6 +278,25 @@ export default async function VehicleHubPage({
   if (products.length === 0) {
     products = PRODUCTS.slice(0, 4);
   }
+
+  // Cycle 14AR-fix14 (Mike F-1 BLOCKER): vehicle hub used to render the first
+  // 8 categories from the global CATEGORIES list regardless of whether the
+  // catalog had products for THIS vehicle. Mike's 2018 F-150 hub promised
+  // "FRONT GRILLES — SHOP NOW" but the collection had zero F-150 grilles.
+  // Cross-surface lie that destroys trust.
+  // Now: derive the category list from data/products_by_ymm.json. If the
+  // garage matches this hub use the customer's exact year; otherwise union
+  // all years for this make/model so a no-garage visitor still sees what
+  // we genuinely carry. Hide categories with zero fits.
+  const availableCats = garageMatchesHub
+    ? getAvailableCategoriesForVehicle(garage.year, make, model)
+    : getAvailableCategoriesForMakeModel(make, model);
+  const filteredCats = CATEGORIES.filter((c) => availableCats.has(c.slug));
+  // Fail-open: if the regex mapping returns nothing (new category, unknown
+  // handle pattern), fall back to the original first-8 slice so the section
+  // never goes empty.
+  const cats =
+    filteredCats.length > 0 ? filteredCats.slice(0, 8) : CATEGORIES.slice(0, 8);
 
   // Cycle 14Z post-deploy (Priya F-8 MEDIUM): vehicle hub now emits a
   // BreadcrumbList JSON-LD so Google can render the breadcrumb in SERP.

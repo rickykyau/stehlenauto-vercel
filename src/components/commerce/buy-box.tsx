@@ -365,7 +365,7 @@ export function BuyBox({
             <span style={{ fontSize: 12, color: "var(--color-muted)" }}>
               {picks[s.group] ? (
                 <>
-                  Your truck:{" "}
+                  Your vehicle:{" "}
                   <strong style={{ color: "var(--color-foreground)" }}>
                     {picks[s.group]}
                   </strong>

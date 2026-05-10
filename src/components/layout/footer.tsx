@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
+import { NewsletterSuccess } from "./newsletter-success";
 
 const LINK_COLS = [
   {
@@ -64,11 +65,9 @@ export function Footer() {
       {/* Newsletter */}
       <div style={{ borderBottom: "1px solid var(--color-border)" }}>
         <div
-          className="container-x"
+          className="container-x grid grid-cols-1 md:grid-cols-2"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 48,
+            gap: 32,
             paddingTop: 40,
             paddingBottom: 40,
             alignItems: "center",
@@ -103,20 +102,23 @@ export function Footer() {
               guides, and customer build features.
             </p>
           </div>
-          <form style={{ display: "flex", gap: 8 }} action="/api/newsletter" method="post">
-            <input
-              className="input"
-              style={{ flex: 1 }}
-              placeholder="you@example.com"
-              type="email"
-              name="email"
-              required
-              aria-label="Email address"
-            />
-            <button type="submit" className="btn btn-primary">
-              SUBSCRIBE
-            </button>
-          </form>
+          <div>
+            <form style={{ display: "flex", gap: 8 }} action="/api/newsletter" method="post">
+              <input
+                className="input"
+                style={{ flex: 1, minWidth: 0 }}
+                placeholder="you@example.com"
+                type="email"
+                name="email"
+                required
+                aria-label="Email address"
+              />
+              <button type="submit" className="btn btn-primary">
+                SUBSCRIBE
+              </button>
+            </form>
+            <NewsletterSuccess />
+          </div>
         </div>
       </div>
 
