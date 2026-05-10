@@ -457,6 +457,23 @@ export function getFitmentReason(
 }
 
 /**
+ * Cycle 14AR-fix22: detect explicit exclusion language in a product's
+ * warehouse fitment note. When present, downgrade an otherwise-positive
+ * metafield-driven match to `undefined` (yellow VERIFY) so the customer
+ * reads the note before trusting the green badge. The merch team writes
+ * these notes precisely BECAUSE the metafield can't capture body-style /
+ * trim-level / engine-package nuance — "WILL NOT fit 2019+ DT body" is
+ * the canonical case from Mike R7.
+ */
+function notesIndicateExclusion(notesHtml: string | null | undefined): boolean {
+  if (!notesHtml) return false;
+  const text = notesHtml.toLowerCase().replace(/<[^>]+>/g, " ");
+  return /\b(will not fit|won['’]?t fit|does not fit|doesn['’]?t fit|not compatible with|not for the|not for these)\b/.test(
+    text,
+  );
+}
+
+/**
  * Fitment check used everywhere we render a product card / cart line /
  * similar-products rail.
  *
@@ -569,6 +586,14 @@ export function checkFitment(
       // regex). Bed length is the only dimension where title-string
       // detection is dependable enough to gate on.
       if (reliableNeedsPick) return undefined;
+      // Cycle 14AR-fix22 (Mike R7 BLOCKER): the metafield said the 2013-2024
+      // Ram 1500 grille fits 2019, but the warehouse note said it WILL NOT
+      // fit the 2019+ DT-body. Customer saw "✓ FITS" and a contradicting
+      // note — return-rate trap. When notesHtml carries explicit exclusion
+      // language, we can't trust the year×model match alone. Downgrade to
+      // undefined so the UI renders yellow "VERIFY FITMENT" and the
+      // customer reads the note before adding to cart.
+      if (notesIndicateExclusion(table?.notesHtml)) return undefined;
       return true;
     }
     // Metafield is complete and disagrees → confident NO. Owner-directed:
