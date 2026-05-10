@@ -41,6 +41,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
 SNAPSHOT = ROOT / "data" / "ca_fitment_snapshot.json"
+OVERRIDES = ROOT / "data" / "ymm_overrides.json"
 TREE_OUT = ROOT / "data" / "ymm_tree.json"
 DIMS_OUT = ROOT / "data" / "ymm_dimensions.json"
 # Cycle 14AR-fix2 (QA-found BUG-14AR-3+4): per-YMM list of every product
@@ -245,6 +246,35 @@ def is_retail_trim(trim: str) -> bool:
     return True
 
 
+# Cycle 14AR-fix5 (Tom audit BLOCKER): retail-shopper make filter. Stehlen
+# is a US retail storefront. Chinese-market BAIC, defunct GM sub-brands
+# (Geo, Pontiac, Saturn, Mercury, Plymouth, Hummer pre-resurrection,
+# Oldsmobile), and Toyota's defunct Scion all leak from upstream Shopify
+# tags. Some are defensible if real products are catalogued (e.g., Geo
+# 1989-1997 if we sell Tracker accessories), but BAIC has zero NA-market
+# inventory and creates instant credibility damage.
+#
+# Drop these makes entirely from the YMM tree. If a product has fitment
+# lines for both BAIC AND a US-market make, the US-market line still
+# survives — only the BAIC entry is dropped.
+NON_RETAIL_MAKES = {
+    "baic",
+}
+
+
+# Cycle 14AR-fix5 (Tom audit BLOCKER): bare "Sierra" (no 1500/2500
+# suffix) appears as a separate model entry under GMC for 2007-2018
+# because some products are tagged with the generic "GMC Sierra" string
+# instead of "GMC Sierra 1500". This causes duplicate model entries in
+# the YMM picker — customer sees both "Sierra" and "Sierra 1500" with no
+# way to tell which one their truck is. Collapse the bare entry into
+# Sierra 1500. Same problem affects bare "Silverado" → "Silverado 1500".
+MODEL_CANONICALIZE: dict[tuple[str, str], str] = {
+    ("gmc", "sierra"): "Sierra 1500",
+    ("chevrolet", "silverado"): "Silverado 1500",
+}
+
+
 def normalize_make(make: str) -> str:
     """Title-case but preserve known acronyms (GMC, BMW, etc.)."""
     upper_overrides = {"gmc", "bmw", "kia", "fiat", "mini"}
@@ -253,6 +283,16 @@ def normalize_make(make: str) -> str:
         return m.upper()
     # Title-case other makes (Chevrolet, Ford, Toyota...)
     return m
+
+
+def is_retail_make(make: str) -> bool:
+    return make.lower() not in NON_RETAIL_MAKES
+
+
+def canonicalize_model(make: str, model: str) -> str:
+    """Apply MODEL_CANONICALIZE to fix bare/ambiguous model names."""
+    canonical = MODEL_CANONICALIZE.get((make.lower(), model.lower().strip()))
+    return canonical if canonical else model
 
 
 def main() -> None:
@@ -325,6 +365,12 @@ def main() -> None:
                 continue
 
             make = normalize_make(make_raw)
+            # Cycle 14AR-fix5: drop non-retail makes (BAIC, etc.)
+            if not is_retail_make(make):
+                skipped_lines += 1
+                continue
+            # Cycle 14AR-fix5: collapse bare "Sierra" → "Sierra 1500" etc.
+            model = canonicalize_model(make, model)
             tree[year_s][make][model].add(handle)
             parsed_lines += 1
 
@@ -361,8 +407,9 @@ def main() -> None:
                 tree_out[year][make][model] = sorted(tree[year][make][model])
 
     # Bed-length canonical sort order
-    BED_ORDER = ["4.6' BED", "5' BED", "5.5' BED", "5.6' BED", "5.8' BED",
-                 "6' BED", "6.4' BED", "6.5' BED", "6.6' BED", "8' BED"]
+    BED_ORDER = ["4.6' BED", "5' BED", "5.5' BED", "5.6' BED", "5.7' BED",
+                 "5.8' BED", "6' BED", "6.4' BED", "6.5' BED", "6.6' BED",
+                 "8' BED"]
     CAB_ORDER = ["REGULAR CAB", "SUPERCAB", "CREW CAB"]
 
     def sort_beds(s: set[str]) -> list[str]:
@@ -382,6 +429,58 @@ def main() -> None:
             "cabTypes": sort_cabs(d["cabTypes"]),
             "doors": sorted(d["doors"]),
         }
+
+    # Cycle 14AR-fix5 (Tom audit): merge manual overrides AFTER the CA
+    # pass so canonical CA data wins where present, but real-world OEM
+    # gaps (2019 Wrangler JL absent, 2019+ Ram 1500 DT bedLengths empty,
+    # 2014 F-150 8' bed missing, JK 2-door trims missing) get filled.
+    # Arrays are UNIONED with existing values (not replaced), so an
+    # override that adds 8' BED to 2014 F-150 keeps the existing
+    # 5.5'/6.5' entries intact. Trim retail-filter is reapplied after
+    # union so override entries can't smuggle fleet/foreign trims.
+    if OVERRIDES.exists():
+        with OVERRIDES.open() as f:
+            overrides = json.load(f)
+        ov_count = 0
+        for key, override in overrides.items():
+            if key.startswith("_"):  # comment/doc fields
+                continue
+            existing = dims_out.get(key, {
+                "trims": [], "bedLengths": [], "cabTypes": [], "doors": [],
+            })
+            # Union arrays for each known field; respect retail-trim filter.
+            def merge(field: str, retail_only: bool = False) -> list[str]:
+                seen = set()
+                out: list[str] = []
+                for v in existing.get(field, []):
+                    if v not in seen:
+                        seen.add(v)
+                        out.append(v)
+                for v in override.get(field, []):
+                    if v in seen:
+                        continue
+                    if retail_only and not is_retail_trim(v):
+                        continue
+                    seen.add(v)
+                    out.append(v)
+                return out
+
+            merged = {
+                "trims": sorted(merge("trims", retail_only=True)),
+                "bedLengths": sort_beds(set(merge("bedLengths"))),
+                "cabTypes": sort_cabs(set(merge("cabTypes"))),
+                "doors": sorted(merge("doors")),
+            }
+            dims_out[key] = merged
+            ov_count += 1
+
+            # If override creates a brand-new YMM (e.g., 2019 Wrangler JL
+            # not in CA), also add it to the tree so the model picker
+            # surfaces it.
+            year, make, model = key.split("|", 2)
+            if model not in tree_out.get(year, {}).get(make, {}):
+                tree_out.setdefault(year, {}).setdefault(make, {})[model] = []
+        print(f"  Applied {ov_count} manual overrides from {OVERRIDES.name}")
 
     print(f"Writing {TREE_OUT}...")
     with TREE_OUT.open("w") as f:

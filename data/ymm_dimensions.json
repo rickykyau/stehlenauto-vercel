@@ -4156,12 +4156,6 @@
     "cabTypes": [],
     "doors": []
   },
-  "1999|Chevrolet|Silverado": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "1999|Chevrolet|Silverado 1500": {
     "trims": [],
     "bedLengths": [],
@@ -6359,10 +6353,10 @@
       "ST"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
       "6.5' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -7169,10 +7163,10 @@
       "ST"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
       "6.5' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -8129,10 +8123,10 @@
       "ST"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
       "6.5' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -8634,8 +8628,8 @@
       "XE"
     ],
     "bedLengths": [
-      "6.5' BED",
-      "5.7' BED"
+      "5.7' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -9222,10 +9216,10 @@
       "ST"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
       "6.5' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -9757,8 +9751,8 @@
       "XE"
     ],
     "bedLengths": [
-      "6.5' BED",
-      "5.7' BED"
+      "5.7' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -10394,10 +10388,10 @@
       "TRX4"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
       "6.5' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -11045,8 +11039,8 @@
       "XE"
     ],
     "bedLengths": [
-      "6.5' BED",
-      "5.7' BED"
+      "5.7' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -11767,10 +11761,10 @@
       "TRX4"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
       "6.5' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -11990,15 +11984,6 @@
   "2007|GMC|Envoy": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2007|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
     "cabTypes": [],
     "doors": []
   },
@@ -12536,8 +12521,8 @@
       "XE"
     ],
     "bedLengths": [
-      "6.5' BED",
-      "5.7' BED"
+      "5.7' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -13233,10 +13218,10 @@
       "SXT Extended"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
       "6.5' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -13450,15 +13435,6 @@
   "2008|GMC|Envoy": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2008|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
     "cabTypes": [],
     "doors": []
   },
@@ -13956,8 +13932,8 @@
       "XE"
     ],
     "bedLengths": [
-      "6.5' BED",
       "5.7' BED",
+      "6.5' BED",
       "7.2' BED"
     ],
     "cabTypes": [
@@ -14663,9 +14639,9 @@
       "TRX4"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "SUPERCAB"
@@ -14873,15 +14849,6 @@
   "2009|GMC|Envoy": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2009|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
     "cabTypes": [],
     "doors": []
   },
@@ -15339,8 +15306,8 @@
       "XE"
     ],
     "bedLengths": [
-      "6.5' BED",
       "5.7' BED",
+      "6.5' BED",
       "7.2' BED"
     ],
     "cabTypes": [
@@ -16044,9 +16011,9 @@
       "TRX4"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "SUPERCAB"
@@ -16259,15 +16226,6 @@
     "bedLengths": [
       "5' BED",
       "6' BED"
-    ],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2010|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
     ],
     "cabTypes": [],
     "doors": []
@@ -16715,8 +16673,8 @@
       "XE"
     ],
     "bedLengths": [
-      "6.5' BED",
       "5.7' BED",
+      "6.5' BED",
       "7.2' BED"
     ],
     "cabTypes": [
@@ -17544,15 +17502,6 @@
     "cabTypes": [],
     "doors": []
   },
-  "2011|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
-    "cabTypes": [],
-    "doors": []
-  },
   "2011|GMC|Sierra 1500": {
     "trims": [
       "Denali",
@@ -17952,8 +17901,8 @@
       "SV"
     ],
     "bedLengths": [
-      "6.5' BED",
       "5.7' BED",
+      "6.5' BED",
       "7.2' BED"
     ],
     "cabTypes": [
@@ -17990,9 +17939,9 @@
       "Sport"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "SUPERCAB",
@@ -18836,15 +18785,6 @@
     "cabTypes": [],
     "doors": []
   },
-  "2012|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
-    "cabTypes": [],
-    "doors": []
-  },
   "2012|GMC|Sierra 1500": {
     "trims": [
       "Denali",
@@ -19252,8 +19192,8 @@
       "SV"
     ],
     "bedLengths": [
-      "6.5' BED",
       "5.7' BED",
+      "6.5' BED",
       "7.2' BED"
     ],
     "cabTypes": [
@@ -19290,9 +19230,9 @@
       "Tradesman"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "SUPERCAB"
@@ -20120,15 +20060,6 @@
     "cabTypes": [],
     "doors": []
   },
-  "2013|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
-    "cabTypes": [],
-    "doors": []
-  },
   "2013|GMC|Sierra 1500": {
     "trims": [
       "Denali",
@@ -20532,8 +20463,8 @@
       "SV"
     ],
     "bedLengths": [
-      "6.5' BED",
       "5.7' BED",
+      "6.5' BED",
       "7.2' BED"
     ],
     "cabTypes": [
@@ -20571,9 +20502,9 @@
       "Tradesman"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "SUPERCAB"
@@ -21318,7 +21249,8 @@
     ],
     "bedLengths": [
       "5.5' BED",
-      "6.5' BED"
+      "6.5' BED",
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -21378,15 +21310,6 @@
   "2014|GMC|Acadia": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2014|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
     "cabTypes": [],
     "doors": []
   },
@@ -21586,17 +21509,23 @@
   "2014|Jeep|Wrangler": {
     "trims": [
       "Altitude",
+      "Dragon Edition",
       "Freedom Edition",
       "Polar Edition",
+      "Rubicon",
+      "Sahara",
+      "Sport",
       "Unlimited Dragon Edition",
       "Unlimited Rubicon",
       "Unlimited Sahara",
       "Unlimited Sport",
-      "Unlimited Willys Wheeler"
+      "Unlimited Willys Wheeler",
+      "Willys Wheeler"
     ],
     "bedLengths": [],
     "cabTypes": [],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -21790,8 +21719,8 @@
       "SV"
     ],
     "bedLengths": [
-      "6.5' BED",
       "5.7' BED",
+      "6.5' BED",
       "7.2' BED"
     ],
     "cabTypes": [
@@ -21830,9 +21759,9 @@
       "Tradesman"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "SUPERCAB"
@@ -22569,15 +22498,6 @@
       "4-Door"
     ]
   },
-  "2015|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
-    "cabTypes": [],
-    "doors": []
-  },
   "2015|GMC|Sierra 1500": {
     "trims": [
       "Base",
@@ -22757,6 +22677,11 @@
   "2015|Jeep|Wrangler": {
     "trims": [
       "Freedom Edition",
+      "Rubicon",
+      "Rubicon Hard Rock",
+      "Sahara",
+      "Sport",
+      "Sport S",
       "Unlimited Altitude",
       "Unlimited Hard Rock",
       "Unlimited Rubicon",
@@ -22768,6 +22693,7 @@
     "bedLengths": [],
     "cabTypes": [],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -22946,8 +22872,8 @@
       "SV"
     ],
     "bedLengths": [
-      "6.5' BED",
       "5.7' BED",
+      "6.5' BED",
       "7.2' BED"
     ],
     "cabTypes": [
@@ -22990,9 +22916,9 @@
       "Tradesman"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -23737,15 +23663,6 @@
       "4-Door"
     ]
   },
-  "2016|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
-    "cabTypes": [],
-    "doors": []
-  },
   "2016|GMC|Sierra 1500": {
     "trims": [
       "Base",
@@ -23926,16 +23843,23 @@
   },
   "2016|Jeep|Wrangler": {
     "trims": [
+      "75th Anniversary",
+      "Backcountry",
+      "Rubicon",
+      "Sahara",
+      "Sport",
       "Unlimited 75th Anniversary",
       "Unlimited Black Bear",
       "Unlimited Rubicon",
       "Unlimited Sahara",
       "Unlimited Sport",
-      "Unlimited Sport S"
+      "Unlimited Sport S",
+      "Willys Wheeler"
     ],
     "bedLengths": [],
     "cabTypes": [],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -24115,9 +24039,9 @@
       "Tradesman"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -24851,15 +24775,6 @@
       "4-Door"
     ]
   },
-  "2017|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
-    "cabTypes": [],
-    "doors": []
-  },
   "2017|GMC|Sierra 1500": {
     "trims": [
       "Base",
@@ -25048,15 +24963,28 @@
   },
   "2017|Jeep|Wrangler": {
     "trims": [
+      "Big Bear",
+      "Chief Edition",
+      "Freedom",
+      "Rubicon",
+      "Rubicon Recon",
+      "Sahara",
+      "Sahara Altitude",
+      "Smoky Mountain",
+      "Sport",
+      "Sport S",
       "Unlimited Rubicon",
       "Unlimited Sahara",
       "Unlimited Smoky Mountain",
       "Unlimited Sport",
-      "Unlimited Winter Edition"
+      "Unlimited Winter Edition",
+      "Willys Wheeler",
+      "Winter Edition"
     ],
     "bedLengths": [],
     "cabTypes": [],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -25205,9 +25133,9 @@
     ],
     "bedLengths": [
       "5.5' BED",
+      "5.7' BED",
       "6.5' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -25259,9 +25187,9 @@
       "Tradesman"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -25485,18 +25413,6 @@
     ]
   },
   "2018|Audi|Q7": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2018|BAIC|BJ20": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2018|BAIC|BJ40": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -26044,15 +25960,6 @@
       "4-Door"
     ]
   },
-  "2018|GMC|Sierra": {
-    "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
-    "cabTypes": [],
-    "doors": []
-  },
   "2018|GMC|Sierra 1500": {
     "trims": [
       "Base",
@@ -26229,13 +26136,19 @@
   },
   "2018|Jeep|Wrangler JK": {
     "trims": [
+      "Rubicon",
+      "Sahara",
+      "Sport",
+      "Sport S",
       "Unlimited Rubicon",
       "Unlimited Sahara",
-      "Unlimited Sport"
+      "Unlimited Sport",
+      "Willys Wheeler"
     ],
     "bedLengths": [],
     "cabTypes": [],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -26372,9 +26285,9 @@
     ],
     "bedLengths": [
       "5.5' BED",
+      "5.7' BED",
       "6.5' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -26426,9 +26339,9 @@
       "Tradesman"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -26672,12 +26585,6 @@
     "doors": []
   },
   "2019|Audi|Q8": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2019|BAIC|X35": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -27476,9 +27383,9 @@
     ],
     "bedLengths": [
       "5.5' BED",
+      "5.7' BED",
       "6.5' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -27529,7 +27436,10 @@
       "Sport",
       "Tradesman"
     ],
-    "bedLengths": [],
+    "bedLengths": [
+      "5.7' BED",
+      "6.4' BED"
+    ],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -27553,9 +27463,9 @@
       "Warlock"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -27753,12 +27663,6 @@
     "doors": []
   },
   "2020|Audi|Q8": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2020|BAIC|BJ20": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -28455,8 +28359,8 @@
     ],
     "bedLengths": [
       "5.5' BED",
-      "6.5' BED",
-      "5.7' BED"
+      "5.7' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -28506,7 +28410,10 @@
       "Sport",
       "Tradesman"
     ],
-    "bedLengths": [],
+    "bedLengths": [
+      "5.7' BED",
+      "6.4' BED"
+    ],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -28526,9 +28433,9 @@
       "Warlock"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -29416,8 +29323,8 @@
     ],
     "bedLengths": [
       "5.5' BED",
-      "6.5' BED",
-      "5.7' BED"
+      "5.7' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -29470,7 +29377,10 @@
       "TRX Launch Edition",
       "Tradesman"
     ],
-    "bedLengths": [],
+    "bedLengths": [
+      "5.7' BED",
+      "6.4' BED"
+    ],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -29490,9 +29400,9 @@
       "Warlock"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -30423,8 +30333,8 @@
     ],
     "bedLengths": [
       "5.5' BED",
-      "6.5' BED",
-      "5.7' BED"
+      "5.7' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -30473,7 +30383,10 @@
       "TRX",
       "Tradesman"
     ],
-    "bedLengths": [],
+    "bedLengths": [
+      "5.7' BED",
+      "6.4' BED"
+    ],
     "cabTypes": [
       "SUPERCAB",
       "CREW CAB"
@@ -30490,9 +30403,9 @@
       "Warlock"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -31311,8 +31224,8 @@
     ],
     "bedLengths": [
       "5.5' BED",
-      "6.5' BED",
-      "5.7' BED"
+      "5.7' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -31356,7 +31269,10 @@
       "TRX",
       "Tradesman"
     ],
-    "bedLengths": [],
+    "bedLengths": [
+      "5.7' BED",
+      "6.4' BED"
+    ],
     "cabTypes": [
       "SUPERCAB",
       "CREW CAB"
@@ -31373,9 +31289,9 @@
       "Warlock"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -32110,8 +32026,8 @@
     ],
     "bedLengths": [
       "5.5' BED",
-      "6.5' BED",
-      "5.7' BED"
+      "5.7' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -32151,7 +32067,10 @@
       "TRX",
       "Tradesman"
     ],
-    "bedLengths": [],
+    "bedLengths": [
+      "5.7' BED",
+      "6.4' BED"
+    ],
     "cabTypes": [
       "SUPERCAB",
       "CREW CAB"
@@ -32166,9 +32085,9 @@
       "Warlock"
     ],
     "bedLengths": [
+      "5.7' BED",
       "6.4' BED",
-      "8' BED",
-      "5.7' BED"
+      "8' BED"
     ],
     "cabTypes": [
       "SUPERCAB",
@@ -33232,5 +33151,67 @@
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
+  },
+  "2019|Jeep|Wrangler JL": {
+    "trims": [
+      "Rubicon",
+      "Rubicon Recon",
+      "Sahara",
+      "Sport",
+      "Sport S",
+      "Unlimited Moab",
+      "Unlimited Rubicon",
+      "Unlimited Sahara",
+      "Unlimited Sport",
+      "Unlimited Sport S"
+    ],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
+  },
+  "2020|Jeep|Wrangler JL": {
+    "trims": [
+      "Black & Tan",
+      "Rubicon",
+      "Sahara",
+      "Sport",
+      "Sport S",
+      "Unlimited Rubicon",
+      "Unlimited Sahara",
+      "Unlimited Sport",
+      "Unlimited Sport S",
+      "Willys"
+    ],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
+  },
+  "2021|Jeep|Wrangler JL": {
+    "trims": [
+      "80th Anniversary",
+      "Islander",
+      "Rubicon",
+      "Rubicon 392",
+      "Sahara",
+      "Sport",
+      "Sport S",
+      "Unlimited Rubicon",
+      "Unlimited Sahara",
+      "Unlimited Sport",
+      "Unlimited Sport S",
+      "Willys"
+    ],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
   }
 }

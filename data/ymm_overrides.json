@@ -1,0 +1,77 @@
+{
+  "_doc": "Cycle 14AR-fix5 — manual overrides for ChannelAdvisor data gaps. Tom (auto-parts-specialist) audit identified BLOCKERs where the CA fitment snapshot is missing real-world OEM data. These overrides are merged into ymm_dimensions.json AFTER the CA-snapshot pass so the canonical CA data still wins where present, but holes get filled. Each entry must cite the upstream gap so a future CA refresh can supersede it.",
+  "_format": "Same shape as ymm_dimensions.json. Keys: '<year>|<Make>|<Model>'. Values merged into the CA-derived entry — arrays are unioned, not replaced.",
+  "_review_cadence": "Re-validate against CA snapshot every quarter. If CA upstream now provides the data, drop the override.",
+
+  "2014|Ford|F-150": {
+    "_reason": "CA snapshot has 5.5'/6.5' bed entries for 2014 F-150 but is missing 8' bed (Regular Cab Styleside long bed, real OEM config). Affects tonneau covers + bed mats.",
+    "bedLengths": ["8' BED"]
+  },
+
+  "2019|Ram|1500": {
+    "_reason": "CA snapshot has zero bedLengths in subattributes for 2019 Ram 1500 (DT 4th-gen). DT-gen Ram 1500 ships in 5.7' (Crew Cab short) and 6.4' (Quad Cab + Crew Cab long) bed configurations. 8' bed was NOT offered on DT.",
+    "bedLengths": ["5.7' BED", "6.4' BED"]
+  },
+  "2020|Ram|1500": {
+    "_reason": "Same DT-gen as 2019. CA snapshot also missing bedLengths for 2020.",
+    "bedLengths": ["5.7' BED", "6.4' BED"]
+  },
+  "2021|Ram|1500": {
+    "_reason": "Same DT-gen. CA snapshot missing bedLengths.",
+    "bedLengths": ["5.7' BED", "6.4' BED"]
+  },
+  "2022|Ram|1500": {
+    "_reason": "Same DT-gen. CA snapshot missing bedLengths.",
+    "bedLengths": ["5.7' BED", "6.4' BED"]
+  },
+  "2023|Ram|1500": {
+    "_reason": "Same DT-gen. CA snapshot missing bedLengths.",
+    "bedLengths": ["5.7' BED", "6.4' BED"]
+  },
+  "2024|Ram|1500": {
+    "_reason": "Same DT-gen. CA snapshot missing bedLengths.",
+    "bedLengths": ["5.7' BED", "6.4' BED"]
+  },
+
+  "2019|Jeep|Wrangler JL": {
+    "_reason": "CA snapshot has zero entries for 2019 Wrangler entirely. JL launched MY2018; 2019 is a real year. Trims + dimensions copied from JL-gen baseline. Products tagged for the 2018-current JL generation should be visible to 2019 owners.",
+    "trims": ["Sport", "Sport S", "Sahara", "Rubicon", "Unlimited Sport", "Unlimited Sport S", "Unlimited Sahara", "Unlimited Rubicon", "Unlimited Moab", "Rubicon Recon"],
+    "doors": ["2-Door", "4-Door"]
+  },
+  "2020|Jeep|Wrangler JL": {
+    "_reason": "JL gen, EcoDiesel arrived 2020. Same baseline as 2019 + EcoDiesel.",
+    "trims": ["Sport", "Sport S", "Sahara", "Rubicon", "Unlimited Sport", "Unlimited Sport S", "Unlimited Sahara", "Unlimited Rubicon", "Black & Tan", "Willys"],
+    "doors": ["2-Door", "4-Door"]
+  },
+  "2021|Jeep|Wrangler JL": {
+    "_reason": "JL gen baseline. Rubicon 392 launched 2021.",
+    "trims": ["Sport", "Sport S", "Sahara", "Rubicon", "Rubicon 392", "Unlimited Sport", "Unlimited Sport S", "Unlimited Sahara", "Unlimited Rubicon", "Willys", "Islander", "80th Anniversary"],
+    "doors": ["2-Door", "4-Door"]
+  },
+
+  "2014|Jeep|Wrangler": {
+    "_reason": "CA snapshot trim list contains only Unlimited (4-door) variants. JK gen offers 2-door variants too: Sport, Sahara, Rubicon, Willys Wheeler. Add the 2-door trim names + the 2-Door doors entry.",
+    "trims": ["Sport", "Sahara", "Rubicon", "Willys Wheeler", "Polar Edition", "Dragon Edition"],
+    "doors": ["2-Door"]
+  },
+  "2015|Jeep|Wrangler": {
+    "_reason": "JK gen 2-door trims missing.",
+    "trims": ["Sport", "Sahara", "Rubicon", "Willys Wheeler", "Rubicon Hard Rock", "Sport S"],
+    "doors": ["2-Door"]
+  },
+  "2016|Jeep|Wrangler": {
+    "_reason": "JK gen 2-door trims missing. 75th Anniversary launched.",
+    "trims": ["Sport", "Sahara", "Rubicon", "Willys Wheeler", "75th Anniversary", "Backcountry"],
+    "doors": ["2-Door"]
+  },
+  "2017|Jeep|Wrangler": {
+    "_reason": "JK gen 2-door trims missing.",
+    "trims": ["Sport", "Sahara", "Rubicon", "Willys Wheeler", "Big Bear", "Sport S", "Smoky Mountain", "Chief Edition", "Sahara Altitude", "Rubicon Recon", "Winter Edition", "Freedom"],
+    "doors": ["2-Door"]
+  },
+  "2018|Jeep|Wrangler JK": {
+    "_reason": "Last year of JK gen sold alongside JL. 2-door variants present.",
+    "trims": ["Sport", "Sahara", "Rubicon", "Willys Wheeler", "Sport S"],
+    "doors": ["2-Door"]
+  }
+}
