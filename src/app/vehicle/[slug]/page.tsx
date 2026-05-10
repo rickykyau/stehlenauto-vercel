@@ -53,8 +53,15 @@ function parseSlug(
   // them as initialisms (JL, JK, DT, DS, RS, SS) and keep them
   // uppercase. Multi-word actual model names (e.g. "Grand Cherokee")
   // preserve title-case.
+  // Cycle 14AR-fix28 (Mike R13 F-4 + F-5): make initialisms (GMC, BMW,
+  // KIA, RAM) were rendering as "Gmc", "Bmw" etc. in h1 + page <title>.
+  // titleCase still applies for two-word makes ("Land Rover" must stay
+  // capitalized normally).
+  const MAKE_UPPERCASE = new Set(["gmc", "bmw", "kia", "ram", "fca", "vw", "mb", "amg"]);
   const titleCase = (s: string) =>
-    s.replace(/\b\w/g, (c) => c.toUpperCase());
+    MAKE_UPPERCASE.has(s.toLowerCase())
+      ? s.toUpperCase()
+      : s.replace(/\b\w/g, (c) => c.toUpperCase());
   const modelTokens = parts.slice(1);
   const formatted = modelTokens.map((tok, i) => {
     if (i > 0 && /^[a-z]{2,3}$/.test(tok)) return tok.toUpperCase();

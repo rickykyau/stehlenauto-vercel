@@ -41,7 +41,7 @@ export function NewsletterSuccess() {
     const params = new URLSearchParams(window.location.search);
     if (params.get("subscribed") === "1") {
       triggered = true;
-      writeCookie(COOKIE_NAME, "1", 12);
+      writeCookie(COOKIE_NAME, "1", 60);
       params.delete("subscribed");
       const q = params.toString();
       const url = window.location.pathname + (q ? `?${q}` : "");

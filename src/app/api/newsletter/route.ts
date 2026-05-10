@@ -121,8 +121,12 @@ export async function POST(req: Request) {
     // page render — no client-side useEffect race. The NewsletterSuccess
     // component still reads + clears it; this just guarantees the cookie
     // is there before the customer even sees the page after subscribing.
+    // Cycle 14AR-fix28 (Mike R13 F-1): max-age=12s was too tight — Mike
+     // navigated within 6s and the cookie was already gone in real-world
+     // testing. 60s gives generous slack for slow networks, scroll-then-
+     // click flows, and Playwright's variable timing.
     res.cookies.set("stehlen_newsletter_subscribed", "1", {
-      maxAge: 12,
+      maxAge: 60,
       path: "/",
       sameSite: "lax",
       httpOnly: false,
