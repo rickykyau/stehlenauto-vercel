@@ -16,7 +16,7 @@ export function NewsletterSuccess() {
         const q = params.toString();
         const url = window.location.pathname + (q ? `?${q}` : "");
         window.history.replaceState(null, "", url);
-      }, 6000);
+      }, 8000);
       return () => clearTimeout(t);
     }
   }, []);
@@ -28,17 +28,32 @@ export function NewsletterSuccess() {
       role="status"
       aria-live="polite"
       style={{
-        marginTop: 12,
-        padding: "10px 14px",
-        background: "rgba(245, 168, 35, 0.12)",
-        border: "1px solid var(--color-primary)",
-        borderRadius: "var(--radius-sm)",
-        color: "var(--color-foreground)",
-        fontSize: 13,
+        position: "fixed",
+        top: 80,
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 9999,
+        maxWidth: "min(440px, calc(100vw - 32px))",
+        padding: "14px 20px",
+        background: "var(--color-foreground)",
+        color: "var(--color-background)",
+        border: "2px solid var(--color-primary)",
+        borderRadius: "var(--radius-md)",
+        boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
+        fontSize: 14,
         fontWeight: 600,
+        textAlign: "center",
+        animation: "stehlenSlideDown 0.3s ease-out",
       }}
     >
-      ✓ You&apos;re on the list. Check your inbox for the $25 off code.
+      <span style={{ color: "var(--color-primary)", marginRight: 8 }}>✓</span>
+      You&apos;re on the list. Check your inbox for the $25 off code.
+      <style>{`
+        @keyframes stehlenSlideDown {
+          from { transform: translate(-50%, -20px); opacity: 0; }
+          to { transform: translate(-50%, 0); opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 }

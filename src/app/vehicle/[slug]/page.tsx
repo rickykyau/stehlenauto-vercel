@@ -23,20 +23,33 @@ export const dynamic = "force-dynamic";
 
 type VehicleParams = { slug: string };
 
-function parseSlug(slug: string): { make: string; model: string } | null {
+function parseSlug(
+  slug: string,
+): { make: string; model: string; year?: string } | null {
   const decoded = decodeURIComponent(slug).toLowerCase();
+  // Cycle 14AR-fix15 (Ren R2 BLOCKER): the empty-collection-state link
+  // emits /vehicle/${year}-${make}-${model} (e.g., /vehicle/2018-ford-f-150)
+  // but parseSlug had no year-prefix branch. Year was being treated as
+  // make ("2018"), which broke the hub categories filter (no products
+  // match make=2018, fail-open showed all 8 categories including ones
+  // we don't carry). Strip a leading 4-digit year (1990-2099) before
+  // make/model parsing.
+  const yearPrefix = decoded.match(/^(19[9]\d|20\d{2})-(.+)$/);
+  const yearStr = yearPrefix?.[1];
+  const remainder = yearPrefix?.[2] ?? decoded;
   const match = POPULAR_VEHICLES.find(
     (v) =>
       `${v.make.toLowerCase()}-${v.model.toLowerCase().replace(/\s+/g, "-")}` ===
-      decoded,
+      remainder,
   );
-  if (match) return { make: match.make, model: match.model };
+  if (match) return { make: match.make, model: match.model, year: yearStr };
   // Fallback: split on first hyphen, treat as make-model.
-  const parts = decoded.split("-");
+  const parts = remainder.split("-");
   if (parts.length < 2) return null;
   return {
     make: parts[0]!.replace(/\b\w/g, (c) => c.toUpperCase()),
     model: parts.slice(1).join(" ").replace(/\b\w/g, (c) => c.toUpperCase()),
+    year: yearStr,
   };
 }
 
@@ -216,8 +229,12 @@ export default async function VehicleHubPage({
   const { slug } = await params;
   const v = parseSlug(slug);
   if (!v) notFound();
-  const { make, model } = v;
-  const generations = GENERATIONS_BY_VEHICLE[slug] ?? [];
+  const { make, model, year: urlYear } = v;
+  // Look up generations under the make-model key, stripping any year prefix
+  // so /vehicle/2018-ford-f-150 still finds the same gen data as /vehicle/ford-f-150.
+  const genKey = `${make.toLowerCase()}-${model.toLowerCase().replace(/\s+/g, "-")}`;
+  const generations =
+    GENERATIONS_BY_VEHICLE[slug] ?? GENERATIONS_BY_VEHICLE[genKey] ?? [];
   // Cycle 5 (Mike): cross-sell rail used to render PRODUCTS.slice(0, 4),
   // which is mock F-150 SuperCrew roof racks shown on EVERY hub including
   // Wrangler (which has no bed). Query Shopify for parts that actually fit
@@ -284,12 +301,15 @@ export default async function VehicleHubPage({
   // catalog had products for THIS vehicle. Mike's 2018 F-150 hub promised
   // "FRONT GRILLES — SHOP NOW" but the collection had zero F-150 grilles.
   // Cross-surface lie that destroys trust.
-  // Now: derive the category list from data/products_by_ymm.json. If the
-  // garage matches this hub use the customer's exact year; otherwise union
-  // all years for this make/model so a no-garage visitor still sees what
-  // we genuinely carry. Hide categories with zero fits.
-  const availableCats = garageMatchesHub
-    ? getAvailableCategoriesForVehicle(garage.year, make, model)
+  // Now: derive the category list from data/products_by_ymm.json. Year
+  // priority: garage match > URL year (e.g., /vehicle/2018-ford-f-150) >
+  // make/model union. Hide categories with zero fits.
+  // Cycle 14AR-fix15 (Ren R2 BLOCKER): added URL-year branch — Mike's
+  // empty-state link was /vehicle/2018-ford-f-150, parseSlug now extracts
+  // the year so the hub honors it for category filtering.
+  const filterYear = garageMatchesHub ? garage.year : urlYear;
+  const availableCats = filterYear
+    ? getAvailableCategoriesForVehicle(filterYear, make, model)
     : getAvailableCategoriesForMakeModel(make, model);
   const filteredCats = CATEGORIES.filter((c) => availableCats.has(c.slug));
   // Fail-open: if the regex mapping returns nothing (new category, unknown
