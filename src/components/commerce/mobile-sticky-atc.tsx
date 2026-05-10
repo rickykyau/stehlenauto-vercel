@@ -5,24 +5,50 @@ import type { CatalogProduct } from "@/lib/catalog/types";
 
 const STICKY_HEIGHT_VAR = "--stehlen-sticky-atc-height";
 const SUBMODEL_COOKIE = "stehlen_submodel";
+const VEHICLE_COOKIE = "stehlen_vehicle";
 
-function readSubmodelCookie(): Record<string, string> {
-  if (typeof document === "undefined") return {};
-  const raw = document.cookie
+function readCookieRaw(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const cookie = document.cookie
     .split(";")
     .map((c) => c.trim())
-    .find((c) => c.startsWith(`${SUBMODEL_COOKIE}=`))
-    ?.slice(SUBMODEL_COOKIE.length + 1);
-  if (!raw) return {};
+    .find((c) => c.startsWith(`${name}=`));
+  return cookie ? cookie.slice(name.length + 1) : null;
+}
+
+/**
+ * Cycle 14AR-fix17 (Ren R4 P1): cookie shape is
+ * Record<vehicleId, Array<{group, value}>>, NOT Record<group, value>.
+ * Look up the current vehicle's answers and project to a
+ * {group: value} map so the caller can do `answers[g]` lookups.
+ */
+function readSubmodelAnswersForCurrentVehicle(): Record<string, string> {
+  const vehicleRaw = readCookieRaw(VEHICLE_COOKIE);
+  if (!vehicleRaw) return {};
+  let vehicleId: string | null = null;
   try {
-    const parsed = JSON.parse(decodeURIComponent(raw));
-    if (parsed && typeof parsed === "object") {
-      return parsed as Record<string, string>;
+    const v = JSON.parse(decodeURIComponent(vehicleRaw));
+    if (v && typeof v === "object" && typeof v.id === "string") {
+      vehicleId = v.id;
     }
   } catch {
-    // ignore
+    return {};
   }
-  return {};
+  if (!vehicleId) return {};
+  const subRaw = readCookieRaw(SUBMODEL_COOKIE);
+  if (!subRaw) return {};
+  try {
+    const parsed = JSON.parse(decodeURIComponent(subRaw)) as Record<
+      string,
+      Array<{ group: string; value: string }>
+    >;
+    const answers = parsed[vehicleId] ?? [];
+    return Object.fromEntries(
+      answers.filter((a) => a && a.group && a.value).map((a) => [a.group, a.value]),
+    );
+  } catch {
+    return {};
+  }
 }
 
 /**
@@ -79,7 +105,7 @@ export function MobileStickyAtc({
       return;
     }
     const recompute = () => {
-      const answers = readSubmodelCookie();
+      const answers = readSubmodelAnswersForCurrentVehicle();
       const allAnswered = requiredStripGroups.every((g) => !!answers[g]);
       setClientNeedsPick(!allAnswered);
     };
