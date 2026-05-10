@@ -293,8 +293,15 @@ export default async function CollectionPage({
   const allRequiredAnswered = requiredGroupsForGate.every((g) =>
     subModelAnswers.some((a) => a.group === g),
   );
-  const gateOpen =
-    requiredGroupsForGate.length === 0 || allRequiredAnswered || skipped;
+  // Cycle 14AR-fix9 (F-2 degate, owner ratified): revert to NUDGE model per
+  // docs/reference/fitment_flow_decision.md line 429 — "Do not gate browsing
+  // behind sub-model selection". Gate is always open; DimensionPicker renders
+  // as a refinement prompt (gated={false}), not a wall. Sub-model gate stays
+  // at ATC on the PDP (cycle 14AR-fix4 — DO NOT change PDP gate).
+  // Variables kept so downstream references compile without churn.
+  void allRequiredAnswered;
+  void skipped;
+  const gateOpen = true;
   let collection = await getCollection(handle, 24, {
     rawInputs,
     sort,
@@ -439,32 +446,50 @@ export default async function CollectionPage({
                   paddingTop: 24,
                 }}
               >
+                {/* Cycle 14AR-fix12 (BUG-14AZ-5): breadcrumb links padded to
+                    44px hit zone. Negative margin on the nav row keeps the
+                    visual baseline where it was. Links are still 12px text;
+                    the padding extends the tap target without widening the
+                    visible label. */}
                 <nav
                   aria-label="Breadcrumb"
                   style={{
                     display: "flex",
-                    gap: 6,
+                    gap: 2,
                     alignItems: "center",
                     fontSize: 12,
                     color: "rgba(255,255,255,0.55)",
                     marginBottom: 12,
+                    marginTop: -14,
                   }}
                 >
                   <Link
                     href="/"
-                    style={{ color: "rgba(255,255,255,0.55)" }}
+                    style={{
+                      color: "rgba(255,255,255,0.55)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      minHeight: 44,
+                      padding: "0 4px",
+                    }}
                   >
                     Home
                   </Link>
                   <Icons.chevRight size={10} />
                   <Link
                     href="/collections"
-                    style={{ color: "rgba(255,255,255,0.55)" }}
+                    style={{
+                      color: "rgba(255,255,255,0.55)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      minHeight: 44,
+                      padding: "0 4px",
+                    }}
                   >
                     Shop
                   </Link>
                   <Icons.chevRight size={10} />
-                  <span style={{ color: "rgba(255,255,255,0.85)" }}>
+                  <span style={{ color: "rgba(255,255,255,0.85)", padding: "0 4px" }}>
                     {collection.title}
                   </span>
                 </nav>
@@ -527,22 +552,19 @@ export default async function CollectionPage({
             categoryHandle={collection.handle}
             vehicle={vehicle ?? undefined}
             initialAnswers={subModelAnswers}
-            gated={!gateOpen}
+            gated={false}
             strips={strips}
           />
         );
       })()}
 
-      {gateOpen && (
-        <CollectionToolbar
-          totalProducts={collection.totalProducts}
-          vehicle={vehicle}
-        />
-      )}
+      <CollectionToolbar
+        totalProducts={collection.totalProducts}
+        vehicle={vehicle}
+      />
 
-      {/* Body — only when the gate is open. Closed = picker is the entire
-          above-fold and the customer must engage before browsing. */}
-      {gateOpen && <div
+      {/* Body — always rendered; DimensionPicker is a nudge, not a gate. */}
+      <div
         className="container-x grid grid-cols-1 md:grid-cols-[264px_1fr]"
         style={{ gap: 32, paddingTop: 24, paddingBottom: 64 }}
       >
@@ -839,7 +861,7 @@ export default async function CollectionPage({
             </>
           )}
         </div>
-      </div>}
+      </div>
     </main>
   );
 }
