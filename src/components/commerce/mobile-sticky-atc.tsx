@@ -116,14 +116,31 @@ export function MobileStickyAtc({
   }, [requiredStripGroups]);
 
   useEffect(() => {
-    const onScroll = () => {
-      // show after the user has clearly scrolled past the hero buy-box
-      const showAfter = 720;
-      setVisible(window.scrollY > showAfter);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    // Cycle 14AR-fix18 (Mike R5 BLOCKER): the previous scrollY > 720 threshold
+    // was a guess at "past the hero buy-box" — on shorter PDPs (or PDPs where
+    // the gallery loads tall above the buy-box) the user never scrolled far
+    // enough to surface the sticky bar at all. Switch to IntersectionObserver
+    // on the buy-box anchor: when the anchor scrolls out of view, show the
+    // sticky. When it scrolls back into view, hide it. Robust to any layout.
+    const anchor = document.querySelector<HTMLElement>("[data-buy-box-anchor]");
+    if (!anchor || typeof IntersectionObserver === "undefined") {
+      // Fallback: show after a modest scroll if the anchor isn't found.
+      const onScroll = () => setVisible(window.scrollY > 400);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      return () => window.removeEventListener("scroll", onScroll);
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          // Show sticky once the buy-box scrolls out of view; hide when back in.
+          setVisible(!entry.isIntersecting);
+        }
+      },
+      { threshold: 0, rootMargin: "0px 0px -20% 0px" },
+    );
+    io.observe(anchor);
+    return () => io.disconnect();
   }, []);
 
   // Tell the chat FAB how tall we are so it can lift itself out of our way
