@@ -63,6 +63,17 @@ export function YmmModal() {
     };
   }, [open]);
 
+  // Cycle 14AW (Jordan F-NEW-4): close the modal on any SPA route
+  // change. Without this, a user who opens YMM and then taps a header
+  // link before completing the picker ends up with the modal floating
+  // over an unrelated page. Successful save uses window.location.replace
+  // (hard reload), which already unmounts the modal — this guard only
+  // catches the abandon-mid-flow case.
+  useEffect(() => {
+    if (open) setOpen(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
   // Cycle 14Z (owner CRITICAL): the previous combined `reset` did two
   // things — clear modal local state AND DELETE the saved garage from the
   // server. close() called reset() via setTimeout(200ms), so EVERY time the
@@ -158,7 +169,10 @@ export function YmmModal() {
     // lockout was likely the cause.
     setSaving(true);
     setError(null);
-    console.log("[ymm] saving vehicle", { year, make, model: m });
+    // Cycle 14AW (Jordan F-NEW-6): kill production console.logs that
+    // exposed save state + navigation targets to anyone with DevTools
+    // open. Keep only the console.warn for the genuine error edge case
+    // at line 149 (called with no year/make).
     try {
       const res = await fetch("/api/garage", {
         method: "POST",
@@ -170,20 +184,13 @@ export function YmmModal() {
         credentials: "include",
         cache: "no-store",
       });
-      console.log("[ymm] /api/garage response", {
-        status: res.status,
-        ok: res.ok,
-      });
       if (!res.ok) {
         const body = (await res.json().catch(() => null)) as
           | { error?: string }
           | null;
         throw new Error(body?.error ?? "Couldn't save vehicle.");
       }
-      const body = (await res.json().catch(() => null)) as
-        | { vehicle?: { id?: string } }
-        | null;
-      console.log("[ymm] save OK, server returned vehicle", body?.vehicle);
+      await res.json().catch(() => null);
       track("select_vehicle", {
         vehicle_year: year,
         vehicle_make: make,
@@ -224,7 +231,6 @@ export function YmmModal() {
         const qs = existingParams.toString();
         target = qs ? `${base}?${qs}` : base;
       }
-      console.log("[ymm] navigating to", target);
       // replace() skips history stack (back button skips the pre-vehicle page)
       // and triggers a fresh network GET for the target URL.
       window.location.replace(target);

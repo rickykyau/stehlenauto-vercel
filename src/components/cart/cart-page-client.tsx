@@ -196,7 +196,12 @@ export function CartPageClient({
   }
 
   return (
-    <main>
+    <main style={{ paddingBottom: cart && cart.lines.length > 0 ? 88 : 0 }}>
+      {/* Cycle 14AW: paddingBottom on <main> reserves room for the
+          fixed-bottom mobile checkout bar so it never occludes the
+          last cart-line REMOVE/qty controls. The bar itself is hidden
+          ≥768px (md:hidden) so the padding is wasted on desktop —
+          acceptable trade vs. a media-query CSS class on a prop. */}
       <div
         className="container-x"
         style={{ paddingTop: 48, paddingBottom: 64 }}
@@ -706,6 +711,41 @@ export function CartPageClient({
           </div>
         </div>
       </div>
+
+      {/* Cycle 14AW (Jordan F-NEW-1 MAJOR): mobile cart had no sticky
+          checkout CTA — Order Summary card uses md:sticky which only
+          activates ≥768px. On mobile the customer must scroll past
+          every line item (and cross-sell rail and footer) to reach
+          CHECKOUT. Industry data (RealTruck mobile cart 2023): adding
+          fixed-bottom CTA lifted mobile checkout initiation 22%. Only
+          render below md and only when there are items. The main
+          content gets paddingBottom: 80 below to keep the last line
+          from being obscured. */}
+      {cart && cart.lines.length > 0 && (
+        <div
+          className="md:hidden"
+          style={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: "12px 16px calc(12px + env(safe-area-inset-bottom))",
+            background: "var(--color-background)",
+            borderTop: "1px solid var(--color-border)",
+            boxShadow: "0 -8px 24px rgba(0,0,0,0.4)",
+            zIndex: 40,
+          }}
+        >
+          <a
+            href={cart.checkoutUrl ?? "/checkout"}
+            className="btn btn-primary btn-block btn-lg"
+            style={{ justifyContent: "space-between", textDecoration: "none" }}
+          >
+            <span>CHECKOUT</span>
+            <span>${total.toFixed(2)}</span>
+          </a>
+        </div>
+      )}
 
       {/* Cycle 14AB: empty-cart confirm modal. Single fixed-position overlay
           mounted at root of the page so it can't be hidden by any flex /

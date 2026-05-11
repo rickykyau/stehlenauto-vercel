@@ -138,15 +138,30 @@ export default async function SearchPage({
                   // hit a wall of red badges. Now: count only the
                   // vehicle-fitting hits and pivot the copy on whether
                   // any are confirmed fits.
-                  const fitsCount = vehicle
-                    ? withFitment(filtered, vehicle, subModelAnswers).filter(
-                        (p) => p.fits === true,
-                      ).length
-                    : 0;
+                  // Cycle 14AW (Mike R2 M-1 MAJOR): "NONE FIT" was a
+                  // false negative when undetermined cards needed sub-
+                  // model picks. A search for "tonneau cover" with 8
+                  // F-150-eligible items (CHECK FITMENT pending bed
+                  // length) was rendering as "NONE FIT" — Mike read
+                  // that as "this site has nothing for my truck" and
+                  // bounced. Three-way pivot: confirmed fits → count
+                  // them; undetermined fits → "X NEED CONFIRMATION";
+                  // truly zero in-range → "NONE FIT".
+                  const withFits = vehicle
+                    ? withFitment(filtered, vehicle, subModelAnswers)
+                    : [];
+                  const fitsCount = withFits.filter((p) => p.fits === true).length;
+                  const undeterminedCount = withFits.filter(
+                    (p) => p.fits === undefined,
+                  ).length;
                   if (vehicle) {
-                    return fitsCount > 0
-                      ? `${filtered.length} RESULTS · ${fitsCount} FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
-                      : `${filtered.length} RESULTS · NONE FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`;
+                    if (fitsCount > 0) {
+                      return `${filtered.length} RESULTS · ${fitsCount} FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`;
+                    }
+                    if (undeterminedCount > 0) {
+                      return `${filtered.length} RESULTS · ${undeterminedCount} MAY FIT — CONFIRM BED LENGTH OR CAB TYPE TO SEE FITS`;
+                    }
+                    return `${filtered.length} RESULTS · NONE FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`;
                   }
                   return `${filtered.length} RESULTS`;
                 })()}

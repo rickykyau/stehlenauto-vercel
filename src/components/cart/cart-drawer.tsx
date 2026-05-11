@@ -234,7 +234,11 @@ export function CartDrawer({
               {anyMisfit
                 ? `MIXED FITMENT — ${misfitCount} ITEM${misfitCount === 1 ? "" : "S"} DO${misfitCount === 1 ? "ES" : ""} NOT FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
                 : allFit
-                  ? `ALL ITEMS FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                  ? // Cycle 14AW (Jordan F-NEW-5): match the /cart page
+                    // banner copy "ALL ITEMS CONFIRMED FIT" so the drawer
+                    // (first touchpoint) and the full cart (second
+                    // touchpoint) speak the same trust language.
+                    `ALL ITEMS CONFIRMED FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
                   : anyUnknown
                     ? `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} — REVIEW EACH ITEM`
                     : `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}

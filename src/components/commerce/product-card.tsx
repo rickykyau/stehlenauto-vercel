@@ -96,9 +96,17 @@ export function ProductCard({
             }}
           >
             <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em" }}>
+              {/* Cycle 14AW (Jordan F-NEW-2): the misfit ribbon was bare
+                  "✗ DOES NOT FIT" with no vehicle reference, while the
+                  fits ribbon names the year+make+model. A red badge with
+                  no context reads as "defective product" rather than
+                  "wrong fitment for your vehicle". Pair with the same
+                  vehicle-name format used on the green badge so the
+                  signal is unambiguous: this part doesn't fit YOUR
+                  truck, not that the part is bad. */}
               {fits
                 ? `✓ FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
-                : "✗ DOES NOT FIT"}
+                : `✗ DOES NOT FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
             </span>
           </div>
         )}
@@ -119,7 +127,10 @@ export function ProductCard({
             }}
           >
             <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em" }}>
-              CHECK FITMENT FOR YOUR{" "}
+              {/* Cycle 14AW (Jordan F-NEW-2 follow-on): also include
+                  vehicle.year here for parity with the FITS / DOES NOT
+                  FIT ribbons. */}
+              CHECK FITMENT FOR YOUR {vehicle.year}{" "}
               {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()}
             </span>
           </div>

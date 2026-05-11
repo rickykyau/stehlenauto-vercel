@@ -440,7 +440,23 @@ export default async function PdpPage({
           <Link href="/collections">Shop</Link>
         )}
         <Icons.chevRight size={10} />
-        <span style={{ color: "var(--color-foreground)" }}>
+        {/* Cycle 14AW (Jordan F-NEW-3): the current-page breadcrumb item
+            (product title) wraps to 2-3 lines on 320-412px viewports,
+            consuming ~36-48px of above-fold real estate before the
+            customer reaches the fitment badge. The h1 below already
+            renders the full title — truncating here doesn't lose
+            information, it just stops the breadcrumb from doubling up. */}
+        <span
+          style={{
+            color: "var(--color-foreground)",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            maxWidth: "min(220px, 60vw)",
+            display: "inline-block",
+            verticalAlign: "bottom",
+          }}
+        >
           {product.title}
         </span>
       </nav>
