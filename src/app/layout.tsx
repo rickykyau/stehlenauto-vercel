@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
@@ -48,6 +48,18 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
 });
+
+// Cycle 14AW-fix2 (Ren pre-cutover): without viewportFit:'cover',
+// env(safe-area-inset-bottom) returns 0 on notched iPhones. The Cycle
+// 14AW mobile fixed-bottom CHECKOUT bar (cart-page-client.tsx) and
+// the PDP MobileStickyAtc both pad against env(safe-area-inset-bottom)
+// to clear the iOS home indicator — without this viewport export, the
+// CTA sits under the indicator on iPhone X+/14/15 series.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(

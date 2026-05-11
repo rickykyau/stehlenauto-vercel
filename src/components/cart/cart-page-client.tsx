@@ -196,12 +196,14 @@ export function CartPageClient({
   }
 
   return (
-    <main style={{ paddingBottom: cart && cart.lines.length > 0 ? 88 : 0 }}>
+    <main style={{ paddingBottom: cart && cart.lines.length > 0 ? 112 : 0 }}>
       {/* Cycle 14AW: paddingBottom on <main> reserves room for the
           fixed-bottom mobile checkout bar so it never occludes the
           last cart-line REMOVE/qty controls. The bar itself is hidden
           ≥768px (md:hidden) so the padding is wasted on desktop —
-          acceptable trade vs. a media-query CSS class on a prop. */}
+          acceptable trade vs. a media-query CSS class on a prop.
+          Cycle 14AW-fix2 bumped 88→112 to clear the new tax-disclosure
+          subtitle line under the CHECKOUT button. */}
       <div
         className="container-x"
         style={{ paddingTop: 48, paddingBottom: 64 }}
@@ -744,6 +746,24 @@ export function CartPageClient({
             <span>CHECKOUT</span>
             <span>${total.toFixed(2)}</span>
           </a>
+          {/* Cycle 14AW-fix2 (Mike R3 F-3): the bar showed "$233.81" while
+              the cart line item rendered $215. The Order Summary card
+              breakdown (Subtotal/Shipping/Tax) is rendered below the line
+              items, so on mobile the customer sees a $19 jump and no
+              explanation unless they scroll all the way down. Surface the
+              breakdown inline so the bar self-explains the gap. */}
+          <p
+            className="mono"
+            style={{
+              margin: "8px 0 0",
+              fontSize: 10,
+              letterSpacing: "0.08em",
+              color: "var(--color-muted)",
+              textAlign: "center",
+            }}
+          >
+            ${subtotal.toFixed(2)} subtotal · FREE ship · ${tax.toFixed(2)} est. tax
+          </p>
         </div>
       )}
 

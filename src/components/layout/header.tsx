@@ -104,6 +104,12 @@ export function Header({
             borderTop: "1px solid var(--color-border)",
           }}
         >
+          {/* Cycle 14AW-fix2 (Jordan NIT-1): mobile vehicle pill measured
+              40px height — 4px below the 44px WCAG/HIG floor. This is the
+              primary vehicle-set CTA on mobile; missing it by 4px is
+              wrong for the most-tapped control on the page. Bumping to
+              44 doesn't break the mobile header layout (full-width pill,
+              padding stays unchanged). */}
           <YmmButton
             ariaLabel={vehicle ? "Change vehicle" : "Select your vehicle"}
             style={{
@@ -111,7 +117,7 @@ export function Header({
               display: "flex",
               alignItems: "center",
               gap: 10,
-              height: 40,
+              height: 44,
               padding: "0 12px",
               background: "var(--color-surface)",
               border: "1px solid var(--color-border)",
