@@ -729,7 +729,20 @@ export default async function CollectionPage({
                 } else if (
                   vehicle &&
                   categoryDimGroups.size > 0 &&
-                  !dimensionApplied
+                  !dimensionApplied &&
+                  // Cycle 14AW-fix7 (Jordan R8 NIT): only show the
+                  // "select above" copy when the chips actually render
+                  // above. The DimensionPicker is null-guarded at lines
+                  // 564-571 when the catalog has no products for this
+                  // vehicle in this category — in that case telling the
+                  // customer to "pick your trim from the chips above"
+                  // points at chips that aren't there. Mirror the
+                  // picker's render check so the copy stays honest.
+                  getAvailableCategoriesForVehicle(
+                    vehicle.year,
+                    vehicle.make,
+                    vehicle.model,
+                  ).has(collection.handle)
                 ) {
                   // Cycle 14AU F-5 (Jordan): vehicle is set + this category
                   // requires a dimension picker (bed length, cab type) but
