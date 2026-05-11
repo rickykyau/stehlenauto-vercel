@@ -93,7 +93,12 @@ export default async function PdpPage({
     // narrows by year+make+model tags. Without this we were showing F-150
     // owners 3 Toyota Tundra tonneau covers under a "fits your vehicle"
     // heading.
-    getRelatedProducts(handle, 4, vehicle ?? null),
+    // Cycle 14AW-fix6 (Ren R8 BUG-001 P1): also pass subModelAnswers
+    // so the rail honors bed_length/cab_type chips. Without this, a
+    // 5.5' bed F-150 PDP would render the 6.5' bed F-150 sibling in
+    // SIMILAR PRODUCTS marked DOES NOT FIT — a direct contradiction
+    // of the "fitment guaranteed" promise.
+    getRelatedProducts(handle, 4, vehicle ?? null, subModelAnswers),
     Promise.resolve(getProductFitment(handle)),
     Promise.resolve(getProductReviews(handle)),
   ]);

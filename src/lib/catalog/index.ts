@@ -1286,6 +1286,16 @@ export async function getRelatedProducts(
   handle: string,
   first = 4,
   vehicle?: { year: string | number; make: string; model: string } | null,
+  // Cycle 14AW-fix6 (Ren R8 BUG-001 P1): the rail filter only knew
+  // about year/make/model. A customer with bed_length=5.5' saved
+  // viewing a 5.5' F-150 tonneau PDP would still see the 6.5' F-150
+  // tonneau in SIMILAR PRODUCTS because checkFitment(p, vehicle)
+  // returned true for the vehicle dimension but withFitment() in the
+  // PDP page later applied subModelAnswers and flipped it to false —
+  // by then the card was already rendered with a "DOES NOT FIT"
+  // ribbon. Pass subModelAnswers in here so the rail filter can
+  // gate at the same level the PDP buy-box does.
+  subModelAnswers?: import("@/lib/garage/types").SubModelAnswer[] | null,
 ): Promise<{ products: CatalogProduct[]; allFitVehicle: boolean }> {
   // Cycle 8b (owner): used to return mock roof-rack placeholders. Last cycle
   // queried Shopify by productType only — better imagery, but for an F-150
@@ -1343,7 +1353,14 @@ export async function getRelatedProducts(
       return { products: broadPool.slice(0, first), allFitVehicle: false };
     }
 
-    const verdicts = broadPool.map((p) => ({ p, fits: checkFitment(p, vehicle) }));
+    // Cycle 14AW-fix6: pass subModelAnswers so chips like bed_length
+    // are honored. checkFitment with subModelAnswers returns false
+    // when sub-model gate disqualifies, true when it confirms, and
+    // undefined when subModelAnswers don't apply to this product.
+    const verdicts = broadPool.map((p) => ({
+      p,
+      fits: checkFitment(p, vehicle, subModelAnswers ?? undefined),
+    }));
     const exact = verdicts.filter((v) => v.fits === true).map((v) => v.p);
     const universal = verdicts.filter((v) => v.fits === undefined).map((v) => v.p);
 
@@ -1375,7 +1392,14 @@ export async function getRelatedProducts(
         if (composed.length >= first) break;
         if (node.handle === handle || have.has(node.handle)) continue;
         const padProduct = adapt(node);
-        if (vehicle && checkFitment(padProduct, vehicle) === false) continue;
+        // Cycle 14AW-fix6: pass subModelAnswers to the pad filter too
+        // so a 6.5' bed product can't sneak through when 5.5' is saved.
+        if (
+          vehicle &&
+          checkFitment(padProduct, vehicle, subModelAnswers ?? undefined) ===
+            false
+        )
+          continue;
         composed.push(padProduct);
         have.add(node.handle);
       }
