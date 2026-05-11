@@ -188,6 +188,12 @@ export function Header({
             }}
           >
             <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+              {/* Cycle 14AW-fix1 (Ren BUG-14AV-001 P3): left-side utility
+                  links measured 19px tall — below the 44px WCAG floor.
+                  14AV fixed the right-side links; mirror the same
+                  inline-flex + minHeight: 44 + horizontal padding here
+                  so the tap area meets the standard. The visual 36px
+                  strip stays the same; the tap target is just taller. */}
               <a
                 href="tel:18883784536"
                 style={{
@@ -196,6 +202,8 @@ export function Header({
                   alignItems: "center",
                   color: "var(--color-muted)",
                   fontSize: 12,
+                  minHeight: 44,
+                  padding: "0 4px",
                 }}
               >
                 <Icons.phone size={12} />
@@ -211,6 +219,8 @@ export function Header({
                   alignItems: "center",
                   color: "var(--color-muted)",
                   fontSize: 12,
+                  minHeight: 44,
+                  padding: "0 4px",
                 }}
               >
                 <Icons.chat size={12} />

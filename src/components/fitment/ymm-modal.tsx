@@ -345,6 +345,12 @@ export function YmmModal() {
               })}
             </div>
           </div>
+          {/* Cycle 14AW-fix1 (Ren BUG-14AV-002 P3): Close (X) tap target
+              measured 18×18px — fat-finger miss probability is high on
+              mobile, especially since it sits in the corner where
+              dragging the bottom-sheet header could trigger it. Pad
+              out to a 44px hit area without enlarging the icon
+              itself. */}
           <button
             type="button"
             onClick={close}
@@ -355,6 +361,11 @@ export function YmmModal() {
               cursor: "pointer",
               color: "var(--color-muted)",
               display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minWidth: 44,
+              minHeight: 44,
+              margin: -10,
             }}
           >
             <Icons.close size={18} />
@@ -569,7 +580,17 @@ export function YmmModal() {
             gap: 8,
           }}
         >
-          <button type="button" onClick={wipeGarage} className="btn btn-sm">
+          {/* Cycle 14AW-fix1 (Ren BUG-14AV-002 P3): btn-sm height (32px)
+              is below the 44px tap floor. RESET is a destructive action
+              and one fat-finger miss = re-doing the whole YMM flow.
+              Pad inline so the visual btn-sm stays within the footer
+              row but the tap area meets the standard. */}
+          <button
+            type="button"
+            onClick={wipeGarage}
+            className="btn btn-sm"
+            style={{ minHeight: 44, paddingTop: 6, paddingBottom: 6 }}
+          >
             RESET
           </button>
           <p
