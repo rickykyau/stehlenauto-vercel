@@ -99,7 +99,25 @@ export type FitmentRow = {
  *   custom.fitment_notes         multi_line_text_field (HTML allowed)
  *   custom.fitment_subattributes json
  */
+/**
+ * Cycle 14AS (owner): per-application fitment record. Source of truth for
+ * the FITS YOUR VEHICLE verdict — preserves YxMxM coupling that flat
+ * year/make/model lists destroy. Same shape as channel feeds (Google
+ * Shopping auto_parts.compatibility, eBay Motors fitment, Amazon Garage)
+ * so a single mapping function covers all channel transformations.
+ */
+export type FitmentApplication = {
+  year: string;
+  make: string;
+  model: string;
+  submodel?: string;
+};
+
 export type FitmentTable = {
+  /** Cycle 14AS: per-application records (source: custom.fitment_applications).
+   *  Empty array when not yet populated by sync — caller falls back to flat
+   *  lists below for backward compat during the migration window. */
+  applications: FitmentApplication[];
   years: string[];
   makes: string[];
   models: string[];

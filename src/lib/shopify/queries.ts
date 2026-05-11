@@ -112,6 +112,16 @@ export const PRODUCT_FRAGMENT = /* GraphQL */ `
       type
       value
     }
+    # Cycle 14AS: per-application records — JSON array of {year, make,
+    # model, submodel?}. Source of truth for FITS YOUR VEHICLE verdict.
+    # Replaces the broken flat year/make/model lists.
+    fitmentApplications: metafield(
+      namespace: "custom"
+      key: "fitment_applications"
+    ) {
+      type
+      value
+    }
   }
 `;
 

@@ -587,6 +587,31 @@ export function checkFitment(
   // verdict. Tags become a fallback for products with sparse/missing
   // metafield only.
   const table = product.fitmentTable;
+
+  // Cycle 14AS: per-application records are the SCHEMA-CORRECT source. They
+  // preserve the YxMxM coupling that flat year/make/model lists destroy.
+  // When custom.fitment_applications is populated, use it exclusively for
+  // the verdict — exact triple match, no cross-product false positives.
+  // Falls through to the legacy flat-list path only when applications is
+  // empty (products not yet covered by the cycle 14AS sync).
+  if (table && table.applications.length > 0) {
+    const yearStr = String(vehicle.year);
+    const makeKey = vehicle.make.toLowerCase();
+    const aliases = MAKE_ALIASES[makeKey] ?? [makeKey];
+    const modelLower = vehicle.model.toLowerCase();
+    const tripleMatch = table.applications.some((a) => {
+      if (a.year !== yearStr) return false;
+      if (!aliases.includes(a.make.toLowerCase())) return false;
+      const am = a.model.toLowerCase();
+      return am === modelLower || am.includes(modelLower) || modelLower.includes(am);
+    });
+    if (!tripleMatch) return false;
+    if (reliableNeedsPick) return undefined;
+    if (notesIndicateExclusion(table.notesHtml) === "downgrade")
+      return undefined;
+    return true;
+  }
+
   const hasCompleteMetafield =
     !!table &&
     table.years.length > 0 &&

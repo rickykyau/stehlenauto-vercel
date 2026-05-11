@@ -1,4 +1,5 @@
 import type {
+  FitmentApplication,
   FitmentSubattributes,
   FitmentTable,
 } from "@/lib/catalog/types";
@@ -23,10 +24,13 @@ export function parseFitmentTable(p: ProductNode): FitmentTable | null {
   const models = parseStringList(p.fitmentModels);
   const notesHtml = (p.fitmentNotes?.value ?? "").trim() || null;
   const subattributes = parseSubattributes(p.fitmentSubattributes);
+  // Cycle 14AS: per-application records — the schema-correct fitment data.
+  const applications = parseApplications(p.fitmentApplications);
 
   // If absolutely everything is empty, treat as "merch hasn't filled this in
   // yet" and let the PDP fall back to its title-derived row.
   const hasAny =
+    applications.length > 0 ||
     years.length > 0 ||
     makes.length > 0 ||
     models.length > 0 ||
@@ -34,7 +38,54 @@ export function parseFitmentTable(p: ProductNode): FitmentTable | null {
     Object.keys(subattributes).length > 0;
   if (!hasAny) return null;
 
-  return { years, makes, models, notesHtml, subattributes };
+  return { applications, years, makes, models, notesHtml, subattributes };
+}
+
+/**
+ * Cycle 14AS: parse the custom.fitment_applications JSON metafield.
+ * Returns [] when missing or malformed (caller falls back to flat lists
+ * during the migration window).
+ */
+function parseApplications(
+  node: ShopifyMetafieldNode | null | undefined,
+): FitmentApplication[] {
+  const value = node?.value;
+  if (!value) return [];
+  const trimmed = value.trim();
+  if (!trimmed) return [];
+  try {
+    const parsed = JSON.parse(trimmed) as unknown;
+    if (!Array.isArray(parsed)) return [];
+    const out: FitmentApplication[] = [];
+    for (const entry of parsed) {
+      if (
+        entry &&
+        typeof entry === "object" &&
+        "year" in entry &&
+        "make" in entry &&
+        "model" in entry
+      ) {
+        const e = entry as { year: unknown; make: unknown; model: unknown; submodel?: unknown };
+        if (
+          typeof e.year === "string" &&
+          typeof e.make === "string" &&
+          typeof e.model === "string"
+        ) {
+          out.push({
+            year: e.year,
+            make: e.make,
+            model: e.model,
+            ...(typeof e.submodel === "string" && e.submodel
+              ? { submodel: e.submodel }
+              : {}),
+          });
+        }
+      }
+    }
+    return out;
+  } catch {
+    return [];
+  }
 }
 
 /**

@@ -51,6 +51,8 @@ export type ProductNode = {
   fitmentModels?: ShopifyMetafieldNode | null;
   fitmentNotes?: ShopifyMetafieldNode | null;
   fitmentSubattributes?: ShopifyMetafieldNode | null;
+  /** Cycle 14AS: per-application JSON ({year, make, model, submodel?}[]). */
+  fitmentApplications?: ShopifyMetafieldNode | null;
 };
 
 export type ShopifyMetafieldNode = {
