@@ -611,6 +611,14 @@ export function BuyBox({
                         aria-pressed={active}
                         className="btn btn-sm"
                         style={{
+                          // Cycle 14AW-fix4 (Jordan R5 carry-over):
+                          // PDP sub-model chips were rendering at 32px
+                          // (btn-sm class height) — below the 44px floor
+                          // mandated by fitment_flow_decision.md for
+                          // sub-model variant strips. Bump tap area to
+                          // 44 without changing btn-sm globally (avoids
+                          // cascading regressions on other btn-sm uses).
+                          minHeight: 44,
                           flex: "1 1 0",
                           background: active
                             ? "var(--color-primary)"
@@ -645,6 +653,7 @@ export function BuyBox({
                         title={`No ${opt} variant of this product — we don't carry it in this size yet`}
                         className="btn btn-sm"
                         style={{
+                          minHeight: 44,
                           flex: "1 1 0",
                           background: "var(--color-surface)",
                           color: "var(--color-muted-2)",
@@ -707,6 +716,7 @@ export function BuyBox({
                         window.location.href = `/products/${handle}`;
                       }}
                       style={{
+                        minHeight: 44,
                         flex: "1 1 0",
                         background: "transparent",
                         color: "var(--color-foreground)",
@@ -727,6 +737,7 @@ export function BuyBox({
                     aria-pressed={active}
                     className="btn btn-sm"
                     style={{
+                      minHeight: 44,
                       flex: "1 1 0",
                       background: active
                         ? "var(--color-foreground)"
