@@ -38,11 +38,43 @@ export function parseFitmentTable(p: ProductNode): FitmentTable | null {
 }
 
 /**
+ * Cycle 14AR-fix31 (owner): pair a model name to its likely make when the
+ * metafield lists multiple makes (e.g. makes=["Chevrolet","GMC"],
+ * models=["Silverado 1500","Sierra 1500"]). Without this, fitmentTableToRows
+ * picked makes[0] and rendered "Chevrolet Sierra 1500" — Mike R13 caught it
+ * for a customer who owns a GMC, not a Chevrolet. The model→make mapping is
+ * deterministic for sister-vehicle pairs in our catalog.
+ */
+const MODEL_MAKE_HINTS: Array<{ model: RegExp; make: string }> = [
+  { model: /\bsierra\b/i, make: "GMC" },
+  { model: /\bsilverado\b/i, make: "Chevrolet" },
+  { model: /\bcanyon\b/i, make: "GMC" },
+  { model: /\bcolorado\b/i, make: "Chevrolet" },
+  { model: /\b(?:f-?150|f-?250|f-?350|expedition|bronco|ranger|maverick)\b/i, make: "Ford" },
+  { model: /\b(?:silverado|tahoe|suburban|colorado)\b/i, make: "Chevrolet" },
+  { model: /\b(?:tundra|tacoma|4runner|sequoia|highlander)\b/i, make: "Toyota" },
+  { model: /\b(?:wrangler|gladiator|grand cherokee|cherokee|compass|renegade)\b/i, make: "Jeep" },
+  { model: /\b(?:1500|2500|3500)\s*(classic|tradesman|laramie|big horn|rebel)?\b/i, make: "Ram" },
+];
+
+function pickMakeForModel(modelName: string, availableMakes: string[]): string {
+  if (availableMakes.length === 1) return availableMakes[0]!;
+  for (const { model, make } of MODEL_MAKE_HINTS) {
+    if (model.test(modelName) && availableMakes.some((m) => m.toLowerCase() === make.toLowerCase())) {
+      return make;
+    }
+  }
+  return availableMakes[0]!;
+}
+
+/**
  * Project a FitmentTable into the legacy per-row shape the existing PDP
  * renderer already understands. We zip years × models (1-to-1 by index when
  * lengths match, otherwise we cross-product the shorter axis with the
  * longest, which is the convention the merch team confirmed in their CSV
- * imports). Make is taken from the first entry — vehicles are make-scoped.
+ * imports). When the metafield carries multiple makes, pair each model to
+ * its likely make so a Sierra row says "GMC Sierra 1500" not
+ * "Chevrolet Sierra 1500" (cycle 14AR-fix31).
  */
 export function fitmentTableToRows(t: FitmentTable): {
   years: string;
@@ -52,7 +84,8 @@ export function fitmentTableToRows(t: FitmentTable): {
   model?: string;
 }[] {
   if (!t) return [];
-  const make = t.makes[0]?.trim();
+  const allMakes = t.makes.map((m) => m.trim()).filter(Boolean);
+  const fallbackMake = allMakes[0];
 
   const models = t.models.length > 0 ? t.models : [""];
   const yearsArr = t.years.length > 0 ? t.years : [""];
@@ -73,19 +106,17 @@ export function fitmentTableToRows(t: FitmentTable): {
 
   if (oneToOne) {
     for (let i = 0; i < yearsArr.length; i++) {
+      const m = models[i] ?? "";
+      const make = m && allMakes.length > 0 ? pickMakeForModel(m, allMakes) : fallbackMake;
       // Cycle 14AF (Mike-O14AF NF-6): industry-standard order is
-      // Make-then-Model ("Toyota Tundra"), not Model-then-Make
-      // ("Tundra Toyota"). Was reversed since cycle 14X.
-      const cab = [make ?? "", models[i] ?? ""]
-        .filter(Boolean)
-        .join(" ")
-        .trim();
+      // Make-then-Model ("Toyota Tundra"), not Model-then-Make.
+      const cab = [make ?? "", m].filter(Boolean).join(" ").trim();
       rows.push({
         years: yearsArr[i] ?? "",
         cab: cab || (make ?? ""),
         fits: true,
         make: make ?? undefined,
-        model: models[i] || undefined,
+        model: m || undefined,
       });
     }
     return rows;
@@ -93,6 +124,7 @@ export function fitmentTableToRows(t: FitmentTable): {
 
   for (const y of yearsArr) {
     for (const m of models) {
+      const make = m && allMakes.length > 0 ? pickMakeForModel(m, allMakes) : fallbackMake;
       // Make-then-Model order — see oneToOne branch above.
       const cab = [make ?? "", m].filter(Boolean).join(" ").trim();
       rows.push({
