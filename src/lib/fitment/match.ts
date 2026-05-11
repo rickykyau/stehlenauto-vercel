@@ -391,19 +391,27 @@ export function getFitmentReason(
 ): FitmentFailureReason {
   if (!vehicle) return { kind: "unknown" };
   if (table) {
-    // Cycle 14AF (Mike-O14AF NF-2 reason text): order matters for the
-    // human-readable reason. Make is the most fundamental mismatch — a
-    // Tundra tonneau on a Silverado garage should say "engineered for
-    // Toyota — not Chevrolet," NOT "fits 2007-2016; your 2019 is
-    // outside that range." Customer doesn't care about year coverage
-    // when the make's wrong. Check: make → model → excluded → year →
-    // sub-attribute. Year drops to last because year-only mismatches
-    // are rare for products that pass make+model.
+    // Cycle 14AF / 14AS Step E: order matters for the human-readable
+    // reason. Make is the most fundamental mismatch. Derive the candidate
+    // make/model/year sets from applications (per-application records are
+    // the source of truth). Check: make → excluded → model → year →
+    // sub-attribute.
+    const productMakes = Array.from(
+      new Set(table.applications.map((a) => a.make)),
+    );
+    const productModels = Array.from(
+      new Set(table.applications.map((a) => a.model)),
+    );
+    const productYears = Array.from(
+      new Set(table.applications.map((a) => a.year)),
+    );
     if (
-      table.makes.length > 0 &&
-      !table.makes.some((m) => m.toLowerCase() === vehicle.make.toLowerCase())
+      productMakes.length > 0 &&
+      !productMakes.some(
+        (m) => m.toLowerCase() === vehicle.make.toLowerCase(),
+      )
     ) {
-      return { kind: "make", productMakes: table.makes, customerMake: vehicle.make };
+      return { kind: "make", productMakes, customerMake: vehicle.make };
     }
     if (table.subattributes.excludedSubmodels?.length) {
       const vehicleStr = `${vehicle.make} ${vehicle.model}`.toLowerCase();
@@ -413,14 +421,16 @@ export function getFitmentReason(
       if (hit) return { kind: "excluded", excluded: hit };
     }
     if (
-      table.models.length > 0 &&
-      !table.models.some((m) => m.toLowerCase().includes(vehicle.model.toLowerCase()))
+      productModels.length > 0 &&
+      !productModels.some((m) =>
+        m.toLowerCase().includes(vehicle.model.toLowerCase()),
+      )
     ) {
-      return { kind: "model", productModels: table.models, customerModel: vehicle.model };
+      return { kind: "model", productModels, customerModel: vehicle.model };
     }
     const yearStr = String(vehicle.year);
-    if (table.years.length > 0 && !table.years.includes(yearStr)) {
-      return { kind: "year", productYears: table.years, customerYear: yearStr };
+    if (productYears.length > 0 && !productYears.includes(yearStr)) {
+      return { kind: "year", productYears, customerYear: yearStr };
     }
     for (const ans of answers ?? []) {
       const groupMap: Record<string, string[] | undefined> = {
@@ -608,56 +618,13 @@ export function checkFitment(
     return true;
   }
 
-  // Legacy fallback: products without applications metafield (currently 6
-  // CB-Item-Name-not-found products) fall through to Shopify-tag matching
-  // and ultimately title parsing. Once those 6 are fixed in CA or removed,
-  // this block can be deleted entirely.
-  const hasCompleteMetafield =
-    !!table &&
-    table.years.length > 0 &&
-    table.makes.length > 0 &&
-    table.models.length > 0;
-  if (hasCompleteMetafield) {
-    const yearStr = String(vehicle.year);
-    const makeKey = vehicle.make.toLowerCase();
-    const aliases = MAKE_ALIASES[makeKey] ?? [makeKey];
-    const makeMatch = table!.makes.some((m) =>
-      aliases.includes(m.toLowerCase()),
-    );
-    const modelMatch = table!.models.some((m) => {
-      const a = m.toLowerCase();
-      const b = vehicle.model.toLowerCase();
-      return a === b || a.includes(b) || b.includes(a);
-    });
-    const yearMatch = table!.years.includes(yearStr);
-    if (makeMatch && modelMatch && yearMatch) {
-      // Cycle 14AR-fix13: use the tightened reliableNeedsPick (bed-length
-      // only) instead of the broad needsPick. See its definition above
-      // for the full reasoning — title-derived trim/cab heuristics are
-      // unreliable and were turning legitimate FITS into "CHECK FITMENT"
-      // for products like Lincoln Navigator (Mark LT triggered the trim
-      // regex). Bed length is the only dimension where title-string
-      // detection is dependable enough to gate on.
-      if (reliableNeedsPick) return undefined;
-      // Cycle 14AR-fix22 (Mike R7 BLOCKER): the metafield said the 2013-2024
-      // Ram 1500 grille fits 2019, but the warehouse note said it WILL NOT
-      // fit the 2019+ DT-body. Customer saw "✓ FITS" and a contradicting
-      // note — return-rate trap. When notesHtml carries explicit exclusion
-      // language, we can't trust the year×model match alone. Downgrade to
-      // undefined so the UI renders yellow "VERIFY FITMENT" and the
-      // customer reads the note before adding to cart.
-      if (notesIndicateExclusion(table?.notesHtml) === "downgrade")
-        return undefined;
-      return true;
-    }
-    // Metafield is complete and disagrees → confident NO. Owner-directed:
-    // CA data is the single source of truth.
-    return false;
-  }
+  // Cycle 14AS Step E: legacy flat-list metafield branch removed. The 6
+  // CB-Item-Name-not-found products with no applications fall through to
+  // structured Shopify tags (below) or title parsing. Those products are
+  // a known sourcing-data gap to clean up upstream in CA.
 
   // Structured Shopify tags (cycle-3 schema: `make:Jeep`, `model:Wrangler`,
-  // `year:2014`) — fallback when metafield is sparse. ~49% of catalog
-  // historically had structured tags but no metafield.
+  // `year:2014`) — fallback when applications metafield is empty.
   const tags = product.vehicleTags ?? [];
   const tagSet = new Set(tags.map((t) => t.toLowerCase().trim()));
   if (tagSet.size > 0) {

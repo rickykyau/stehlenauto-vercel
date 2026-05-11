@@ -114,13 +114,10 @@ export type FitmentApplication = {
 };
 
 export type FitmentTable = {
-  /** Cycle 14AS: per-application records (source: custom.fitment_applications).
-   *  Empty array when not yet populated by sync — caller falls back to flat
-   *  lists below for backward compat during the migration window. */
+  /** Cycle 14AS Step E: per-application records are the SOLE source of truth.
+   *  fitment_years/makes/models flat-list metafields have been deleted from
+   *  Shopify — all verdicts and PDP rendering use applications. */
   applications: FitmentApplication[];
-  years: string[];
-  makes: string[];
-  models: string[];
   /** Free-form HTML from the merch team. Pre-sanitized server-side. */
   notesHtml: string | null;
   subattributes: FitmentSubattributes;

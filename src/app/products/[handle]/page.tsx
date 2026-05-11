@@ -253,25 +253,37 @@ export default async function PdpPage({
   const fitmentAdditionalProperties: Record<string, string>[] = [];
   if (product.fitmentTable) {
     const ft = product.fitmentTable;
-    if (ft.years.length > 0) {
+    // Cycle 14AS Step E: derive distinct year/make/model unions from
+    // applications for the schema.org PropertyValue list. Same SEO output,
+    // sourced from the per-application records.
+    const distinctYears = Array.from(
+      new Set(ft.applications.map((a) => a.year)),
+    ).sort();
+    const distinctMakes = Array.from(
+      new Set(ft.applications.map((a) => a.make)),
+    );
+    const distinctModels = Array.from(
+      new Set(ft.applications.map((a) => a.model)),
+    );
+    if (distinctYears.length > 0) {
       fitmentAdditionalProperties.push({
         "@type": "PropertyValue",
         name: "Fitment Years",
-        value: ft.years.join(", "),
+        value: distinctYears.join(", "),
       });
     }
-    if (ft.makes.length > 0) {
+    if (distinctMakes.length > 0) {
       fitmentAdditionalProperties.push({
         "@type": "PropertyValue",
         name: "Fitment Make",
-        value: ft.makes.join(", "),
+        value: distinctMakes.join(", "),
       });
     }
-    if (ft.models.length > 0) {
+    if (distinctModels.length > 0) {
       fitmentAdditionalProperties.push({
         "@type": "PropertyValue",
         name: "Fitment Model",
-        value: ft.models.join(", "),
+        value: distinctModels.join(", "),
       });
     }
     for (const [k, v] of Object.entries(ft.subattributes)) {
@@ -284,31 +296,40 @@ export default async function PdpPage({
     }
   }
 
-  // Cycle 14X+ (Priya F-10): when the metafield table covers a known
-  // make+model set, also emit isAccessoryOrSparePartFor pointing at
-  // schema.org/Vehicle entities — the canonical semantic link for an
-  // auto parts PDP. Emerging schema; no documented rich-result reward
-  // today, but it grounds the entity for AI Overviews and is the
-  // correct type for parts.
+  // Cycle 14X+ (Priya F-10) / Cycle 14AS Step E: emit
+  // isAccessoryOrSparePartFor pointing at schema.org/Vehicle entities for
+  // each unique (make, model) pair we know fits. Year range is the
+  // observed CA-fitment year span for that pair. Emerging schema; grounds
+  // the entity for AI Overviews and Google Shopping auto_parts.compatibility.
   const fitmentVehicles: Record<string, unknown>[] = [];
-  if (
-    product.fitmentTable &&
-    product.fitmentTable.makes.length > 0 &&
-    product.fitmentTable.models.length > 0
-  ) {
-    const ft = product.fitmentTable;
-    const make = ft.makes[0]?.trim();
-    for (const model of ft.models) {
-      if (!model.trim()) continue;
-      // Pair year ranges 1-to-1 if same length, else use first range.
-      const years = ft.years.length > 0 ? ft.years[0] : null;
-      const v: Record<string, unknown> = {
-        "@type": "Vehicle",
-        name: [make, model.trim()].filter(Boolean).join(" "),
-        ...(make ? { vehicleConfiguration: model.trim(), brand: { "@type": "Brand", name: make } } : {}),
-        ...(years ? { vehicleModelDate: years } : {}),
+  if (product.fitmentTable && product.fitmentTable.applications.length > 0) {
+    type Span = { years: Set<string> };
+    const byPair = new Map<string, { make: string; model: string; span: Span }>();
+    for (const a of product.fitmentTable.applications) {
+      const key = `${a.make}|${a.model}`;
+      const entry = byPair.get(key) ?? {
+        make: a.make,
+        model: a.model,
+        span: { years: new Set<string>() },
       };
-      fitmentVehicles.push(v);
+      entry.span.years.add(a.year);
+      byPair.set(key, entry);
+    }
+    for (const { make, model, span } of byPair.values()) {
+      const sortedYears = Array.from(span.years).sort();
+      const yearRange =
+        sortedYears.length === 0
+          ? null
+          : sortedYears.length === 1
+            ? sortedYears[0]
+            : `${sortedYears[0]}-${sortedYears[sortedYears.length - 1]}`;
+      fitmentVehicles.push({
+        "@type": "Vehicle",
+        name: `${make} ${model}`,
+        vehicleConfiguration: model,
+        brand: { "@type": "Brand", name: make },
+        ...(yearRange ? { vehicleModelDate: yearRange } : {}),
+      });
     }
   }
 
@@ -609,16 +630,24 @@ export default async function PdpPage({
                     gets confidence that this isn't an obscure single-model
                     SKU. */}
                 {(() => {
-                  const otherModels = (product.fitmentTable?.models ?? [])
-                    .filter(
-                      (m) =>
-                        !m
-                          .toLowerCase()
-                          .includes(vehicle.model.toLowerCase()) &&
-                        !vehicle.model
-                          .toLowerCase()
-                          .includes(m.toLowerCase()),
-                    );
+                  // Cycle 14AS Step E: derive distinct other-models from
+                  // applications (per-application records replaced flat lists).
+                  const allModels = Array.from(
+                    new Set(
+                      (product.fitmentTable?.applications ?? []).map(
+                        (a) => a.model,
+                      ),
+                    ),
+                  );
+                  const otherModels = allModels.filter(
+                    (m) =>
+                      !m
+                        .toLowerCase()
+                        .includes(vehicle.model.toLowerCase()) &&
+                      !vehicle.model
+                        .toLowerCase()
+                        .includes(m.toLowerCase()),
+                  );
                   if (otherModels.length === 0) return null;
                   const shown = otherModels.slice(0, 3);
                   const more = otherModels.length - shown.length;

@@ -7,7 +7,9 @@ import { SpecRow } from "@/components/ui/spec-row";
 import { Stars } from "@/components/ui/stars";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
-import { fitmentTableToRows } from "@/lib/fitment/metafields";
+// Cycle 14AS Step E: fitmentTableToRows removed (flat-list metafields
+// deleted from Shopify). All fitment table rendering goes through
+// applicationsToRows below.
 import {
   cleanSubattributeValue,
   filterRetailValues,
@@ -466,19 +468,10 @@ export function PdpTabs({
                   metafields) when populated. Falls back to the legacy
                   fitment prop, then to title-derived rows. */}
               {(() => {
-                // Cycle 14AS-step2: prefer per-application records (the
-                // schema-correct source). Fall back to flat-list metafield
-                // for products not yet covered by the cycle 14AS sync, then
-                // legacy fitment prop, then title-derived rows.
+                // Cycle 14AS Step E: applications is sole source.
                 const apps = product.fitmentTable?.applications ?? [];
                 const metafieldRows: FitmentRow[] =
-                  apps.length > 0
-                    ? applicationsToRows(apps)
-                    : product.fitmentTable
-                      ? fitmentTableToRows(product.fitmentTable).map((r) => ({
-                          ...r,
-                        }))
-                      : [];
+                  apps.length > 0 ? applicationsToRows(apps) : [];
                 const rows: FitmentRow[] =
                   metafieldRows.length > 0
                     ? metafieldRows
@@ -595,17 +588,10 @@ export function PdpTabs({
                 )}
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {(() => {
-                  // Cycle 14AS-step2: prefer per-application records; fall
-                  // back to flat-list metafield then legacy fitment / title.
+                  // Cycle 14AS Step E: applications is sole source.
                   const apps = product.fitmentTable?.applications ?? [];
                   const metafieldRows: FitmentRow[] =
-                    apps.length > 0
-                      ? applicationsToRows(apps)
-                      : product.fitmentTable
-                        ? fitmentTableToRows(product.fitmentTable).map((r) => ({
-                            ...r,
-                          }))
-                        : [];
+                    apps.length > 0 ? applicationsToRows(apps) : [];
                   const raw =
                     metafieldRows.length > 0
                       ? metafieldRows

@@ -46,9 +46,9 @@ export type ProductNode = {
   cbItemName?: { value: string | null } | null;
   // Cycle 14X (owner): per-product fitment metafields under the "custom"
   // namespace, populated by the merch team via Shopify Admin. All optional.
-  fitmentYears?: ShopifyMetafieldNode | null;
-  fitmentMakes?: ShopifyMetafieldNode | null;
-  fitmentModels?: ShopifyMetafieldNode | null;
+  // Cycle 14AS Step E: fitment_years/makes/models removed — fitment_applications
+  // is sole source. fitmentNotes + fitmentSubattributes remain for warehouse
+  // exclusion notes + sub-attribute chips (bed length, cab type, trim, etc.).
   fitmentNotes?: ShopifyMetafieldNode | null;
   fitmentSubattributes?: ShopifyMetafieldNode | null;
   /** Cycle 14AS: per-application JSON ({year, make, model, submodel?}[]). */

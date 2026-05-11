@@ -73,31 +73,10 @@ type Definition = {
 
 const NAMESPACE = "custom";
 
+// Cycle 14AS Step E: fitment_years/makes/models definitions deleted from
+// Shopify (see scripts/delete-deprecated-flat-fitment.ts). Removed from
+// this list so re-running setup doesn't recreate them.
 const DEFINITIONS: Definition[] = [
-  {
-    // Cycle 14AS Step A: deprecated. Use fitment_applications instead.
-    name: "Fitment — Years",
-    key: "fitment_years",
-    description:
-      "DEPRECATED — use fitment_applications. Storefront reads applications first; this field is fallback only and will be removed.",
-    type: "list.single_line_text_field",
-  },
-  {
-    // Cycle 14AS Step A: deprecated. Use fitment_applications instead.
-    name: "Fitment — Makes",
-    key: "fitment_makes",
-    description:
-      "DEPRECATED — use fitment_applications. Storefront reads applications first; this field is fallback only and will be removed.",
-    type: "list.single_line_text_field",
-  },
-  {
-    // Cycle 14AS Step A: deprecated. Use fitment_applications instead.
-    name: "Fitment — Models",
-    key: "fitment_models",
-    description:
-      "DEPRECATED — use fitment_applications. Storefront reads applications first; this field is fallback only and will be removed.",
-    type: "list.single_line_text_field",
-  },
   {
     name: "Fitment — Notes",
     key: "fitment_notes",

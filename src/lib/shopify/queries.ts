@@ -89,18 +89,9 @@ export const PRODUCT_FRAGMENT = /* GraphQL */ `
     # The list types serialize as a JSON array string in metafield.value, so
     # the consumer must JSON.parse(value) to get the array. Single-line and
     # multi-line text are returned as raw strings.
-    fitmentYears: metafield(namespace: "custom", key: "fitment_years") {
-      type
-      value
-    }
-    fitmentMakes: metafield(namespace: "custom", key: "fitment_makes") {
-      type
-      value
-    }
-    fitmentModels: metafield(namespace: "custom", key: "fitment_models") {
-      type
-      value
-    }
+    # Cycle 14AS Step E: fitment_years/makes/models definitions deleted in
+    # Shopify. Per-application records (fitment_applications) are the sole
+    # source for the FITS YOUR VEHICLE verdict + PDP fitment table display.
     fitmentNotes: metafield(namespace: "custom", key: "fitment_notes") {
       type
       value
