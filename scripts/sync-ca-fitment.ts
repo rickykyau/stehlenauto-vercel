@@ -629,12 +629,10 @@ async function writeFitmentMetafields(
       value,
     });
 
-  if (parsed.years.length > 0)
-    push("fitment_years", "list.single_line_text_field", JSON.stringify(parsed.years));
-  if (parsed.makes.length > 0)
-    push("fitment_makes", "list.single_line_text_field", JSON.stringify(parsed.makes));
-  if (parsed.models.length > 0)
-    push("fitment_models", "list.single_line_text_field", JSON.stringify(parsed.models));
+  // Cycle 14AS Step C: stop writing flat-list metafields
+  // (fitment_years/makes/models). They're DEPRECATED — fitment_applications
+  // is the source of truth. Existing flat-list values stay in Shopify but
+  // go stale; storefront's checkFitment now prefers applications.
   if (parsed.notes.length > 0)
     push("fitment_notes", "multi_line_text_field", parsed.notes.join("<br>"));
   if (Object.keys(parsed.subattributes).length > 0)

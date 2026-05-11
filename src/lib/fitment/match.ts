@@ -582,18 +582,14 @@ export function checkFitment(
   // customer's vehicle.
   //
   // Owner directive (cycle 14AR): the fitment data wins over Shopify tags.
-  // When the metafield has a complete YMM picture (years + makes + models
-  // all populated), use it as the sole source for the make/model/year
-  // verdict. Tags become a fallback for products with sparse/missing
-  // metafield only.
   const table = product.fitmentTable;
 
-  // Cycle 14AS: per-application records are the SCHEMA-CORRECT source. They
-  // preserve the YxMxM coupling that flat year/make/model lists destroy.
-  // When custom.fitment_applications is populated, use it exclusively for
-  // the verdict — exact triple match, no cross-product false positives.
-  // Falls through to the legacy flat-list path only when applications is
-  // empty (products not yet covered by the cycle 14AS sync).
+  // Cycle 14AS Step D: per-application records are the SOLE source of truth
+  // for the metafield-driven verdict. Flat year/make/model lists are
+  // deprecated and no longer read here — they were lossy (cross-product
+  // false positives on multi-application products). When applications are
+  // present, exact triple match. When missing entirely, fall through to the
+  // tag/title heuristics below (legacy products without CA fitment yet).
   if (table && table.applications.length > 0) {
     const yearStr = String(vehicle.year);
     const makeKey = vehicle.make.toLowerCase();
@@ -612,6 +608,10 @@ export function checkFitment(
     return true;
   }
 
+  // Legacy fallback: products without applications metafield (currently 6
+  // CB-Item-Name-not-found products) fall through to Shopify-tag matching
+  // and ultimately title parsing. Once those 6 are fixed in CA or removed,
+  // this block can be deleted entirely.
   const hasCompleteMetafield =
     !!table &&
     table.years.length > 0 &&
