@@ -11,10 +11,16 @@ export function ProductCard({
   product: CatalogProduct;
   vehicle?: Vehicle;
 }) {
-  const { sku, handle, fitTitle, price, compareAt, image, rating, reviews, badges, chips, fits } =
+  const { sku, handle, fitTitle, price, compareAt, image, rating, reviews, badges, chips, fits, inventory } =
     product;
   const sale = compareAt && compareAt > price;
   const off = sale ? Math.round(((compareAt - price) / compareAt) * 100) : 0;
+  // Cycle 14AX (owner-found): collection card showed "FITS YOUR 2020
+  // FORD F-150" in green for a product that was out of stock — customer
+  // tapped through and only learned OOS on the PDP. Wasted click +
+  // trust erosion. Source: CatalogProduct.inventory (mirrors PDP
+  // buy-box logic at buy-box.tsx:180 `inventory <= 0`).
+  const outOfStock = inventory <= 0;
 
   return (
     <Link
@@ -48,6 +54,27 @@ export function ProductCard({
             <span className="badge badge-best">BEST SELLER</span>
           )}
         </div>
+        {/* Cycle 14AX (owner-found): OUT OF STOCK badge top-right
+            counterpart to top-left NEW/SALE badges. Renders above the
+            image overlay so it's the first thing the eye catches on
+            an OOS card. Paired with image dimming below. */}
+        {outOfStock && (
+          <span
+            className="mono"
+            style={{
+              padding: "3px 8px",
+              fontSize: 9,
+              fontWeight: 700,
+              letterSpacing: "0.14em",
+              background: "rgba(20,20,20,0.92)",
+              color: "var(--color-foreground)",
+              border: "1px solid var(--color-border-2)",
+              borderRadius: "var(--radius-sm)",
+            }}
+          >
+            OUT OF STOCK
+          </span>
+        )}
       </div>
 
       {/* Image */}
@@ -66,13 +93,22 @@ export function ProductCard({
           // surround read as a thick "white border" around every product
           // image. 96% keeps a thin breathing-room gap so the image
           // doesn't kiss the card edge but stops looking framed.
+          // Cycle 14AX (owner-found): when out of stock, drop the
+          // image to 45% opacity. Combined with the OUT OF STOCK
+          // badge in the top-right and (if vehicle set) the fitment
+          // ribbon at the bottom, the customer reads OOS at a glance.
           <Image
             src={image}
             alt={fitTitle}
             width={400}
             height={400}
             sizes="(min-width: 768px) 25vw, 50vw"
-            style={{ width: "96%", height: "96%", objectFit: "contain" }}
+            style={{
+              width: "96%",
+              height: "96%",
+              objectFit: "contain",
+              opacity: outOfStock ? 0.45 : 1,
+            }}
           />
         ) : (
           <div
