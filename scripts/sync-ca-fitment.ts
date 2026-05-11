@@ -224,12 +224,23 @@ async function lookupFitmentForCbItemName(
 }
 
 // ---------- Fitment string parser ----------
+type FitmentApplication = {
+  year: string;
+  make: string;
+  model: string;
+  submodel?: string;
+};
+
 type ParsedFitment = {
   years: string[];
   makes: string[];
   models: string[];
   notes: string[];
   subattributes: Record<string, string[]>;
+  // Cycle 14AS: per-application records (the truth — preserves cross-product
+  // validity that flat year/make/model lists lose). Source for storefront
+  // checkFitment + Google Shopping/eBay Motors/Amazon channel feeds.
+  applications: FitmentApplication[];
 };
 
 const CAB_RE =
@@ -323,6 +334,10 @@ function parseFitmentString(raw: string): ParsedFitment {
   // (cab, doors) → trims bucket; used after the loop for the
   // cosmetic-trim collapse rule.
   const trimsByCabDoor = new Map<string, Set<string>>();
+  // Cycle 14AS: per-application records — preserves the YxMxM coupling that
+  // flat lists destroy. Deduped via a key Set since CA can repeat lines.
+  const apps: FitmentApplication[] = [];
+  const appsKey = new Set<string>();
 
   for (const line of raw.split(/\r?\n/)) {
     const trimmed = line.trim();
@@ -348,6 +363,19 @@ function parseFitmentString(raw: string): ParsedFitment {
     if (/^\d{4}$/.test(year)) years.add(year);
     if (make) makes.add(make);
     if (model) models.add(model);
+    // Cycle 14AS: per-application record (year × make × model required, submodel optional).
+    if (/^\d{4}$/.test(year) && make && model) {
+      const key = `${year}|${make}|${model}|${submodel ?? ""}`;
+      if (!appsKey.has(key)) {
+        appsKey.add(key);
+        apps.push({
+          year,
+          make,
+          model,
+          ...(submodel ? { submodel } : {}),
+        });
+      }
+    }
     if (note) {
       notes.add(note);
       // Bed length from notes (Specialist 1A).
@@ -494,6 +522,12 @@ function parseFitmentString(raw: string): ParsedFitment {
     models: sortedUnique(models),
     notes: Array.from(notes),
     subattributes,
+    applications: apps.sort((a, b) => {
+      if (a.make !== b.make) return a.make.localeCompare(b.make);
+      if (a.model !== b.model) return a.model.localeCompare(b.model);
+      if (a.year !== b.year) return parseInt(a.year, 10) - parseInt(b.year, 10);
+      return (a.submodel ?? "").localeCompare(b.submodel ?? "");
+    }),
   };
 }
 
@@ -605,6 +639,10 @@ async function writeFitmentMetafields(
     push("fitment_notes", "multi_line_text_field", parsed.notes.join("<br>"));
   if (Object.keys(parsed.subattributes).length > 0)
     push("fitment_subattributes", "json", JSON.stringify(parsed.subattributes));
+  // Cycle 14AS: per-application records — the schema-correct fitment source.
+  // Replaces the broken flat year/make/model lists for verdict purposes.
+  if (parsed.applications.length > 0)
+    push("fitment_applications", "json", JSON.stringify(parsed.applications));
   if (raw && raw.trim())
     push("fitment_raw", "multi_line_text_field", raw);
 

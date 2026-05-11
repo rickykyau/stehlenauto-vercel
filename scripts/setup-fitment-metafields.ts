@@ -116,6 +116,18 @@ const DEFINITIONS: Definition[] = [
       "Verbatim Fitment string from ChannelAdvisor (YEAR|MAKE|MODEL|SUBMODEL::NOTE per line). Audit trail — do not hand-edit; re-run sync to refresh.",
     type: "multi_line_text_field",
   },
+  {
+    // Cycle 14AS (owner): per-application schema. Replaces the broken
+    // flat-list trio (years/makes/models) for fitment verdicts. Each entry
+    // is one (year, make, model[, submodel]) triple — no cross-product
+    // false positives. This is what storefront checkFitment + Google
+    // Shopping feed + eBay Motors Marketplace Connect mapping all read.
+    name: "Fitment — Applications (per-application JSON)",
+    key: "fitment_applications",
+    description:
+      "JSON array of per-application records: {year, make, model, submodel?}. Storefront reads for fitment verdict. Source for Google/eBay/Amazon channel feeds. Replaces flat year/make/model lists.",
+    type: "json",
+  },
 ];
 
 const CREATE_DEFINITION_MUTATION = /* GraphQL */ `
