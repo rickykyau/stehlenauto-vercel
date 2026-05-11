@@ -1367,6 +1367,33 @@ export async function getRelatedProducts(
     // Compose: exact fits first, then unknown/universal. Drop confirmed
     // mismatches entirely — better to show 1 honest card than 4 with 3 reds.
     let composed = [...exact, ...universal].slice(0, first);
+
+    // Cycle 14AX (Ren R9 P1 follow-up to fix6): if subModelAnswers
+    // filtering empties the rail (e.g., the catalog has no other
+    // 5.5' F-150 tonneau covers — only the one the customer is
+    // viewing — and the 6.5' sibling correctly got dropped as a
+    // bed-length mismatch), fall back to a vehicle-only filter so
+    // the rail isn't silently absent. The PDP-level withFitment()
+    // will still correctly badge each card; a "CHECK FITMENT" or
+    // "DOES NOT FIT" on a vehicle-fit-but-sub-model-mismatch card
+    // is more useful to the customer than an empty section.
+    if (
+      composed.length === 0 &&
+      subModelAnswers &&
+      subModelAnswers.length > 0
+    ) {
+      const verdictsVehicleOnly = broadPool.map((p) => ({
+        p,
+        fits: checkFitment(p, vehicle, undefined),
+      }));
+      const exactVehicleOnly = verdictsVehicleOnly
+        .filter((v) => v.fits === true)
+        .map((v) => v.p);
+      const universalVehicleOnly = verdictsVehicleOnly
+        .filter((v) => v.fits === undefined)
+        .map((v) => v.p);
+      composed = [...exactVehicleOnly, ...universalVehicleOnly].slice(0, first);
+    }
     // Cycle 14Z (Mike-O1 M-8): if the rail still has < `first` products,
     // pad from BEST_SELLING so customers always see a SIMILAR PRODUCTS
     // section.
