@@ -160,8 +160,19 @@ export async function GET(req: Request) {
     }
     const productSuggestions: Array<{ rank: 0 | 1 | 2; idx: number; s: Suggestion }> = [];
     (data.predictiveSearch.products ?? []).forEach((p, idx) => {
+      const rank = rankByVehicle(p.title, vehicle);
+      // Cycle 14AV-fix1 (Mike F-4 follow-on): when a vehicle is saved
+      // and the suggestion is a confirmed misfit (rank 2 — title carries
+      // a different known model or year out of range), drop it from the
+      // typeahead entirely. Sorting alone doesn't help when Shopify's
+      // predictiveSearch returns ONLY misfits ("tonneau" → Tundra +
+      // Sierra, no F-150 in scope) — the customer still sees the wrong
+      // truck as their first impression. Better to show empty product
+      // suggestions and let collections + queries lead than to render
+      // a misfit at position #1 of the dropdown.
+      if (vehicle && rank === 2) return;
       productSuggestions.push({
-        rank: rankByVehicle(p.title, vehicle),
+        rank,
         idx,
         s: {
           type: "product",
