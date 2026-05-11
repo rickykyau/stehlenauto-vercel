@@ -64,6 +64,12 @@ export function YearPicker({
             className="mono"
             aria-pressed={active}
             style={{
+              // Cycle 14AW-fix5 (Jordan R6 F-1 MINOR): year picker
+              // chips were 37px tall, below WCAG 44px floor. The
+              // vehicle hub is a primary mobile entry surface — a
+              // mis-tapped year corrupts the saved garage. Bump tap
+              // area to 44 without changing the chip's visual padding.
+              minHeight: 44,
               padding: "8px 14px",
               background: active
                 ? "var(--color-background)"

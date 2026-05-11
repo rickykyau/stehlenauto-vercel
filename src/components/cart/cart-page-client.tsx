@@ -683,7 +683,16 @@ export function CartPageClient({
                 </span>
               </div>
 
+              {/* Cycle 14AW-fix5 (Mike R6 F-3): on mobile the fixed-
+                  bottom CHECKOUT bar is always visible — rendering this
+                  Order Summary CHECKOUT button below the line items
+                  meant the customer saw two identical "CHECKOUT $X.XX"
+                  buttons stacked when scrolling to the order summary.
+                  Hide this in-page button below md:; the fixed-bottom
+                  bar handles mobile checkout. Affirm subtitle stays so
+                  customers see the financing option even on mobile. */}
               <div
+                className="hidden md:block"
                 style={{
                   padding: 20,
                   borderTop: "1px solid var(--color-border)",
@@ -701,6 +710,29 @@ export function CartPageClient({
                     fontSize: 11,
                     color: "var(--color-muted)",
                     textAlign: "center",
+                  }}
+                >
+                  or 4 payments of ${(total / 4).toFixed(2)} with{" "}
+                  <strong style={{ color: "var(--color-foreground)" }}>
+                    Affirm
+                  </strong>
+                </p>
+              </div>
+              {/* Mobile-only Affirm subtitle for parity with desktop
+                  order summary; CHECKOUT itself is the fixed-bottom bar */}
+              <div
+                className="md:hidden"
+                style={{
+                  padding: "12px 20px",
+                  borderTop: "1px solid var(--color-border)",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 11,
+                    color: "var(--color-muted)",
+                    textAlign: "center",
+                    margin: 0,
                   }}
                 >
                   or 4 payments of ${(total / 4).toFixed(2)} with{" "}

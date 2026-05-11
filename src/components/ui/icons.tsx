@@ -6,7 +6,7 @@ type IconProps = SVGProps<SVGSVGElement> & {
 };
 
 function makeIcon(d: string, opts: { fill?: boolean; viewBox?: string } = {}) {
-  const Icon = ({ size = 16, sw = 1.5, ...rest }: IconProps) => (
+  const Icon = ({ size = 16, sw = 1.5, style, ...rest }: IconProps) => (
     <svg
       width={size}
       height={size}
@@ -18,6 +18,14 @@ function makeIcon(d: string, opts: { fill?: boolean; viewBox?: string } = {}) {
       strokeLinejoin="round"
       aria-hidden="true"
       {...rest}
+      // Cycle 14AW-fix5 (Mike R6 F-5): SVG children inside <button>
+      // were intercepting pointer events on small chevron icons. A
+      // customer tapping the visible icon could miss the parent
+      // button click target. Default pointerEvents: none so clicks
+      // always bubble to the wrapping button. Caller-provided style
+      // is merged after — they can opt into pointer events if needed
+      // (rare; mostly icons are decorative children of buttons).
+      style={{ pointerEvents: "none", ...style }}
     >
       <path d={d} />
     </svg>

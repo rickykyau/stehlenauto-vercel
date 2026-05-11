@@ -819,9 +819,16 @@ export default async function PdpPage({
                     READ THE WAREHOUSE FITMENT NOTE BELOW →
                   </a>
                 )}
+                {/* Cycle 14AW-fix5 (Jordan R6 F-2): on misfit PDP, the
+                    yellow primary button competed with the active
+                    yellow sub-model chip in the same viewport (CLAUDE.md
+                    rule: ≤1 yellow per viewport). The red fitment card
+                    around it already carries the visual weight; the
+                    CTA inside doesn't need yellow to be visible. Drop
+                    btn-primary so only the saved-spec chip is yellow. */}
                 <Link
                   href={`/vehicle/${vehicle.make.toLowerCase()}-${vehicle.model.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="btn btn-primary btn-sm"
+                  className="btn btn-sm"
                 >
                   SHOP PARTS FOR YOUR {vehicle.make.toUpperCase()} →
                 </Link>
