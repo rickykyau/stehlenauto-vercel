@@ -390,7 +390,14 @@ export function Header({
                   style={{
                     fontSize: 11,
                     cursor: "pointer",
-                    minHeight: 32,
+                    // Cycle 14AW-fix3 (Ren P3 carry-over): SIGN IN chip
+                    // was 32px — below WCAG 2.5.5 floor. The chip class
+                    // visual stays compact; minHeight on the link
+                    // expands the tap target without changing the
+                    // visual height of the chip itself.
+                    minHeight: 44,
+                    display: "inline-flex",
+                    alignItems: "center",
                     fontWeight: 700,
                   }}
                   aria-label="Sign in"
