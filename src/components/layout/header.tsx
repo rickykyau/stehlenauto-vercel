@@ -234,16 +234,36 @@ export function Header({
               >
                 PREVIOUSLY ON EBAY · NOW DIRECT
               </span>
+              {/* Cycle 14AV (Ren BUG-14AU-001 P3): utility links rendered
+                  as bare 12px text — measured 19×26px tap target,
+                  below the 44px WCAG 2.5.5 / Apple HIG minimum. Add
+                  inline-flex + min-height/padding so the hit area
+                  meets the standard without growing the visual size
+                  of the text. */}
               <Link
                 href="/account/orders"
                 prefetch={false}
-                style={{ color: "var(--color-muted)", fontSize: 12 }}
+                style={{
+                  color: "var(--color-muted)",
+                  fontSize: 12,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  minHeight: 44,
+                  padding: "0 4px",
+                }}
               >
                 Order Status
               </Link>
               <Link
                 href="/help"
-                style={{ color: "var(--color-muted)", fontSize: 12 }}
+                style={{
+                  color: "var(--color-muted)",
+                  fontSize: 12,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  minHeight: 44,
+                  padding: "0 4px",
+                }}
               >
                 Help
               </Link>

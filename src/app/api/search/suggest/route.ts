@@ -25,6 +25,78 @@ type Suggestion = {
   price?: number;
 };
 
+// Cycle 14AV (Mike F-4 MAJOR): typeahead suggestions had no fitment
+// awareness — a customer with 2018 F-150 saved was being shown a
+// Silverado 1500 and a Tundra as the top two product suggestions for
+// "tonneau cover". The full /search results page already sorts
+// fitment-first; the typeahead must do the same so the dropdown
+// reflects the customer's saved vehicle from the very first keystroke.
+//
+// We can't run the full checkFitment() here (predictiveSearch returns
+// only title/handle/image/price — no fitment metafields). Use a
+// lightweight title-vs-vehicle ranker: 0 = title mentions vehicle.model
+// AND year is in any title year-range, 2 = title mentions a different
+// known make/model (confirmed misfit), 1 = unknown / universal.
+const KNOWN_MODELS = [
+  "f-150", "f150", "f-250", "f250", "f-350", "f350",
+  "silverado", "sierra", "colorado", "canyon",
+  "ram 1500", "ram 2500", "ram 3500", "ram",
+  "tundra", "tacoma",
+  "frontier", "titan",
+  "ridgeline",
+  "wrangler", "gladiator", "grand cherokee", "cherokee",
+  "bronco", "ranger", "maverick",
+];
+
+function normTitle(s: string): string {
+  return s.toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, " ");
+}
+
+function rankByVehicle(
+  title: string,
+  vehicle: { year: string | number; make: string; model: string } | null,
+): 0 | 1 | 2 {
+  if (!vehicle) return 1;
+  const t = normTitle(title);
+  const model = normTitle(vehicle.model);
+  const make = normTitle(vehicle.make);
+  const year = String(vehicle.year);
+
+  const titleHasOurModel =
+    t.includes(model) ||
+    // Normalize F-150 ↔ F150 ↔ F 150
+    t.includes(model.replace(/[-\s]/g, "")) ||
+    t.includes(model.replace(/[-\s]/g, " "));
+  const titleHasOurMake = t.includes(make);
+
+  if (titleHasOurModel) {
+    // If a year-range is present, ensure ours falls inside.
+    const range = t.match(/(\d{4})\s*[-–]\s*(\d{4})/);
+    if (range) {
+      const lo = parseInt(range[1], 10);
+      const hi = parseInt(range[2], 10);
+      const y = parseInt(year, 10);
+      if (Number.isFinite(y) && y >= lo && y <= hi) return 0;
+      // Year explicitly outside the title range → confirmed misfit.
+      if (Number.isFinite(y)) return 2;
+    }
+    return 0;
+  }
+
+  // Title mentions a different known model → confirmed misfit.
+  for (const other of KNOWN_MODELS) {
+    if (other === model || other.includes(model) || model.includes(other)) continue;
+    if (t.includes(other)) {
+      // Last-chance: shared make alone isn't enough to rescue it
+      // (Sierra and Silverado are both GM but never cross-fit).
+      void titleHasOurMake;
+      return 2;
+    }
+  }
+
+  return 1;
+}
+
 function mockSuggest(query: string): Suggestion[] {
   const q = query.toLowerCase();
   const products = PRODUCTS.filter((p) =>
@@ -62,14 +134,22 @@ export async function GET(req: Request) {
   }
 
   try {
-    const data = await shopifyFetch<{
-      predictiveSearch: {
-        products: ShopifyProduct[];
-        collections: ShopifyCollection[];
-        queries: { text: string }[];
-      };
-    }>(PREDICTIVE_SEARCH_QUERY, { query: q });
+    const [data, vehicle] = await Promise.all([
+      shopifyFetch<{
+        predictiveSearch: {
+          products: ShopifyProduct[];
+          collections: ShopifyCollection[];
+          queries: { text: string }[];
+        };
+      }>(PREDICTIVE_SEARCH_QUERY, { query: q }),
+      getCurrentVehicle().catch(() => null),
+    ]);
 
+    // Cycle 14AV (Mike F-4 MAJOR): rank product suggestions against the
+    // saved vehicle. Collections + queries don't carry vehicle signal so
+    // they're emitted in their original order. Products are sorted
+    // fits → unknown → misfit; misfits are kept (in case the customer
+    // is intentionally browsing for another vehicle), just bucketed last.
     const out: Suggestion[] = [];
     for (const c of data.predictiveSearch.collections ?? []) {
       out.push({
@@ -78,15 +158,22 @@ export async function GET(req: Request) {
         href: `/collections/${c.handle}`,
       });
     }
-    for (const p of data.predictiveSearch.products ?? []) {
-      out.push({
-        type: "product",
-        label: p.title,
-        href: `/products/${p.handle}`,
-        image: p.featuredImage?.url ?? null,
-        price: Math.round(parseFloat(p.priceRange.minVariantPrice.amount)),
+    const productSuggestions: Array<{ rank: 0 | 1 | 2; idx: number; s: Suggestion }> = [];
+    (data.predictiveSearch.products ?? []).forEach((p, idx) => {
+      productSuggestions.push({
+        rank: rankByVehicle(p.title, vehicle),
+        idx,
+        s: {
+          type: "product",
+          label: p.title,
+          href: `/products/${p.handle}`,
+          image: p.featuredImage?.url ?? null,
+          price: Math.round(parseFloat(p.priceRange.minVariantPrice.amount)),
+        },
       });
-    }
+    });
+    productSuggestions.sort((a, b) => (a.rank - b.rank) || (a.idx - b.idx));
+    for (const ps of productSuggestions) out.push(ps.s);
     for (const q of data.predictiveSearch.queries ?? []) {
       out.push({
         type: "query",
@@ -98,7 +185,6 @@ export async function GET(req: Request) {
       // Log the empirical miss before falling back to the mock suggestions —
       // /admin/sourcing-gaps reads this aggregated to show real demand we
       // currently can't meet.
-      const vehicle = await getCurrentVehicle().catch(() => null);
       void logSearchMiss({
         query: q,
         source: "suggest",

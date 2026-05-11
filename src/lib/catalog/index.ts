@@ -1352,17 +1352,31 @@ export async function getRelatedProducts(
     let composed = [...exact, ...universal].slice(0, first);
     // Cycle 14Z (Mike-O1 M-8): if the rail still has < `first` products,
     // pad from BEST_SELLING so customers always see a SIMILAR PRODUCTS
-    // section. Pad cards are universal/unknown-fit so they don't lie.
+    // section.
+    // Cycle 14AV (Mike F-3 + Jordan NF-1 MAJOR): the original pad pulled
+    // unconstrained BEST_SELLING with no category and no fitment check,
+    // so a 2018 F-150 tonneau cover PDP rendered Jeep Grand Cherokee
+    // hitches and Lightning-only tonneaus under a "DOES NOT FIT" badge
+    // in SIMILAR PRODUCTS. Two structural fixes:
+    //   1. Constrain pad to the same broad category (broadQuery), not
+    //      the entire BEST_SELLING list. Keep customers in-category.
+    //   2. When a vehicle is set, run checkFitment on every pad
+    //      candidate and skip confirmed misfits — pad cards must be
+    //      fits or unknown, never confirmed misfits. Better to ship 2
+    //      honest cards than 4 with red ribbons.
     if (composed.length < first) {
       const have = new Set(composed.map((p) => p.handle));
       const fb = await shopifyFetch<GetProductsResponse>(GET_PRODUCTS_QUERY, {
         first: first * 3,
+        query: broadQuery,
         sortKey: "BEST_SELLING",
       });
       for (const node of fb.products?.nodes ?? []) {
         if (composed.length >= first) break;
         if (node.handle === handle || have.has(node.handle)) continue;
-        composed.push(adapt(node));
+        const padProduct = adapt(node);
+        if (vehicle && checkFitment(padProduct, vehicle) === false) continue;
+        composed.push(padProduct);
         have.add(node.handle);
       }
     }

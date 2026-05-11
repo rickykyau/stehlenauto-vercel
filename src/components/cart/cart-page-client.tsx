@@ -269,7 +269,16 @@ export function CartPageClient({
                 gap: 10,
               }}
             >
-              <Icons.check size={14} />
+              {/* Cycle 14AV (Jordan NF-2): the icon was a hardcoded
+                  Icons.check regardless of state. A green check beside
+                  red "MIXED FITMENT" copy contradicts itself at
+                  peripheral-vision speed. Switch icon to match the
+                  semantic state of the banner. */}
+              {anyMisfit ? (
+                <Icons.alert size={14} />
+              ) : (
+                <Icons.check size={14} />
+              )}
               <span
                 className="mono"
                 style={{
@@ -285,14 +294,18 @@ export function CartPageClient({
                 {anyMisfit
                   ? `MIXED FITMENT — SOME ITEMS DO NOT FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
                   : allFit
-                    /* Cycle 14AB (Mike-O14AB N-2 MAJOR): "ALL ITEMS FIT"
-                       was over-claiming — title-based YMM matched while
-                       Lightning-vs-gas exclusions hadn't been wired into
-                       the row's metadata. Soften to "Likely fits — verify
-                       on each PDP" so the customer trusts the cart, not
-                       a banner that might quietly disagree with the
-                       chat assistant or PDP fitment table. */
-                    ? `LIKELY FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} — DOUBLE-CHECK SUB-MODEL ON EACH PDP`
+                    /* Cycle 14AV (Jordan NF-4): post-14AS metafield
+                       cleanup, checkFitment === true is metafield
+                       triple-match confirmed (or title+sub-model gate
+                       confirmed for universals). The "LIKELY FITS —
+                       double-check" softening from 14AB was conservative
+                       insurance against the old title-only path. Now
+                       that fitment_applications is the source of truth,
+                       restore the confidence-language pairing with the
+                       PDP's "CONFIRMED FITMENT" — a customer who saw
+                       green on the PDP should see green confidence in
+                       the cart too. */
+                    ? `ALL ITEMS CONFIRMED FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
                     : anyUnknown
                       ? `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} — REVIEW EACH ITEM`
                       : `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
