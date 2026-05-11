@@ -75,24 +75,27 @@ const NAMESPACE = "custom";
 
 const DEFINITIONS: Definition[] = [
   {
+    // Cycle 14AS Step A: deprecated. Use fitment_applications instead.
     name: "Fitment — Years",
     key: "fitment_years",
     description:
-      "List of year ranges this product fits, e.g. \"2015-2024\". Each entry is a free-text string so split-year ranges and gaps are supported.",
+      "DEPRECATED — use fitment_applications. Storefront reads applications first; this field is fallback only and will be removed.",
     type: "list.single_line_text_field",
   },
   {
+    // Cycle 14AS Step A: deprecated. Use fitment_applications instead.
     name: "Fitment — Makes",
     key: "fitment_makes",
     description:
-      "Vehicle makes this product fits, e.g. \"Ford\". Most products are make-scoped — populate the single primary make.",
+      "DEPRECATED — use fitment_applications. Storefront reads applications first; this field is fallback only and will be removed.",
     type: "list.single_line_text_field",
   },
   {
+    // Cycle 14AS Step A: deprecated. Use fitment_applications instead.
     name: "Fitment — Models",
     key: "fitment_models",
     description:
-      "Vehicle models this product fits, e.g. \"F-150\", \"F-250\". When the years list has the same length, the storefront zips them 1-to-1 (year[i] applies to model[i]). Otherwise the storefront cross-products year × model.",
+      "DEPRECATED — use fitment_applications. Storefront reads applications first; this field is fallback only and will be removed.",
     type: "list.single_line_text_field",
   },
   {
@@ -183,6 +186,24 @@ const PIN_DEFINITION_MUTATION = /* GraphQL */ `
   }
 `;
 
+// Cycle 14AS Step A: refresh existing-definition descriptions so the
+// flat-list metafields can be re-labeled DEPRECATED in Shopify admin.
+const UPDATE_DEFINITION_MUTATION = /* GraphQL */ `
+  mutation UpdateDefinition($definition: MetafieldDefinitionUpdateInput!) {
+    metafieldDefinitionUpdate(definition: $definition) {
+      updatedDefinition {
+        id
+        description
+      }
+      userErrors {
+        field
+        message
+        code
+      }
+    }
+  }
+`;
+
 type CreateResponse = {
   metafieldDefinitionCreate: {
     createdDefinition: { id: string; namespace: string; key: string } | null;
@@ -211,17 +232,49 @@ async function existingDefinitionId(
 }
 
 async function createOrSkip(def: Definition): Promise<{
-  status: "created" | "exists" | "error";
+  status: "created" | "exists" | "updated" | "error";
   id: string | null;
   message: string;
 }> {
   const existing = await existingDefinitionId(NAMESPACE, def.key);
   if (existing) {
-    return {
-      status: "exists",
-      id: existing,
-      message: `${NAMESPACE}.${def.key} already defined`,
-    };
+    // Cycle 14AS Step A: refresh description on existing definitions so
+    // deprecation labels appear in Shopify admin without a manual edit.
+    try {
+      const data = await shopifyAdminFetch<{
+        metafieldDefinitionUpdate: {
+          updatedDefinition: { id: string; description: string | null } | null;
+          userErrors: { field: string[] | null; message: string; code: string | null }[];
+        };
+      }>(UPDATE_DEFINITION_MUTATION, {
+        definition: {
+          namespace: NAMESPACE,
+          key: def.key,
+          ownerType: "PRODUCT",
+          name: def.name,
+          description: def.description,
+        },
+      });
+      const errs = data.metafieldDefinitionUpdate.userErrors;
+      if (errs.length > 0) {
+        return {
+          status: "exists",
+          id: existing,
+          message: `${NAMESPACE}.${def.key} exists; description update failed: ${errs.map((e) => `${e.code ?? "ERR"}: ${e.message}`).join("; ")}`,
+        };
+      }
+      return {
+        status: "updated",
+        id: existing,
+        message: `${NAMESPACE}.${def.key} description refreshed`,
+      };
+    } catch (err) {
+      return {
+        status: "exists",
+        id: existing,
+        message: `${NAMESPACE}.${def.key} exists; description refresh threw: ${(err as Error).message}`,
+      };
+    }
   }
   const data = await shopifyAdminFetch<CreateResponse>(
     CREATE_DEFINITION_MUTATION,
@@ -283,9 +336,11 @@ async function main() {
     const tag =
       res.status === "created"
         ? "✓"
-        : res.status === "exists"
-          ? "·"
-          : "✗";
+        : res.status === "updated"
+          ? "↻"
+          : res.status === "exists"
+            ? "·"
+            : "✗";
     console.log(`${tag} ${NAMESPACE}.${def.key} — ${res.message}`);
     if (res.status === "created" && res.id) {
       await pinIfPossible(res.id, def.name);

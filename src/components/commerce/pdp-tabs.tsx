@@ -115,6 +115,31 @@ function collapseFitmentRows(rows: FitmentRow[]): FitmentRow[] {
 }
 
 /**
+ * Cycle 14AS-step2 (owner): convert per-application records into FitmentRow[]
+ * for display. Each application becomes one (year, "Make Model", FITS) row.
+ * collapseFitmentRows then merges contiguous-year runs into ranges.
+ *
+ * This replaces the flat-list-driven fitmentTableToRows() pairing logic for
+ * any product that has fitment_applications populated. The application data
+ * already carries the correct (make, model) pairing — no Sierra-as-Chevrolet
+ * inference needed (which fitmentTableToRows had to do for multi-make).
+ */
+function applicationsToRows(
+  apps: { year: string; make: string; model: string }[],
+): FitmentRow[] {
+  const out: FitmentRow[] = [];
+  const seen = new Set<string>();
+  for (const a of apps) {
+    const cab = `${a.make} ${a.model}`.trim();
+    const key = `${a.year}|${cab}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ years: a.year, cab, fits: true });
+  }
+  return out;
+}
+
+/**
  * Cycle 14V (owner): when there's no per-product fitment table, derive a
  * single row from the product title — most product titles already encode
  * "YYYY-YYYY Make Model …" which is enough to render an honest "Fits ____"
@@ -441,11 +466,19 @@ export function PdpTabs({
                   metafields) when populated. Falls back to the legacy
                   fitment prop, then to title-derived rows. */}
               {(() => {
-                const metafieldRows: FitmentRow[] = product.fitmentTable
-                  ? fitmentTableToRows(product.fitmentTable).map((r) => ({
-                      ...r,
-                    }))
-                  : [];
+                // Cycle 14AS-step2: prefer per-application records (the
+                // schema-correct source). Fall back to flat-list metafield
+                // for products not yet covered by the cycle 14AS sync, then
+                // legacy fitment prop, then title-derived rows.
+                const apps = product.fitmentTable?.applications ?? [];
+                const metafieldRows: FitmentRow[] =
+                  apps.length > 0
+                    ? applicationsToRows(apps)
+                    : product.fitmentTable
+                      ? fitmentTableToRows(product.fitmentTable).map((r) => ({
+                          ...r,
+                        }))
+                      : [];
                 const rows: FitmentRow[] =
                   metafieldRows.length > 0
                     ? metafieldRows
@@ -562,11 +595,17 @@ export function PdpTabs({
                 )}
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {(() => {
-                  const metafieldRows: FitmentRow[] = product.fitmentTable
-                    ? fitmentTableToRows(product.fitmentTable).map((r) => ({
-                        ...r,
-                      }))
-                    : [];
+                  // Cycle 14AS-step2: prefer per-application records; fall
+                  // back to flat-list metafield then legacy fitment / title.
+                  const apps = product.fitmentTable?.applications ?? [];
+                  const metafieldRows: FitmentRow[] =
+                    apps.length > 0
+                      ? applicationsToRows(apps)
+                      : product.fitmentTable
+                        ? fitmentTableToRows(product.fitmentTable).map((r) => ({
+                            ...r,
+                          }))
+                        : [];
                   const raw =
                     metafieldRows.length > 0
                       ? metafieldRows
