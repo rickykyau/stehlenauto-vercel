@@ -366,7 +366,23 @@ export default async function SearchPage({
               className="grid grid-cols-2 md:grid-cols-4"
               style={{ gap: 16 }}
             >
-              {withFitment(filtered, vehicle, subModelAnswers).map((p) => (
+              {/* Cycle 14AU F-1 (Jordan): sort FITS first → VERIFY → DOES
+                  NOT FIT, preserving Shopify relevance order within each
+                  bucket. With a garage set, the first card the customer
+                  sees should match their vehicle — anything else looks
+                  like the site doesn't know their truck. */}
+              {withFitment(filtered, vehicle, subModelAnswers)
+                .map((p, idx) => ({ p, idx }))
+                .sort((a, b) => {
+                  const rank = (fits: boolean | undefined) =>
+                    fits === true ? 0 : fits === undefined ? 1 : 2;
+                  const ra = rank(a.p.fits);
+                  const rb = rank(b.p.fits);
+                  if (ra !== rb) return ra - rb;
+                  return a.idx - b.idx;
+                })
+                .map(({ p }) => p)
+                .map((p) => (
                 <ProductCard key={p.sku} product={p} vehicle={vehicle} />
               ))}
             </div>

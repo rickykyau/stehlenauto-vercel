@@ -318,18 +318,29 @@ export default async function VehicleHubPage({
   // make-only hits so the rail is always full but stays vehicle-relevant.
   let products: typeof PRODUCTS = [];
   try {
+    // Cycle 14AU F-4 (Jordan): Top Picks must NEVER show all-red DOES
+    // NOT FIT cards on a vehicle hub — that's a confidence collapse at
+    // the highest-intent surface. Filter out confirmed misfits, sort
+    // FITS first → VERIFY → drop misfits entirely. Pad with universal
+    // make-only hits when fitHits is thin.
+    const rank = (fits: boolean | undefined) =>
+      fits === true ? 0 : fits === undefined ? 1 : 99;
     const fitHits = withFitment(
-      await searchProducts(`${latestYear} ${make} ${model}`, 8),
+      await searchProducts(`${latestYear} ${make} ${model}`, 12),
       fakeVehicle,
       garageMatchesHub ? hubSubAnswers : null,
-    );
+    )
+      .filter((p) => p.fits !== false)
+      .sort((a, b) => rank(a.fits) - rank(b.fits));
     if (fitHits.length < 4) {
       const seenHandles = new Set(fitHits.map((p) => p.handle));
       const padding = withFitment(
-        await searchProducts(`${make} ${model}`, 12),
+        await searchProducts(`${make} ${model}`, 16),
         fakeVehicle,
         garageMatchesHub ? hubSubAnswers : null,
-      ).filter((p) => !seenHandles.has(p.handle));
+      )
+        .filter((p) => !seenHandles.has(p.handle) && p.fits !== false)
+        .sort((a, b) => rank(a.fits) - rank(b.fits));
       products = [...fitHits, ...padding].slice(0, 4);
     } else {
       products = fitHits.slice(0, 4);
@@ -730,9 +741,16 @@ export default async function VehicleHubPage({
                       garageYear <= Math.max(genEnd, g.latestYear)
                         ? garageYear
                         : g.latestYear;
+                    // Cycle 14AU F-7 (Jordan): /search dumped the customer
+                    // into a keyword-list view that ignored category
+                    // structure. /vehicle/{year}-{make}-{model} is the
+                    // canonical hub for that gen — categories grouped, fits
+                    // pre-filtered, JSON-LD vehicle schema. Land them
+                    // there instead so the gen card behaves like a real
+                    // sub-navigation, not a search shortcut.
                     return (
                       <Link
-                        href={`/search?q=${encodeURIComponent(`${ctaYear} ${make} ${model}`)}`}
+                        href={`/vehicle/${ctaYear}-${make.toLowerCase()}-${model.toLowerCase().replace(/\s+/g, "-")}`}
                         className="btn btn-sm btn-block"
                         style={{
                           marginTop: 14,

@@ -132,6 +132,10 @@ export function CartDrawer({
     [lines, vehicle, subModelAnswers],
   );
   const allFit = vehicle && fitments.length > 0 && fitments.every((f) => f === true);
+  // Cycle 14AU F-3 (Jordan): make MIXED FITMENT actionable — count
+  // misfit lines and surface the first misfit's index for scroll-anchor.
+  const misfitCount = fitments.filter((f) => f === false).length;
+  const firstMisfitIdx = fitments.findIndex((f) => f === false);
   const anyMisfit = vehicle && fitments.some((f) => f === false);
   const anyUnknown = vehicle && fitments.some((f) => f === undefined);
 
@@ -228,13 +232,41 @@ export function CartDrawer({
               }}
             >
               {anyMisfit
-                ? `MIXED FITMENT — SOME ITEMS DO NOT FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                ? `MIXED FITMENT — ${misfitCount} ITEM${misfitCount === 1 ? "" : "S"} DO${misfitCount === 1 ? "ES" : ""} NOT FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
                 : allFit
                   ? `ALL ITEMS FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
                   : anyUnknown
                     ? `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} — REVIEW EACH ITEM`
                     : `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
             </span>
+            {anyMisfit && firstMisfitIdx >= 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  const target = document.querySelector<HTMLElement>(
+                    "[data-cart-misfit-anchor='true']",
+                  );
+                  if (target)
+                    target.scrollIntoView({ behavior: "smooth", block: "center" });
+                }}
+                className="mono"
+                style={{
+                  marginTop: 6,
+                  background: "transparent",
+                  border: "1px solid var(--color-destructive)",
+                  color: "var(--color-destructive)",
+                  padding: "4px 10px",
+                  fontSize: 10,
+                  letterSpacing: "0.1em",
+                  fontWeight: 700,
+                  borderRadius: "var(--radius-sm)",
+                  cursor: "pointer",
+                  textTransform: "uppercase",
+                }}
+              >
+                Review {misfitCount === 1 ? "the item" : `the ${misfitCount} items`} below ↓
+              </button>
+            )}
           </div>
         )}
 
@@ -255,6 +287,7 @@ export function CartDrawer({
               {cart.lines.map((line, idx) => (
                 <li
                   key={line.id}
+                  data-cart-misfit-anchor={idx === firstMisfitIdx ? "true" : undefined}
                   style={{
                     padding: "16px 20px",
                     borderBottom: "1px solid var(--color-border)",

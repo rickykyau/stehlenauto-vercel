@@ -508,17 +508,36 @@ export function BuyBox({
                               background: "transparent",
                               border: "1px solid var(--color-primary)",
                               color: "var(--color-primary)",
-                              padding: "8px 14px",
+                              padding: "10px 14px",
                               fontSize: 11,
                               letterSpacing: "0.08em",
                               fontWeight: 700,
                               borderRadius: "var(--radius-sm)",
                               cursor: "pointer",
-                              textTransform: "uppercase",
+                              textAlign: "left",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 3,
+                              width: "100%",
                             }}
                           >
-                            ↻ Yes, my truck has a {matchingOpt} —
-                            update my saved spec
+                            {/* Cycle 14AU F-2 (Jordan): tightened label,
+                                "truck" → "vehicle" per CLAUDE.md, two-line
+                                so 320px viewport doesn't truncate. */}
+                            <span style={{ textTransform: "uppercase" }}>
+                              ↻ Update my saved spec
+                            </span>
+                            <span
+                              style={{
+                                fontSize: 10,
+                                letterSpacing: "0.04em",
+                                color: "var(--color-muted)",
+                                textTransform: "none",
+                                fontWeight: 500,
+                              }}
+                            >
+                              My vehicle has a {matchingOpt}
+                            </span>
                           </button>
                         </div>
                       );

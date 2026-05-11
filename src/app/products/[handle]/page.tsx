@@ -32,6 +32,7 @@ import { getDimensionOptions } from "@/lib/fitment/dimensions";
 import { getWarehouseNote, normalizeNoteHtml } from "@/lib/fitment/warehouse-notes";
 import { getBedLengthSiblings } from "@/lib/fitment/siblings";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
+import WarehouseNoteDisclosure from "@/components/commerce/warehouse-note-disclosure";
 
 // Personalized per visitor (cookie-driven fitment + sub-model), so render on each request.
 export const dynamic = "force-dynamic";
@@ -1057,16 +1058,17 @@ export default async function PdpPage({
                   ? "WAREHOUSE NOTE — READ BEFORE ORDERING"
                   : "WAREHOUSE FITMENT NOTE"}
               </div>
-              <div
-                className="warehouse-note"
-                style={{
-                  fontSize: 13,
-                  lineHeight: 1.6,
-                  color: "var(--color-foreground)",
-                }}
-              >
-                {renderShopifyHtml(warehouseNote.notes)}
-              </div>
+              {/* Cycle 14AU F-6 (Jordan): long warehouse notes (Will-Not-Fit
+                  exclusion lists, install caveats) buried the buy-box on
+                  mobile. Collapse to a 2-line preview with an explicit "Read
+                  full note" toggle. The fade preserves "there's more to
+                  read" without forcing the customer to scroll past 12 lines
+                  of legal-style copy to reach Add to Cart. */}
+              <WarehouseNoteDisclosure
+                rendered={renderShopifyHtml(warehouseNote.notes)}
+                plainTextLength={warehouseNote.notes.replace(/<[^>]+>/g, "").length}
+                hasWarning={warehouseNote.has_warning}
+              />
             </div>
           )}
 

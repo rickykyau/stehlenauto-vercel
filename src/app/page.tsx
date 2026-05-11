@@ -454,7 +454,13 @@ export default async function HomePage() {
           same lightness tier it now registers as a distinct stripe
           instead of disappearing into the body, AND sets up the
           dark→light tone break against the upcoming light category
-          section below — the RoughCountry warm-off-black principle. */}
+          section below — the RoughCountry warm-off-black principle.
+          Cycle 14AU F-8 (Jordan): hide for visitors with a saved garage
+          vehicle. The "Bought from us on eBay or Amazon?" pitch targets
+          marketplace cross-shoppers — once a customer has saved a
+          vehicle they're already engaged on stehlenauto.com and the
+          band becomes noise above the categories grid. */}
+      {!savedVehicle && (
       <section
         style={{
           background: "var(--color-surface-warm)",
@@ -500,6 +506,7 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+      )}
 
       {/* Categories grid — Cycle 14AN (Diana section-tone audit): this is
           THE light-section break in the home page. Six consecutive flat-

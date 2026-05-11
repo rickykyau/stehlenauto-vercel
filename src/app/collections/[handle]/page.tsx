@@ -726,6 +726,39 @@ export default async function CollectionPage({
                       .
                     </>
                   );
+                } else if (
+                  vehicle &&
+                  categoryDimGroups.size > 0 &&
+                  !dimensionApplied
+                ) {
+                  // Cycle 14AU F-5 (Jordan): vehicle is set + this category
+                  // requires a dimension picker (bed length, cab type) but
+                  // the customer hasn't picked one. Showing "no matches yet"
+                  // misleads — the real cause is "we can't show fits without
+                  // knowing your bed length". Point them at the picker
+                  // chips above instead of the warehouse fallback.
+                  const dimLabel = Array.from(categoryDimGroups)
+                    .map((g) =>
+                      g === "bed_length"
+                        ? "bed length"
+                        : g === "cab_type"
+                          ? "cab type"
+                          : g === "trim"
+                            ? "trim"
+                            : g === "doors"
+                              ? "door count"
+                              : String(g).replace(/_/g, " "),
+                    )
+                    .join(" and ");
+                  title = `SELECT YOUR ${dimLabel.toUpperCase()} ABOVE TO SEE FITS`;
+                  body = (
+                    <>
+                      Pick your {dimLabel} from the chips above the products —
+                      we&apos;ll show only {collection.title.toLowerCase()}{" "}
+                      that bolt right onto your {vehicle.year} {vehicle.make}{" "}
+                      {vehicle.model}.
+                    </>
+                  );
                 } else if (vehicle && narrowingApplied) {
                   title = `NO MATCHES FOR YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} WITH THESE FILTERS`;
                   body = (
