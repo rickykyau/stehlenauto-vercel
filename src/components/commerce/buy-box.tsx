@@ -469,6 +469,60 @@ export function BuyBox({
                       buying for a different vehicle.
                     </>
                   )}
+                  {/* Cycle 14AT (owner): inline action — when the saved spec
+                      is wrong (customer set up garage with the wrong bed
+                      length months ago and is on the right product now),
+                      one-tap fixes the saved cookie instead of forcing a
+                      navigate-away or YMM modal restart. Find the chip option
+                      whose numeric bed length matches the product's spec, then
+                      persist it. Falls back gracefully if no matching option
+                      is in this strip's option list. */}
+                  {s.group === "bed_length" &&
+                    productSpec &&
+                    (() => {
+                      const productNum = chipToBedLen(productSpec);
+                      const matchingOpt = s.options.find(
+                        (o) => chipToBedLen(o) === productNum,
+                      );
+                      if (!matchingOpt || !vehicle?.id) return null;
+                      return (
+                        <div style={{ marginTop: 10 }}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPicks((p) => ({
+                                ...p,
+                                [s.group]: matchingOpt,
+                              }));
+                              void persist(s.group, matchingOpt);
+                              if (typeof window !== "undefined") {
+                                window.dispatchEvent(
+                                  new CustomEvent(
+                                    "stehlen:submodel:change",
+                                  ),
+                                );
+                              }
+                            }}
+                            className="mono"
+                            style={{
+                              background: "transparent",
+                              border: "1px solid var(--color-primary)",
+                              color: "var(--color-primary)",
+                              padding: "8px 14px",
+                              fontSize: 11,
+                              letterSpacing: "0.08em",
+                              fontWeight: 700,
+                              borderRadius: "var(--radius-sm)",
+                              cursor: "pointer",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            ↻ Yes, my truck has a {matchingOpt} —
+                            update my saved spec
+                          </button>
+                        </div>
+                      );
+                    })()}
                 </div>
               );
             }
