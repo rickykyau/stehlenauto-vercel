@@ -88,6 +88,14 @@ export function CollectionToolbar({
             flexWrap: "wrap",
           }}
         >
+          {/* Cycle 14AY-fix1 (Ren R2 BUG-R2-001 MINOR): both toolbar
+              chip variants were below the 44px WCAG/HIG floor. The
+              vehicle-set chip was 32px (explicit minHeight); the no-
+              vehicle chip inherited the 24px .chip class default.
+              Both open the YMM modal — primary mobile interaction.
+              Bumped both to minHeight: 44 + inline-flex centering so
+              the visual chip stays compact while the tap area meets
+              the standard. */}
           {vehicle ? (
             <button
               type="button"
@@ -99,7 +107,9 @@ export function CollectionToolbar({
                 background: "var(--color-surface-2)",
                 borderColor: "var(--color-border)",
                 color: "var(--color-foreground)",
-                minHeight: 32,
+                minHeight: 44,
+                display: "inline-flex",
+                alignItems: "center",
               }}
             >
               <Icons.truck size={10} /> FILTERING FOR {vehicle.year}{" "}
@@ -111,7 +121,12 @@ export function CollectionToolbar({
               type="button"
               onClick={openYmmModal}
               className="chip"
-              style={{ cursor: "pointer" }}
+              style={{
+                cursor: "pointer",
+                minHeight: 44,
+                display: "inline-flex",
+                alignItems: "center",
+              }}
             >
               <Icons.truck size={10} /> UNIVERSAL · ADD VEHICLE TO FILTER
             </button>
