@@ -119,10 +119,16 @@ export function MobileFilterDrawer({
                   border: 0,
                   cursor: "pointer",
                   color: "var(--color-foreground)",
-                  padding: 6,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 44,
+                  height: 44,
+                  margin: -10,
+                  padding: 0,
                 }}
               >
-                <Icons.close size={16} />
+                <Icons.close size={20} />
               </button>
             </div>
             <div style={{ overflow: "auto", padding: 16 }}>

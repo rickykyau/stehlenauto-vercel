@@ -186,7 +186,13 @@ export default async function SearchPage({
                   key={t}
                   href={`/search?q=${encodeURIComponent(t)}`}
                   className="chip"
-                  style={{ height: 32, padding: "0 12px", fontSize: 11 }}
+                  style={{
+                    minHeight: 44,
+                    padding: "0 14px",
+                    fontSize: 11,
+                    display: "inline-flex",
+                    alignItems: "center",
+                  }}
                 >
                   {t.toUpperCase()}
                 </Link>
@@ -368,7 +374,11 @@ export default async function SearchPage({
                   key={c.slug}
                   href={`/collections/${c.slug}`}
                   className="chip"
-                  style={{ height: 26 }}
+                  style={{
+                    minHeight: 44,
+                    display: "inline-flex",
+                    alignItems: "center",
+                  }}
                 >
                   {c.name.toUpperCase()}
                 </Link>

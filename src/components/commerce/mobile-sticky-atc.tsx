@@ -206,9 +206,19 @@ export function MobileStickyAtc({
               letterSpacing: "0.08em",
             }}
           >
-            {product.title.length > 28
-              ? product.title.slice(0, 28) + "…"
-              : product.title}
+            {/* Cycle 14AZ-fix2 (Mike F-7): char-slice truncation cut
+                mid-word — "Wrangler Adva…" left the customer guessing
+                if it was "Advanced" or "Advantage." Truncate at the
+                last word boundary inside the visible window so partial
+                product-line names never confuse the buyer at ATC. */}
+            {(() => {
+              if (product.title.length <= 28) return product.title;
+              const slice = product.title.slice(0, 28);
+              const lastSpace = slice.lastIndexOf(" ");
+              const safe =
+                lastSpace > 14 ? slice.slice(0, lastSpace) : slice;
+              return safe + "…";
+            })()}
           </div>
           <div
             className="mono"

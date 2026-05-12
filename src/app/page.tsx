@@ -563,11 +563,13 @@ export default async function HomePage() {
               fontSize: 12,
               color: "var(--color-section-light-muted)",
               letterSpacing: "0.08em",
-              display: "flex",
+              display: "inline-flex",
               alignItems: "center",
               gap: 6,
               whiteSpace: "nowrap", // Cycle 11 — owner mobile QA: was wrapping to "VIEW / ALL"
               flexShrink: 0,
+              minHeight: 44,
+              paddingBlock: 12,
             }}
           >
             VIEW ALL <Icons.arrowR size={12} />
@@ -742,6 +744,10 @@ export default async function HomePage() {
               letterSpacing: "0.08em",
               whiteSpace: "nowrap",
               flexShrink: 0,
+              display: "inline-flex",
+              alignItems: "center",
+              minHeight: 44,
+              paddingBlock: 12,
             }}
           >
             ALL MAKES →

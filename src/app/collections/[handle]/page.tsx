@@ -803,29 +803,86 @@ export default async function CollectionPage({
                     </>
                   );
                 } else if (vehicle && narrowingApplied) {
-                  title = `NO MATCHES FOR YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} WITH THESE FILTERS`;
-                  body = (
-                    <>
-                      Tap{" "}
-                      <ClearFiltersLink
-                        collectionHandle={collection.handle}
-                        vehicle={vehicle ?? undefined}
-                        answeredGroups={relevantDimensionAnswers.map((a) => a.group)}
-                        style={{ color: "var(--color-primary)", fontWeight: 600 }}
-                      >
-                        CLEAR FILTERS
-                      </ClearFiltersLink>{" "}
-                      to see all {collection.title.toLowerCase()} that fit
-                      your vehicle, or{" "}
-                      <Link
-                        href="/collections"
-                        style={{ color: "var(--color-primary)" }}
-                      >
-                        browse other categories
-                      </Link>
-                      .
-                    </>
-                  );
+                  // Cycle 14AZ-fix2 (Mike F-5): when ONLY a sub-model
+                  // dimension narrows (no sidebar facets), distinguish
+                  // "SPORT trim not tagged" from "filters too narrow."
+                  // Mike's Wrangler/SPORT case: customer picks SPORT,
+                  // gets zero, reads the generic copy as "this brand
+                  // doesn't make bull guards for me." Honest version
+                  // names the specific dimension and confirms the
+                  // parent vehicle DOES have fits — just not for that
+                  // exact sub-model tag.
+                  const dimOnly =
+                    dimensionApplied && !sidebarFilterApplied;
+                  if (dimOnly && relevantDimensionAnswers.length === 1) {
+                    const ans = relevantDimensionAnswers[0];
+                    const dimLabel =
+                      ans.group === "bed_length"
+                        ? "BED LENGTH"
+                        : ans.group === "cab_type"
+                          ? "CAB TYPE"
+                          : ans.group === "trim"
+                            ? "TRIM"
+                            : ans.group === "doors"
+                              ? "DOOR COUNT"
+                              : String(ans.group).replace(/_/g, " ").toUpperCase();
+                    title = `NO ${collection.title.toUpperCase()} TAGGED FOR YOUR ${ans.value.toUpperCase()} ${dimLabel} YET`;
+                    body = (
+                      <>
+                        We don&apos;t have {collection.title.toLowerCase()}{" "}
+                        specifically tagged for{" "}
+                        <strong>
+                          {ans.value} {dimLabel.toLowerCase()}
+                        </strong>{" "}
+                        yet — but your {vehicle.year} {vehicle.make}{" "}
+                        {vehicle.model} likely has other fits. Tap{" "}
+                        <ClearFiltersLink
+                          collectionHandle={collection.handle}
+                          vehicle={vehicle ?? undefined}
+                          answeredGroups={relevantDimensionAnswers.map(
+                            (a) => a.group,
+                          )}
+                          style={{
+                            color: "var(--color-primary)",
+                            fontWeight: 600,
+                          }}
+                        >
+                          CLEAR THIS FILTER
+                        </ClearFiltersLink>{" "}
+                        to see all {collection.title.toLowerCase()} that fit
+                        your vehicle.
+                      </>
+                    );
+                  } else {
+                    title = `NO MATCHES FOR YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} WITH THESE FILTERS`;
+                    body = (
+                      <>
+                        Tap{" "}
+                        <ClearFiltersLink
+                          collectionHandle={collection.handle}
+                          vehicle={vehicle ?? undefined}
+                          answeredGroups={relevantDimensionAnswers.map(
+                            (a) => a.group,
+                          )}
+                          style={{
+                            color: "var(--color-primary)",
+                            fontWeight: 600,
+                          }}
+                        >
+                          CLEAR FILTERS
+                        </ClearFiltersLink>{" "}
+                        to see all {collection.title.toLowerCase()} that fit
+                        your vehicle, or{" "}
+                        <Link
+                          href="/collections"
+                          style={{ color: "var(--color-primary)" }}
+                        >
+                          browse other categories
+                        </Link>
+                        .
+                      </>
+                    );
+                  }
                 } else if (vehicle) {
                   title = `NO ${collection.title.toUpperCase()} FOR YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} YET`;
                   body = (

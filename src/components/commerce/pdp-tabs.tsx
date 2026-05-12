@@ -314,6 +314,11 @@ export function PdpTabs({
 
   return (
     <section className="container-x" style={{ paddingBottom: 64 }}>
+      {/* Cycle 14AZ-fix1 (Ren BUG-AZ-R1-010): on 375px the tab strip
+          overflows but had no visual scroll affordance — INSTALLATION /
+          SHIPPING / WARRANTY were silently cut off. Right-edge mask fade
+          signals "more tabs this way." Harmless on wide viewports where
+          the rightmost tab sits well clear of the 32px fade zone. */}
       <div
         className="no-scrollbar"
         style={{
@@ -321,6 +326,10 @@ export function PdpTabs({
           gap: 0,
           borderBottom: "1px solid var(--color-border)",
           overflowX: "auto",
+          maskImage:
+            "linear-gradient(to right, black calc(100% - 32px), transparent)",
+          WebkitMaskImage:
+            "linear-gradient(to right, black calc(100% - 32px), transparent)",
         }}
         role="tablist"
       >

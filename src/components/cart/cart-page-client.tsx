@@ -250,6 +250,8 @@ export function CartPageClient({
                 style={{
                   marginTop: 12,
                   color: "var(--color-muted)",
+                  minHeight: 44,
+                  padding: "0 16px",
                 }}
               >
                 EMPTY CART

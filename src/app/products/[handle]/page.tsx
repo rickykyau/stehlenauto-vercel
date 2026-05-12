@@ -713,9 +713,12 @@ export default async function PdpPage({
                     border: 0,
                     color: "var(--color-muted)",
                     fontSize: 11,
-                    marginTop: 8,
+                    marginTop: 4,
                     cursor: "pointer",
-                    padding: 0,
+                    padding: "12px 0",
+                    minHeight: 44,
+                    display: "inline-flex",
+                    alignItems: "center",
                     textDecoration: "underline",
                   }}
                 >

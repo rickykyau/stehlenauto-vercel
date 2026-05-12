@@ -138,7 +138,7 @@ export function CollectionToolbar({
             value={currentSort}
             onChange={(e) => onSortChange(e.target.value)}
             className="select"
-            style={{ width: 220, height: 36 }}
+            style={{ width: 220 }}
             aria-label="Sort by"
           >
             {SORT_OPTIONS.map((o) => (

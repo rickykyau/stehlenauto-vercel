@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 
 export function ProductGallery({
@@ -18,6 +18,24 @@ export function ProductGallery({
 
   const prev = () => setIdx((i) => (i - 1 + total) % total);
   const next = () => setIdx((i) => (i + 1) % total);
+
+  // Cycle 14AZ-fix1 (Ren BUG-AZ-R1-001): mobile gallery had 36px nav buttons
+  // and no swipe gesture — primary image navigation forced small-target taps.
+  // Bump to 44px AND wire a horizontal touch-swipe handler so iOS/Android
+  // customers can swipe the way every product gallery they've ever used works.
+  const touchStartX = useRef<number | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0]?.clientX ?? null;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current == null || total < 2) return;
+    const endX = e.changedTouches[0]?.clientX ?? touchStartX.current;
+    const dx = endX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(dx) < 40) return;
+    if (dx < 0) next();
+    else prev();
+  };
 
   if (total === 0) {
     return (
@@ -85,11 +103,14 @@ export function ProductGallery({
       {/* Main */}
       <div
         className="product-img-bg"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
         style={{
           borderRadius: "var(--radius-md)",
           position: "relative",
           aspectRatio: "1",
           overflow: "hidden",
+          touchAction: "pan-y",
         }}
       >
         <Image
@@ -133,7 +154,7 @@ export function ProductGallery({
               aria-label="Previous image"
               style={navBtn}
             >
-              <Icons.chevLeft size={14} />
+              <Icons.chevLeft size={18} />
             </button>
             <button
               type="button"
@@ -141,7 +162,7 @@ export function ProductGallery({
               aria-label="Next image"
               style={navBtn}
             >
-              <Icons.chevRight size={14} />
+              <Icons.chevRight size={18} />
             </button>
           </div>
         )}
@@ -151,8 +172,8 @@ export function ProductGallery({
 }
 
 const navBtn: React.CSSProperties = {
-  width: 36,
-  height: 36,
+  width: 44,
+  height: 44,
   borderRadius: "50%",
   background: "rgba(0,0,0,0.6)",
   border: 0,

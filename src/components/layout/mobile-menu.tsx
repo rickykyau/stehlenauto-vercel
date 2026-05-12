@@ -87,11 +87,17 @@ export function MobileMenu() {
                   background: "transparent",
                   border: 0,
                   color: "var(--color-foreground)",
-                  display: "flex",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 44,
+                  height: 44,
+                  margin: -10,
+                  padding: 0,
                   cursor: "pointer",
                 }}
               >
-                <Icons.close size={20} />
+                <Icons.close size={22} />
               </button>
             </div>
             {/* Cycle 14AR-fix8 (QA-found BUG-YMM-2 / Jordan F-11): mobile

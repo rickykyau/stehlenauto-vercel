@@ -123,9 +123,10 @@ export function SearchInput({ defaultQuery = "" }: { defaultQuery?: string }) {
             className="btn btn-sm"
             style={{
               position: "absolute",
-              right: 8,
-              top: 8,
-              height: 40,
+              right: 6,
+              top: 6,
+              height: 44,
+              minWidth: 64,
             }}
           >
             CLEAR
