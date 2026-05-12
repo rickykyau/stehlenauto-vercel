@@ -600,13 +600,13 @@ export function CartPageClient({
                     onChange={(e) => setPromo(e.target.value)}
                     className="input"
                     placeholder="Enter code"
-                    style={{ height: 40, flex: 1, fontSize: 13 }}
+                    style={{ height: 44, flex: 1, fontSize: 13 }}
                   />
                   <button
                     type="button"
                     onClick={tryApplyPromo}
                     className="btn btn-sm"
-                    style={{ height: 40 }}
+                    style={{ height: 44, padding: "0 16px" }}
                   >
                     APPLY
                   </button>

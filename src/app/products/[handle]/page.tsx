@@ -450,8 +450,15 @@ export default async function PdpPage({
             consuming ~36-48px of above-fold real estate before the
             customer reaches the fitment badge. The h1 below already
             renders the full title — truncating here doesn't lose
-            information, it just stops the breadcrumb from doubling up. */}
+            information, it just stops the breadcrumb from doubling up.
+            Cycle 14AZ-fix3 (Mike F-N5): CSS text-overflow:ellipsis cuts
+            at the glyph boundary inside the visible width — Mike saw
+            "Bed Sof…" where "Soft" got chopped. Pre-truncate the string
+            at the nearest word boundary so the partial product line
+            never ends mid-word; the title attribute carries the full
+            name for tap-and-hold reveal. */}
         <span
+          title={product.title}
           style={{
             color: "var(--color-foreground)",
             overflow: "hidden",
@@ -462,7 +469,15 @@ export default async function PdpPage({
             verticalAlign: "bottom",
           }}
         >
-          {product.title}
+          {(() => {
+            const t = product.title;
+            const limit = 36;
+            if (t.length <= limit) return t;
+            const slice = t.slice(0, limit);
+            const lastSpace = slice.lastIndexOf(" ");
+            const safe = lastSpace > 16 ? slice.slice(0, lastSpace) : slice;
+            return safe + "…";
+          })()}
         </span>
       </nav>
 
@@ -822,6 +837,7 @@ export default async function PdpPage({
                 <Link
                   href={`/vehicle/${vehicle.make.toLowerCase()}-${vehicle.model.toLowerCase().replace(/\s+/g, "-")}`}
                   className="btn btn-sm"
+                  style={{ minHeight: 44, padding: "0 16px" }}
                 >
                   SHOP PARTS FOR YOUR {vehicle.make.toUpperCase()} →
                 </Link>
@@ -977,7 +993,7 @@ export default async function PdpPage({
                 </div>
                 <YmmButton
                   className="btn btn-primary btn-sm"
-                  style={{ marginTop: 12 }}
+                  style={{ marginTop: 12, minHeight: 44, padding: "0 16px" }}
                 >
                   SELECT YOUR VEHICLE →
                 </YmmButton>

@@ -783,6 +783,8 @@ export default async function VehicleHubPage({
                           marginTop: 14,
                           justifyContent: "space-between",
                           textDecoration: "none",
+                          minHeight: 44,
+                          padding: "0 16px",
                         }}
                       >
                         SHOP {g.code} PARTS <Icons.arrowR size={12} />
