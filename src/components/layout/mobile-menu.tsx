@@ -9,6 +9,15 @@ import { openYmmModal } from "@/components/fitment/ymm-events";
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
+  // Cycle 14BA-fix1 (owner iOS test): mobile drawer used to render each
+  // top-level mega-section as a flat <Link href={section.href}>, which
+  // sent EXTERIOR / CARGO & BED / LIGHTING / TOWING all to either
+  // /collections (generic shop) or the FIRST sub-collection of the
+  // group — confusing the customer who expected each tap to drill into
+  // that category. Desktop has multi-column hover panels; mobile needs
+  // an accordion. Single-open accordion: tap to expand sub-items, tap
+  // again or tap another row to switch.
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -20,6 +29,16 @@ export function MobileMenu() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  // Reset accordion state when the drawer closes so reopening starts collapsed.
+  useEffect(() => {
+    if (!open) setExpanded(null);
+  }, [open]);
+
+  const closeAll = () => {
+    setExpanded(null);
+    setOpen(false);
+  };
 
   return (
     <>
@@ -142,32 +161,105 @@ export function MobileMenu() {
               </span>
               <Icons.chevRight size={16} />
             </button>
-            {MEGA_SECTIONS.map((section) => (
-              <Link
-                key={section.label}
-                href={section.href}
-                onClick={() => setOpen(false)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "18px 20px",
-                  borderBottom: "1px solid var(--color-border)",
-                }}
-              >
-                <span
-                  className="mono"
-                  style={{
-                    fontSize: 13,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                  }}
+            {MEGA_SECTIONS.map((section) => {
+              const isOpen = expanded === section.label;
+              return (
+                <div
+                  key={section.label}
+                  style={{ borderBottom: "1px solid var(--color-border)" }}
                 >
-                  {section.label}
-                </span>
-                <Icons.chevRight size={16} />
-              </Link>
-            ))}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setExpanded((prev) =>
+                        prev === section.label ? null : section.label,
+                      )
+                    }
+                    aria-expanded={isOpen}
+                    aria-controls={`mobile-menu-section-${section.label.replace(/\s+/g, "-").toLowerCase()}`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "100%",
+                      padding: "18px 20px",
+                      background: "transparent",
+                      border: 0,
+                      cursor: "pointer",
+                      color: "var(--color-foreground)",
+                      textAlign: "left",
+                      minHeight: 44,
+                    }}
+                  >
+                    <span
+                      className="mono"
+                      style={{
+                        fontSize: 13,
+                        letterSpacing: "0.1em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {section.label}
+                    </span>
+                    <span
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        transition: "transform 160ms ease",
+                        transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+                      }}
+                    >
+                      <Icons.chevRight size={16} />
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <div
+                      id={`mobile-menu-section-${section.label.replace(/\s+/g, "-").toLowerCase()}`}
+                      style={{
+                        background: "var(--color-surface)",
+                        borderTop: "1px solid var(--color-border)",
+                      }}
+                    >
+                      {section.columns.map((col) => (
+                        <div key={col.title}>
+                          <div
+                            className="eyebrow"
+                            style={{
+                              padding: "14px 24px 6px",
+                              fontSize: 10,
+                              letterSpacing: "0.14em",
+                              color: "var(--color-muted)",
+                            }}
+                          >
+                            {col.title}
+                          </div>
+                          {col.items.map((item) => (
+                            <Link
+                              key={`${col.title}-${item.label}-${item.href}`}
+                              href={item.href}
+                              onClick={closeAll}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                padding: "12px 24px",
+                                minHeight: 44,
+                                fontSize: 14,
+                                color: "var(--color-foreground)",
+                                textDecoration: "none",
+                              }}
+                            >
+                              <span>{item.label}</span>
+                              <Icons.chevRight size={14} />
+                            </Link>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
             <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 8 }}>
               {/* Cycle 14AR-fix7 (QA-found BUG-14AZ-3 P2): href was /account
                   which middleware bounces to /sign-in?redirect_url=/account
