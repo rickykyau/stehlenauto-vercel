@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/commerce/product-card";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { YearPicker } from "./year-picker";
 import { CATEGORIES, POPULAR_VEHICLES, PRODUCTS } from "@/lib/catalog/mock";
+import ymmTreeData from "@/../data/ymm_tree.json";
 import { searchProducts } from "@/lib/catalog";
 import {
   getAvailableCategoriesForMakeModel,
@@ -37,6 +38,25 @@ const MAKE_UPPERCASE = new Set([
   "mb",
   "amg",
 ]);
+
+// Cycle 14AY (Ren R1 BUG-001 P2): build the set of known makes from
+// ymm_tree.json so parseSlug can reject /vehicle/foobar with a 404
+// instead of synthesizing "FOOBAR ACCESSORIES" pages. The earlier
+// fallback title-cased anything with a hyphen, producing SEO-toxic
+// phantom pages for any slug. Computed once at module load.
+const KNOWN_MAKES_LOWER: Set<string> = (() => {
+  const set = new Set<string>();
+  const tree = ymmTreeData as Record<string, Record<string, unknown>>;
+  for (const year of Object.keys(tree)) {
+    for (const make of Object.keys(tree[year] ?? {})) {
+      set.add(make.toLowerCase());
+    }
+  }
+  // Aliases the slug could carry that the tree doesn't store under that
+  // exact key (e.g. "chevy" → "chevrolet"). Include both.
+  set.add("chevy");
+  return set;
+})();
 
 function parseSlug(
   slug: string,
@@ -73,6 +93,13 @@ function parseSlug(
   // Fallback: split on first hyphen, treat as make-model.
   const parts = remainder.split("-");
   if (parts.length < 2) return null;
+  // Cycle 14AY (Ren R1 BUG-001 P2): validate the candidate make against
+  // the known-makes set derived from ymm_tree.json. Without this guard
+  // /vehicle/foobar-xyz used to synthesize "FOOBAR XYZ ACCESSORIES" at
+  // HTTP 200 — SEO-toxic phantom page that Googlebot would index. Now
+  // unknown makes return null → page calls notFound() → HTTP 404.
+  const candidateMake = parts[0]!.toLowerCase();
+  if (!KNOWN_MAKES_LOWER.has(candidateMake)) return null;
   // Cycle 14AR-fix26 (Mike R11 F-3 + F-4): a slug like "wrangler-jl"
   // used to render as "Wrangler Jl" (h1 + page title + categories
   // lookup all wrong because the canonical CA model is "Wrangler JL").

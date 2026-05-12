@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
-// notFound() removed in Cycle 1 — unknown collection slugs now render a friendly empty state.
+// Cycle 14AY (Ren R1 BUG-002 P2): notFound() reinstated for unknown
+// slugs that aren't on a small whitelist of marketing handles. The
+// Cycle-1 friendly-empty-state behaviour was scoped to known chrome
+// links (best-sellers, sale, lighting, etc.) but had drifted to
+// accept ANY handle and synthesize a page from the slug. SEO-toxic
+// — Googlebot would index every typo as a soft-404. Now: known
+// CATEGORIES + small marketing-handle whitelist render normally;
+// everything else returns notFound().
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -323,7 +331,29 @@ export default async function CollectionPage({
   // are linked from chrome (best-sellers, new-arrivals, sale, lighting, etc.),
   // synthesize a friendly empty collection that keeps the chrome promise alive
   // and points back to the catalog index.
+  // Cycle 14AY (Ren R1 BUG-002 P2): the friendly-empty-state was scoped
+  // to chrome-linked marketing slugs, but the implementation accepted ANY
+  // unknown handle. /collections/foobar-xyz returned 200 with a synthesized
+  // "Foobar Xyz" page — SEO-toxic. Gate the synthesis to a whitelist:
+  // known categories from CATEGORIES + a small marketing-handle list that
+  // appear in nav/footer/email links. Everything else → notFound().
+  const KNOWN_COLLECTION_HANDLES = new Set<string>([
+    ...CATEGORIES.map((c) => c.slug),
+    // Marketing handles that may appear in chrome but aren't in CATEGORIES
+    "best-sellers",
+    "new-arrivals",
+    "sale",
+    "deals",
+    "clearance",
+    "lighting",
+    "exterior",
+    "interior",
+    "all",
+  ]);
   if (!collection) {
+    if (!KNOWN_COLLECTION_HANDLES.has(handle)) {
+      notFound();
+    }
     const friendlyTitle = handle
       .split("-")
       .map((s) => (s ? s[0].toUpperCase() + s.slice(1) : s))

@@ -687,32 +687,17 @@ export default async function PdpPage({
                     </div>
                   );
                 })()}
-                {/* Cycle 14X+ post-sync (Mike Product 3): if the merch
-                    team noted an engine exclusion for this product, warn
-                    the buyer up-front in the green card. The fitment is
-                    correct at the YMM level but the buyer still needs to
-                    confirm engine. */}
-                {(() => {
-                  const excl =
-                    product.fitmentTable?.subattributes?.engineExclusions ?? [];
-                  if (excl.length === 0) return null;
-                  return (
-                    <div
-                      style={{
-                        marginTop: 8,
-                        padding: "6px 10px",
-                        background: "rgba(245,168,35,0.1)",
-                        border: "1px solid rgba(245,168,35,0.4)",
-                        borderRadius: "var(--radius-sm)",
-                        fontSize: 12,
-                        color: "var(--color-foreground)",
-                      }}
-                    >
-                      <strong>Engine note:</strong> Will not fit{" "}
-                      {excl.join(" / ")} engine.
-                    </div>
-                  );
-                })()}
+                {/* Cycle 14X+ post-sync (Mike Product 3): originally
+                    rendered an engine-exclusion warning inside the green
+                    CONFIRMED FITMENT card AS WELL AS the standalone
+                    callout above the buy box (line 538). On any OOS or
+                    fits-true product with engineExclusions, both rendered
+                    — the customer saw the same "Will NOT fit EcoBoost
+                    engine" warning twice. Cycle 14AY (Jordan R1 F-1):
+                    in-card duplicate removed. The standalone callout
+                    above the buy box (always rendered when exclusions
+                    are present) is the single authoritative location
+                    for this warning. */}
                 <div
                   style={{
                     fontSize: 12,
@@ -1128,11 +1113,20 @@ export default async function PdpPage({
                 // business days" claim when the product is OOS — Mike saw
                 // "Out of Stock" and "Ships in 1-2 business days" in the same
                 // viewport and called it contradictory.
+                // Cycle 14AY (Mike R1 F-2 MINOR): Mike's only friction
+                // on the buy mission was "no shipping ETA on PDP — I
+                // can't tell if it ships by Friday." Real ZIP/carrier
+                // integration isn't shipped yet (per the comment above)
+                // but the in-stock case can carry an honest transit
+                // band so customers can self-estimate without leaving
+                // the PDP. Warehouse is in Southern California — 1-2
+                // day handling + 3-7 day ground transit nationwide is
+                // the truthful range until real carrier rates land.
                 Icon: Icons.shipping,
                 text:
                   product.inventory > 0 ? (
                     <>
-                      Free shipping, no minimum · <strong>Ships in 1-2 business days</strong>
+                      Free shipping · <strong>Ships in 1-2 business days</strong> from CA · arrives in 3-7 days
                     </>
                   ) : (
                     <>

@@ -105,7 +105,7 @@ See `.env.example`. Set in Vercel via dashboard or `vercel env`.
 ## What's actually built
 
 **Routes** (22 total, all SSR):
-- `/` — Home (hero, YMM band, best sellers, categories, popular vehicles, testimonials, recently viewed)
+- `/` — Home (hero, YMM band, categories, popular vehicles, reactivation banner). Best-sellers / testimonials / recently-viewed removed (best-sellers per partner direction, testimonials per Cycle 14Z batch 4 — were hardcoded fakes). When restored, update QA test plan Section 2 to re-add S6/S7 surfaces.
 - `/collections` and `/collections/[handle]` — category index + dynamic collection page with sticky toolbar + sidebar filters
 - `/products/[handle]` — PDP w/ gallery, sticky buy box, conditional sub-model strips (per `lib/fitment/sub-model.ts`), 7-tab specs, JSON-LD Product schema
 - `/cart` — full cart page with promo + checkout handoff
