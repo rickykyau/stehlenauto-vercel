@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 
 const QUICK_PROMPTS = [
-  "Will this fit my truck?",
+  "Will this fit my vehicle?",
   "Track an order",
   "Install help",
   "Talk to a human",

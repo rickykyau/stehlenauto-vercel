@@ -109,9 +109,9 @@ export default function AboutPage() {
               lineHeight: 1.6,
             }}
           >
-            Heavy-duty truck, SUV, and Jeep accessories engineered from
-            cold-rolled steel. No drilling. No guesswork. Built right next to
-            the trucks we sell parts for.
+            Heavy-duty vehicle accessories engineered from cold-rolled steel.
+            No drilling. No guesswork. Built right next to the rigs we sell
+            parts for.
           </p>
         </div>
       </section>
@@ -133,7 +133,7 @@ export default function AboutPage() {
             maxWidth: 720,
           }}
         >
-          From a single garage bay to the warehouses behind your truck.
+          From a single garage bay to the warehouses behind your vehicle.
         </h2>
         <div
           className="grid grid-cols-1 md:grid-cols-3"

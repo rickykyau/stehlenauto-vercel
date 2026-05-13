@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     template: "%s | Stehlen Auto",
   },
   description:
-    "Heavy-duty truck, SUV, and Jeep accessories engineered from cold-rolled steel. No drilling required. Fitment guaranteed for your vehicle.",
+    "Heavy-duty vehicle accessories engineered from cold-rolled steel. No drilling required. Fitment guaranteed for your vehicle.",
   keywords: [
     "truck accessories",
     "tonneau cover",
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
     siteName: "Stehlen Auto",
     title: "Stehlen Auto — Heavy-Duty Vehicle Accessories",
     description:
-      "Heavy-duty truck, SUV, and Jeep accessories. Fitment guaranteed.",
+      "Heavy-duty vehicle accessories. Fitment guaranteed.",
     images: [
       {
         url: "/images/hero-stehlen.jpg",
