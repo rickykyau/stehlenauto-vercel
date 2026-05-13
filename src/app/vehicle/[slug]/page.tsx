@@ -604,6 +604,45 @@ export default async function VehicleHubPage({
             selectedYear={garageMatchesHub ? String(garage.year) : null}
           />
         </div>
+        {/* Cycle 14BA-fix6 (owner): tapping a year previously refreshed
+            the page but didn't surface anything visible — the categories
+            and generations below stayed identical because Ford F-150 has
+            broad coverage across every year. Owner read this as "the tap
+            did nothing." Add an immediate status strip so the customer
+            sees a clear reaction the moment their year is registered. */}
+        {filterYear && (
+          <div
+            style={{
+              background: "rgba(0,0,0,0.15)",
+              borderTop: "1px solid rgba(0,0,0,0.18)",
+            }}
+          >
+            <div
+              className="container-x"
+              style={{
+                paddingTop: 10,
+                paddingBottom: 10,
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                flexWrap: "wrap",
+              }}
+            >
+              <span
+                className="mono"
+                style={{
+                  fontSize: 11,
+                  letterSpacing: "0.12em",
+                  fontWeight: 700,
+                  color: "var(--color-background)",
+                }}
+              >
+                ✓ NOW SHOWING PARTS THAT FIT YOUR {filterYear}{" "}
+                {make.toUpperCase()} {model.toUpperCase()}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* GENERATIONS — only render when we have authored data for this vehicle */}
@@ -632,25 +671,58 @@ export default async function VehicleHubPage({
             className="grid grid-cols-1 md:grid-cols-3"
             style={{ gap: 16 }}
           >
-            {generations.map((g) => (
+            {generations.map((g) => {
+              // Cycle 14BA-fix6 (owner): when the customer picks a year,
+              // highlight the generation card whose year-range contains
+              // it. "YOUR GENERATION" overrides "MOST POPULAR" because
+              // a returning customer cares about their gen, not the
+              // catalog's bestseller gen.
+              const yearTokens = g.years.match(/(\d{4})/g) ?? [];
+              const genStartYear = yearTokens[0]
+                ? parseInt(yearTokens[0], 10)
+                : null;
+              const genEndYear = yearTokens[1]
+                ? parseInt(yearTokens[1], 10)
+                : g.latestYear;
+              const pickedYearNum = filterYear
+                ? parseInt(String(filterYear), 10)
+                : null;
+              const isYourGen =
+                pickedYearNum !== null &&
+                genStartYear !== null &&
+                pickedYearNum >= genStartYear &&
+                pickedYearNum <= genEndYear;
+              return (
               <div
                 key={g.gen}
                 style={{
                   background: "var(--color-background)",
-                  border: "1px solid var(--color-border)",
+                  border: isYourGen
+                    ? "2px solid var(--color-primary)"
+                    : "1px solid var(--color-border)",
                   borderRadius: "var(--radius-md)",
                   overflow: "hidden",
                   position: "relative",
+                  boxShadow: isYourGen
+                    ? "0 0 0 4px rgba(245, 168, 35, 0.18)"
+                    : undefined,
                 }}
               >
-                {g.popular && (
+                {isYourGen ? (
+                  <span
+                    className="badge badge-best"
+                    style={{ position: "absolute", top: 14, right: 14, zIndex: 2 }}
+                  >
+                    YOUR GENERATION
+                  </span>
+                ) : g.popular ? (
                   <span
                     className="badge badge-best"
                     style={{ position: "absolute", top: 14, right: 14, zIndex: 2 }}
                   >
                     MOST POPULAR
                   </span>
-                )}
+                ) : null}
                 <div
                   style={{
                     aspectRatio: "4 / 3",
@@ -793,7 +865,8 @@ export default async function VehicleHubPage({
                   })()}
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
