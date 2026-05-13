@@ -464,6 +464,11 @@ export default async function VehicleHubPage({
           {/* Cycle 11 (owner mobile QA): used to be fixed fontSize:96, which
               clipped "WRANGLER" and "SILVERADO" off the right edge at 375px.
               Fluid clamp shrinks at narrow viewports. */}
+          {/* Cycle 14BA-fix7 (Jordan F-3): when the customer has already
+              picked a year, anchor it above the make/model so fitment
+              context stays visible at the top of the page even after
+              they scroll back up. Smaller scale keeps "JEEP / WRANGLER"
+              dominant. */}
           <h1
             style={{
               fontFamily: "var(--font-display)",
@@ -475,12 +480,30 @@ export default async function VehicleHubPage({
               wordBreak: "break-word",
             }}
           >
+            {filterYear && (
+              <span
+                style={{
+                  fontSize: "clamp(20px, 4vw, 32px)",
+                  color: "rgba(255,255,255,0.55)",
+                  display: "block",
+                  letterSpacing: "0.02em",
+                  marginBottom: 6,
+                  fontWeight: 600,
+                }}
+              >
+                {filterYear}
+              </span>
+            )}
             {make.toUpperCase()}
             <br />
             <span style={{ color: "var(--color-primary)" }}>
               {model.toUpperCase()}
             </span>
           </h1>
+          {/* Cycle 14BA-fix7 (Jordan F-5): hero copy flipped tense once
+              the customer's already picked a year — "Pick a year and
+              we'll handle the rest" read as a failure state to a
+              customer who'd done exactly that 5 seconds ago. */}
           <p
             style={{
               marginTop: 24,
@@ -490,7 +513,9 @@ export default async function VehicleHubPage({
               lineHeight: 1.6,
             }}
           >
-            {`Bolt-on accessories engineered for every ${make} ${model} generation. No drilling. No guesswork. Pick a year and we'll handle the rest.`}
+            {filterYear
+              ? `Showing parts engineered to bolt directly onto your ${filterYear} ${make} ${model}. No drilling. Fitment guaranteed.`
+              : `Bolt-on accessories engineered for every ${make} ${model} generation. No drilling. No guesswork. Pick a year and we'll handle the rest.`}
           </p>
           <div
             style={{
@@ -645,8 +670,81 @@ export default async function VehicleHubPage({
         )}
       </div>
 
-      {/* GENERATIONS — only render when we have authored data for this vehicle */}
-      {generations.length > 0 && (
+      {/* GENERATIONS — Cycle 14BA-fix7 (Jordan F-1): when year is known,
+          collapse to a single thin pill instead of two 400px cards.
+          The customer answered "which gen do I have?" by picking a
+          year — repeating the question with 800px of photo costs
+          ~4 viewports of scroll before products. Full cards stay for
+          the no-year-picked path where they help self-identification. */}
+      {generations.length > 0 && filterYear && (() => {
+        const matched = generations.find((g) => {
+          const tokens = g.years.match(/(\d{4})/g) ?? [];
+          const start = tokens[0] ? parseInt(tokens[0], 10) : null;
+          const end = tokens[1] ? parseInt(tokens[1], 10) : g.latestYear;
+          const y = parseInt(String(filterYear), 10);
+          return (
+            start !== null && Number.isFinite(y) && y >= start && y <= end
+          );
+        });
+        if (!matched) return null;
+        return (
+          <div
+            style={{
+              background: "var(--color-surface)",
+              borderBottom: "1px solid var(--color-border)",
+            }}
+          >
+            <div
+              className="container-x"
+              style={{
+                paddingTop: 14,
+                paddingBottom: 14,
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                flexWrap: "wrap",
+              }}
+            >
+              <span
+                className="mono"
+                style={{
+                  fontSize: 10,
+                  letterSpacing: "0.14em",
+                  color: "var(--color-muted)",
+                  fontWeight: 700,
+                }}
+              >
+                GENERATION
+              </span>
+              <span
+                style={{
+                  background: "var(--color-background)",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-sm)",
+                  padding: "6px 14px",
+                  fontFamily: "var(--font-display)",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: "0.04em",
+                }}
+              >
+                {matched.gen} · {matched.code} · {matched.years}
+              </span>
+              <span
+                style={{
+                  fontSize: 13,
+                  color: "var(--color-muted)",
+                  flex: "1 1 220px",
+                  minWidth: 0,
+                }}
+              >
+                {matched.body}
+              </span>
+            </div>
+          </div>
+        );
+      })()}
+      {generations.length > 0 && !filterYear && (
       <div style={{ background: "var(--color-surface)" }}>
         <div
           className="container-x"
@@ -872,6 +970,43 @@ export default async function VehicleHubPage({
       </div>
       )}
 
+      {/* Cycle 14BA-fix7 (Jordan F-2): TOP PRODUCTS now renders BEFORE
+          the CATEGORY GRID so a returning customer with a confirmed
+          vehicle hits something purchasable inside the first ~2
+          viewports instead of being asked to navigate a second time
+          through category tiles. Categories stay below as a secondary
+          discovery surface. */}
+      {/* TOP PRODUCTS */}
+      <div style={{ background: "var(--color-surface)" }}>
+        <div
+          className="container-x"
+          style={{ paddingTop: 48, paddingBottom: 48 }}
+        >
+          <div className="eyebrow" style={{ marginBottom: 8 }}>
+            TOP PICKS FOR THE {model.toUpperCase()}
+          </div>
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: 36,
+              textTransform: "uppercase",
+              letterSpacing: "-0.02em",
+              marginBottom: 24,
+            }}
+          >
+            What other {make.toLowerCase()} owners buy.
+          </h2>
+          <div
+            className="grid grid-cols-2 md:grid-cols-4"
+            style={{ gap: 16 }}
+          >
+            {products.map((p) => (
+              <ProductCard key={p.sku} product={p} vehicle={fakeVehicle} />
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* CATEGORY GRID */}
       <div
         className="container-x"
@@ -977,37 +1112,6 @@ export default async function VehicleHubPage({
               </div>
             </Link>
           ))}
-        </div>
-      </div>
-
-      {/* TOP PRODUCTS */}
-      <div style={{ background: "var(--color-surface)" }}>
-        <div
-          className="container-x"
-          style={{ paddingTop: 64, paddingBottom: 64 }}
-        >
-          <div className="eyebrow" style={{ marginBottom: 8 }}>
-            TOP PICKS FOR THE {model.toUpperCase()}
-          </div>
-          <h2
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: 44,
-              textTransform: "uppercase",
-              letterSpacing: "-0.02em",
-              marginBottom: 24,
-            }}
-          >
-            What other {make.toLowerCase()} owners buy.
-          </h2>
-          <div
-            className="grid grid-cols-2 md:grid-cols-4"
-            style={{ gap: 16 }}
-          >
-            {products.map((p) => (
-              <ProductCard key={p.sku} product={p} vehicle={fakeVehicle} />
-            ))}
-          </div>
         </div>
       </div>
 
