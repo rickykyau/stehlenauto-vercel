@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   // honest, scannable in tabs, and avoids the double-brand awkwardness.
   title: "Our Story",
   description:
-    "Bolt-on engineering since 2015. Cold-rolled steel parts for trucks, SUVs, and Jeeps — direct from the factory floor.",
+    "Bolt-on engineering since 2015. Cold-rolled steel vehicle accessories — direct from the factory floor.",
   alternates: { canonical: "/about" },
 };
 

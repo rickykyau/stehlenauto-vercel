@@ -72,7 +72,7 @@ export const metadata: Metadata = {
   description:
     "Heavy-duty vehicle accessories engineered from cold-rolled steel. No drilling required. Fitment guaranteed for your vehicle.",
   keywords: [
-    "truck accessories",
+    "vehicle accessories",
     "tonneau cover",
     "running boards",
     "bull bar",

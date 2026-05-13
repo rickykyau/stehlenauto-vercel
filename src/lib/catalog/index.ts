@@ -421,7 +421,7 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
     "Door-frame, low-profile, and modular overland racks plus cargo baskets. Drilling-free installation.",
   "chase-racks-sport-bars":
     "Bed-mounted chase racks and sport bars. Bed-length aware.",
-  "molle-panels": "MOLLE panel kits for the truck bed. Modular, bolt-on.",
+  "molle-panels": "MOLLE panel kits for the vehicle bed. Modular, bolt-on.",
   "under-seat-storage":
     "Lockable cab organizers, console mounts, and small-item accessories — vehicle-specific fitment.",
 };
@@ -440,17 +440,17 @@ const CATEGORY_HERO_EXPLAINERS: Record<string, string> = {
   "bull-guards-grille-guards":
     "A bull guard (or grille guard) is a steel-tube structure that bolts to your front frame and protects the grille, headlights, and bumper from brush, deer strikes, and parking-lot dings. Advance Series adds a skid plate, others add an LED light bar. Drilling-free bolt-on, made from 11-gauge cold-rolled steel.",
   "front-grilles":
-    "A front grille is the mesh or slat panel between your headlights — replacing the factory grille is the fastest way to give a stock truck or SUV its own face. Mesh inserts slide into your existing surround; full-shell grilles replace the whole assembly. We carry chrome, matte black, and light-bar-ready designs.",
+    "A front grille is the mesh or slat panel between your headlights — replacing the factory grille is the fastest way to give a stock vehicle its own face. Mesh inserts slide into your existing surround; full-shell grilles replace the whole assembly. We carry chrome, matte black, and light-bar-ready designs.",
   headlights:
     "Headlights are the most-used safety system on your vehicle. We carry LED crystal projectors that triple usable light over halogen, OEM-style replacements that just bolt in, and sealed-beam upgrades. Wiring harnesses included where the upgrade swaps from halogen to LED.",
   "truck-bed-mats":
     "A bed mat is a heavy rubber or composite liner that drops into your vehicle's bed and stops cargo from sliding around — and stops the bed itself from getting scratched, dented, or rusted. Custom-cut to your bed's exact length and width. No drilling, no spray-in mess. Pulls out for clean-out in 30 seconds.",
   "running-boards-side-steps":
-    "Running boards (or side steps) are the bolt-on platform that helps you and your passengers step into a lifted truck or SUV — and protect the rocker panel from rocks and debris. Drop-step, modular, OE-style, and rock-slider variants. Cab-type-specific (Crew/SuperCrew/Regular).",
+    "Running boards (or side steps) are the bolt-on platform that helps you and your passengers step into a lifted vehicle — and protect the rocker panel from rocks and debris. Drop-step, modular, OE-style, and rock-slider variants. Cab-type-specific (Crew/SuperCrew/Regular).",
   "floor-mats":
     "Floor mats are the rubber or composite tray that catches mud, snow, salt, coffee, and dog hair before it ruins your factory carpet. Custom-cut to your specific cab and trim — no shifting, no curl. Front sets, rear sets, and full cab kits.",
   "roof-racks-baskets":
-    "A roof rack lets you carry kayaks, bikes, rooftop tents, lumber, or a basket of overland gear without giving up the truck bed. Door-frame mounts clamp on without drilling; low-profile racks sit flush; modular overland racks add MOLLE plates and tie-down rails. Crossbar-only or full basket.",
+    "A roof rack lets you carry kayaks, bikes, rooftop tents, lumber, or a basket of overland gear without giving up the bed. Door-frame mounts clamp on without drilling; low-profile racks sit flush; modular overland racks add MOLLE plates and tie-down rails. Crossbar-only or full basket.",
   "chase-racks-sport-bars":
     "A chase rack is the bed-mounted tube structure behind the cab that carries lights, antennas, jacks, jerry cans, and anything else you don't want loose in the bed. Sport bars are the lighter cosmetic version. Bed-length-specific, drilling-free bolt-on.",
   "molle-panels":

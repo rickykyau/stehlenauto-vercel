@@ -260,7 +260,7 @@ const SPECS: [string, string][] = [
 const INSTALL_STEPS: [string, string][] = [
   ["1", "Unbox and inventory hardware against the included packing list."],
   ["2", "Mount door-frame brackets at marked positions; hand-tighten only."],
-  ["3", "Lift assembled rack onto truck (2 people) and seat onto brackets."],
+  ["3", "Lift assembled rack onto vehicle (2 people) and seat onto brackets."],
   ["4", "Torque all bolts to 18 ft-lb in the sequence shown on the spec card."],
   ["5", "Verify torque after 100 miles, then again at 500 miles."],
 ];

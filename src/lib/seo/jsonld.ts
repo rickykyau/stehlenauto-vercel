@@ -78,7 +78,7 @@ export function organizationJsonLd(baseUrl: string) {
     url: baseUrl,
     logo: `${baseUrl}/images/stehlen-logo.png`,
     description:
-      "Heavy-duty truck, SUV, and Jeep accessories. Bolt-on engineering since 2015. Fitment guaranteed.",
+      "Heavy-duty vehicle accessories. Bolt-on engineering since 2015. Fitment guaranteed.",
     address: {
       "@type": "PostalAddress",
       streetAddress: "1160 W. Rincon St",

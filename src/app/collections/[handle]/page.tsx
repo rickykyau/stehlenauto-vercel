@@ -92,7 +92,7 @@ export async function generateMetadata({
           url: "/images/hero-stehlen.jpg",
           width: 1280,
           height: 640,
-          alt: "Stehlen Auto — heavy-duty truck accessories",
+          alt: "Stehlen Auto — heavy-duty vehicle accessories",
         },
       ],
     },
@@ -120,7 +120,7 @@ export async function generateMetadata({
   if (makeMatch) {
     const make = makeMatch[1].replace(/^./, (c) => c.toUpperCase());
     const t = `${make} Vehicle Accessories`;
-    const d = `Bolt-on accessories for every ${make} pickup, SUV and Jeep — fitment guaranteed, free shipping.`;
+    const d = `Bolt-on accessories for every ${make} vehicle — fitment guaranteed, free shipping.`;
     return {
       title: t,
       description: d,
@@ -147,7 +147,7 @@ export async function generateMetadata({
       ...baseOg(friendly, d, `/collections/${handle}`),
     };
   }
-  const t = `${cat.name} for Trucks, SUVs & Jeeps`;
+  const t = `${cat.name} — Vehicle Accessories`;
   const d = `Shop ${cat.name.toLowerCase()} — fitment guaranteed for your vehicle. Free shipping on every order.`;
   return {
     title: t,
