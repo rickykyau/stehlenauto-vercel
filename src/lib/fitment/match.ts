@@ -91,7 +91,21 @@ function subModelGateAllows(
   return true;
 }
 
-function normalizeBedLength(s: string): string {
+/**
+ * Cycle 14BC-fix1 (auto-parts-specialist B): exported so buy-box.tsx can
+ * apply the same bucket-aware comparison when deciding whether the
+ * customer's picked bed length actually mismatches the product. Raw
+ * string equality fails when the metafield stores "67.1 in" or "5.5 Ft"
+ * while the picked chip carries "5.5' BED" — same physical bed, mismatch
+ * by string, hard-blocks ATC.
+ */
+export function normalizeBedLength(s: string): string {
+  // Handle inch format first: "67.1 in" / "67"" → ft equivalent
+  const inchMatch = s.toLowerCase().match(/(\d+(?:\.\d+)?)\s*(?:in|")/);
+  if (inchMatch) {
+    const inches = parseFloat(inchMatch[1]);
+    if (Number.isFinite(inches)) return (inches / 12).toFixed(2);
+  }
   // "5.5 ft" / "5'5"" / "5.5'" → "5.5"
   const m = s.toLowerCase().match(/(\d+(?:\.\d+)?)/);
   return m ? m[1] : s.toLowerCase();
@@ -106,7 +120,7 @@ function normalizeBedLength(s: string): string {
  *   standard: 6.0 – 6.9 ft   (chip "6.5'") — covers 6.4/6.5/6.6/6.8
  *   long:     ≥ 7.5 ft       (chip "8'")
  */
-function bedLengthBucket(value: string): string {
+export function bedLengthBucket(value: string): string {
   const ft = parseFloat(value);
   if (!Number.isFinite(ft)) return value;
   if (ft >= 7.5) return "long";

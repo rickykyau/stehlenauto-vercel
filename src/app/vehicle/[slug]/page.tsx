@@ -350,6 +350,22 @@ export default async function VehicleHubPage({
     // the highest-intent surface. Filter out confirmed misfits, sort
     // FITS first → VERIFY → drop misfits entirely. Pad with universal
     // make-only hits when fitHits is thin.
+    // Cycle 14BC-fix1 (auto-parts-specialist Bug A): also drop bed-
+    // gated products from the rail when the customer hasn't saved a
+    // bed_length answer. Those products correctly resolve to
+    // `fits === undefined` (because no bed answer yet) and render as
+    // yellow "CHECK FITMENT" cards on the rail, which the owner read
+    // as "the system doesn't know if this fits my 2017 F-150" —
+    // erosion of confidence at the rail headline. Better: surface
+    // products we CAN confirm green right now, and let the customer
+    // discover bed-gated products from category collections where the
+    // sub-model picker is co-located with the grid.
+    const hasBedAnswer = !!(garageMatchesHub
+      ? hubSubAnswers?.some((a) => a.group === "bed_length" && a.value)
+      : false);
+    const bedGatedRe = /\b\d+(?:\.\d+)?\s*(?:ft|'|foot|feet)\s*bed/i;
+    const isBedGated = (p: { title?: string; fitTitle?: string }) =>
+      bedGatedRe.test(`${p.title ?? ""} ${p.fitTitle ?? ""}`);
     const rank = (fits: boolean | undefined) =>
       fits === true ? 0 : fits === undefined ? 1 : 99;
     const fitHits = withFitment(
@@ -358,6 +374,7 @@ export default async function VehicleHubPage({
       garageMatchesHub ? hubSubAnswers : null,
     )
       .filter((p) => p.fits !== false)
+      .filter((p) => hasBedAnswer || !isBedGated(p))
       .sort((a, b) => rank(a.fits) - rank(b.fits));
     if (fitHits.length < 4) {
       const seenHandles = new Set(fitHits.map((p) => p.handle));
@@ -367,6 +384,7 @@ export default async function VehicleHubPage({
         garageMatchesHub ? hubSubAnswers : null,
       )
         .filter((p) => !seenHandles.has(p.handle) && p.fits !== false)
+        .filter((p) => hasBedAnswer || !isBedGated(p))
         .sort((a, b) => rank(a.fits) - rank(b.fits));
       products = [...fitHits, ...padding].slice(0, 4);
     } else {

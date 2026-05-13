@@ -7,6 +7,7 @@ import type { CatalogProduct } from "@/lib/catalog/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
 import type { SubModelAnswer, SubModelGroup } from "@/lib/garage/types";
 import { type SubModelStripConfig } from "@/lib/fitment/sub-model";
+import { bedLengthBucket, normalizeBedLength } from "@/lib/fitment/match";
 import { track } from "@/lib/analytics/client";
 import { WishlistButton } from "./wishlist-button";
 
@@ -202,10 +203,23 @@ export function BuyBox({
   const productBeds = productBedLengths.length > 0
     ? productBedLengths
     : titleBedLength ? [titleBedLength] : [];
+  // Cycle 14BC-fix1 (auto-parts-specialist Bug B): raw string equality
+  // hard-blocked ATC when the metafield stored "67.1 in" while the
+  // customer's chip picked "5.5' BED" → same physical bed, mismatch by
+  // string, ATC stuck on "SELECT BED LENGTH" forever. Match the bucket
+  // semantics used in checkFitment so "67.1 in" → "short" bucket,
+  // "5.5' BED" → "short" bucket, comparison returns true.
+  const bedPickBucket = bedPick
+    ? bedLengthBucket(normalizeBedLength(bedPick))
+    : null;
+  const productBedBuckets = productBeds
+    .map((b) => bedLengthBucket(normalizeBedLength(b)))
+    .filter(Boolean);
   const bedMismatch =
     bedPick !== null &&
     productBeds.length > 0 &&
-    !productBeds.includes(bedPick);
+    bedPickBucket !== null &&
+    !productBedBuckets.includes(bedPickBucket);
 
   const canAdd =
     missingStrips.length === 0 && !outOfStock && !bedMismatch;

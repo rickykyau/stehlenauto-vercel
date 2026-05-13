@@ -700,37 +700,116 @@ export function PdpTabs({
               </div>
             </div>
             <div>
-              <h3
-                className="mono"
-                style={{
-                  fontSize: 14,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  marginBottom: 16,
-                }}
-              >
-                NOT SURE?
-              </h3>
-              <p
-                style={{
-                  fontSize: 14,
-                  color: "var(--color-muted)",
-                  marginBottom: 20,
-                  lineHeight: 1.6,
-                }}
-              >
-                Tell us your year, make, and model and we&apos;ll confirm fitment
-                instantly. Backed by our Fitment Guarantee — if it doesn&apos;t
-                fit, we&apos;ll refund 100%.
-              </p>
-              {/* Cycle 14V (owner): used to be a Link → /collections, which
-                  dumped the customer onto the category index instead of
-                  actually verifying fitment. Open the YMM modal so the
-                  customer can pick year/make/model and the fitment ribbon
-                  on the buy box flips to GREEN/RED. */}
-              <YmmButton className="btn btn-primary">
-                VERIFY FITMENT FOR MY VEHICLE
-              </YmmButton>
+              {/* Cycle 14BC-fix1 (auto-parts-specialist Bug C): the
+                  unconditional "VERIFY FITMENT FOR MY VEHICLE" YmmButton
+                  re-opened the year/make/model picker even when YMM was
+                  already saved — owner journey: vehicle is 2017 Ford
+                  F-150, sub-model question (bed length) is the actual
+                  blocker, but tapping the button asked YMM again and
+                  redirected back to the same page with no progress.
+                  Behaviour now varies by state:
+                  - No vehicle:           open YMM (original purpose)
+                  - Vehicle, fits unknown: scroll to buy-box sub-model
+                                           strip (the real blocker)
+                  - Vehicle, fits = true:  hide section; nothing to do
+                  - Vehicle, fits = false: keep YMM (change vehicle) */}
+              {!vehicle ? (
+                <>
+                  <h3
+                    className="mono"
+                    style={{
+                      fontSize: 14,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      marginBottom: 16,
+                    }}
+                  >
+                    NOT SURE?
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      color: "var(--color-muted)",
+                      marginBottom: 20,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    Tell us your year, make, and model and we&apos;ll confirm
+                    fitment instantly. Backed by our Fitment Guarantee — if it
+                    doesn&apos;t fit, we&apos;ll refund 100%.
+                  </p>
+                  <YmmButton className="btn btn-primary">
+                    VERIFY FITMENT FOR MY VEHICLE
+                  </YmmButton>
+                </>
+              ) : productFits === undefined ? (
+                <>
+                  <h3
+                    className="mono"
+                    style={{
+                      fontSize: 14,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      marginBottom: 16,
+                    }}
+                  >
+                    ALMOST THERE
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      color: "var(--color-muted)",
+                      marginBottom: 20,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    Your {vehicle.year} {vehicle.make} {vehicle.model} is on
+                    file. Pick your bed length / cab type / trim in the buy
+                    box above so we can confirm this part fits.
+                  </p>
+                  <a
+                    href="#buy-box-anchor"
+                    className="btn btn-primary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document
+                        .querySelector("[data-buy-box-anchor]")
+                        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
+                  >
+                    PICK FITMENT IN BUY BOX ↑
+                  </a>
+                </>
+              ) : productFits === false ? (
+                <>
+                  <h3
+                    className="mono"
+                    style={{
+                      fontSize: 14,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      marginBottom: 16,
+                    }}
+                  >
+                    DIFFERENT VEHICLE?
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      color: "var(--color-muted)",
+                      marginBottom: 20,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    Your saved vehicle is {vehicle.year} {vehicle.make}{" "}
+                    {vehicle.model} — this part doesn&apos;t fit it. Change
+                    vehicle to verify against a different rig.
+                  </p>
+                  <YmmButton className="btn btn-primary">
+                    CHANGE VEHICLE
+                  </YmmButton>
+                </>
+              ) : null}
             </div>
           </>
         )}
