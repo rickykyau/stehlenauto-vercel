@@ -103,7 +103,24 @@ export function Footer() {
             </p>
           </div>
           <div>
-            <form style={{ display: "flex", gap: 8 }} action="/api/newsletter" method="post">
+            {/* Cycle 14BB-fix5 (Jordan F-NNN-2): SUBSCRIBE used to sit at
+                the right edge of the footer column, directly under the
+                fixed-bottom RIG chat launcher (which is also positioned
+                bottom-right). The launcher visually occluded part of the
+                SUBSCRIBE label at wide viewports. Cap the form max-width
+                + paddingRight on desktop so the button never reaches the
+                bottom-right 80px gutter the chat owns. */}
+            <form
+              style={{
+                display: "flex",
+                gap: 8,
+                maxWidth: 520,
+                paddingRight: 0,
+              }}
+              className="footer-newsletter-form"
+              action="/api/newsletter"
+              method="post"
+            >
               <input
                 className="input"
                 style={{ flex: 1, minWidth: 0 }}

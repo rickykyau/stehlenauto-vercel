@@ -164,7 +164,11 @@ export function CollectionToolbar({
               {makeMismatchLabel
                 ? `BROWSING ${makeMismatchLabel.toUpperCase()} PARTS · GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
                 : showAllProducts
-                  ? `${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · SET — NOT FILTERING`
+                  ? /* Cycle 14BB-fix5 (Mike F-N1): "SET — NOT FILTERING"
+                       sounded like the vehicle had been un-saved.
+                       "GARAGE · SHOWING ALL" is unambiguous: vehicle is
+                       still in the garage; filter is off by choice. */
+                    `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · SHOWING ALL`
                   : `FILTERING FOR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · TAP TO CHANGE`}
             </button>
           ) : (

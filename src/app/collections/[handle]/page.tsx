@@ -718,9 +718,14 @@ export default async function CollectionPage({
             >
               {collection.fitMeta.fitsCount > 0 ? (
                 <>
+                  {/* Cycle 14BB-fix5 (Jordan F-NNN-1): "N exact fits" was
+                      another count disclosure that slipped past fix1's
+                      sweep. Per stakeholder rule, no raw fitment counts
+                      in customer-facing copy. Keep the confidence pivot
+                      ("exact-fit matches… plus universals") but drop the
+                      numeral. */}
                   <span style={{ color: "var(--color-success)" }}>
-                    {collection.fitMeta.fitsCount} exact fit
-                    {collection.fitMeta.fitsCount === 1 ? "" : "s"}
+                    Exact-fit matches
                   </span>{" "}
                   for your {vehicle.year} {vehicle.make} {vehicle.model}
                   {fitsOnly

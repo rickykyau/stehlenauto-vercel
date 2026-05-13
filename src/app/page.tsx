@@ -256,11 +256,25 @@ export default async function HomePage() {
                 CTAs in the same viewport, splitting attention and
                 violating the one-yellow-per-viewport rule. Demote the
                 hero CTA to outlined when the higher-intent "shop your
-                vehicle" path is already surfaced below. */}
+                vehicle" path is already surfaced below.
+                Cycle 14BB-fix5 (Jordan F-NNN-3): plain outlined `btn` on
+                the dark hero gradient at mobile dropped contrast below
+                WCAG floor in outdoor light. Layer a translucent white
+                fill + stronger border so the demoted CTA stays legible
+                without competing with the yellow band below. */}
             <Link
               href="/collections"
               className={savedVehicle ? "btn btn-lg" : "btn btn-primary btn-lg"}
-              style={{ marginTop: 28 }}
+              style={
+                savedVehicle
+                  ? {
+                      marginTop: 28,
+                      background: "rgba(255,255,255,0.10)",
+                      borderColor: "rgba(255,255,255,0.55)",
+                      color: "#fff",
+                    }
+                  : { marginTop: 28 }
+              }
             >
               SHOP ALL PARTS <Icons.arrowR size={14} />
             </Link>
