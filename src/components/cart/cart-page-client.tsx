@@ -246,15 +246,31 @@ export function CartPageClient({
                 onClick={requestEmpty}
                 disabled={busy}
                 data-testid="empty-cart-trigger"
-                className="btn btn-sm"
                 style={{
+                  /* Cycle 14BB-fix4 (Jordan F-008): EMPTY CART used to
+                     render as a full outlined button at similar visual
+                     weight to secondary CTAs. Destructive action with
+                     that emphasis = fat-finger accidents on mobile
+                     (a single thumb slip drops $400 of work). Demote
+                     to muted text link with underline; tap target stays
+                     ≥44px via minHeight + padding so accessibility
+                     compliance is preserved without competing with the
+                     CHECKOUT CTA visually. */
                   marginTop: 12,
+                  background: "transparent",
+                  border: 0,
                   color: "var(--color-muted)",
+                  fontSize: 11,
+                  letterSpacing: "0.08em",
+                  textDecoration: "underline",
                   minHeight: 44,
-                  padding: "0 16px",
+                  padding: "10px 0",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  cursor: "pointer",
                 }}
               >
-                EMPTY CART
+                Empty cart
               </button>
             )}
           </div>

@@ -147,6 +147,11 @@ export default async function SearchPage({
                   // bounced. Three-way pivot: confirmed fits → count
                   // them; undetermined fits → "X NEED CONFIRMATION";
                   // truly zero in-range → "NONE FIT".
+                  // Cycle 14BB-fix1 (Jordan F-002): per stakeholder rule,
+                  // don't disclose raw product / fitment counts. Keep the
+                  // fitment-state pivot copy because that's about whether
+                  // anything fits at all, but drop the "N RESULTS · M FITS"
+                  // numerals — the customer already sees the grid.
                   const withFits = vehicle
                     ? withFitment(filtered, vehicle, subModelAnswers)
                     : [];
@@ -156,14 +161,14 @@ export default async function SearchPage({
                   ).length;
                   if (vehicle) {
                     if (fitsCount > 0) {
-                      return `${filtered.length} RESULTS · ${fitsCount} FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`;
+                      return `FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`;
                     }
                     if (undeterminedCount > 0) {
-                      return `${filtered.length} RESULTS · ${undeterminedCount} MAY FIT — CONFIRM BED LENGTH OR CAB TYPE TO SEE FITS`;
+                      return `MAY FIT — CONFIRM BED LENGTH OR CAB TYPE TO SEE FITS`;
                     }
-                    return `${filtered.length} RESULTS · NONE FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`;
+                    return `NONE FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`;
                   }
-                  return `${filtered.length} RESULTS`;
+                  return `RESULTS FOR YOUR SEARCH`;
                 })()}
               </span>
             </div>

@@ -56,7 +56,7 @@ const TOPICS = [
 
 const FAQS = [
   {
-    q: "Will a Stehlen part fit my truck?",
+    q: "Will a Stehlen part fit my vehicle?",
     a: "Save your vehicle in the Garage and every product page will tell you. Fitment is guaranteed — if it doesn't fit, return it free.",
   },
   {

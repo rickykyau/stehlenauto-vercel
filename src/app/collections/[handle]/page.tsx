@@ -53,15 +53,15 @@ export async function generateStaticParams() {
 // proper titles so the browser tab + SEO + breadcrumbs are correct.
 const SYNTHETIC_COLLECTION_META: Record<string, { title: string; description: string }> = {
   "best-sellers": {
-    title: "Best Sellers — Top Truck, SUV & Jeep Parts",
+    title: "Best Sellers — Top Vehicle Accessories",
     description: "Top-selling Stehlen Auto parts this month — bolt-on, fitment-guaranteed.",
   },
   "new-arrivals": {
-    title: "New Arrivals — Latest Truck & SUV Accessories",
+    title: "New Arrivals — Latest Vehicle Accessories",
     description: "The newest additions to the Stehlen Auto catalog.",
   },
   sale: {
-    title: "On Sale — Truck & SUV Accessories",
+    title: "On Sale — Vehicle Accessories",
     description: "Stehlen Auto parts marked down from MSRP.",
   },
 };
@@ -119,7 +119,7 @@ export async function generateMetadata({
   const makeMatch = handle.match(/^([a-z]+)-parts$/);
   if (makeMatch) {
     const make = makeMatch[1].replace(/^./, (c) => c.toUpperCase());
-    const t = `${make} Truck, SUV & Jeep Accessories`;
+    const t = `${make} Vehicle Accessories`;
     const d = `Bolt-on accessories for every ${make} pickup, SUV and Jeep — fitment guaranteed, free shipping.`;
     return {
       title: t,
@@ -398,6 +398,13 @@ export default async function CollectionPage({
     "exterior",
     "interior",
     "all",
+    // Cycle 14BB-fix3 (Mike F-N4): customers Google "mud flaps" and
+    // hit /collections/mud-flaps. Catalog doesn't carry this category
+    // yet; render the friendly empty state ("we're loading…") instead
+    // of a 404 so the customer sees a recovery path inside the
+    // collection chrome rather than being kicked to a generic 404.
+    "mud-flaps",
+    "fender-flares",
   ]);
   if (!collection) {
     if (!KNOWN_COLLECTION_HANDLES.has(handle)) {
@@ -1052,32 +1059,11 @@ export default async function CollectionPage({
                   were also hardcoded placeholders (Phase 4 was supposed to
                   wire real pagination), making the UI a lie regardless. We
                   hide the bar entirely until real pagination ships. */}
-              {collection.totalProducts > collection.products.length && (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: 32,
-                    paddingTop: 24,
-                    borderTop: "1px solid var(--color-border)",
-                    flexWrap: "wrap",
-                    gap: 12,
-                  }}
-                >
-                  <span
-                    className="mono"
-                    style={{
-                      fontSize: 11,
-                      color: "var(--color-muted)",
-                      letterSpacing: "0.08em",
-                    }}
-                  >
-                    SHOWING {collection.products.length} OF{" "}
-                    {collection.totalProducts}
-                  </span>
-                </div>
-              )}
+              {/* Cycle 14BB-fix1 (Jordan F-002): per stakeholder rule
+                  "don't disclose product / fitment counts," the
+                  "SHOWING N OF M" footer is removed. Pagination /
+                  load-more affordance can be added later without
+                  re-exposing the raw counts. */}
             </>
           )}
         </div>

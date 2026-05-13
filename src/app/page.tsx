@@ -229,9 +229,9 @@ export default async function HomePage() {
                 textShadow: "0 2px 8px rgba(0,0,0,0.6)",
               }}
             >
-              Heavy-duty truck, SUV, and Jeep accessories engineered from
-              cold-rolled steel. No drilling required. Fitment guaranteed for
-              your vehicle.
+              Heavy-duty vehicle accessories engineered from cold-rolled
+              steel. No drilling required. Fitment guaranteed for your
+              vehicle.
             </p>
 
             {/* Cycle 14X+ (partner feedback): the inline YMM card inside
@@ -250,9 +250,16 @@ export default async function HomePage() {
                 noise. The two ghost CTAs were splitting attention and
                 violating the one-yellow-accent-per-viewport rule. Now:
                 ONE primary yellow CTA, focused on the slogan above. */}
+            {/* Cycle 14BB-fix1 (Jordan F-003): when a vehicle is saved,
+                the YMM band below renders the yellow "SHOP PARTS THAT FIT"
+                CTA. Keeping the hero CTA primary-yellow puts two yellow
+                CTAs in the same viewport, splitting attention and
+                violating the one-yellow-per-viewport rule. Demote the
+                hero CTA to outlined when the higher-intent "shop your
+                vehicle" path is already surfaced below. */}
             <Link
               href="/collections"
-              className="btn btn-primary btn-lg"
+              className={savedVehicle ? "btn btn-lg" : "btn btn-primary btn-lg"}
               style={{ marginTop: 28 }}
             >
               SHOP ALL PARTS <Icons.arrowR size={14} />

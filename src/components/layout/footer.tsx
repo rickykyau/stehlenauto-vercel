@@ -143,8 +143,8 @@ export function Footer() {
               lineHeight: 1.6,
             }}
           >
-            Heavy-duty truck, SUV, and Jeep accessories. Fitment guaranteed.
-            Bolt-on engineering since 2015.
+            Heavy-duty vehicle accessories. Fitment guaranteed. Bolt-on
+            engineering since 2015.
           </p>
           {SOCIALS.length > 0 && (
             <div style={{ display: "flex", gap: 8, marginTop: 20 }}>

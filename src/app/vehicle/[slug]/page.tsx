@@ -994,7 +994,7 @@ export default async function VehicleHubPage({
               marginBottom: 24,
             }}
           >
-            What other {make.toLowerCase()} owners buy.
+            What other {make} owners buy.
           </h2>
           <div
             className="grid grid-cols-2 md:grid-cols-4"

@@ -53,7 +53,7 @@ export function MobileFilterDrawer({
       >
         <Icons.filter size={14} />
         <span className="mono" style={{ fontSize: 12, letterSpacing: "0.12em" }}>
-          FILTERS · {totalProducts} PRODUCTS
+          FILTERS
         </span>
       </button>
 
@@ -145,7 +145,7 @@ export function MobileFilterDrawer({
                 onClick={() => setOpen(false)}
                 className="btn btn-primary btn-block"
               >
-                SHOW {totalProducts} PRODUCTS
+                APPLY FILTERS
               </button>
             </div>
           </div>

@@ -200,24 +200,40 @@ export function CollectionToolbar({
               aria-label={
                 showAllProducts
                   ? "Showing all products including non-fitting — tap to filter back to your vehicle"
-                  : "Show all products including those that don't fit your vehicle"
+                  : "Show products that don't fit your vehicle alongside fits"
               }
               style={{
+                /* Cycle 14BB-fix2 (Jordan F-004 + F-007): the surface-2
+                   → surface-3 background delta (6 hex luminance) is sub-
+                   perceptual on dark themes in outdoor light. Replace
+                   with a 3px yellow LEFT border on the active state so
+                   the state is legible at a glance independent of subtle
+                   background tone. Label also clarified: "SHOW NON-
+                   FITTING" telegraphs the action ("see parts that don't
+                   fit my vehicle"), and the active state spells out the
+                   reverse action ("CLICK TO FILTER") so the customer
+                   always knows what tapping again will do. */
                 cursor: "pointer",
                 background: showAllProducts
                   ? "var(--color-surface-3)"
                   : "var(--color-surface-2)",
-                borderColor: "var(--color-border)",
+                borderColor: showAllProducts
+                  ? "var(--color-primary)"
+                  : "var(--color-border)",
+                borderLeftWidth: showAllProducts ? 3 : 1,
+                paddingLeft: showAllProducts ? 9 : 11,
                 color: showAllProducts
                   ? "var(--color-foreground)"
                   : "var(--color-muted)",
                 minHeight: 44,
                 display: "inline-flex",
                 alignItems: "center",
-                fontWeight: showAllProducts ? 600 : 400,
+                fontWeight: showAllProducts ? 700 : 400,
               }}
             >
-              {showAllProducts ? "SHOWING ALL PRODUCTS" : "SHOW ALL PRODUCTS"}
+              {showAllProducts
+                ? "SHOWING ALL · TAP TO FILTER"
+                : "SHOW NON-FITTING"}
             </button>
           )}
         </div>
