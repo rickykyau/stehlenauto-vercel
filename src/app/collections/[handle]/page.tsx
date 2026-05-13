@@ -259,6 +259,13 @@ export default async function CollectionPage({
   // but we still honour the URL param so old bookmarks don't break — when
   // present it forces the strict exact-fits-only path.
   const fitsOnly = sp.fits === "1";
+  // Cycle 14BA-fix2 (Jordan UX call): escape hatch for the auto-filter.
+  // When ?fits=0 is set AND a vehicle is in the garage, the server passes
+  // hideMismatches:false so DOES NOT FIT products surface alongside fits
+  // and universals. Default (no fits param) keeps the existing auto-filter
+  // behaviour customers rely on. The toolbar surfaces a chip that toggles
+  // this param so customers don't have to clear their garage to compare.
+  const showAllProducts = sp.fits === "0";
   // Cycle 14AR-fix24 (Mike R9 F-2): when the empty-state link surfaces
   // ?clear_vehicle=1, treat this view as anonymous WITHOUT wiping the
   // saved garage cookie. The customer still has their truck saved when
@@ -324,6 +331,11 @@ export default async function CollectionPage({
     sort,
     vehicle: vehicle ?? undefined,
     fitsOnly: fitsOnly && !!vehicle,
+    // Cycle 14BA-fix2: when the customer flips the "SHOW ALL PRODUCTS"
+    // chip we explicitly disable the auto-mismatch-drop behaviour. The
+    // server default (undefined) keeps the existing vehicle→hide path.
+    hideMismatches:
+      vehicle && showAllProducts ? false : undefined,
     subModelAnswers,
   });
 
@@ -613,6 +625,7 @@ export default async function CollectionPage({
       <CollectionToolbar
         totalProducts={collection.totalProducts}
         vehicle={vehicle}
+        showAllProducts={showAllProducts}
       />
 
       {/* Body — always rendered; DimensionPicker is a nudge, not a gate. */}

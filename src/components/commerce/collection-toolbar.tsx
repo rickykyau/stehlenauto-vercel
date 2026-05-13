@@ -20,9 +20,17 @@ const SORT_OPTIONS: { label: string; value: string }[] = [
 export function CollectionToolbar({
   vehicle,
   totalProducts,
+  showAllProducts = false,
 }: {
   vehicle?: Vehicle;
   totalProducts: number;
+  /**
+   * Cycle 14BA-fix2 (Jordan UX): mirror of the server's showAllProducts
+   * flag. When true, the auto-mismatch-filter is disabled — chip flips
+   * to active state and the vehicle chip copy shifts to make the
+   * "not currently filtering" state legible.
+   */
+  showAllProducts?: boolean;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -41,6 +49,25 @@ export function CollectionToolbar({
     },
     [params, pathname, router],
   );
+
+  // Cycle 14BA-fix2: toggle the auto-filter via ?fits=0. The vehicle chip
+  // and this chip share visual weight (two chips in the same row); both
+  // states are explicit so the customer always knows whether non-fits are
+  // visible or hidden.
+  const onToggleShowAll = useCallback(() => {
+    const sp = new URLSearchParams(params.toString());
+    if (showAllProducts) {
+      // Currently showing all → revert to default filtered state.
+      sp.delete("fits");
+    } else {
+      // Currently filtered → expose all products including non-fits.
+      sp.set("fits", "0");
+    }
+    const qs = sp.toString();
+    startTransition(() => {
+      router.replace(qs ? `${pathname}?${qs}` : pathname);
+    });
+  }, [params, pathname, router, showAllProducts]);
   // Cycle 14AO (owner): the legacy "SHOW ONLY FITS" toggle is gone — the
   // collection page now hides confirmed mismatches by default whenever a
   // vehicle is set, so the toggle would just expose the un-filtered grid the
@@ -95,13 +122,22 @@ export function CollectionToolbar({
               Both open the YMM modal — primary mobile interaction.
               Bumped both to minHeight: 44 + inline-flex centering so
               the visual chip stays compact while the tap area meets
-              the standard. */}
+              the standard.
+              Cycle 14BA-fix2 (Jordan UX): when vehicle is set, the
+              chip copy now flexes between "FILTERING FOR …" (default)
+              and "… · SET — NOT FILTERING" (when SHOW ALL PRODUCTS
+              is active) so the customer always knows what state the
+              grid is in. */}
           {vehicle ? (
             <button
               type="button"
               onClick={openYmmModal}
               className="chip"
-              aria-label={`Filtering for ${vehicle.year} ${vehicle.make} ${vehicle.model} — tap to change vehicle`}
+              aria-label={`${
+                showAllProducts
+                  ? `${vehicle.year} ${vehicle.make} ${vehicle.model} saved — not currently filtering`
+                  : `Filtering for ${vehicle.year} ${vehicle.make} ${vehicle.model}`
+              } — tap to change vehicle`}
               style={{
                 cursor: "pointer",
                 background: "var(--color-surface-2)",
@@ -112,9 +148,10 @@ export function CollectionToolbar({
                 alignItems: "center",
               }}
             >
-              <Icons.truck size={10} /> FILTERING FOR {vehicle.year}{" "}
-              {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()} · TAP
-              TO CHANGE
+              <Icons.truck size={10} />{" "}
+              {showAllProducts
+                ? `${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · SET — NOT FILTERING`
+                : `FILTERING FOR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · TAP TO CHANGE`}
             </button>
           ) : (
             <button
@@ -129,6 +166,40 @@ export function CollectionToolbar({
               }}
             >
               <Icons.truck size={10} /> UNIVERSAL · ADD VEHICLE TO FILTER
+            </button>
+          )}
+          {/* Cycle 14BA-fix2 (Jordan UX): escape-hatch chip. Only
+              renders when the customer actually has a vehicle saved —
+              there is nothing to "show all" relative to when no
+              vehicle is set. Two states share visual weight with the
+              vehicle chip so the customer parses both at once. */}
+          {vehicle && (
+            <button
+              type="button"
+              onClick={onToggleShowAll}
+              className="chip"
+              aria-pressed={showAllProducts}
+              aria-label={
+                showAllProducts
+                  ? "Showing all products including non-fitting — tap to filter back to your vehicle"
+                  : "Show all products including those that don't fit your vehicle"
+              }
+              style={{
+                cursor: "pointer",
+                background: showAllProducts
+                  ? "var(--color-surface-3)"
+                  : "var(--color-surface-2)",
+                borderColor: "var(--color-border)",
+                color: showAllProducts
+                  ? "var(--color-foreground)"
+                  : "var(--color-muted)",
+                minHeight: 44,
+                display: "inline-flex",
+                alignItems: "center",
+                fontWeight: showAllProducts ? 600 : 400,
+              }}
+            >
+              {showAllProducts ? "SHOWING ALL PRODUCTS" : "SHOW ALL PRODUCTS"}
             </button>
           )}
         </div>
