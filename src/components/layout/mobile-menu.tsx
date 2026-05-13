@@ -239,9 +239,15 @@ export function MobileMenu() {
                               href={item.href}
                               onClick={closeAll}
                               style={{
+                                /* Cycle 14BA-fix4 (owner): leaf items
+                                   showed a `>` chevron that implied a
+                                   deeper accordion step. They're direct
+                                   destinations — tap = navigate. Removed
+                                   the chevron to drop the false
+                                   affordance; the row is still clearly
+                                   tappable via hover/active styles. */
                                 display: "flex",
                                 alignItems: "center",
-                                justifyContent: "space-between",
                                 padding: "12px 24px",
                                 minHeight: 44,
                                 fontSize: 14,
@@ -249,8 +255,7 @@ export function MobileMenu() {
                                 textDecoration: "none",
                               }}
                             >
-                              <span>{item.label}</span>
-                              <Icons.chevRight size={14} />
+                              {item.label}
                             </Link>
                           ))}
                         </div>

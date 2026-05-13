@@ -21,6 +21,7 @@ export function CollectionToolbar({
   vehicle,
   totalProducts,
   showAllProducts = false,
+  makeMismatchLabel = null,
 }: {
   vehicle?: Vehicle;
   totalProducts: number;
@@ -31,6 +32,15 @@ export function CollectionToolbar({
    * "not currently filtering" state legible.
    */
   showAllProducts?: boolean;
+  /**
+   * Cycle 14BA-fix3: when set, the customer is on a make-scoped
+   * collection (e.g. /collections/toyota-parts) but their saved
+   * garage is a different make. Server has already suspended the
+   * auto-filter; the chip copy needs to communicate the state honestly
+   * (no "FILTERING FOR JEEP" lie) and the SHOW ALL toggle is hidden
+   * because there's nothing meaningful to toggle.
+   */
+  makeMismatchLabel?: string | null;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -133,11 +143,13 @@ export function CollectionToolbar({
               type="button"
               onClick={openYmmModal}
               className="chip"
-              aria-label={`${
-                showAllProducts
-                  ? `${vehicle.year} ${vehicle.make} ${vehicle.model} saved — not currently filtering`
-                  : `Filtering for ${vehicle.year} ${vehicle.make} ${vehicle.model}`
-              } — tap to change vehicle`}
+              aria-label={
+                makeMismatchLabel
+                  ? `Browsing ${makeMismatchLabel} parts. Your garage: ${vehicle.year} ${vehicle.make} ${vehicle.model}. Tap to change vehicle.`
+                  : showAllProducts
+                    ? `${vehicle.year} ${vehicle.make} ${vehicle.model} saved — not currently filtering. Tap to change vehicle.`
+                    : `Filtering for ${vehicle.year} ${vehicle.make} ${vehicle.model} — tap to change vehicle.`
+              }
               style={{
                 cursor: "pointer",
                 background: "var(--color-surface-2)",
@@ -149,9 +161,11 @@ export function CollectionToolbar({
               }}
             >
               <Icons.truck size={10} />{" "}
-              {showAllProducts
-                ? `${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · SET — NOT FILTERING`
-                : `FILTERING FOR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · TAP TO CHANGE`}
+              {makeMismatchLabel
+                ? `BROWSING ${makeMismatchLabel.toUpperCase()} PARTS · GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                : showAllProducts
+                  ? `${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · SET — NOT FILTERING`
+                  : `FILTERING FOR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · TAP TO CHANGE`}
             </button>
           ) : (
             <button
@@ -172,8 +186,12 @@ export function CollectionToolbar({
               renders when the customer actually has a vehicle saved —
               there is nothing to "show all" relative to when no
               vehicle is set. Two states share visual weight with the
-              vehicle chip so the customer parses both at once. */}
-          {vehicle && (
+              vehicle chip so the customer parses both at once.
+              Cycle 14BA-fix3: hide this chip in the make-mismatch
+              state — toggling "show all" is meaningless when the
+              filter has already been suspended because the make
+              guarantees zero matches. */}
+          {vehicle && !makeMismatchLabel && (
             <button
               type="button"
               onClick={onToggleShowAll}

@@ -266,6 +266,15 @@ export default async function CollectionPage({
   // behaviour customers rely on. The toolbar surfaces a chip that toggles
   // this param so customers don't have to clear their garage to compare.
   const showAllProducts = sp.fits === "0";
+  // Cycle 14BA-fix3 (owner): when the customer navigates to a make-
+  // scoped collection (/collections/toyota-parts, /collections/ford-
+  // parts, etc.) and their saved garage is a DIFFERENT make, the
+  // auto-filter guarantees zero results and the empty state lies
+  // ("we don't carry this category for your vehicle" — we do carry
+  // Toyota parts, they just don't fit a Jeep). Detect the mismatch
+  // here and suspend the filter for this view; the toolbar adapts
+  // the chip copy so the customer still sees their garage but knows
+  // the grid isn't being filtered to it.
   // Cycle 14AR-fix24 (Mike R9 F-2): when the empty-state link surfaces
   // ?clear_vehicle=1, treat this view as anonymous WITHOUT wiping the
   // saved garage cookie. The customer still has their truck saved when
@@ -277,6 +286,29 @@ export default async function CollectionPage({
   const vehicle = clearVehicleForView
     ? undefined
     : ((await getCurrentVehicle()) ?? undefined);
+
+  // Cycle 14BA-fix3: detect make-scoped collections + match against garage.
+  // Map collection handle → list of make tokens that satisfy it.
+  const MAKE_SCOPED_COLLECTIONS: Record<
+    string,
+    { makes: string[]; label: string }
+  > = {
+    "ford-parts": { makes: ["ford"], label: "Ford" },
+    "chevy-parts": { makes: ["chevrolet", "chevy"], label: "Chevrolet" },
+    "dodge-parts": { makes: ["dodge", "ram"], label: "Dodge / Ram" },
+    "toyota-parts": { makes: ["toyota"], label: "Toyota" },
+    "jeep-parts": { makes: ["jeep"], label: "Jeep" },
+    "gmc-parts": { makes: ["gmc"], label: "GMC" },
+    "nissan-parts": { makes: ["nissan"], label: "Nissan" },
+    "honda-parts": { makes: ["honda"], label: "Honda" },
+    "hyundai-parts": { makes: ["hyundai"], label: "Hyundai" },
+  };
+  const makeScope = MAKE_SCOPED_COLLECTIONS[handle] ?? null;
+  const garageMake = vehicle?.make?.toLowerCase() ?? null;
+  const makeMismatch = !!(
+    makeScope && garageMake && !makeScope.makes.includes(garageMake)
+  );
+  const makeScopeLabel = makeMismatch ? makeScope!.label : null;
   // Cycle 14X+ post-sync (Mike-O15 NEW MAJOR): pass sub-model answers
   // through to the ProductCard fitment gate so a 5.5'-bed customer
   // doesn't see "✓ FITS" badges on 6.5'-bed products.
@@ -334,8 +366,13 @@ export default async function CollectionPage({
     // Cycle 14BA-fix2: when the customer flips the "SHOW ALL PRODUCTS"
     // chip we explicitly disable the auto-mismatch-drop behaviour. The
     // server default (undefined) keeps the existing vehicle→hide path.
+    // Cycle 14BA-fix3: same bypass when the collection is make-scoped
+    // and the garage make doesn't match — auto-filter on a Toyota-
+    // Parts/Jeep-garage combo guarantees zero results, which is a worse
+    // experience than letting the customer see the Toyota catalog they
+    // explicitly chose.
     hideMismatches:
-      vehicle && showAllProducts ? false : undefined,
+      vehicle && (showAllProducts || makeMismatch) ? false : undefined,
     subModelAnswers,
   });
 
@@ -626,6 +663,7 @@ export default async function CollectionPage({
         totalProducts={collection.totalProducts}
         vehicle={vehicle}
         showAllProducts={showAllProducts}
+        makeMismatchLabel={makeScopeLabel}
       />
 
       {/* Body — always rendered; DimensionPicker is a nudge, not a gate. */}
