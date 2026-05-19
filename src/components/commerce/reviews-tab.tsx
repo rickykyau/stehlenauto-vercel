@@ -364,7 +364,12 @@ function PhotoStrip({
           marginBottom: 10,
         }}
       >
-        Customer Photos · {photos.length} from {new Set(photos.map((p) => p.reviewerName)).size} customers
+        {(() => {
+          const customerCount = new Set(photos.map((p) => p.reviewerName)).size;
+          const photoNoun = photos.length === 1 ? "photo" : "photos";
+          const customerNoun = customerCount === 1 ? "customer" : "customers";
+          return `Customer ${photoNoun} · ${photos.length} from ${customerCount} ${customerNoun}`;
+        })()}
       </div>
       <div
         className="no-scrollbar"
