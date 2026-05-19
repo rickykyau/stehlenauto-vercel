@@ -8,6 +8,7 @@ import type { CollectionNode, ProductNode } from "@/lib/shopify/types";
 import { parseFitmentTable } from "@/lib/fitment/metafields";
 import { checkFitment, filterByDimensionAnswers } from "@/lib/fitment/match";
 import { getProductHandlesForVehicle } from "@/lib/fitment/products-by-ymm";
+import { getReviewAggregate } from "@/lib/reviews";
 import type { SubModelAnswer } from "@/lib/garage/types";
 import {
   BEST_SELLERS,
@@ -151,8 +152,11 @@ function adapt(p: ProductNode): CatalogProduct {
     // Cycle 14Z (Mike-O3 NEW-3): was hardcoded 4.7. Showing "4.7 (0 reviews)"
     // is mathematically impossible and a trust killer. Default to 0; UI
     // hides the rating row entirely when reviews === 0.
-    rating: 0,
-    reviews: 0,
+    // Cycle 14BD: when an Amazon-imported review bundle exists for this
+    // handle, surface the real aggregate so ProductCard / search results /
+    // cross-sell rails all show consistent numbers with the PDP.
+    rating: getReviewAggregate(p.handle)?.rating ?? 0,
+    reviews: getReviewAggregate(p.handle)?.count ?? 0,
     badges: badgesFor(p),
     chips: chipsFor(p),
     category: p.productType?.toLowerCase() || "uncategorized",

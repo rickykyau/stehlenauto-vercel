@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icons } from "@/components/ui/icons";
 import { SpecRow } from "@/components/ui/spec-row";
 import { Stars } from "@/components/ui/stars";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
+import { ReviewsTab } from "./reviews-tab";
+import type { AmazonReviewBundle } from "@/lib/reviews";
 // Cycle 14AS Step E: fitmentTableToRows removed (flat-list metafields
 // deleted from Shopify). All fitment table rendering goes through
 // applicationsToRows below.
@@ -14,7 +16,7 @@ import {
   cleanSubattributeValue,
   filterRetailValues,
 } from "@/lib/fitment/retail-filter";
-import type { CatalogProduct, FitmentRow, ProductReview } from "@/lib/catalog/types";
+import type { CatalogProduct, FitmentRow } from "@/lib/catalog/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
 
 /**
@@ -273,8 +275,6 @@ const SHIPPING_REGIONS: [string, string, string][] = [
   ["Hawaii / Alaska / PR", "7–10 business days", "+ $89"],
 ];
 
-const REVIEW_DISTRIBUTION = [78, 16, 4, 1, 1];
-
 // Cycle 14X (owner): friendly labels for the sub-attribute groups merch
 // populates via custom.fitment_subattributes JSON. Unknown keys fall back
 // to the raw key uppercased.
@@ -296,13 +296,15 @@ const SUBATTR_LABELS: Record<string, string> = {
 export function PdpTabs({
   product,
   fitment,
-  reviews,
+  amazonReviews,
   vehicle,
   productFits,
 }: {
   product: CatalogProduct;
   fitment: FitmentRow[];
-  reviews: ProductReview[];
+  /** Cycle 14BD: real Amazon-imported reviews (verified purchase, ≥4★,
+   *  customer-photo-required). When absent, the REVIEWS tab is hidden. */
+  amazonReviews?: AmazonReviewBundle | null;
   /** Cycle 14W (owner): garage vehicle so the FITMENT tab can render a
    *  vehicle-specific verdict callout instead of staying mute after the
    *  customer just verified. */
@@ -312,8 +314,21 @@ export function PdpTabs({
 }) {
   const [tab, setTab] = useState<TabKey>("fitment");
 
+  // Cycle 14BD: allow other UI surfaces (e.g. the buy-box stars row)
+  // to switch the customer to the REVIEWS tab. The buy-box dispatches
+  // `stehlen:tabs:switch` with `{ detail: { tab: "reviews" } }` and we
+  // honour it here so the page scrolls them straight to the right tab.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ tab?: TabKey }>).detail;
+      if (detail?.tab) setTab(detail.tab);
+    };
+    window.addEventListener("stehlen:tabs:switch", handler);
+    return () => window.removeEventListener("stehlen:tabs:switch", handler);
+  }, []);
+
   return (
-    <section className="container-x" style={{ paddingBottom: 64 }}>
+    <section id="pdp-tabs" className="container-x" style={{ paddingBottom: 64 }}>
       {/* Cycle 14AZ-fix1 (Ren BUG-AZ-R1-010): on 375px the tab strip
           overflows but had no visual scroll affordance — INSTALLATION /
           SHIPPING / WARRANTY were silently cut off. Right-edge mask fade
@@ -341,11 +356,11 @@ export function PdpTabs({
             ["installation", "INSTALLATION"],
             ["shipping", "SHIPPING"],
             ["warranty", "WARRANTY"],
-            // Cycle 14Z (Mike-O3 NEW-3): hide the REVIEWS tab when there
-            // are no real reviews. Showing fake review content under "(0)"
-            // is a trust killer + potential FTC issue.
-            ...(product.reviews > 0
-              ? [["reviews", `REVIEWS (${product.reviews})`] as [TabKey, string]]
+            // Cycle 14BD: REVIEWS tab is driven by real Amazon-imported
+            // bundles (data/amazon-reviews.json). When no bundle exists
+            // for the handle, the tab stays hidden — never show "(0)".
+            ...(amazonReviews && amazonReviews.review_count > 0
+              ? [["reviews", `REVIEWS (${amazonReviews.review_count})`] as [TabKey, string]]
               : []),
           ] satisfies [TabKey, string][]
         ).map(([key, label]) => (
@@ -1090,131 +1105,9 @@ export function PdpTabs({
           </div>
         )}
 
-        {tab === "reviews" && (
+        {tab === "reviews" && amazonReviews && amazonReviews.review_count > 0 && (
           <div className="md:col-span-2">
-            <div
-              className="grid grid-cols-1 md:grid-cols-[300px_1fr]"
-              style={{ gap: 32, marginBottom: 32 }}
-            >
-              <div
-                style={{
-                  background: "var(--color-surface)",
-                  border: "1px solid var(--color-border)",
-                  padding: 24,
-                  borderRadius: "var(--radius-md)",
-                }}
-              >
-                <div
-                  className="mono"
-                  style={{ fontSize: 48, fontWeight: 700, lineHeight: 1 }}
-                >
-                  {product.rating}
-                </div>
-                <Stars rating={product.rating} size={16} />
-                <div
-                  style={{
-                    fontSize: 13,
-                    color: "var(--color-muted)",
-                    marginTop: 8,
-                  }}
-                >
-                  Based on {product.reviews} verified reviews
-                </div>
-                <div style={{ marginTop: 16 }}>
-                  {[5, 4, 3, 2, 1].map((s, i) => (
-                    <div
-                      key={s}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 8,
-                        marginBottom: 4,
-                      }}
-                    >
-                      <span className="mono" style={{ fontSize: 11, width: 20 }}>
-                        {s}★
-                      </span>
-                      <div
-                        style={{
-                          flex: 1,
-                          height: 4,
-                          background: "var(--color-background)",
-                          borderRadius: 2,
-                        }}
-                      >
-                        <div
-                          style={{
-                            height: "100%",
-                            width: `${REVIEW_DISTRIBUTION[i]}%`,
-                            background: "var(--color-primary)",
-                          }}
-                        />
-                      </div>
-                      <span
-                        className="mono"
-                        style={{
-                          fontSize: 11,
-                          color: "var(--color-muted)",
-                          width: 24,
-                          textAlign: "right",
-                        }}
-                      >
-                        {REVIEW_DISTRIBUTION[i]}%
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                {reviews.map((r, i) => (
-                  <div
-                    key={r.name + r.date}
-                    style={{
-                      paddingBottom: 16,
-                      borderBottom:
-                        i < reviews.length - 1
-                          ? "1px solid var(--color-border)"
-                          : 0,
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        marginBottom: 6,
-                        flexWrap: "wrap",
-                        gap: 8,
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <Stars rating={r.rating} size={12} />
-                        <strong style={{ fontSize: 13 }}>{r.title}</strong>
-                      </div>
-                      <span
-                        className="mono"
-                        style={{
-                          fontSize: 10,
-                          color: "var(--color-success)",
-                          letterSpacing: "0.08em",
-                        }}
-                      >
-                        ✓ VERIFIED · {r.vehicle.toUpperCase()}
-                      </span>
-                    </div>
-                    <p style={{ fontSize: 14, lineHeight: 1.55 }}>{r.body}</p>
-                    <div
-                      style={{
-                        fontSize: 11,
-                        color: "var(--color-muted)",
-                        marginTop: 6,
-                      }}
-                    >
-                      {r.name} · {r.date}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ReviewsTab bundle={amazonReviews} />
           </div>
         )}
       </div>

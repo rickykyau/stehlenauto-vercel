@@ -4,14 +4,15 @@ import { notFound } from "next/navigation";
 import {
   getProduct,
   getProductFitment,
-  getProductReviews,
   getRelatedProducts,
 } from "@/lib/catalog";
+import { getReviewsForHandle } from "@/lib/reviews";
 import { PRODUCTS } from "@/lib/catalog/mock";
 import { ProductCard } from "@/components/commerce/product-card";
 import { ProductGallery } from "@/components/commerce/product-gallery";
 import { BuyBox } from "@/components/commerce/buy-box";
 import { PdpTabs } from "@/components/commerce/pdp-tabs";
+import { ReviewsAnchor } from "@/components/commerce/reviews-anchor";
 import { MobileStickyAtc } from "@/components/commerce/mobile-sticky-atc";
 import { ViewItemTracker } from "@/components/analytics/view-item";
 import {
@@ -19,7 +20,6 @@ import {
   jsonLdString as seoJsonLdString,
 } from "@/lib/seo/jsonld";
 import { Icons } from "@/components/ui/icons";
-import { Stars } from "@/components/ui/stars";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { getCurrentVehicle } from "@/lib/garage/server";
 import { getSubModelAnswers } from "@/lib/garage/server";
@@ -88,7 +88,7 @@ export default async function PdpPage({
     ? await getSubModelAnswers(vehicle.id ?? "")
     : [];
 
-  const [relatedResult, fitment, reviews] = await Promise.all([
+  const [relatedResult, fitment] = await Promise.all([
     // Cycle 8b (owner): pass the vehicle so the related-products rail
     // narrows by year+make+model tags. Without this we were showing F-150
     // owners 3 Toyota Tundra tonneau covers under a "fits your vehicle"
@@ -100,8 +100,8 @@ export default async function PdpPage({
     // of the "fitment guaranteed" promise.
     getRelatedProducts(handle, 4, vehicle ?? null, subModelAnswers),
     Promise.resolve(getProductFitment(handle)),
-    Promise.resolve(getProductReviews(handle)),
   ]);
+  const amazonReviews = getReviewsForHandle(handle);
   const relatedRaw = relatedResult.products;
   // Heading on the rail switches based on whether every card actually fits.
   const relatedAllFit = relatedResult.allFitVehicle;
@@ -373,9 +373,33 @@ export default async function PdpPage({
     },
   };
 
-  // Only attach AggregateRating once we have real review data (Marcus #5,
-  // Priya). Mock data here would be a Google manual-action risk.
-  // TODO(phase-5): reinstate when Okendo/Junip is wired and reviews.count > 0.
+  // Cycle 14BD: real Amazon-imported review data → eligible for
+  // AggregateRating + Review markup. Source disclosure ("publisher": Amazon)
+  // and verified=true on every entry satisfies the FTC + Google review-
+  // snippet guidance.
+  if (amazonReviews && amazonReviews.review_count > 0) {
+    jsonLd.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: amazonReviews.avg_rating,
+      reviewCount: amazonReviews.review_count,
+      bestRating: 5,
+      worstRating: 1,
+    };
+    jsonLd.review = amazonReviews.reviews.slice(0, 5).map((r) => ({
+      "@type": "Review",
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: r.stars,
+        bestRating: 5,
+        worstRating: 1,
+      },
+      author: { "@type": "Person", name: r.reviewer },
+      datePublished: r.date,
+      name: r.title,
+      reviewBody: r.body,
+      publisher: { "@type": "Organization", name: "Amazon" },
+    }));
+  }
 
   return (
     <main>
@@ -521,19 +545,16 @@ export default async function PdpPage({
               flexWrap: "wrap",
             }}
           >
-            {/* Cycle 14Z (Mike-O3 NEW-3): hide the rating row when there
-                are no real reviews yet — "4.7 (0 reviews)" is impossible
-                and a trust killer. Stock indicator stays so customers see
-                inventory state. */}
-            {product.reviews > 0 && (
+            {/* Cycle 14BD: clickable rating row driven by real Amazon
+                review bundles. Click jumps to the REVIEWS tab. Stays
+                hidden when no imported reviews — "4.7 (0 reviews)" is
+                a trust killer and an FTC risk. */}
+            {amazonReviews && amazonReviews.review_count > 0 && (
               <>
-                <Stars rating={product.rating} size={14} />
-                <span
-                  className="mono"
-                  style={{ fontSize: 11, letterSpacing: "0.06em" }}
-                >
-                  {product.rating} ({product.reviews} reviews)
-                </span>
+                <ReviewsAnchor
+                  rating={amazonReviews.avg_rating}
+                  count={amazonReviews.review_count}
+                />
                 <span style={{ color: "var(--color-muted-2)" }}>·</span>
               </>
             )}
@@ -1188,7 +1209,7 @@ export default async function PdpPage({
       <PdpTabs
         product={product}
         fitment={fitment}
-        reviews={reviews}
+        amazonReviews={amazonReviews}
         vehicle={vehicle}
         productFits={productFits}
       />
