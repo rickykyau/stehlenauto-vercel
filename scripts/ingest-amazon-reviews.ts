@@ -73,6 +73,27 @@ type ProductReviewBundle = {
 const DROP_ASINS = new Set<string>([
   // No Shopify equivalent — Camaro/Firebird side markers not in catalog.
   "B07M5J6QT6",
+  // Cycle 14BD R1 audit (auto-parts-specialist asin-audit-2026-05-19.csv):
+  // confirmed cross-product mismatches. Shipping these reviews would be an
+  // FTC compliance failure (16 CFR Part 255) — different product, sometimes
+  // different vehicle, sometimes incompatible hitch class.
+  "B07MDF528K", // Tundra bull guard handle → Camry window visor ASIN
+  "B071SDM6H5", // Tacoma grille handle → Yaris sedan grille ASIN
+  "B087L29BNF", // F-150 roll-up tonneau handle → hard tri-fold aluminum ASIN
+  "B07JKLQPGL", // Highlander/Lexus RX Class 3 hitch handle → Prius Class 1 (1.25") hitch ASIN
+  // NEEDS_REMAP set — same risk, no clean re-source available this round.
+  // Drop until a verified ASIN→handle mapping is sourced.
+  "B07L8T474C", // Impala matte-black grille handle → Chrome upper+lower combo ASIN (+ cross-ASIN photo paths)
+  "B01N7FTO2D", // Pilot/MDX hitch — handle year range overstates ASIN coverage
+  "B01FTGD6JQ", // S10/Sonoma tonneau LED combo claim not in ASIN (standalone tonneau)
+  "B07D6XZ6KF", // 2019-2024 Ram tonneau LED combo claim + truncated year range
+  "B0832K18QL", // F-Super Duty step bars — 4" oval ASIN vs 5" handle + cross-ASIN photo bleed
+  "B07D6YHSNV", // Lincoln Mark LT — handle says tri-fold; ASIN is roll-up
+  // Secondary ASINs also routed to the same already-dropped handles (the
+  // fuzzy matcher mapped two ASINs to one handle in these cases). Drop
+  // both so the handle is fully cleared.
+  "B01FTGE16I", // Second ASIN mapped to Impala handle (cross-ASIN photo bleed)
+  "B07JR9DQS5", // Second ASIN (5" oval) mapped to Super Duty 4"-vs-5" step handle
 ]);
 
 async function main() {
@@ -132,11 +153,15 @@ async function main() {
       continue;
     }
     const normalized: NormalizedReview[] = reviews.map((r) => {
-      const imgs = r.images.map((p) => {
-        // p is like "images/B077MG32CJ_RMV7ENNIVRU6U_1.jpg"
-        const basename = p.split("/").pop()!;
-        return `/reviews/${basename}`;
-      });
+      // Cycle 14BD R1 (Ren BUG-14BD-002): defensive guard against
+      // cross-ASIN photo bleed. Some review records reference image files
+      // whose basename starts with a DIFFERENT ASIN — those photos belong
+      // to a different product and must be filtered out. Compare each
+      // basename's prefix to the bundle's ASIN before keeping the path.
+      const imgs = r.images
+        .map((p) => p.split("/").pop()!)
+        .filter((basename) => basename.startsWith(`${asin}_`))
+        .map((basename) => `/reviews/${basename}`);
       keptImages += imgs.length;
       return {
         id: r.review_id,

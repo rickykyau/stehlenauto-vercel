@@ -100,16 +100,19 @@ export function ReviewsTab({ bundle }: { bundle: AmazonReviewBundle }) {
             />
           )}
 
-          {/* [C] Filter chips + sort */}
-          <FilterBar
-            starFilter={starFilter}
-            setStarFilter={setStarFilter}
-            photoFilter={photoFilter}
-            setPhotoFilter={setPhotoFilter}
-            sort={sort}
-            setSort={setSort}
-            dist={dist}
-          />
+          {/* [C] Filter chips + sort — hidden on 1-review products
+              (Jordan F-10): no filter or sort has any utility there. */}
+          {bundle.reviews.length >= 2 && (
+            <FilterBar
+              starFilter={starFilter}
+              setStarFilter={setStarFilter}
+              photoFilter={photoFilter}
+              setPhotoFilter={setPhotoFilter}
+              sort={sort}
+              setSort={setSort}
+              dist={dist}
+            />
+          )}
 
           {/* [D] Review cards */}
           <div style={{ marginTop: 20 }}>
@@ -292,7 +295,10 @@ function AggregateBlock({
         })}
       </div>
 
-      {/* FTC disclosure — must stay inside this trust card per Jordan spec */}
+      {/* Cycle 14BD-fix1 (Jordan F-3): FTC disclosure must sit at the same
+          visual hierarchy as the rating, not as a footnote. Bumped label to
+          foreground color + added yellow accent dot so the eye reads this
+          as structural trust info, not fine print. Body copy stays muted. */}
       <div
         style={{
           marginTop: 16,
@@ -306,17 +312,29 @@ function AggregateBlock({
             fontSize: 11,
             letterSpacing: "0.1em",
             textTransform: "uppercase",
-            color: "var(--color-muted)",
+            color: "var(--color-foreground)",
             fontWeight: 700,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
           }}
         >
+          <span
+            aria-hidden="true"
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: 3,
+              background: "var(--color-primary)",
+            }}
+          />
           Sourced from Amazon
         </div>
         <div
           style={{
             fontSize: 12,
             color: "var(--color-muted)",
-            marginTop: 4,
+            marginTop: 6,
             lineHeight: 1.5,
           }}
         >
@@ -442,12 +460,24 @@ function FilterBar({
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: 8,
+        gap: 12,
         alignItems: "center",
         justifyContent: "space-between",
       }}
     >
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      {/* Cycle 14BD-fix1 (Mike F-4): on mobile (375px) the chip group
+          was getting squeezed by `space-between` and clipping the WITH
+          PHOTOS chip. flex:1 + minWidth:0 lets the group reflow inside
+          available width and naturally wrap onto a second line. */}
+      <div
+        style={{
+          display: "flex",
+          gap: 8,
+          flexWrap: "wrap",
+          flex: "1 1 auto",
+          minWidth: 0,
+        }}
+      >
         <button
           type="button"
           onClick={() => setStarFilter(null)}
@@ -455,22 +485,28 @@ function FilterBar({
         >
           All
         </button>
-        <button
-          type="button"
-          onClick={() => setStarFilter(starFilter === 5 ? null : 5)}
-          style={{ ...chipBase, ...(starFilter === 5 ? active : inactive) }}
-          disabled={dist[0] === 0}
-        >
-          ★ 5 ({dist[0]})
-        </button>
-        <button
-          type="button"
-          onClick={() => setStarFilter(starFilter === 4 ? null : 4)}
-          style={{ ...chipBase, ...(starFilter === 4 ? active : inactive) }}
-          disabled={dist[1] === 0}
-        >
-          ★ 4 ({dist[1]})
-        </button>
+        {dist[0] > 0 && (
+          <button
+            type="button"
+            onClick={() => setStarFilter(starFilter === 5 ? null : 5)}
+            style={{ ...chipBase, ...(starFilter === 5 ? active : inactive) }}
+          >
+            ★ 5 ({dist[0]})
+          </button>
+        )}
+        {/* Cycle 14BD-fix1 (Mike F-5): hide ★4 chip entirely when there
+            are no 4-star reviews — disabled chips signal "no 4-star
+            reviews here" which is unnecessary negative info on perfect-
+            rating products. */}
+        {dist[1] > 0 && (
+          <button
+            type="button"
+            onClick={() => setStarFilter(starFilter === 4 ? null : 4)}
+            style={{ ...chipBase, ...(starFilter === 4 ? active : inactive) }}
+          >
+            ★ 4 ({dist[1]})
+          </button>
+        )}
         <button
           type="button"
           onClick={() => setPhotoFilter(!photoFilter)}
@@ -612,7 +648,9 @@ function ReviewCard({
             display: "flex",
             gap: 6,
             flexWrap: "wrap",
-            marginTop: 10,
+            marginTop: 16,
+            paddingTop: 12,
+            borderTop: "1px dashed var(--color-border)",
           }}
         >
           {r.images.map((src, i) => (

@@ -24,11 +24,12 @@ export function ReviewsAnchor({
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const noun = count === 1 ? "review" : "reviews";
   return (
     <a
       href="#pdp-tabs"
       onClick={onClick}
-      aria-label={`Read ${count} customer reviews, average ${rating} stars`}
+      aria-label={`Read ${count} customer ${noun}, average ${rating} stars`}
       style={{
         display: "inline-flex",
         alignItems: "center",
@@ -36,6 +37,9 @@ export function ReviewsAnchor({
         color: "inherit",
         textDecoration: "none",
         cursor: "pointer",
+        minHeight: 44,
+        padding: "0 4px",
+        marginLeft: -4,
       }}
     >
       <Stars rating={rating} size={14} />
@@ -48,7 +52,7 @@ export function ReviewsAnchor({
           paddingBottom: 1,
         }}
       >
-        {rating} ({count} review{count === 1 ? "" : "s"})
+        {rating} ({count} {noun})
       </span>
     </a>
   );

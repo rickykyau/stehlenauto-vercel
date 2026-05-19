@@ -122,7 +122,7 @@ export function ReviewLightbox({
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(0,0,0,0.88)",
+          background: "rgba(0,0,0,0.96)",
           border: 0,
           cursor: "pointer",
         }}
@@ -151,14 +151,15 @@ export function ReviewLightbox({
             width: 44,
             height: 44,
             borderRadius: 22,
-            background: "rgba(255,255,255,0.1)",
-            border: "1px solid rgba(255,255,255,0.3)",
+            background: "rgba(0,0,0,0.6)",
+            border: "1px solid rgba(255,255,255,0.4)",
             color: "#fff",
             cursor: "pointer",
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
             pointerEvents: "auto",
+            zIndex: 2,
           }}
         >
           <Icons.close size={20} />
@@ -177,14 +178,15 @@ export function ReviewLightbox({
               width: 44,
               height: 44,
               borderRadius: 22,
-              background: "rgba(255,255,255,0.1)",
-              border: "1px solid rgba(255,255,255,0.3)",
+              background: "rgba(0,0,0,0.6)",
+              border: "1px solid rgba(255,255,255,0.4)",
               color: "#fff",
               cursor: "pointer",
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
               pointerEvents: "auto",
+              zIndex: 2,
             }}
           >
             <Icons.chevLeft size={20} />
@@ -203,14 +205,15 @@ export function ReviewLightbox({
               width: 44,
               height: 44,
               borderRadius: 22,
-              background: "rgba(255,255,255,0.1)",
-              border: "1px solid rgba(255,255,255,0.3)",
+              background: "rgba(0,0,0,0.6)",
+              border: "1px solid rgba(255,255,255,0.4)",
               color: "#fff",
               cursor: "pointer",
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
               pointerEvents: "auto",
+              zIndex: 2,
             }}
           >
             <Icons.chevRight size={20} />
