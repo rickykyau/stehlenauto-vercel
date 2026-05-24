@@ -78,10 +78,14 @@ export function RecentlyViewedStrip({
           {title}
         </h2>
       </div>
+      {/* Cycle 14BF-fix2 (Mike F-3 MINOR): force min 4 columns so a
+          2-item strip doesn't look sparse on a 1440px screen.
+          Empty trailing slots become flat tiles linking to /collections
+          so the row still reads as intentional. */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${Math.min(filtered.length, 6)}, minmax(0, 1fr))`,
+          gridTemplateColumns: `repeat(${Math.max(Math.min(filtered.length, limit), 4)}, minmax(0, 1fr))`,
           gap: 12,
         }}
       >
@@ -89,6 +93,8 @@ export function RecentlyViewedStrip({
           <Link
             key={e.handle}
             href={`/products/${e.handle}`}
+            prefetch={false}
+            data-recent-card
             style={{
               display: "block",
               textDecoration: "none",
@@ -144,6 +150,37 @@ export function RecentlyViewedStrip({
             </div>
           </Link>
         ))}
+        {filtered.length < 4 &&
+          Array.from({ length: 4 - filtered.length }).map((_, i) => (
+            <Link
+              key={`pad-${i}`}
+              href="/collections"
+              prefetch={false}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                textDecoration: "none",
+                color: "var(--color-muted)",
+                border: "1px dashed var(--color-border)",
+                borderRadius: "var(--radius-md)",
+                background: "transparent",
+                aspectRatio: "1",
+                padding: 12,
+                fontSize: 11,
+                lineHeight: 1.4,
+                letterSpacing: "0.04em",
+                transition: "color 140ms ease, border-color 140ms ease",
+              }}
+            >
+              <span style={{ fontSize: 20, opacity: 0.5 }}>+</span>
+              <span className="mono" style={{ marginTop: 6, textTransform: "uppercase" }}>
+                Discover more
+              </span>
+            </Link>
+          ))}
       </div>
     </section>
   );

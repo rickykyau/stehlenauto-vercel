@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 
 const LS_KEY = "stehlen:wishlist:anon";
+const NUDGE_KEY = "stehlen:wishlist:nudge_dismissed";
 
 function readAnon(): string[] {
   if (typeof window === "undefined") return [];
@@ -67,6 +68,22 @@ export function WishlistHeart({ handle }: { handle: string }) {
       const hasClerkSession =
         typeof document !== "undefined" &&
         /(?:^|; )__session=/.test(document.cookie);
+
+      // Cycle 14BF-fix2 (Mike R2 — browser → 10): on first anonymous
+      // save, fire a "sign in to sync across devices" nudge once per
+      // browser. AutoZone pattern — closes the gap between browser
+      // and returning customer without an interruptive modal.
+      if (!saved && !hasClerkSession && next.length === 1) {
+        const dismissed = window.localStorage.getItem(NUDGE_KEY);
+        if (dismissed !== "1") {
+          window.dispatchEvent(
+            new CustomEvent("stehlen:wishlist:nudge", {
+              detail: { count: next.length },
+            }),
+          );
+        }
+      }
+
       if (hasClerkSession) {
         try {
           if (saved) {

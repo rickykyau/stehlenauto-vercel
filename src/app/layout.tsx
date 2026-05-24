@@ -12,6 +12,7 @@ import { BlurOnNav } from "@/components/layout/blur-on-nav";
 import { YmmModal } from "@/components/fitment/ymm-modal";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { ChatAssistant } from "@/components/chat/chat-assistant";
+import { WishlistNudge } from "@/components/commerce/wishlist-nudge";
 import { AnalyticsScripts } from "@/components/analytics/scripts";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { IdentifyUser } from "@/components/analytics/identify-user";
@@ -174,6 +175,7 @@ export default async function RootLayout({
             subModelAnswers={subModelAnswers}
           />
           <ChatAssistant />
+          <WishlistNudge />
           <AnalyticsScripts />
           <Suspense fallback={null}>
             <PageViewTracker />
