@@ -1265,31 +1265,12 @@ export default async function PdpPage({
                 Icon: Icons.truck,
                 text: "Drilling-free install · 60–90 minutes with 2 people",
               },
-              {
-                // Cycle 14BE-fix4 (Marcus #9): "talk to a tech" trust signal.
-                // etrailer's signature conversion lift on high-AOV SKUs. The
-                // phone exists but was buried in footer + cart-error copy.
-                // Surfacing it here lifts CR on $200+ items per Marcus's
-                // 2024 benchmarks. Always shown — buyers want to know they
-                // CAN reach a human, even if they never call.
-                Icon: Icons.phone,
-                text: (
-                  <>
-                    Fitment question?{" "}
-                    <a
-                      href="tel:+18883784536"
-                      style={{
-                        color: "var(--color-primary)",
-                        fontWeight: 600,
-                        textDecoration: "none",
-                      }}
-                    >
-                      Call our techs 1-888-378-4536
-                    </a>{" "}
-                    · Mon–Fri 9–5 PT
-                  </>
-                ),
-              },
+              // Cycle 14BE-fix4 → 14BE-fix1 Marcus #3: the "call a tech"
+              // CTA was duplicated in this trust row AND inside the buy-box
+              // above the ATC. Marcus flagged that the trust-row placement
+              // (below the buy-box, below the fold on mobile) doesn't hit
+              // the etrailer conversion pattern. The buy-box CTA now wins;
+              // the trust-row entry is removed to avoid duplicate signal.
             ].map(({ Icon, text }, i) => (
               <div
                 key={i}
@@ -1326,6 +1307,11 @@ export default async function PdpPage({
           complementary picks exist or category isn't mapped. */}
       {completeTheBuildWithFit.length > 0 && (
         <section className="container-x" style={{ paddingBottom: 48 }}>
+          {/* Cycle 14BE-fix1 (Jordan N-3): visual differentiation from
+              the SIMILAR PRODUCTS rail below. Yellow left-accent + tighter
+              padding signals "different action class" — these are
+              complementary-category cross-sells, not same-category
+              alternatives. RealTruck/AAG style. */}
           <div
             style={{
               display: "flex",
@@ -1334,6 +1320,8 @@ export default async function PdpPage({
               flexWrap: "wrap",
               gap: 8,
               marginBottom: 16,
+              borderLeft: "3px solid var(--color-primary)",
+              paddingLeft: 14,
             }}
           >
             <h2

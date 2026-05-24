@@ -44,7 +44,13 @@ export function difficultyColor(
     case "Easy":
       return "var(--color-success)";
     case "Moderate":
-      return "var(--color-primary)";
+      // Cycle 14BE-fix1 (Jordan N-1 HIGH): was var(--color-primary)
+      // which is the brand yellow. Two yellow elements in viewport
+      // (chip + sticky ATC) violates the one-yellow-per-viewport rule
+      // and dilutes the ATC affordance. Amber is the semantic
+      // "proceed with awareness" color in traffic-light vocabulary
+      // without competing with the CTA.
+      return "#d97706";
     case "Advanced":
       return "var(--color-destructive)";
   }

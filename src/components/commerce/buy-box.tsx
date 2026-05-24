@@ -820,6 +820,42 @@ export function BuyBox({
           96px][ATC flex:1][wishlist 56px]` which left only ~170px for ATC at
           375px viewport, causing "ADD TO CART · $178.00" to clip. Mobile now
           stacks: qty + ATC on row 1 (ATC fills), wishlist drops below. */}
+
+      {/* Cycle 14BE-fix1 (Marcus #3): inline "talk to a tech" CTA must
+          sit immediately above the ATC button to match etrailer's
+          conversion pattern — same viewport, not buried in trust row
+          below the fold or in the INSTALLATION tab. Surfaces the
+          pre-purchase fitment-anxiety release valve at the point of
+          hesitation. Always visible — buyers want to know they CAN
+          reach a human, even if they never call. */}
+      <a
+        href="tel:+18883784536"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          height: 36,
+          marginBottom: 10,
+          background: "rgba(245,168,35,0.08)",
+          border: "1px solid rgba(245,168,35,0.4)",
+          borderRadius: "var(--radius-sm)",
+          color: "var(--color-foreground)",
+          fontFamily: "var(--font-display)",
+          fontSize: 11,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          fontWeight: 600,
+          textDecoration: "none",
+        }}
+      >
+        <Icons.phone size={12} />
+        Fitment question? Call a tech ·{" "}
+        <span style={{ color: "var(--color-primary)", fontWeight: 700 }}>
+          1-888-378-4536
+        </span>
+      </a>
+
       <div className="buy-box-row" style={{ marginBottom: 12 }}>
         <div
           style={{
