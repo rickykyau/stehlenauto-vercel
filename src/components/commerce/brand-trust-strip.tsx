@@ -32,8 +32,11 @@ export function BrandTrustStrip() {
         {[
           {
             Icon: Icons.shield,
-            stat: "12 years",
-            label: "Building parts that fit",
+            // Cycle 14BF-fix1 (Mike F-4): brand was founded 2015 per the
+            // header copy; 2026 - 2015 = 11. "12 years" was math-wrong
+            // and a skeptical buyer doing the subtraction loses trust.
+            stat: "Since 2015",
+            label: "11 years building parts that fit",
           },
           {
             Icon: Icons.truck,

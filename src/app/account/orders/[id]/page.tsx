@@ -54,11 +54,31 @@ const TIMELINE = [
 
 export default async function OrderDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams?: Promise<{ verify_email?: string }>;
 }) {
   const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
+  const sp = (await searchParams) ?? {};
+  const verifyEmail = sp.verify_email?.toLowerCase().trim();
+
+  // Cycle 14BF-fix1 (Mike F-1 BLOCKER): guest order lookup at
+  // /track-order kicked here with ?verify_email=... and was redirected
+  // to /sign-in, breaking the "no account needed" promise. Now: if a
+  // verify_email is supplied, render the order page without Clerk
+  // auth (Shopify Admin order lookup gates on email match — see
+  // SECURITY note below).
+  //
+  // SECURITY: in production this page must call the Shopify Admin API
+  // to fetch the order by id, then verify `order.email === verifyEmail`
+  // before rendering line items / shipping address. v1 renders sample
+  // copy without that lookup so the BLOCKER ships now; the real
+  // Shopify Admin guard is the next ticket. Without verify_email AND
+  // without a Clerk session, redirect to sign-in as before.
+  if (!userId && !verifyEmail) {
+    redirect("/sign-in");
+  }
   const { id } = await params;
   const subtotal = SAMPLE_ITEMS.reduce((s, l) => s + l.price * l.qty, 0);
   const tax = subtotal * 0.0875;

@@ -59,23 +59,32 @@ export function WishlistHeart({ handle }: { handle: string }) {
         : Array.from(new Set([...current, handle]));
       writeAnon(next);
       setSaved(!saved);
-      // Best-effort persist to authenticated wishlist; ignore 401.
-      try {
-        if (saved) {
-          await fetch("/api/wishlist", {
-            method: "DELETE",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ handle }),
-          });
-        } else {
-          await fetch("/api/wishlist", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ handle }),
-          });
+      // Cycle 14BF-fix1 (Mike F-2 MAJOR): only call the authenticated
+      // wishlist API when a Clerk session cookie is actually present.
+      // Previously fired 401s on every anonymous save — noisy in
+      // browser dev tools + dirty log lines on the server. Server-side
+      // merge happens via /api/wishlist/merge once user signs in.
+      const hasClerkSession =
+        typeof document !== "undefined" &&
+        /(?:^|; )__session=/.test(document.cookie);
+      if (hasClerkSession) {
+        try {
+          if (saved) {
+            await fetch("/api/wishlist", {
+              method: "DELETE",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ handle }),
+            });
+          } else {
+            await fetch("/api/wishlist", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ handle }),
+            });
+          }
+        } catch {
+          // Network down — localStorage is the source of truth until next visit.
         }
-      } catch {
-        // Network down — localStorage is the source of truth until next visit.
       }
     } finally {
       setBusy(false);

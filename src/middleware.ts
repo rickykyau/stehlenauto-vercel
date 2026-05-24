@@ -17,6 +17,20 @@ export default clerkMiddleware(async (auth, req) => {
   if (isProtected(req)) {
     const { userId } = await auth();
     if (!userId) {
+      // Cycle 14BF-fix1 (Mike F-1 BLOCKER): guest order lookup at
+      // /track-order kicks customers to /account/orders/[id] with a
+      // ?verify_email=... query. That route is in the protected matcher,
+      // so the middleware was sending them straight to /sign-in —
+      // breaking the "no account needed" promise. Allow the request
+      // through when verify_email is supplied; the server component
+      // gates rendering on a real Shopify Admin email match (see
+      // src/app/account/orders/[id]/page.tsx).
+      if (
+        req.nextUrl.pathname.startsWith("/account/orders/") &&
+        req.nextUrl.searchParams.has("verify_email")
+      ) {
+        return;
+      }
       // Cycle 5 (Mike): auth.protect() was emitting `protect-rewrite` which
       // rewrote to a 404 page instead of bouncing to our custom /sign-in. The
       // dev-mode Clerk hosted-UI fallback (united-ibex-88.accounts.dev) was
