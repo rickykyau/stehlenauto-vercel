@@ -17,6 +17,7 @@ const LINK_COLS = [
   {
     h: "SUPPORT",
     items: [
+      { label: "Track Your Order", href: "/track-order" },
       { label: "Help Center", href: "/help" },
       { label: "Contact Us", href: "/help/contact" },
       { label: "Returns Policy", href: "/legal/returns" },

@@ -10,6 +10,8 @@ import {
 import { complementsFor } from "@/lib/catalog/complements";
 import { getReviewsForHandle } from "@/lib/reviews";
 import { getInstallGuide } from "@/lib/install";
+import { RecentlyViewedTracker } from "@/components/commerce/recently-viewed-tracker";
+import { RecentlyViewedStrip } from "@/components/commerce/recently-viewed-strip";
 import { PRODUCTS } from "@/lib/catalog/mock";
 import { ProductCard } from "@/components/commerce/product-card";
 import { ProductGallery } from "@/components/commerce/product-gallery";
@@ -473,6 +475,12 @@ export default async function PdpPage({
         }}
       />
       <ViewItemTracker product={product} />
+      <RecentlyViewedTracker
+        handle={product.handle}
+        title={product.title}
+        image={product.image}
+        price={product.price}
+      />
 
       {/* Breadcrumb */}
       <nav
@@ -1390,6 +1398,11 @@ export default async function PdpPage({
           </div>
         </section>
       )}
+
+      {/* Cycle 14BF: recently-viewed strip — closes the "I was looking at
+          something earlier" loop for browsers and returning customers.
+          Hidden when no history exists, excludes the current PDP. */}
+      <RecentlyViewedStrip excludeHandle={product.handle} limit={6} />
 
       {/* Back-in-stock + Prop 65
           Cycle 14X+ post-sync (Mike-O14 F-7 NIT): the back-in-stock card

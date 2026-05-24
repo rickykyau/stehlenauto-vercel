@@ -13,6 +13,8 @@ import { Icons } from "@/components/ui/icons";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { ProductCard } from "@/components/commerce/product-card";
+import { RecentlyViewedStrip } from "@/components/commerce/recently-viewed-strip";
+import { BrandTrustStrip } from "@/components/commerce/brand-trust-strip";
 
 // Cycle 14AA (Mike-O14AA F-7 MAJOR): page must read garage cookie at SSR
 // time to flip the YMM band into "Shop your truck" mode. Setting
@@ -514,6 +516,12 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Cycle 14BF (new-customer credibility): real-numbers brand
+          authority strip near top of homepage — closes the "I've
+          never heard of this brand" gap for cold visitors which was
+          Mike's biggest stuck-at-7/10 complaint. */}
+      <BrandTrustStrip />
+
       {/* Cycle 14X+ (partner feedback): the BEST SELLERS THIS MONTH grid
           used to live here as the 01 section. Partners want the lead
           slot to be SHOP BY CATEGORY (browse-first), with a feature-
@@ -858,6 +866,12 @@ export default async function HomePage() {
 
       {/* Trust row */}
       <TrustRow />
+
+      {/* Cycle 14BF: recently-viewed strip surfaces "pick up where you
+          left off" history for returning visitors. Hidden when no
+          history exists. Above the popular-vehicles section so it's
+          the first re-engagement signal returning customers see. */}
+      <RecentlyViewedStrip limit={6} />
 
       {/* Popular vehicles */}
       <section className="container-x" style={{ paddingTop: 64, paddingBottom: 64 }}>

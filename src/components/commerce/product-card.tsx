@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { WishlistHeart } from "./wishlist-heart";
 import Link from "next/link";
 import type { CatalogProduct } from "@/lib/catalog/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
@@ -88,6 +89,11 @@ export function ProductCard({
           position: "relative",
         }}
       >
+        {/* Cycle 14BF (Jordan F-8): anonymous-friendly wishlist heart
+            sits over the card image. localStorage-backed; merges to
+            Drizzle wishlist on sign-in. Browser stickiness for unauth
+            visitors — they can save without committing to an account. */}
+        <WishlistHeart handle={handle} />
         {image ? (
           // Cycle 14X+ (owner): bumped from 85% to 96% — at 85% the gray
           // surround read as a thick "white border" around every product
