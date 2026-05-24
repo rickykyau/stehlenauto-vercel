@@ -8,6 +8,7 @@ import { Stars } from "@/components/ui/stars";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
 import { ReviewsTab } from "./reviews-tab";
+import { ReviewForm } from "./review-form";
 import type { AmazonReviewBundle } from "@/lib/reviews";
 import type { InstallGuide } from "@/lib/install";
 import { difficultyColor } from "@/lib/install";
@@ -363,12 +364,14 @@ export function PdpTabs({
             ["installation", "INSTALLATION"],
             ["shipping", "SHIPPING"],
             ["warranty", "WARRANTY"],
-            // Cycle 14BD: REVIEWS tab is driven by real Amazon-imported
-            // bundles (data/amazon-reviews.json). When no bundle exists
-            // for the handle, the tab stays hidden — never show "(0)".
-            ...(amazonReviews && amazonReviews.review_count > 0
-              ? [["reviews", `REVIEWS (${amazonReviews.review_count})`] as [TabKey, string]]
-              : []),
+            // Cycle 14BG: REVIEWS tab is ALWAYS visible. With imported
+            // Amazon reviews → shows the count. Without → shows "WRITE
+            // A REVIEW" so customers can leave native reviews directly
+            // (Mike R3 stuck at 8/10 new customer because PDPs without
+            // reviews had no social-proof affordance at all).
+            amazonReviews && amazonReviews.review_count > 0
+              ? ["reviews", `REVIEWS (${amazonReviews.review_count})`] as [TabKey, string]
+              : ["reviews", "WRITE A REVIEW"] as [TabKey, string],
           ] satisfies [TabKey, string][]
         ).map(([key, label]) => (
           <button
@@ -949,6 +952,37 @@ export function PdpTabs({
                   to the same generic support card. */}
               {installGuide ? (
                 <div>
+                  {/* Cycle 14BG: AI-generated install hero image showing
+                      the part installed on a vehicle. Visualizes what
+                      the customer's truck will look like once assembled —
+                      Mike's "new customer 8/10" gap was partly about
+                      missing visual install confidence. Gemini-generated
+                      via scripts/gen-install-heroes.ts. */}
+                  {installGuide.heroImageUrl && (
+                    <div
+                      style={{
+                        marginBottom: 20,
+                        aspectRatio: "16 / 9",
+                        background: "var(--color-surface-2)",
+                        borderRadius: "var(--radius-md)",
+                        overflow: "hidden",
+                        position: "relative",
+                      }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={installGuide.heroImageUrl}
+                        alt={`${installGuide.title} — installed reference`}
+                        loading="lazy"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                      />
+                    </div>
+                  )}
                   {/* Difficulty + time + tools strip */}
                   <div
                     style={{
@@ -1314,6 +1348,20 @@ export function PdpTabs({
         {tab === "reviews" && amazonReviews && amazonReviews.review_count > 0 && (
           <div className="md:col-span-2">
             <ReviewsTab bundle={amazonReviews} />
+          </div>
+        )}
+
+        {/* Cycle 14BG: when no imported reviews exist, surface the native
+            review submission form so customers can leave the first one.
+            Mike R3 stuck at 8/10 new customer because review-less PDPs
+            had no social-proof affordance — now every PDP has at least
+            the "be the first to review" CTA. */}
+        {tab === "reviews" && (!amazonReviews || amazonReviews.review_count === 0) && (
+          <div className="md:col-span-2">
+            <ReviewForm
+              productHandle={product.handle}
+              productTitle={product.title}
+            />
           </div>
         )}
       </div>

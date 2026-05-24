@@ -1,32 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Icons } from "@/components/ui/icons";
 
 const NUDGE_KEY = "stehlen:wishlist:nudge_dismissed";
 
 /**
- * Cycle 14BF-fix2 (Mike R2 browser → 10/10): toast nudge fired the
- * first time an anonymous shopper saves to their wishlist. Sticks
- * bottom-right for 8 seconds with a Sign-in CTA + a dismiss. Once
- * dismissed it never shows again on this browser.
+ * Cycle 14BG (Mike R3 — Browser → 10/10): toast nudge fired the first
+ * time an anonymous shopper saves to their wishlist. AutoZone pattern.
  *
- * Mounted globally via root layout so it can listen for the
- * `stehlen:wishlist:nudge` event dispatched from any WishlistHeart.
+ * Accessibility hardening over the prior version:
+ * - `role="dialog"` + `aria-modal="false"` so screen readers announce
+ *   the buttons (not just the text — `role="status"` filters out
+ *   interactive children in Voice/NVDA/JAWS).
+ * - Portal-mounted to document.body to escape any overflow ancestor.
+ * - Focus moves to the Sign In CTA on render so keyboard users land
+ *   inside the dialog and can Tab to Don't Show Again / Close.
+ * - Tab is trapped within the dialog while open (cycling between the
+ *   three interactive buttons).
+ * - z-index: 1000 (well above sticky ATC, chat FAB).
+ * - No auto-dismiss — stays until the user acts (Mike R3 finding:
+ *   auto-dismiss silently suppressed re-engagement after 2 ignored
+ *   toasts; now suppression only fires on explicit Don't Show Again).
  */
 export function WishlistNudge() {
   const [visible, setVisible] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const signInRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    // Cycle 14BF-fix3 (Mike R3): track the timer outside the handler so
-    // re-firing nudges don't leak intervals. Auto-dismiss removed —
-    // toast stays until the user acts (Sign in / Don't show again /
-    // Close). Mike's R3 finding: 8s auto-dismiss silently set
-    // suppression after 2 ignored toasts, killing the re-engagement
-    // loop for power browsers. Now: toast stays visible until acted
-    // on; only explicit "Don't show again" sets the permanent
-    // suppression flag.
     const onNudge = () => {
       if (typeof window === "undefined") return;
       if (window.localStorage.getItem(NUDGE_KEY) === "1") return;
@@ -36,6 +40,39 @@ export function WishlistNudge() {
     return () => window.removeEventListener("stehlen:wishlist:nudge", onNudge);
   }, []);
 
+  // Move focus to the Sign In CTA when the dialog opens. Trap Tab
+  // inside the dialog so keyboard users don't fall out into the
+  // background page (which is still interactive — this is a
+  // non-modal dialog).
+  useEffect(() => {
+    if (!visible) return;
+    signInRef.current?.focus();
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setVisible(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const focusables = dialogRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled])',
+      );
+      if (!focusables || focusables.length === 0) return;
+      const first = focusables[0]!;
+      const last = focusables[focusables.length - 1]!;
+      const active = document.activeElement;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [visible]);
+
   const dismiss = () => {
     if (typeof window !== "undefined") {
       window.localStorage.setItem(NUDGE_KEY, "1");
@@ -44,16 +81,20 @@ export function WishlistNudge() {
   };
 
   if (!visible) return null;
+  if (typeof document === "undefined") return null;
 
-  return (
+  return createPortal(
     <div
-      role="status"
-      aria-live="polite"
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby="stehlen-wishlist-nudge-title"
+      aria-describedby="stehlen-wishlist-nudge-body"
       style={{
         position: "fixed",
         bottom: 20,
         right: 20,
-        zIndex: 90,
+        zIndex: 1000,
         maxWidth: 340,
         background: "var(--color-surface-2)",
         border: "1px solid var(--color-primary)",
@@ -83,6 +124,7 @@ export function WishlistNudge() {
       </span>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
+          id="stehlen-wishlist-nudge-title"
           className="mono"
           style={{
             fontSize: 11,
@@ -96,6 +138,7 @@ export function WishlistNudge() {
           Saved to your wishlist
         </div>
         <div
+          id="stehlen-wishlist-nudge-body"
           style={{
             fontSize: 12,
             color: "var(--color-muted)",
@@ -105,8 +148,9 @@ export function WishlistNudge() {
         >
           Sign in to keep your saves across all your devices.
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
           <Link
+            ref={signInRef}
             href="/sign-in"
             className="mono"
             style={{
@@ -116,6 +160,9 @@ export function WishlistNudge() {
               fontWeight: 700,
               color: "var(--color-primary)",
               textDecoration: "none",
+              minHeight: 44,
+              display: "inline-flex",
+              alignItems: "center",
             }}
           >
             Sign in →
@@ -133,6 +180,7 @@ export function WishlistNudge() {
               border: 0,
               cursor: "pointer",
               padding: 0,
+              minHeight: 44,
             }}
           >
             Don&apos;t show again
@@ -141,23 +189,27 @@ export function WishlistNudge() {
       </div>
       <button
         type="button"
-        aria-label="Close"
+        aria-label="Close wishlist sign-in nudge"
         onClick={() => setVisible(false)}
         style={{
-          width: 24,
-          height: 24,
-          minHeight: 24,
-          minWidth: 24,
+          width: 32,
+          height: 32,
+          minHeight: 32,
+          minWidth: 32,
           background: "transparent",
           border: 0,
           color: "var(--color-muted)",
           cursor: "pointer",
           padding: 0,
           flexShrink: 0,
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <Icons.close size={14} />
+        <Icons.close size={16} />
       </button>
-    </div>
+    </div>,
+    document.body,
   );
 }

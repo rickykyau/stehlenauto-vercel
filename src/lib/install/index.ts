@@ -21,6 +21,11 @@ export type InstallGuide = {
   steps: string[];
   warnings: string[];
   videoUrl: string | null;
+  /** Cycle 14BG: AI-generated install hero image (Gemini) showing the
+   *  part installed on a vehicle. Resolved by category handle from
+   *  /public/images/install-heroes/<handle>.jpg. Null when no asset
+   *  is available. */
+  heroImageUrl?: string | null;
 };
 
 type Manifest = {
@@ -29,11 +34,37 @@ type Manifest = {
 
 const manifest = guides as Manifest;
 
+// Cycle 14BG: install hero images live at /public/images/install-heroes/.
+// We can't fs.readdir at module load (edge runtime safety) so we hand-
+// enumerate against the generated set. Add a new category here when
+// gen-install-heroes.ts grows the catalog.
+const INSTALL_HERO_HANDLES = new Set<string>([
+  "tonneau-covers",
+  "trailer-hitches",
+  "bull-guards-grille-guards",
+  "front-grilles",
+  "headlights",
+  "truck-bed-mats",
+  "running-boards-side-steps",
+  "floor-mats",
+  "roof-racks-baskets",
+  "chase-racks-sport-bars",
+  "molle-panels",
+  "under-seat-storage",
+]);
+
 export function getInstallGuide(
   categoryHandle: string | null | undefined,
 ): InstallGuide | null {
   if (!categoryHandle) return null;
-  return manifest.by_category[categoryHandle] ?? null;
+  const guide = manifest.by_category[categoryHandle];
+  if (!guide) return null;
+  return {
+    ...guide,
+    heroImageUrl: INSTALL_HERO_HANDLES.has(categoryHandle)
+      ? `/images/install-heroes/${categoryHandle}.jpg`
+      : null,
+  };
 }
 
 export function difficultyColor(

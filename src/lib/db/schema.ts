@@ -100,9 +100,36 @@ export const searchMisses = pgTable("search_misses", {
   occurredAt: timestamp("occurred_at").notNull().defaultNow(),
 });
 
+/**
+ * Cycle 14BG (Mike new-customer ceiling): native review submissions
+ * so PDPs without imported Amazon reviews can still earn social proof
+ * from real customers. Submissions land in pending state — the admin
+ * dashboard surfaces them for moderation before they go live on the
+ * PDP. FTC/Google guidance: only "approved" reviews count toward
+ * the aggregate displayed publicly.
+ */
+export const productReviews = pgTable("product_reviews", {
+  id: text("id").primaryKey(),
+  productHandle: text("product_handle").notNull(),
+  userId: text("user_id"), // null = anonymous
+  authorName: text("author_name").notNull(),
+  authorEmail: text("author_email").notNull(),
+  vehicleYear: text("vehicle_year"),
+  vehicleMake: text("vehicle_make"),
+  vehicleModel: text("vehicle_model"),
+  stars: integer("stars").notNull(),
+  title: text("title").notNull(),
+  body: text("body").notNull(),
+  status: text("status").notNull().default("pending"), // pending | approved | rejected
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  approvedAt: timestamp("approved_at"),
+});
+
 export type Vehicle = typeof vehicles.$inferSelect;
 export type NewVehicle = typeof vehicles.$inferInsert;
 export type SubModelAnswer = typeof subModelAnswers.$inferSelect;
 export type Cart = typeof carts.$inferSelect;
 export type WishlistItem = typeof wishlistItems.$inferSelect;
 export type SearchMiss = typeof searchMisses.$inferSelect;
+export type ProductReview = typeof productReviews.$inferSelect;
+export type NewProductReview = typeof productReviews.$inferInsert;
