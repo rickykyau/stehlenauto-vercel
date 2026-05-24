@@ -457,6 +457,34 @@ export function CartPageClient({
                         : `✗ DOES NOT FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
                     </div>
                   )}
+                  {/* Cycle 14BE-fix6 (Jordan F-5): misfit-cart recovery.
+                      Cart correctly labels the misfit but used to dead-end
+                      the customer — only REMOVE was offered. Add a "find
+                      one that fits" link to the vehicle hub so the
+                      customer's session converts into a new browse instead
+                      of an abandonment. Per Jordan's AAG benchmark: 31%
+                      reduction in cart abandonment on misfit-mixed carts. */}
+                  {vehicle && fitments[idx] === false && (
+                    <div style={{ marginTop: 6 }}>
+                      <Link
+                        href={`/vehicle/${vehicle.year}-${vehicle.make.toLowerCase().replace(/\s+/g, "-")}-${vehicle.model.toLowerCase().replace(/\s+/g, "-")}`}
+                        className="mono"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 4,
+                          fontSize: 11,
+                          letterSpacing: "0.08em",
+                          color: "var(--color-primary)",
+                          textDecoration: "none",
+                          textTransform: "uppercase",
+                          fontWeight: 600,
+                        }}
+                      >
+                        Find one that fits your {vehicle.make} {vehicle.model} →
+                      </Link>
+                    </div>
+                  )}
                   <div
                     className="mono"
                     style={{

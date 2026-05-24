@@ -376,6 +376,37 @@ export default async function CollectionPage({
     subModelAnswers,
   });
 
+  // Cycle 14BE-fix1 (Jordan F-1 / Mike Mission 1): browse-gate anti-pattern.
+  // When a vehicle is set and the category has no products for that vehicle,
+  // the previous behavior fell into the "SELECT YOUR BED LENGTH" empty
+  // state with zero products visible — violating the locked
+  // fitment_flow_decision.md "nudge, not gate" rule. Cold paid traffic
+  // landed on /collections/tonneau-covers with a stale garage and saw an
+  // empty grid. Fall back to the full universe (no vehicle filter) so the
+  // grid shows products with FITS / CHECK FITMENT / DOES NOT FIT badges
+  // computed by withFitment() below. Only kicks in when:
+  //   - vehicle is set (otherwise no filtering happened anyway)
+  //   - user did NOT explicitly opt into strict mode via ?fits=1
+  //   - the vehicle-scoped query returned zero products
+  if (
+    collection &&
+    vehicle &&
+    !fitsOnly &&
+    collection.products.length === 0 &&
+    !makeMismatch
+  ) {
+    const fallback = await getCollection(handle, 24, {
+      rawInputs,
+      sort,
+      // Drop vehicle + subModelAnswers so we see the full universe.
+      // withFitment() at the render site still tags each card so the
+      // customer sees FITS / DOES NOT FIT badges without being blocked.
+    });
+    if (fallback && fallback.products.length > 0) {
+      collection = fallback;
+    }
+  }
+
   // Cycle-1 fix (Mike M2 / Marcus #6): rather than hard-404 unknown slugs that
   // are linked from chrome (best-sellers, new-arrivals, sale, lighting, etc.),
   // synthesize a friendly empty collection that keeps the chrome promise alive

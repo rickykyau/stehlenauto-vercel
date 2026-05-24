@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
+  getCollection,
   getProduct,
   getProductFitment,
   getRelatedProducts,
 } from "@/lib/catalog";
+import { complementsFor } from "@/lib/catalog/complements";
 import { getReviewsForHandle } from "@/lib/reviews";
+import { getInstallGuide } from "@/lib/install";
 import { PRODUCTS } from "@/lib/catalog/mock";
 import { ProductCard } from "@/components/commerce/product-card";
 import { ProductGallery } from "@/components/commerce/product-gallery";
@@ -102,6 +105,7 @@ export default async function PdpPage({
     Promise.resolve(getProductFitment(handle)),
   ]);
   const amazonReviews = getReviewsForHandle(handle);
+  const installGuide = getInstallGuide(product.categoryHandle);
   const relatedRaw = relatedResult.products;
   // Heading on the rail switches based on whether every card actually fits.
   const relatedAllFit = relatedResult.allFitVehicle;
@@ -110,6 +114,40 @@ export default async function PdpPage({
   // values that painted "✓ FITS YOUR WRANGLER" over F-150 cards. Recompute
   // honestly against the actual garage vehicle.
   const related = withFitment(relatedRaw, vehicle, subModelAnswers);
+
+  // Cycle 14BE-fix5 (Mike + Jordan + Marcus unanimous): "Complete the Build"
+  // cross-sell — fetch products from complementary categories, vehicle-
+  // filtered when garage is set, so a tonneau owner sees bed mats + bull
+  // guards as the next obvious add. Highest-AOV lever in the audit (per
+  // Jordan's 4WP 22% lift benchmark).
+  const complementSlugs = complementsFor(product.categoryHandle);
+  const complementResults = await Promise.all(
+    complementSlugs.map((slug) =>
+      getCollection(slug, 8, {
+        vehicle: vehicle ?? undefined,
+        subModelAnswers,
+        hideMismatches: !!vehicle,
+      }).catch(() => null),
+    ),
+  );
+  // Take the top in-stock product per complementary category — keep the
+  // rail to 3 cards max (Marcus's RealTruck reference: more = noise).
+  const completeTheBuildSeen = new Set<string>([product.handle]);
+  const completeTheBuild = complementResults
+    .map((c) => {
+      if (!c || c.products.length === 0) return null;
+      const pick = c.products.find(
+        (p) => p.inventory > 0 && !completeTheBuildSeen.has(p.handle),
+      );
+      if (pick) completeTheBuildSeen.add(pick.handle);
+      return pick ?? null;
+    })
+    .filter((p): p is NonNullable<typeof p> => p !== null);
+  const completeTheBuildWithFit = withFitment(
+    completeTheBuild,
+    vehicle,
+    subModelAnswers,
+  );
 
   // Cycle 4 P0 (Mike F-19, F-18): the main product's `fits` is undefined out
   // of the Shopify adapter. Title-string match against the garage paints the
@@ -1164,15 +1202,56 @@ export default async function PdpPage({
                 // the truthful range until real carrier rates land.
                 Icon: Icons.shipping,
                 text:
-                  product.inventory > 0 ? (
-                    <>
-                      Free shipping · <strong>Ships in 1-2 business days</strong> from CA · arrives in 3-7 days
-                    </>
-                  ) : (
-                    <>
-                      Free shipping, no minimum · <strong>Ships when restocked</strong>
-                    </>
-                  ),
+                  product.inventory > 0
+                    ? (() => {
+                        // Cycle 14BE-fix3 (Jordan F-3): replace ambiguous
+                        // "3-7 days" with a specific arrival window the
+                        // buyer can plan an install around. Math: today +
+                        // 1-2 day processing (1 if before 2PM PT, 2
+                        // otherwise) + 3 day median UPS Ground transit from
+                        // Corona CA. Server renders on each request
+                        // (dynamic = "force-dynamic") so the date is fresh
+                        // per visit.
+                        const now = new Date();
+                        const ptHour = parseInt(
+                          new Intl.DateTimeFormat("en-US", {
+                            timeZone: "America/Los_Angeles",
+                            hour: "numeric",
+                            hour12: false,
+                          }).format(now),
+                          10,
+                        );
+                        const sameDayCutoff = ptHour < 14;
+                        // Process: 1 day if pre-cutoff, 2 days otherwise.
+                        // Transit: 3 business days from CA to US median.
+                        // Skip weekends — approximate by adding 2 extra
+                        // days when the arrival lands on Sat/Sun.
+                        const processDays = sameDayCutoff ? 1 : 2;
+                        const transitDays = 3;
+                        const arrival = new Date(now);
+                        arrival.setDate(now.getDate() + processDays + transitDays);
+                        const day = arrival.getDay();
+                        if (day === 0) arrival.setDate(arrival.getDate() + 1);
+                        if (day === 6) arrival.setDate(arrival.getDate() + 2);
+                        const arrivalLabel = new Intl.DateTimeFormat("en-US", {
+                          weekday: "short",
+                          month: "short",
+                          day: "numeric",
+                        }).format(arrival);
+                        return (
+                          <>
+                            Free shipping ·{" "}
+                            <strong>Arrives by {arrivalLabel}</strong>{" "}
+                            if ordered{" "}
+                            {sameDayCutoff ? "today (before 2pm PT)" : "tomorrow"}
+                          </>
+                        );
+                      })()
+                    : (
+                      <>
+                        Free shipping, no minimum · <strong>Ships when restocked</strong>
+                      </>
+                    ),
               },
               {
                 Icon: Icons.return,
@@ -1185,6 +1264,31 @@ export default async function PdpPage({
               {
                 Icon: Icons.truck,
                 text: "Drilling-free install · 60–90 minutes with 2 people",
+              },
+              {
+                // Cycle 14BE-fix4 (Marcus #9): "talk to a tech" trust signal.
+                // etrailer's signature conversion lift on high-AOV SKUs. The
+                // phone exists but was buried in footer + cart-error copy.
+                // Surfacing it here lifts CR on $200+ items per Marcus's
+                // 2024 benchmarks. Always shown — buyers want to know they
+                // CAN reach a human, even if they never call.
+                Icon: Icons.phone,
+                text: (
+                  <>
+                    Fitment question?{" "}
+                    <a
+                      href="tel:+18883784536"
+                      style={{
+                        color: "var(--color-primary)",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Call our techs 1-888-378-4536
+                    </a>{" "}
+                    · Mon–Fri 9–5 PT
+                  </>
+                ),
               },
             ].map(({ Icon, text }, i) => (
               <div
@@ -1210,9 +1314,62 @@ export default async function PdpPage({
         product={product}
         fitment={fitment}
         amazonReviews={amazonReviews}
+        installGuide={installGuide}
         vehicle={vehicle}
         productFits={productFits}
       />
+
+      {/* Cycle 14BE-fix5 (Mike + Jordan + Marcus unanimous): "COMPLETE THE
+          BUILD" cross-sell — different-category complementary parts. Sits
+          ABOVE SIMILAR PRODUCTS so the AOV-lifting rail is the first
+          thing customers see after reading the buy box. Hidden when no
+          complementary picks exist or category isn't mapped. */}
+      {completeTheBuildWithFit.length > 0 && (
+        <section className="container-x" style={{ paddingBottom: 48 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 8,
+              marginBottom: 16,
+            }}
+          >
+            <h2
+              className="mono"
+              style={{
+                fontSize: 14,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+              }}
+            >
+              {vehicle
+                ? `COMPLETE THE BUILD FOR YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                : "COMPLETE THE BUILD"}
+            </h2>
+            <span
+              className="mono"
+              style={{
+                fontSize: 11,
+                letterSpacing: "0.08em",
+                color: "var(--color-muted)",
+                textTransform: "uppercase",
+              }}
+            >
+              Owners who add {product.category} also add these
+            </span>
+          </div>
+          <div
+            className="grid grid-cols-2 md:grid-cols-3"
+            style={{ gap: 16 }}
+          >
+            {completeTheBuildWithFit.slice(0, 3).map((p) => (
+              <ProductCard key={p.sku} product={p} vehicle={vehicle} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Cross-sell */}
       {related.length > 0 && (

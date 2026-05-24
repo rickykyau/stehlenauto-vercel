@@ -9,6 +9,8 @@ import { YmmButton } from "@/components/fitment/ymm-button";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
 import { ReviewsTab } from "./reviews-tab";
 import type { AmazonReviewBundle } from "@/lib/reviews";
+import type { InstallGuide } from "@/lib/install";
+import { difficultyColor } from "@/lib/install";
 // Cycle 14AS Step E: fitmentTableToRows removed (flat-list metafields
 // deleted from Shopify). All fitment table rendering goes through
 // applicationsToRows below.
@@ -297,6 +299,7 @@ export function PdpTabs({
   product,
   fitment,
   amazonReviews,
+  installGuide,
   vehicle,
   productFits,
 }: {
@@ -305,6 +308,10 @@ export function PdpTabs({
   /** Cycle 14BD: real Amazon-imported reviews (verified purchase, ≥4★,
    *  customer-photo-required). When absent, the REVIEWS tab is hidden. */
   amazonReviews?: AmazonReviewBundle | null;
+  /** Cycle 14BE-fix9: category-level install guide (difficulty, time,
+   *  tools, steps, warnings, optional video URL). When absent, falls
+   *  back to the generic support card. */
+  installGuide?: InstallGuide | null;
   /** Cycle 14W (owner): garage vehicle so the FITMENT tab can render a
    *  vehicle-specific verdict callout instead of staying mute after the
    *  customer just verified. */
@@ -934,32 +941,231 @@ export function PdpTabs({
               >
                 INSTALL OVERVIEW
               </h3>
-              {/* Cycle 14b (Mike F-2 BLOCKER): used to render hardcoded
-                  INSTALL_STEPS ("Lift assembled rack onto truck...") on every
-                  product including soft tonneaus where no rack exists. Honest
-                  fallback that points at the install help center until per-
-                  product steps are wired. */}
-              <div
-                style={{
-                  background: "var(--color-surface)",
-                  border: "1px solid var(--color-border)",
-                  borderRadius: "var(--radius-md)",
-                  padding: 16,
-                  fontSize: 13,
-                  color: "var(--color-muted)",
-                  lineHeight: 1.6,
-                }}
-              >
-                Step-by-step install instructions for{" "}
-                <strong style={{ color: "var(--color-foreground)" }}>
-                  {product.title}
-                </strong>{" "}
-                ship inside the box. For a quick overview, visit our{" "}
-                <Link href="/help/install" style={{ color: "var(--color-primary)" }}>
-                  install help center
-                </Link>{" "}
-                or call 1-888-378-4536.
-              </div>
+              {/* Cycle 14BE-fix9 (Mike Mission 1 + Marcus #2/#3): real
+                  AI-authored category-level install guide. Replaces the
+                  prior "instructions ship in box, call us" placeholder
+                  which Mike called out as the #1 hesitation on cold buys.
+                  When the category doesn't have a guide yet, falls back
+                  to the same generic support card. */}
+              {installGuide ? (
+                <div>
+                  {/* Difficulty + time + tools strip */}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 12,
+                      marginBottom: 20,
+                    }}
+                  >
+                    <span
+                      className="mono"
+                      style={{
+                        padding: "6px 12px",
+                        borderRadius: "var(--radius-sm)",
+                        background: "rgba(255,255,255,0.04)",
+                        border: `1px solid ${difficultyColor(installGuide.difficulty)}`,
+                        color: difficultyColor(installGuide.difficulty),
+                        fontSize: 11,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        fontWeight: 700,
+                      }}
+                    >
+                      Difficulty · {installGuide.difficulty}
+                    </span>
+                    <span
+                      className="mono"
+                      style={{
+                        padding: "6px 12px",
+                        borderRadius: "var(--radius-sm)",
+                        border: "1px solid var(--color-border)",
+                        color: "var(--color-foreground)",
+                        fontSize: 11,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Time · {installGuide.timeMinutes} min
+                    </span>
+                    <span
+                      className="mono"
+                      style={{
+                        padding: "6px 12px",
+                        borderRadius: "var(--radius-sm)",
+                        border: "1px solid var(--color-border)",
+                        color: "var(--color-foreground)",
+                        fontSize: 11,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {installGuide.peopleNeeded === 1
+                        ? "Solo install"
+                        : `${installGuide.peopleNeeded} people`}
+                    </span>
+                    <span
+                      className="mono"
+                      style={{
+                        padding: "6px 12px",
+                        borderRadius: "var(--radius-sm)",
+                        border: `1px solid ${installGuide.drillRequired ? "var(--color-destructive)" : "var(--color-success)"}`,
+                        color: installGuide.drillRequired
+                          ? "var(--color-destructive)"
+                          : "var(--color-success)",
+                        fontSize: 11,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {installGuide.drillRequired
+                        ? "Drilling required"
+                        : "No drilling"}
+                    </span>
+                  </div>
+
+                  {/* Optional install video */}
+                  {installGuide.videoUrl && (
+                    <div
+                      style={{
+                        marginBottom: 24,
+                        aspectRatio: "16 / 9",
+                        background: "#000",
+                        borderRadius: "var(--radius-md)",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <iframe
+                        src={installGuide.videoUrl}
+                        title={`${installGuide.title} install video`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        style={{ width: "100%", height: "100%", border: 0 }}
+                      />
+                    </div>
+                  )}
+
+                  {/* Tools needed */}
+                  <h4
+                    className="mono"
+                    style={{
+                      fontSize: 11,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--color-muted)",
+                      marginBottom: 8,
+                    }}
+                  >
+                    Tools you'll need
+                  </h4>
+                  <ul
+                    style={{
+                      margin: 0,
+                      marginBottom: 24,
+                      paddingLeft: 20,
+                      fontSize: 13,
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {installGuide.tools.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </ul>
+
+                  {/* Steps */}
+                  <h4
+                    className="mono"
+                    style={{
+                      fontSize: 11,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--color-muted)",
+                      marginBottom: 8,
+                    }}
+                  >
+                    Install steps
+                  </h4>
+                  <ol
+                    style={{
+                      margin: 0,
+                      marginBottom: 24,
+                      paddingLeft: 22,
+                      fontSize: 14,
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    {installGuide.steps.map((s, i) => (
+                      <li key={i} style={{ marginBottom: 10 }}>
+                        {s}
+                      </li>
+                    ))}
+                  </ol>
+
+                  {/* Warnings */}
+                  {installGuide.warnings.length > 0 && (
+                    <div
+                      style={{
+                        background: "rgba(239,68,68,0.08)",
+                        border: "1px solid rgba(239,68,68,0.4)",
+                        borderRadius: "var(--radius-md)",
+                        padding: 16,
+                      }}
+                    >
+                      <h4
+                        className="mono"
+                        style={{
+                          fontSize: 11,
+                          letterSpacing: "0.1em",
+                          textTransform: "uppercase",
+                          color: "var(--color-destructive)",
+                          marginBottom: 8,
+                          fontWeight: 700,
+                        }}
+                      >
+                        ⚠ Heads up
+                      </h4>
+                      <ul
+                        style={{
+                          margin: 0,
+                          paddingLeft: 20,
+                          fontSize: 13,
+                          lineHeight: 1.6,
+                          color: "var(--color-foreground)",
+                        }}
+                      >
+                        {installGuide.warnings.map((w, i) => (
+                          <li key={i} style={{ marginBottom: 6 }}>
+                            {w}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div
+                  style={{
+                    background: "var(--color-surface)",
+                    border: "1px solid var(--color-border)",
+                    borderRadius: "var(--radius-md)",
+                    padding: 16,
+                    fontSize: 13,
+                    color: "var(--color-muted)",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Step-by-step install instructions for{" "}
+                  <strong style={{ color: "var(--color-foreground)" }}>
+                    {product.title}
+                  </strong>{" "}
+                  ship inside the box. For a quick overview, visit our{" "}
+                  <Link href="/help/install" style={{ color: "var(--color-primary)" }}>
+                    install help center
+                  </Link>{" "}
+                  or call 1-888-378-4536.
+                </div>
+              )}
             </div>
             {/* Cycle 14Z (Mike-O1 M-5): the previous RESOURCES list claimed
                 "Installation Guide (PDF) — 4 pages" and "Installation Video

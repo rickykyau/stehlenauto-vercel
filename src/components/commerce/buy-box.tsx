@@ -895,20 +895,45 @@ export function BuyBox({
           on the same canAdd flag the primary ATC uses.
           Cycle 14X+ post-sync (Sam re-review M-4): button had no onClick,
           dead UI on every PDP. Wired to ATC + auto-redirect to Shopify
-          hosted checkout where Affirm is a payment method. */}
+          hosted checkout where Affirm is a payment method.
+          Cycle 14BE-fix8 (Jordan F-2 BLOCKER): mobile wallet visibility.
+          Shopify hosted checkout already surfaces Apple Pay / Google Pay
+          / Shop Pay / Affirm based on browser — the existing redirect
+          path supports all wallets. The button just didn't communicate
+          that, so customers thought their only option was Affirm. Now:
+          purple Shop Pay branding so the express-checkout affordance is
+          obvious. Tap → cart created server-side → redirect to Shopify
+          checkout → wallet sheet appears on supported browsers. */}
       <button
         type="button"
         onClick={() => onAdd({ redirectToCheckout: true })}
         disabled={adding || !canAdd}
         className="btn btn-block"
+        aria-label="Express checkout with Shop Pay, Apple Pay, Google Pay, or Affirm"
         style={{
-          background: "transparent",
-          borderColor: "var(--color-border-2)",
+          background: "#5a31f4",
+          color: "#fff",
+          borderColor: "#5a31f4",
           opacity: !canAdd ? 0.5 : 1,
           cursor: !canAdd ? "not-allowed" : "pointer",
+          fontFamily: "var(--font-display)",
+          letterSpacing: "0.04em",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
         }}
       >
-        {adding ? "ADDING…" : "BUY NOW WITH AFFIRM"}
+        {adding ? (
+          "STARTING CHECKOUT…"
+        ) : (
+          <>
+            EXPRESS CHECKOUT
+            <span style={{ opacity: 0.85, fontSize: 11, letterSpacing: "0.04em" }}>
+              · APPLE PAY · SHOP PAY · AFFIRM
+            </span>
+          </>
+        )}
       </button>
 
       {persistError && (

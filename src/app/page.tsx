@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getCategories, getPopularVehicles } from "@/lib/catalog";
+import {
+  getCategories,
+  getCollection,
+  getPopularVehicles,
+  type CatalogProduct,
+} from "@/lib/catalog";
+import { withFitment } from "@/lib/fitment/match";
 import { TrustRow } from "@/components/ui/trust-row";
 import { Icons } from "@/components/ui/icons";
 import { YmmButton } from "@/components/fitment/ymm-button";
-import { getCurrentVehicle } from "@/lib/garage/server";
+import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
+import { ProductCard } from "@/components/commerce/product-card";
 
 // Cycle 14AA (Mike-O14AA F-7 MAJOR): page must read garage cookie at SSR
 // time to flip the YMM band into "Shop your truck" mode. Setting
@@ -79,6 +86,50 @@ export default async function HomePage() {
         .toLowerCase()
         .replace(/\s+/g, "-")}`
     : null;
+
+  // Cycle 14BE-fix7 (Mike Mission 2 + Jordan F-6 + Marcus #6): returning-
+  // customer personalization band. When a vehicle is saved, pull a handful
+  // of in-stock products that fit their vehicle from the most-shopped
+  // categories so the homepage stops treating returning visitors as
+  // anonymous. Champions reactivated by email land here — they need a
+  // "we remember you" moment, not the same anonymous grid.
+  const subModelAnswers = savedVehicle
+    ? await getSubModelAnswers(savedVehicle.id ?? "").catch(() => [])
+    : [];
+  const personalizationPicks = savedVehicle
+    ? await (async () => {
+        // Most-shopped categories per Marcus's order-volume reference.
+        const POPULAR = [
+          "tonneau-covers",
+          "bull-guards-grille-guards",
+          "trailer-hitches",
+          "truck-bed-mats",
+        ];
+        const results = await Promise.all(
+          POPULAR.map((slug) =>
+            getCollection(slug, 8, {
+              vehicle: savedVehicle,
+              subModelAnswers,
+              hideMismatches: true,
+            }).catch(() => null),
+          ),
+        );
+        const seen = new Set<string>();
+        const picks: CatalogProduct[] = [];
+        for (const c of results) {
+          if (!c) continue;
+          const pick = c.products.find(
+            (p) => p.inventory > 0 && !seen.has(p.handle),
+          );
+          if (pick) {
+            seen.add(pick.handle);
+            picks.push(pick);
+          }
+          if (picks.length >= 4) break;
+        }
+        return withFitment(picks, savedVehicle, subModelAnswers);
+      })()
+    : [];
 
   return (
     <main>
@@ -468,6 +519,83 @@ export default async function HomePage() {
           slot to be SHOP BY CATEGORY (browse-first), with a feature-
           items video clip eventually replacing this. Removed for now;
           add back as a video block when the warehouse delivers footage. */}
+
+      {/* Cycle 14BE-fix7 (Mike Mission 2 + Jordan F-6 + Marcus #6):
+          returning-customer personalization band. Surfaces 3-4 in-stock
+          fitment-verified products for the customer's saved vehicle so
+          repeat visitors don't see the same anonymous grid as cold
+          traffic. Marcus: this is the mechanism reactivation email spend
+          converts on. Hidden when no garage vehicle is set OR no
+          fitment-verified picks were returned (e.g., exotic vehicle with
+          no catalog coverage). */}
+      {savedVehicle && personalizationPicks.length > 0 && (
+        <section
+          style={{
+            background: "var(--color-surface)",
+            borderTop: "1px solid var(--color-border)",
+            borderBottom: "1px solid var(--color-border)",
+          }}
+        >
+          <div
+            className="container-x"
+            style={{ paddingTop: 48, paddingBottom: 48 }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: 8,
+                marginBottom: 20,
+              }}
+            >
+              <div>
+                <div
+                  className="eyebrow"
+                  style={{ marginBottom: 8, color: "var(--color-primary)" }}
+                >
+                  WELCOME BACK
+                </div>
+                <h2
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "clamp(24px, 4vw, 36px)",
+                    textTransform: "uppercase",
+                    letterSpacing: "-0.02em",
+                    margin: 0,
+                  }}
+                >
+                  Continue your build for the {savedVehicle.year}{" "}
+                  {savedVehicle.make} {savedVehicle.model}
+                </h2>
+              </div>
+              <Link
+                href={vehicleSlug ? `/vehicle/${vehicleSlug}` : "/collections"}
+                className="mono"
+                style={{
+                  fontSize: 12,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "var(--color-primary)",
+                  textDecoration: "none",
+                  fontWeight: 700,
+                }}
+              >
+                See all {savedVehicle.model} parts →
+              </Link>
+            </div>
+            <div
+              className="grid grid-cols-2 md:grid-cols-4"
+              style={{ gap: 16 }}
+            >
+              {personalizationPicks.slice(0, 4).map((p) => (
+                <ProductCard key={p.sku} product={p} vehicle={savedVehicle} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Reactivation banner — Cycle 14AN (Diana): warm-shift from cool
           --color-surface-2 (#1a1a1a, indistinguishable from body) to

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Icons } from "@/components/ui/icons";
+import { PurchaseTracker } from "@/components/analytics/purchase-tracker";
+import { getCurrentVehicle } from "@/lib/garage/server";
 
 export const dynamic = "force-dynamic";
 
@@ -38,9 +40,17 @@ export default async function OrderConfirmationPage({
 }) {
   const { id } = await searchParams;
   const orderId = id ?? "STH-PENDING";
+  const vehicle = await getCurrentVehicle();
 
   return (
     <main>
+      {/* Cycle 14BE-fix2 (Marcus #1 BLOCKER): wake Klaviyo "Placed Order"
+          trigger so post-purchase flows (install reminder, cross-sell,
+          review request, winback) actually run. Items + value will be
+          populated when Shopify checkout success callback wires through
+          — placeholder for now uses orderId + vehicle context which is
+          enough to trigger the flow. */}
+      <PurchaseTracker orderId={orderId} vehicle={vehicle ?? null} />
       <div
         style={{
           background:
