@@ -19,14 +19,18 @@ export function WishlistNudge() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    // Cycle 14BF-fix3 (Mike R3): track the timer outside the handler so
+    // re-firing nudges don't leak intervals. Auto-dismiss removed —
+    // toast stays until the user acts (Sign in / Don't show again /
+    // Close). Mike's R3 finding: 8s auto-dismiss silently set
+    // suppression after 2 ignored toasts, killing the re-engagement
+    // loop for power browsers. Now: toast stays visible until acted
+    // on; only explicit "Don't show again" sets the permanent
+    // suppression flag.
     const onNudge = () => {
       if (typeof window === "undefined") return;
       if (window.localStorage.getItem(NUDGE_KEY) === "1") return;
       setVisible(true);
-      // Auto-dismiss after 8s but don't permanently mute — give them
-      // another chance on a future save until they explicitly close.
-      const t = setTimeout(() => setVisible(false), 8000);
-      return () => clearTimeout(t);
     };
     window.addEventListener("stehlen:wishlist:nudge", onNudge);
     return () => window.removeEventListener("stehlen:wishlist:nudge", onNudge);
