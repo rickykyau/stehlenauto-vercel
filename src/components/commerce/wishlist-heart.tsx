@@ -69,11 +69,13 @@ export function WishlistHeart({ handle }: { handle: string }) {
         typeof document !== "undefined" &&
         /(?:^|; )__session=/.test(document.cookie);
 
-      // Cycle 14BF-fix2 (Mike R2 — browser → 10): on first anonymous
-      // save, fire a "sign in to sync across devices" nudge once per
-      // browser. AutoZone pattern — closes the gap between browser
-      // and returning customer without an interruptive modal.
-      if (!saved && !hasClerkSession && next.length === 1) {
+      // Cycle 14BG-fix1 (Mike gate-test BLOCKER): nudge previously
+      // gated on `next.length === 1` (first-ever save). Playwright
+      // sessions with stale localStorage never hit length=1 → silent
+      // fail. Now fires on EVERY anonymous add. The WishlistNudge
+      // component itself reads the NUDGE_KEY dismiss flag and stays
+      // hidden once dismissed, so this can't over-fire.
+      if (!saved && !hasClerkSession) {
         const dismissed = window.localStorage.getItem(NUDGE_KEY);
         if (dismissed !== "1") {
           window.dispatchEvent(

@@ -34,17 +34,33 @@ export function ReviewForm({
   const [status, setStatus] = useState<"idle" | "ok" | "err">("idle");
   const [errMessage, setErrMessage] = useState("");
 
-  const canSubmit =
-    !busy &&
-    stars >= 1 &&
-    title.trim().length >= 4 &&
-    reviewBody.trim().length >= 20 &&
-    authorName.trim().length >= 2 &&
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(authorEmail.trim());
+  // Cycle 14BG-fix1 (Mike gate-test BLOCKER): button was disabled until
+  // every field passed. Mike's Playwright session showed it stuck even
+  // with valid input — diagnosing that vs surfacing the specific issue
+  // is friction. New pattern: button always clickable, submit handler
+  // validates and writes a concrete error message inline. Better UX
+  // anyway — users see "Pick a star rating" instead of mysteriously-
+  // disabled state.
+  const validate = (): string | null => {
+    if (stars < 1) return "Pick a star rating from 1 to 5.";
+    if (title.trim().length < 4) return "Title needs at least 4 characters.";
+    if (reviewBody.trim().length < 20)
+      return "Review needs at least 20 characters — tell us about fit, install, and quality.";
+    if (authorName.trim().length < 2) return "Your name is required.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(authorEmail.trim()))
+      return "Enter a valid email address.";
+    return null;
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!canSubmit) return;
+    if (busy) return;
+    const validationErr = validate();
+    if (validationErr) {
+      setStatus("err");
+      setErrMessage(validationErr);
+      return;
+    }
     setBusy(true);
     setStatus("idle");
     setErrMessage("");
@@ -388,11 +404,11 @@ export function ReviewForm({
 
       <button
         type="submit"
-        disabled={!canSubmit}
+        disabled={busy}
         className="btn btn-primary btn-lg btn-block"
         style={{
-          opacity: canSubmit ? 1 : 0.5,
-          cursor: canSubmit ? "pointer" : "not-allowed",
+          opacity: busy ? 0.5 : 1,
+          cursor: busy ? "wait" : "pointer",
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
