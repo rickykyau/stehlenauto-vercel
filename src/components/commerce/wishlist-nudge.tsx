@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
 import { Icons } from "@/components/ui/icons";
 
 const NUDGE_KEY = "stehlen:wishlist:nudge_dismissed";
@@ -28,7 +27,6 @@ const NUDGE_KEY = "stehlen:wishlist:nudge_dismissed";
 export function WishlistNudge() {
   const [visible, setVisible] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
-  const signInRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const onNudge = () => {
@@ -40,13 +38,20 @@ export function WishlistNudge() {
     return () => window.removeEventListener("stehlen:wishlist:nudge", onNudge);
   }, []);
 
-  // Move focus to the Sign In CTA when the dialog opens. Trap Tab
-  // inside the dialog so keyboard users don't fall out into the
-  // background page (which is still interactive — this is a
-  // non-modal dialog).
+  // Cycle 14BG-fix2 (Mike R2 MINOR): focus the FIRST focusable in the
+  // dialog (Sign In) on open. Previously used a ref attached to
+  // Next.js <Link>, which doesn't reliably forward refs to its
+  // underlying anchor — focus call was silently no-op'ing and the
+  // dialog opened with default browser focus elsewhere. querySelector
+  // against the dialog ref is bulletproof since it targets actual
+  // rendered DOM. Also Tab trap inside dialog so keyboard users
+  // don't fall out into the background page.
   useEffect(() => {
     if (!visible) return;
-    signInRef.current?.focus();
+    const first = dialogRef.current?.querySelector<HTMLElement>(
+      'a[href], button:not([disabled])',
+    );
+    first?.focus();
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
@@ -149,8 +154,7 @@ export function WishlistNudge() {
           Sign in to keep your saves across all your devices.
         </div>
         <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
-          <Link
-            ref={signInRef}
+          <a
             href="/sign-in"
             className="mono"
             style={{
@@ -166,7 +170,7 @@ export function WishlistNudge() {
             }}
           >
             Sign in →
-          </Link>
+          </a>
           <button
             type="button"
             onClick={dismiss}
