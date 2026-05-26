@@ -1,137 +1,25 @@
 {
-  "generated_at": "2026-05-19",
-  "source": "Amazon storefront (https://www.amazon.com/s?me=A2DIKPO9NVQVB9), 4-5★ verified purchases with customer photos",
+  "generated_at": "2026-05-26",
+  "source": "Amazon storefront (https://www.amazon.com/s?me=A2DIKPO9NVQVB9) — Pass 6 (Bright Data full catalog scan, 2026-05-22). Verified purchase 3-5★, body required. Tier A-inferred dropped per FTC 16 CFR Part 255 (sentiment-inferred ratings not displayed without explicit disclosure).",
   "by_handle": {
-    "1999-2006-chevy-silverado-tahoe-suburban-front-grille-black": {
-      "handle": "1999-2006-chevy-silverado-tahoe-suburban-front-grille-black",
-      "asin": "B077MG32CJ",
-      "amazon_title": "Glossy Black Vertical Front Hood Bumper Grill Grille Guard ABS Compatible With 99-02 Chevy Silverado 1500 2500/00-06 Tahoe Suburban",
+    "2006-2009-dodge-ram-1500-2500-3500-mesh-front-grille-matte-black": {
+      "handle": "2006-2009-dodge-ram-1500-2500-3500-mesh-front-grille-matte-black",
+      "asin": "B07XSFBVTF",
+      "amazon_title": "Matte Black Mesh Front Hood Bumper Grill Grille Guard ABS Compatible With 06-08 Dodge Ram 1500/06-09 2500 3500",
       "avg_rating": 5,
-      "review_count": 2,
+      "review_count": 1,
       "reviews": [
         {
-          "id": "RMV7ENNIVRU6U",
+          "id": "R28BUV93OURAIJ",
           "stars": 5,
-          "title": "",
-          "body": "quedo perfecto",
-          "reviewer": "Ismael Martínez Roman",
-          "date": "2019-06-27",
-          "verified": true,
-          "helpful_votes": 5,
-          "images": [
-            "/reviews/B077MG32CJ_RMV7ENNIVRU6U_1.jpg"
-          ]
-        },
-        {
-          "id": "R2NYEQDX2EP0CS",
-          "stars": 5,
-          "title": "Dark look",
-          "body": "Looks good but attachment clips are too short so don't fit properly.",
-          "reviewer": "OM",
-          "date": "2019-12-11",
-          "verified": true,
-          "helpful_votes": 4,
-          "images": [
-            "/reviews/B077MG32CJ_R2NYEQDX2EP0CS_1.jpg"
-          ]
-        }
-      ]
-    },
-    "1994-2002-dodge-ram-1500-2500-3500-vertical-front-grille-matte-black": {
-      "handle": "1994-2002-dodge-ram-1500-2500-3500-vertical-front-grille-matte-black",
-      "asin": "B077MNWQXP",
-      "amazon_title": "Glossy Black Vertical Front Hood Bumper Grill Grille Guard ABS Compatible With 94-01 Dodge Ram 1500/94-02 2500 3500",
-      "avg_rating": 5,
-      "review_count": 4,
-      "reviews": [
-        {
-          "id": "RN80ODBMO961W",
-          "stars": 5,
-          "title": "Happy customer",
-          "body": "Didn't necessarily just bolt on little improvising necessary. Not too much though. Good product and great look",
-          "reviewer": "Phillip",
-          "date": "2021-03-15",
-          "verified": true,
-          "helpful_votes": 1,
-          "images": [
-            "/reviews/B077MNWQXP_RN80ODBMO961W_1.jpg"
-          ]
-        },
-        {
-          "id": "R1ER952MG4ED8S",
-          "stars": 5,
-          "title": "Fits perfectly.",
-          "body": "Product is great, looks nice, was easy to install, I did have to use some hardware that I had because it doesn't come with any but not a big deal. I like the looks and it seems very well made and it fit perfectly.",
-          "reviewer": "steven h.",
-          "date": "2019-10-01",
-          "verified": true,
-          "helpful_votes": 1,
-          "images": [
-            "/reviews/B077MNWQXP_R1ER952MG4ED8S_1.jpg",
-            "/reviews/B077MNWQXP_R1ER952MG4ED8S_2.jpg"
-          ]
-        },
-        {
-          "id": "RJJY7AQ7T4TOE",
-          "stars": 5,
-          "title": "Great grille",
-          "body": "Easy to install. It helped transform the front of my truck",
-          "reviewer": "MicaiahManion",
-          "date": "2021-01-12",
+          "title": "08 ram 1500",
+          "body": "Fit well wish I would have painted first",
+          "reviewer": "Luis",
+          "date": "2020-08-01",
           "verified": true,
           "helpful_votes": 0,
           "images": [
-            "/reviews/B077MNWQXP_RJJY7AQ7T4TOE_1.jpg"
-          ]
-        },
-        {
-          "id": "R3AEG8G8C5S4NB",
-          "stars": 5,
-          "title": "Fits nice",
-          "body": "Looks good",
-          "reviewer": "Amazon Customer",
-          "date": "2018-10-22",
-          "verified": true,
-          "helpful_votes": 0,
-          "images": [
-            "/reviews/B077MNWQXP_R3AEG8G8C5S4NB_1.jpg"
-          ]
-        }
-      ]
-    },
-    "universal-2-receiver-hitch-step-matte-black-hs207-31bk": {
-      "handle": "universal-2-receiver-hitch-step-matte-black-hs207-31bk",
-      "asin": "B07TSB2KCW",
-      "amazon_title": "Stehlen 733469495321 Universal Matte Black Hoop Style Trailer Tow Mount Rear Hitch Drop Step Bar Bumper Guard for 2\" X 2\" Towing Receiver Tube",
-      "avg_rating": 5,
-      "review_count": 2,
-      "reviews": [
-        {
-          "id": "R2CEWWS9Z9N92Q",
-          "stars": 5,
-          "title": "VERY STURDY",
-          "body": "Love how sturdy it looks and feels! Easy install too! Got some good comments about it already!",
-          "reviewer": "Bruddah Sam",
-          "date": "2022-01-30",
-          "verified": true,
-          "helpful_votes": 3,
-          "images": [
-            "/reviews/B07TSB2KCW_R2CEWWS9Z9N92Q_1.jpg",
-            "/reviews/B07TSB2KCW_R2CEWWS9Z9N92Q_2.jpg"
-          ]
-        },
-        {
-          "id": "R1WAHJ4IQDYJW7",
-          "stars": 5,
-          "title": "Great improvement to my Truck",
-          "body": "Easy to install, I wish I would have bought this along time ago, really helpful to get in and out of my truck bed.very sturdy step!!",
-          "reviewer": "Carl",
-          "date": "2023-03-27",
-          "verified": true,
-          "helpful_votes": 1,
-          "images": [
-            "/reviews/B07TSB2KCW_R1WAHJ4IQDYJW7_1.jpg",
-            "/reviews/B07TSB2KCW_R1WAHJ4IQDYJW7_2.jpg"
+            "/reviews/B07XSFBVTF_R28BUV93OURAIJ_1.jpg"
           ]
         }
       ]
@@ -216,59 +104,167 @@
         }
       ]
     },
-    "1999-2004-ford-super-duty-excursion-front-grille-black": {
-      "handle": "1999-2004-ford-super-duty-excursion-front-grille-black",
-      "asin": "B07HBCWZL2",
-      "amazon_title": "Glossy Black Vertical Front Hood Bumper Grill Grille Guard ABS Compatible With 99-04 Ford F250 F350 F450 F550 Superduty / 00-04 Excursion",
+    "1994-2002-dodge-ram-1500-2500-3500-front-grille-black": {
+      "handle": "1994-2002-dodge-ram-1500-2500-3500-front-grille-black",
+      "asin": "B077MNWQXP",
+      "amazon_title": "Glossy Black Vertical Front Hood Bumper Grill Grille Guard ABS Compatible With 94-01 Dodge Ram 1500/94-02 2500 3500",
       "avg_rating": 5,
-      "review_count": 2,
+      "review_count": 4,
       "reviews": [
         {
-          "id": "RYM81UH2SZHHK",
+          "id": "RN80ODBMO961W",
           "stars": 5,
-          "title": "Good product",
-          "body": "Easy to install and looks good on my truck",
-          "reviewer": "JBA",
-          "date": "2020-11-09",
+          "title": "Happy customer",
+          "body": "Didn't necessarily just bolt on little improvising necessary. Not too much though. Good product and great look",
+          "reviewer": "Phillip",
+          "date": "2021-03-15",
           "verified": true,
           "helpful_votes": 1,
           "images": [
-            "/reviews/B07HBCWZL2_RYM81UH2SZHHK_1.jpg"
+            "/reviews/B077MNWQXP_RN80ODBMO961W_1.jpg"
           ]
         },
         {
-          "id": "R1623YVGXP9581",
+          "id": "R1ER952MG4ED8S",
           "stars": 5,
-          "title": "Do it!",
-          "body": "Looked great!",
-          "reviewer": "Christopher B",
-          "date": "2025-04-03",
+          "title": "Fits perfectly.",
+          "body": "Product is great, looks nice, was easy to install, I did have to use some hardware that I had because it doesn't come with any but not a big deal. I like the looks and it seems very well made and it fit perfectly.",
+          "reviewer": "steven h.",
+          "date": "2019-10-01",
+          "verified": true,
+          "helpful_votes": 1,
+          "images": [
+            "/reviews/B077MNWQXP_R1ER952MG4ED8S_1.jpg",
+            "/reviews/B077MNWQXP_R1ER952MG4ED8S_2.jpg"
+          ]
+        },
+        {
+          "id": "RJJY7AQ7T4TOE",
+          "stars": 5,
+          "title": "Great grille",
+          "body": "Easy to install. It helped transform the front of my truck",
+          "reviewer": "MicaiahManion",
+          "date": "2021-01-12",
           "verified": true,
           "helpful_votes": 0,
           "images": [
-            "/reviews/B07HBCWZL2_R1623YVGXP9581_1.jpg"
+            "/reviews/B077MNWQXP_RJJY7AQ7T4TOE_1.jpg"
+          ]
+        },
+        {
+          "id": "R3AEG8G8C5S4NB",
+          "stars": 5,
+          "title": "Fits nice",
+          "body": "Looks good",
+          "reviewer": "Amazon Customer",
+          "date": "2018-10-22",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B077MNWQXP_R3AEG8G8C5S4NB_1.jpg"
           ]
         }
       ]
     },
-    "1994-2002-dodge-ram-1500-2500-3500-horizontal-front-grille-matte-black": {
-      "handle": "1994-2002-dodge-ram-1500-2500-3500-horizontal-front-grille-matte-black",
-      "asin": "B01MU350Q0",
-      "amazon_title": "Glossy Black Horizontal Front Hood Bumper Grill Grille Guard ABS Compatible With 94-01 Dodge Ram 1500/94-02 2500 3500",
+    "99-07-silverado-sierra-1500-bull-guard-mesh-skid-plate-matte-black": {
+      "handle": "99-07-silverado-sierra-1500-bull-guard-mesh-skid-plate-matte-black",
+      "asin": "B078P878D8",
+      "amazon_title": "Matte Black AVT Style Bull Bar Brush Push Front Bumper Grill Grille Guard with Skid Plate Compatible with 99-07 Chevy Silverado GMC Sierra / 00-06 Suburban Tahoe Yukon 1500",
       "avg_rating": 5,
-      "review_count": 1,
+      "review_count": 3,
       "reviews": [
         {
-          "id": "R2JDRLFMHTANSO",
+          "id": "R3UB78QFNUPDX0",
           "stars": 5,
-          "title": "Looks good",
-          "body": "I was looking for a grille that made my truck look big and something to give it a semi truck-ish looking grille and this really worked well for the look. Grille is easy to customize and fit nicely. Price is cheap and well worth it. Grille is easily customizable.",
-          "reviewer": "Josiah",
-          "date": "2019-09-10",
+          "title": "Easy install, great finish",
+          "body": "Easy install, 4 predrilled hole for LED bars, nice and solid. Looks cool as is, but will really look nice once i lift the old Hoe in a few days.",
+          "reviewer": "JustinInATX",
+          "date": "2019-07-29",
           "verified": true,
-          "helpful_votes": 5,
+          "helpful_votes": 6,
           "images": [
-            "/reviews/B01MU350Q0_R2JDRLFMHTANSO_1.jpg"
+            "/reviews/B078P878D8_R3UB78QFNUPDX0_1.jpg"
+          ]
+        },
+        {
+          "id": "R295SA8XZNPSFZ",
+          "stars": 5,
+          "title": "Here’s a picture you be the judge",
+          "body": "Piece of cake to install I’m still getting used to the way it looks On a 2003 suburban Z 71 no modifications were needed",
+          "reviewer": "William",
+          "date": "2020-09-25",
+          "verified": true,
+          "helpful_votes": 1,
+          "images": [
+            "/reviews/B078P878D8_R295SA8XZNPSFZ_1.jpg",
+            "/reviews/B078P878D8_R295SA8XZNPSFZ_2.jpg",
+            "/reviews/B078P878D8_R295SA8XZNPSFZ_3.jpg"
+          ]
+        },
+        {
+          "id": "R1RNOJ71QBNMF0",
+          "stars": 5,
+          "title": "It fitttttt",
+          "body": "Love it",
+          "reviewer": "Theresa",
+          "date": "2020-09-23",
+          "verified": true,
+          "helpful_votes": 1,
+          "images": [
+            "/reviews/B078P878D8_R1RNOJ71QBNMF0_1.jpg"
+          ]
+        }
+      ]
+    },
+    "2014-2021-toyota-tundra-full-led-projector-headlights-black-amber": {
+      "handle": "2014-2021-toyota-tundra-full-led-projector-headlights-black-amber",
+      "asin": "B07VLPXWBH",
+      "amazon_title": "Sequential Black Housing Full LED Quad Projector Headlights Signal Lamps Amber Reflector nb Compatible With 14-21 Toyota Tundra",
+      "avg_rating": 5,
+      "review_count": 3,
+      "reviews": [
+        {
+          "id": "RMDYMIOUI8NZL",
+          "stars": 5,
+          "title": "Sexy Upgrade",
+          "body": "It pains my husband to spend money. Seriously. Toyota Tundras are the most reliable truck in the industry; couple that reliability with his thriftiness and I know his 2014 is not going anywhere anytime soon. For his birthday I surprised him with a truck makeover--I took his car to a body shop ostensibly to repair a dent and changed his 2014 Tundra grille to a 2018-2021 TRD Pro grille, added a 12 inch screen Tesla like radio, and changed his headlights to these. I debated about buying these headlights because I was already spending a veritable fortune and they are a couple of hundred bucks more but I just liked how aggressive these looked. I got lucky because they are even brighter than his other lights and look better even with the daytime running lights. I am glad I splurged.",
+          "reviewer": "Nia Taylor",
+          "date": "2020-11-12",
+          "verified": true,
+          "helpful_votes": 10,
+          "images": [
+            "/reviews/B07VLPXWBH_RMDYMIOUI8NZL_1.jpg"
+          ]
+        },
+        {
+          "id": "R1IJ2D34ZW50D8",
+          "stars": 5,
+          "title": "Awesome!!!!",
+          "body": "Got it installed on my 2016 Tundra. Looks amazing, totally changed the look of the truck .",
+          "reviewer": "Fahem Alam",
+          "date": "2020-06-30",
+          "verified": true,
+          "helpful_votes": 8,
+          "images": [
+            "/reviews/B07VLPXWBH_R1IJ2D34ZW50D8_1.jpg",
+            "/reviews/B07VLPXWBH_R1IJ2D34ZW50D8_2.jpg"
+          ]
+        },
+        {
+          "id": "RKLILGJK3JTTQ",
+          "stars": 5,
+          "title": "Great LED headlight with a mean look",
+          "body": "Wish the LED parking light was brighter. Love the Turn Signals how it light up from the front and fades out to the side.",
+          "reviewer": "Izzy",
+          "date": "2021-12-16",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B07VLPXWBH_RKLILGJK3JTTQ_1.jpg",
+            "/reviews/B07VLPXWBH_RKLILGJK3JTTQ_2.jpg",
+            "/reviews/B07VLPXWBH_RKLILGJK3JTTQ_3.jpg",
+            "/reviews/B07VLPXWBH_RKLILGJK3JTTQ_4.jpg",
+            "/reviews/B07VLPXWBH_RKLILGJK3JTTQ_5.jpg"
           ]
         }
       ]
@@ -344,30 +340,116 @@
         }
       ]
     },
-    "2015-2023-ford-f-150-f-250-f-350-underseat-storage-organizer-box": {
-      "handle": "2015-2023-ford-f-150-f-250-f-350-underseat-storage-organizer-box",
-      "asin": "B07PH2HQYQ",
-      "amazon_title": "Stehlen 733469494522 Compatible With 2015-2022 Ford F150 / 2017-2022 F250 F350 F450 F550 Superduty SuperCrew (Crew) Cab Gearbox Underseat Storage Cargo Organizer Box - Textured Black",
+    "2006-2011-cadillac-dts-chrome-vertical-front-grille-custom": {
+      "handle": "2006-2011-cadillac-dts-chrome-vertical-front-grille-custom",
+      "asin": "B077JLPPJX",
+      "amazon_title": "Chrome Vertical Front Hood Bumper Grill Grille Guard ABS Compatible With 06-11 Cadillac DTS",
       "avg_rating": 5,
-      "review_count": 1,
+      "review_count": 2,
       "reviews": [
         {
-          "id": "R1ROYL0FBBWFRT",
+          "id": "RHIAM2NH8BZXB",
           "stars": 5,
-          "title": "Just what the doctor ordered.",
-          "body": "Easy install. Adds much needed storage inside the truck. i attached a picture with circles to where the screws go so you can judge for yourself if you can use it.",
-          "reviewer": "YBnorm",
-          "date": "2020-08-13",
+          "title": "The right one baby",
+          "body": "My 3rd one. Always a great choice.",
+          "reviewer": "Keith Cardell",
+          "date": "2020-06-23",
           "verified": true,
-          "helpful_votes": 7,
+          "helpful_votes": 5,
           "images": [
-            "/reviews/B07PH2HQYQ_R1ROYL0FBBWFRT_1.jpg"
+            "/reviews/B077JLPPJX_RHIAM2NH8BZXB_1.jpg",
+            "/reviews/B077JLPPJX_RHIAM2NH8BZXB_2.jpg"
+          ]
+        },
+        {
+          "id": "R1XAK2HNNWH53M",
+          "stars": 5,
+          "title": "Nice",
+          "body": "Easy installation",
+          "reviewer": "Mooney Glover",
+          "date": "2020-08-19",
+          "verified": true,
+          "helpful_votes": 3,
+          "images": [
+            "/reviews/B077JLPPJX_R1XAK2HNNWH53M_1.jpg"
           ]
         }
       ]
     },
-    "1999-2005-volkswagen-jetta-mk4-front-bumper-grille-matte-black": {
-      "handle": "1999-2005-volkswagen-jetta-mk4-front-bumper-grille-matte-black",
+    "1999-2004-ford-super-duty-excursion-front-grille-black": {
+      "handle": "1999-2004-ford-super-duty-excursion-front-grille-black",
+      "asin": "B07HBCWZL2",
+      "amazon_title": "Glossy Black Vertical Front Hood Bumper Grill Grille Guard ABS Compatible With 99-04 Ford F250 F350 F450 F550 Superduty / 00-04 Excursion",
+      "avg_rating": 5,
+      "review_count": 2,
+      "reviews": [
+        {
+          "id": "RYM81UH2SZHHK",
+          "stars": 5,
+          "title": "Good product",
+          "body": "Easy to install and looks good on my truck",
+          "reviewer": "JBA",
+          "date": "2020-11-09",
+          "verified": true,
+          "helpful_votes": 1,
+          "images": [
+            "/reviews/B07HBCWZL2_RYM81UH2SZHHK_1.jpg"
+          ]
+        },
+        {
+          "id": "R1623YVGXP9581",
+          "stars": 5,
+          "title": "Do it!",
+          "body": "Looked great!",
+          "reviewer": "Christopher B",
+          "date": "2025-04-03",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B07HBCWZL2_R1623YVGXP9581_1.jpg"
+          ]
+        }
+      ]
+    },
+    "09-22-ram-1500-advanced-series-bull-guard-w-led-light-bar-matte-black": {
+      "handle": "09-22-ram-1500-advanced-series-bull-guard-w-led-light-bar-matte-black",
+      "asin": "B07L7ZLCBV",
+      "amazon_title": "Stehlen 733469493044 Compatible with 2009-2018 Dodge Ram 1500/2019-2024 Classic Advance Series Aluminum LED Bull Bar - Matte Black",
+      "avg_rating": 5,
+      "review_count": 2,
+      "reviews": [
+        {
+          "id": "R2VKTXZXH5BCAW",
+          "stars": 5,
+          "title": "Better instructions would be nice!",
+          "body": "The product itself is very nice and has an amazing look to it. The instructions kinda leave quite a bit of guess work and questions to the badly taken photos with out descriptions of the location. Also doesn’t help not having a bolt comparison on the instructions. So over all the product is amazing but the instructions need work.",
+          "reviewer": "Colby Reel",
+          "date": "2021-06-14",
+          "verified": true,
+          "helpful_votes": 1,
+          "images": [
+            "/reviews/B07L7ZLCBV_R2VKTXZXH5BCAW_1.jpg"
+          ]
+        },
+        {
+          "id": "R3EX5HH3CI23QS",
+          "stars": 5,
+          "title": "",
+          "body": "Estaría bien que te mostrará cuáles piezas van del lado izquierdo y cuáles del lado derecho ,con cables y todo muy fácil del lado electrónico tarde como 4 horas",
+          "reviewer": "Manuel",
+          "date": "2022-02-06",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B07L7ZLCBV_R3EX5HH3CI23QS_1.jpg",
+            "/reviews/B07L7ZLCBV_R3EX5HH3CI23QS_2.jpg",
+            "/reviews/B07L7ZLCBV_R3EX5HH3CI23QS_3.jpg"
+          ]
+        }
+      ]
+    },
+    "1999-2005-volkswagen-jetta-mk4-horizontal-front-grille-black": {
+      "handle": "1999-2005-volkswagen-jetta-mk4-horizontal-front-grille-black",
       "asin": "B07LC19X7P",
       "amazon_title": "Glossy Black Horizontal Front Hood Bumper Grill Grille Guard ABS Compatible With 99-05 VW Jetta/Bora MK4",
       "avg_rating": 5,
@@ -397,6 +479,150 @@
           "helpful_votes": 0,
           "images": [
             "/reviews/B07LC19X7P_R31ZN34AOLFGLV_1.jpg"
+          ]
+        }
+      ]
+    },
+    "2015-2022-chevy-colorado-gmc-canyon-bull-guard-w-skid-plate": {
+      "handle": "2015-2022-chevy-colorado-gmc-canyon-bull-guard-w-skid-plate",
+      "asin": "B07P1WS2Y5",
+      "amazon_title": "Stehlen 733469493686 Compatible with 2015-2022 Chevy Colorado/GMC Canyon Advance Series Bull Bar - Matte Black",
+      "avg_rating": 5,
+      "review_count": 2,
+      "reviews": [
+        {
+          "id": "R3NAH3AA9IVLKG",
+          "stars": 5,
+          "title": "Looks good!",
+          "body": "I like it a lot: it wasn’t too bad to install. I did it alone minus the last part my 7 year old leaned against it while I tightened it. Man this would have took me a lot less time if my impact didn’t stop working randomly ! But the time it took was on me!\nIf you want this to take a solid 45 mins use a lift and an impact. If not expect a couple hours.\nSolid product. This was installed on my 2016 Chevy Colorado trail boss edition z71.\nYou will not have tow hooks if you decide you want this bull bar. But it’s whatever to me!",
+          "reviewer": "Honest reviews",
+          "date": "2024-01-12",
+          "verified": true,
+          "helpful_votes": 1,
+          "images": [
+            "/reviews/B07P1WS2Y5_R3NAH3AA9IVLKG_1.jpg",
+            "/reviews/B07P1WS2Y5_R3NAH3AA9IVLKG_2.jpg",
+            "/reviews/B07P1WS2Y5_R3NAH3AA9IVLKG_3.jpg"
+          ]
+        },
+        {
+          "id": "R2JY80YT1E9LS0",
+          "stars": 5,
+          "title": "Amazing look for the colorados",
+          "body": "Easy to install, looks great, quality product, fits amazing.",
+          "reviewer": "REVIEW KING",
+          "date": "2025-10-21",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B07P1WS2Y5_R2JY80YT1E9LS0_1.jpg"
+          ]
+        }
+      ]
+    },
+    "2002-2005-dodge-ram-rivet-style-mesh-front-grille-black-abs": {
+      "handle": "2002-2005-dodge-ram-rivet-style-mesh-front-grille-black-abs",
+      "asin": "B07P9418P3",
+      "amazon_title": "Glossy Black RVT Rivet Bolt Steel Mesh Front Hood Bumper Grill Grille Guard ABS Compatible With 02-05 Dodge Ram 1500/03-05 2500 3500",
+      "avg_rating": 5,
+      "review_count": 2,
+      "reviews": [
+        {
+          "id": "R3L2RUJT07R97E",
+          "stars": 5,
+          "title": "Easy to install",
+          "body": "Looks good on my truck made her look 10 years younger lol",
+          "reviewer": "Michael Alsip",
+          "date": "2021-01-22",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B07P9418P3_R3L2RUJT07R97E_1.jpg"
+          ]
+        },
+        {
+          "id": "R20VFVYXD30LUL",
+          "stars": 5,
+          "title": "Sweet looking grill.",
+          "body": "Love this grill! Looks great in my truck. Only problem I had with it was hardware. Hardware off my truck didn’t fit. Found what I needed at Lowe’s.",
+          "reviewer": "Wayne H.",
+          "date": "2019-07-07",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B07P9418P3_R20VFVYXD30LUL_1.jpg"
+          ]
+        }
+      ]
+    },
+    "universal-2-receiver-hitch-step-matte-black-hs207-31bk": {
+      "handle": "universal-2-receiver-hitch-step-matte-black-hs207-31bk",
+      "asin": "B07TSB2KCW",
+      "amazon_title": "Stehlen 733469495321 Universal Matte Black Hoop Style Trailer Tow Mount Rear Hitch Drop Step Bar Bumper Guard for 2\" X 2\" Towing Receiver Tube",
+      "avg_rating": 5,
+      "review_count": 2,
+      "reviews": [
+        {
+          "id": "R2CEWWS9Z9N92Q",
+          "stars": 5,
+          "title": "VERY STURDY",
+          "body": "Love how sturdy it looks and feels! Easy install too! Got some good comments about it already!",
+          "reviewer": "Bruddah Sam",
+          "date": "2022-01-30",
+          "verified": true,
+          "helpful_votes": 3,
+          "images": [
+            "/reviews/B07TSB2KCW_R2CEWWS9Z9N92Q_1.jpg",
+            "/reviews/B07TSB2KCW_R2CEWWS9Z9N92Q_2.jpg"
+          ]
+        },
+        {
+          "id": "R1WAHJ4IQDYJW7",
+          "stars": 5,
+          "title": "Great improvement to my Truck",
+          "body": "Easy to install, I wish I would have bought this along time ago, really helpful to get in and out of my truck bed.very sturdy step!!",
+          "reviewer": "Carl",
+          "date": "2023-03-27",
+          "verified": true,
+          "helpful_votes": 1,
+          "images": [
+            "/reviews/B07TSB2KCW_R1WAHJ4IQDYJW7_1.jpg",
+            "/reviews/B07TSB2KCW_R1WAHJ4IQDYJW7_2.jpg"
+          ]
+        }
+      ]
+    },
+    "09-18-dodge-ram-1500-2500-3500-quad-cab-modular-side-step-bars": {
+      "handle": "09-18-dodge-ram-1500-2500-3500-quad-cab-modular-side-step-bars",
+      "asin": "B07V7KGXTY",
+      "amazon_title": "Matte Black Hoop Drop Step Side Nerf Bars Rail Running Boards v2 Compatible with 09-18 Dodge Ram 1500/19-24 Classic Quad (Extended) Cab",
+      "avg_rating": 4.5,
+      "review_count": 2,
+      "reviews": [
+        {
+          "id": "R114R05TWQ35VK",
+          "stars": 4,
+          "title": "Good fit",
+          "body": "These steps look great on my truck. The instructions sucked but easy to figure out what goes where.",
+          "reviewer": "Amazon Customer",
+          "date": "2021-07-18",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B07V7KGXTY_R114R05TWQ35VK_1.jpg"
+          ]
+        },
+        {
+          "id": "R68Z34WM712OV",
+          "stars": 5,
+          "title": "2019 ram 1500 classic step bars",
+          "body": "Exact fit for 2019 ram 1500 classic, extremely easy install, one minor detail I found while installing\nI had to use a metabo and cut the front driver side bracket to fit some sort or piece from the truck was in the way cut about 1.5 inches straight across the top of bracket.\nI don’t care though these are awesome, force these are awesome, step bars, easy on pocket $",
+          "reviewer": "Nicholas",
+          "date": "2021-01-07",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B07V7KGXTY_R68Z34WM712OV_1.jpg"
           ]
         }
       ]
@@ -439,134 +665,46 @@
         }
       ]
     },
-    "2003-2014-lincoln-navigator-mark-lt-bull-guard-matte-black-led-bar": {
-      "handle": "2003-2014-lincoln-navigator-mark-lt-bull-guard-matte-black-led-bar",
-      "asin": "B07L81FKDJ",
-      "amazon_title": "Stehlen 733469493105 Compatible with 2004-2023 Ford F150 / 2003-2017 Expedition / 2003-2014 Lincoln Navigator / 2006-2008 Mark LT Advance Series Aluminum LED Bull Bar - Matte Black",
+    "2010-2011-toyota-camry-front-grille-chrome-mesh-style": {
+      "handle": "2010-2011-toyota-camry-front-grille-chrome-mesh-style",
+      "asin": "B01FTGCVPQ",
+      "amazon_title": "Chrome Mesh Front Hood Bumper Grill Grille Guard ABS Compatible With 10-11 Toyota Camry",
       "avg_rating": 5,
       "review_count": 1,
       "reviews": [
         {
-          "id": "R2GDCG869QMWHG",
+          "id": "R385C4AVO8X234",
           "stars": 5,
-          "title": "Awesome bar with great lights!",
-          "body": "Super wasy to put together and install. Well built and sturdy. I'm shocked with how bright the lights are! Looks great on my 07 Expedition.",
-          "reviewer": "Captain Stacey",
-          "date": "2021-07-16",
+          "title": "Look perfect",
+          "body": "Toyota canry 2010. Very nice",
+          "reviewer": "Jennifer",
+          "date": "2018-09-13",
           "verified": true,
-          "helpful_votes": 2,
+          "helpful_votes": 4,
           "images": [
-            "/reviews/B07L81FKDJ_R2GDCG869QMWHG_1.jpg",
-            "/reviews/B07L81FKDJ_R2GDCG869QMWHG_2.jpg"
+            "/reviews/B01FTGCVPQ_R385C4AVO8X234_1.jpg"
           ]
         }
       ]
     },
-    "99-07-silverado-sierra-1500-bull-guard-mesh-skid-plate-matte-black": {
-      "handle": "99-07-silverado-sierra-1500-bull-guard-mesh-skid-plate-matte-black",
-      "asin": "B078P878D8",
-      "amazon_title": "Matte Black AVT Style Bull Bar Brush Push Front Bumper Grill Grille Guard with Skid Plate Compatible with 99-07 Chevy Silverado GMC Sierra / 00-06 Suburban Tahoe Yukon 1500",
-      "avg_rating": 5,
-      "review_count": 3,
-      "reviews": [
-        {
-          "id": "R3UB78QFNUPDX0",
-          "stars": 5,
-          "title": "Easy install, great finish",
-          "body": "Easy install, 4 predrilled hole for LED bars, nice and solid. Looks cool as is, but will really look nice once i lift the old Hoe in a few days.",
-          "reviewer": "JustinInATX",
-          "date": "2019-07-29",
-          "verified": true,
-          "helpful_votes": 6,
-          "images": [
-            "/reviews/B078P878D8_R3UB78QFNUPDX0_1.jpg"
-          ]
-        },
-        {
-          "id": "R295SA8XZNPSFZ",
-          "stars": 5,
-          "title": "Here’s a picture you be the judge",
-          "body": "Piece of cake to install I’m still getting used to the way it looks On a 2003 suburban Z 71 no modifications were needed",
-          "reviewer": "William",
-          "date": "2020-09-25",
-          "verified": true,
-          "helpful_votes": 1,
-          "images": [
-            "/reviews/B078P878D8_R295SA8XZNPSFZ_1.jpg",
-            "/reviews/B078P878D8_R295SA8XZNPSFZ_2.jpg",
-            "/reviews/B078P878D8_R295SA8XZNPSFZ_3.jpg"
-          ]
-        },
-        {
-          "id": "R1RNOJ71QBNMF0",
-          "stars": 5,
-          "title": "It fitttttt",
-          "body": "Love it",
-          "reviewer": "Theresa",
-          "date": "2020-09-23",
-          "verified": true,
-          "helpful_votes": 1,
-          "images": [
-            "/reviews/B078P878D8_R1RNOJ71QBNMF0_1.jpg"
-          ]
-        }
-      ]
-    },
-    "09-22-ram-1500-advanced-series-bull-guard-w-led-light-bar-matte-black": {
-      "handle": "09-22-ram-1500-advanced-series-bull-guard-w-led-light-bar-matte-black",
-      "asin": "B07L7ZLCBV",
-      "amazon_title": "Stehlen 733469493044 Compatible with 2009-2018 Dodge Ram 1500/2019-2024 Classic Advance Series Aluminum LED Bull Bar - Matte Black",
-      "avg_rating": 5,
-      "review_count": 2,
-      "reviews": [
-        {
-          "id": "R2VKTXZXH5BCAW",
-          "stars": 5,
-          "title": "Better instructions would be nice!",
-          "body": "The product itself is very nice and has an amazing look to it. The instructions kinda leave quite a bit of guess work and questions to the badly taken photos with out descriptions of the location. Also doesn’t help not having a bolt comparison on the instructions. So over all the product is amazing but the instructions need work.",
-          "reviewer": "Colby Reel",
-          "date": "2021-06-14",
-          "verified": true,
-          "helpful_votes": 1,
-          "images": [
-            "/reviews/B07L7ZLCBV_R2VKTXZXH5BCAW_1.jpg"
-          ]
-        },
-        {
-          "id": "R3EX5HH3CI23QS",
-          "stars": 5,
-          "title": "",
-          "body": "Estaría bien que te mostrará cuáles piezas van del lado izquierdo y cuáles del lado derecho ,con cables y todo muy fácil del lado electrónico tarde como 4 horas",
-          "reviewer": "Manuel",
-          "date": "2022-02-06",
-          "verified": true,
-          "helpful_votes": 0,
-          "images": [
-            "/reviews/B07L7ZLCBV_R3EX5HH3CI23QS_1.jpg",
-            "/reviews/B07L7ZLCBV_R3EX5HH3CI23QS_2.jpg",
-            "/reviews/B07L7ZLCBV_R3EX5HH3CI23QS_3.jpg"
-          ]
-        }
-      ]
-    },
-    "2004-2008-ford-f-150-front-grille-chrome-vertical-style": {
-      "handle": "2004-2008-ford-f-150-front-grille-chrome-vertical-style",
-      "asin": "B077KKVLPB",
-      "amazon_title": "Chrome Vertical Front Hood Bumper Grill Grille Guard ABS Compatible With 04-08 Ford F150",
+    "1994-2002-dodge-ram-1500-2500-3500-horizontal-grille-black": {
+      "handle": "1994-2002-dodge-ram-1500-2500-3500-horizontal-grille-black",
+      "asin": "B01MU350Q0",
+      "amazon_title": "Glossy Black Horizontal Front Hood Bumper Grill Grille Guard ABS Compatible With 94-01 Dodge Ram 1500/94-02 2500 3500",
       "avg_rating": 5,
       "review_count": 1,
       "reviews": [
         {
-          "id": "R69BSNX83G4I8",
+          "id": "R2JDRLFMHTANSO",
           "stars": 5,
-          "title": "Looks good on my truck",
-          "body": "I like the vertical slats look",
-          "reviewer": "Nathan Karlen",
-          "date": "2020-01-01",
+          "title": "Looks good",
+          "body": "I was looking for a grille that made my truck look big and something to give it a semi truck-ish looking grille and this really worked well for the look. Grille is easy to customize and fit nicely. Price is cheap and well worth it. Grille is easily customizable.",
+          "reviewer": "Josiah",
+          "date": "2019-09-10",
           "verified": true,
-          "helpful_votes": 1,
+          "helpful_votes": 5,
           "images": [
-            "/reviews/B077KKVLPB_R69BSNX83G4I8_1.jpg"
+            "/reviews/B01MU350Q0_R2JDRLFMHTANSO_1.jpg"
           ]
         }
       ]
@@ -595,38 +733,68 @@
         }
       ]
     },
-    "2006-2011-cadillac-dts-chrome-vertical-front-grille-custom": {
-      "handle": "2006-2011-cadillac-dts-chrome-vertical-front-grille-custom",
-      "asin": "B077JLPPJX",
-      "amazon_title": "Chrome Vertical Front Hood Bumper Grill Grille Guard ABS Compatible With 06-11 Cadillac DTS",
+    "2004-2008-ford-f-150-front-grille-chrome-vertical-style": {
+      "handle": "2004-2008-ford-f-150-front-grille-chrome-vertical-style",
+      "asin": "B077KKVLPB",
+      "amazon_title": "Chrome Vertical Front Hood Bumper Grill Grille Guard ABS Compatible With 04-08 Ford F150",
       "avg_rating": 5,
-      "review_count": 2,
+      "review_count": 1,
       "reviews": [
         {
-          "id": "RHIAM2NH8BZXB",
+          "id": "R69BSNX83G4I8",
           "stars": 5,
-          "title": "The right one baby",
-          "body": "My 3rd one. Always a great choice.",
-          "reviewer": "Keith Cardell",
-          "date": "2020-06-23",
+          "title": "Looks good on my truck",
+          "body": "I like the vertical slats look",
+          "reviewer": "Nathan Karlen",
+          "date": "2020-01-01",
           "verified": true,
-          "helpful_votes": 5,
+          "helpful_votes": 1,
           "images": [
-            "/reviews/B077JLPPJX_RHIAM2NH8BZXB_1.jpg",
-            "/reviews/B077JLPPJX_RHIAM2NH8BZXB_2.jpg"
+            "/reviews/B077KKVLPB_R69BSNX83G4I8_1.jpg"
           ]
-        },
+        }
+      ]
+    },
+    "09-22-dodge-ram-1500-bull-guard-w-mesh-skid-plate-matte-black": {
+      "handle": "09-22-dodge-ram-1500-bull-guard-w-mesh-skid-plate-matte-black",
+      "asin": "B07DFCZSC2",
+      "amazon_title": "Matte Black Studded Mesh Bull Bar Brush Push Front Bumper Grill Grille Guard with Skid Plate + 120W CREE LED Fog Light Compatible with 09-18 Dodge Ram 1500/19-24 Classic",
+      "avg_rating": 4,
+      "review_count": 1,
+      "reviews": [
         {
-          "id": "R1XAK2HNNWH53M",
-          "stars": 5,
-          "title": "Nice",
-          "body": "Easy installation",
-          "reviewer": "Mooney Glover",
-          "date": "2020-08-19",
+          "id": "R32ZZFM8MS4P6P",
+          "stars": 4,
+          "title": "Great product",
+          "body": "Great product fit perfectly on my 2015 Ram 1500 install was extremely easy. No complaints as of yet",
+          "reviewer": "jarvis love",
+          "date": "2020-03-08",
           "verified": true,
-          "helpful_votes": 3,
+          "helpful_votes": 2,
           "images": [
-            "/reviews/B077JLPPJX_R1XAK2HNNWH53M_1.jpg"
+            "/reviews/B07DFCZSC2_R32ZZFM8MS4P6P_1.jpg"
+          ]
+        }
+      ]
+    },
+    "2010-2018-ram-dodge-2500-3500-advanced-series-bull-guard-texture-black": {
+      "handle": "2010-2018-ram-dodge-2500-3500-advanced-series-bull-guard-texture-black",
+      "asin": "B07L7XJ67Q",
+      "amazon_title": "Stehlen 733469492832 Compatible with 2010-2018 Dodge Ram 2500/3500 Advance Series Bull Bar - Textured Black",
+      "avg_rating": 4,
+      "review_count": 1,
+      "reviews": [
+        {
+          "id": "R2THTPBTMMOH3S",
+          "stars": 4,
+          "title": "Looks good on my truck but has a few problems",
+          "body": "It fit my truck perfectly, it could’ve had a little bit better instructions how it went on that I got it on, when I unwrapped the thing I found a few chips in the paint and a few scratches, but I wanna head and put it on anyway I’ve waited so long, it looks good on my truck. If the manufacture will give me a discount on it I won’t worry about the scratches and chips.",
+          "reviewer": "paul",
+          "date": "2020-06-13",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B07L7XJ67Q_R2THTPBTMMOH3S_1.jpg"
           ]
         }
       ]
@@ -653,24 +821,135 @@
         }
       ]
     },
-    "2010-2011-toyota-camry-front-grille-chrome-mesh-style": {
-      "handle": "2010-2011-toyota-camry-front-grille-chrome-mesh-style",
-      "asin": "B01FTGCVPQ",
-      "amazon_title": "Chrome Mesh Front Hood Bumper Grill Grille Guard ABS Compatible With 10-11 Toyota Camry",
+    "2003-2009-toyota-4runner-lexus-gx470-bull-guard-matte-black": {
+      "handle": "2003-2009-toyota-4runner-lexus-gx470-bull-guard-matte-black",
+      "asin": "B07MTTM348",
+      "amazon_title": "Matte Black AVT Style Aluminum LED Light Bull Bar Brush Push Front Bumper Grill Grille Guard with Skid Plate Compatible with 03-09 Toyota 4Runner / Lexus GX470",
+      "avg_rating": 4,
+      "review_count": 1,
+      "reviews": [
+        {
+          "id": "R3GL8SXXYJ3YG2",
+          "stars": 4,
+          "title": "Good enough",
+          "body": "Looks good, but the material is VERY thin.\n\nWrong size nuts were included with the packaging, but! They sent a LOT of extra wrong nuts. It needed 12mm, 1.75 pitch, $5 at Autozone. Other than that, install was easy.\n\nThe light is nice and bright, they include a very long harness. I cut it down and ran it into the existing lights with no problems.\n\nOverall, decent unit for the price, looks better than the round bars IMO.",
+          "reviewer": "Colt1",
+          "date": "2023-01-12",
+          "verified": true,
+          "helpful_votes": 3,
+          "images": [
+            "/reviews/B07MTTM348_R3GL8SXXYJ3YG2_1.jpg"
+          ]
+        }
+      ]
+    },
+    "2010-2018-ram-2500-3500-4500-5500-big-horn-style-chrome-grille": {
+      "handle": "2010-2018-ram-2500-3500-4500-5500-big-horn-style-chrome-grille",
+      "asin": "B07NPCT7WH",
+      "amazon_title": "Chrome Big Horn Style Horizontal Front Hood Bumper Grill Grille Guard ABS With Shell Compatible With 10-18 Dodge Ram 2500/3500 / 4500/5500",
       "avg_rating": 5,
       "review_count": 1,
       "reviews": [
         {
-          "id": "R385C4AVO8X234",
+          "id": "R3SVTOIX2QVE4W",
           "stars": 5,
-          "title": "Look perfect",
-          "body": "Toyota canry 2010. Very nice",
-          "reviewer": "Jennifer",
-          "date": "2018-09-13",
+          "title": "New Character",
+          "body": "Very happy with this product. Instructions that came with it were for a 1500 model truck when mine is a 3500 so I used the old grille to ensure the right placement of the attachment arms. My truck's character seems to be more lively than the all black one that came with it.",
+          "reviewer": "holister",
+          "date": "2019-10-22",
           "verified": true,
-          "helpful_votes": 4,
+          "helpful_votes": 0,
           "images": [
-            "/reviews/B01FTGCVPQ_R385C4AVO8X234_1.jpg"
+            "/reviews/B07NPCT7WH_R3SVTOIX2QVE4W_1.jpg",
+            "/reviews/B07NPCT7WH_R3SVTOIX2QVE4W_2.jpg"
+          ]
+        }
+      ]
+    },
+    "2010-2024-toyota-4runner-bull-guard-w-led-light-bar-matte-black-1": {
+      "handle": "2010-2024-toyota-4runner-bull-guard-w-led-light-bar-matte-black-1",
+      "asin": "B07P32H1B7",
+      "amazon_title": "Stehlen 733469493495 Compatible with 2010-2024 Toyota 4Runner Advance Series Aluminum LED Bull Bar - Matte Black",
+      "avg_rating": 5,
+      "review_count": 1,
+      "reviews": [
+        {
+          "id": "R23AMQCGZIZASW",
+          "stars": 5,
+          "title": "Good product",
+          "body": "Great product for the money.took about an hour to install but it does interfere with the. Crash sensor but all you have to do is turn off the sensor on the steering wheel",
+          "reviewer": "josh",
+          "date": "2021-01-10",
+          "verified": true,
+          "helpful_votes": 5,
+          "images": [
+            "/reviews/B07P32H1B7_R23AMQCGZIZASW_1.jpg"
+          ]
+        }
+      ]
+    },
+    "2004-2024-nissan-titan-crew-cab-4-oval-side-step-bars-matte-black": {
+      "handle": "2004-2024-nissan-titan-crew-cab-4-oval-side-step-bars-matte-black",
+      "asin": "B07R34CZ9R",
+      "amazon_title": "Matte Black Hoop Drop Step Side Nerf Bars Rail Running Boards v2 Compatible with 07-18 Chevy Silverado/GMC Sierra Crew Cab",
+      "avg_rating": 4,
+      "review_count": 1,
+      "reviews": [
+        {
+          "id": "R210ZLOG8OOKW9",
+          "stars": 4,
+          "title": "So much easier to get in and out of truck with this style",
+          "body": "Look good. Price was fair. Lots of complements on these.",
+          "reviewer": "Elizabeth Creel",
+          "date": "2019-09-07",
+          "verified": true,
+          "helpful_votes": 3,
+          "images": [
+            "/reviews/B07R34CZ9R_R210ZLOG8OOKW9_1.jpg"
+          ]
+        }
+      ]
+    },
+    "2002-2005-dodge-ram-1500-2500-3500-rivet-mesh-grille-matte-black": {
+      "handle": "2002-2005-dodge-ram-1500-2500-3500-rivet-mesh-grille-matte-black",
+      "asin": "B081W2L83J",
+      "amazon_title": "Matte Black RVT Rivet Bolt Steel Mesh Front Hood Bumper Grill Grille Guard ABS Compatible With 02-05 Dodge Ram 1500/03-05 2500 3500",
+      "avg_rating": 5,
+      "review_count": 1,
+      "reviews": [
+        {
+          "id": "R28NXLLXPEMTCF",
+          "stars": 5,
+          "title": "Girlfriend loved the look of it on her truck..",
+          "body": "Straightforward install everything bolted on very easy took me 30 mins tops. Great product for the money..",
+          "reviewer": "Robert David Brown",
+          "date": "2022-05-10",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B081W2L83J_R28NXLLXPEMTCF_1.jpg"
+          ]
+        }
+      ]
+    },
+    "2009-2014-ford-f-150-supercrew-4-step-bars-black-sbfd5003-4s": {
+      "handle": "2009-2014-ford-f-150-supercrew-4-step-bars-black-sbfd5003-4s",
+      "asin": "B083ZLMQYM",
+      "amazon_title": "Stehlen 642167818991 Compatible with 2009-2014 Ford F150 SuperCrew (Crew) Cab Hoop Drop Step Side Nerf Bars Rail Running Boards v2 - Matte Black",
+      "avg_rating": 5,
+      "review_count": 1,
+      "reviews": [
+        {
+          "id": "R2FF98EYTTXW8V",
+          "stars": 5,
+          "title": "Sturdy, good looking, great value.",
+          "body": "I like the look, it looks rugged and sturdy. My truck was hard for my family to get in and out of.",
+          "reviewer": "Thrift Trend",
+          "date": "2021-02-20",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B083ZLMQYM_R2FF98EYTTXW8V_1.jpg"
           ]
         }
       ]
@@ -698,24 +977,69 @@
         }
       ]
     },
-    "2010-2024-toyota-4runner-bull-guard-w-led-light-bar-matte-black-1": {
-      "handle": "2010-2024-toyota-4runner-bull-guard-w-led-light-bar-matte-black-1",
-      "asin": "B07P32H1B7",
-      "amazon_title": "Stehlen 733469493495 Compatible with 2010-2024 Toyota 4Runner Advance Series Aluminum LED Bull Bar - Matte Black",
+    "2005-2022-toyota-tacoma-oe-style-running-boards-matte-black": {
+      "handle": "2005-2022-toyota-tacoma-oe-style-running-boards-matte-black",
+      "asin": "B08QZ4J46C",
+      "amazon_title": "Textured Black Round Pattern Rock Slider Rocker Style Side Step Rail Nerf Bars Running Boards Compatible with 05-22 Toyota Tacoma Double (Crew) Cab",
       "avg_rating": 5,
       "review_count": 1,
       "reviews": [
         {
-          "id": "R23AMQCGZIZASW",
+          "id": "RO7A0FBFDVQZA",
           "stars": 5,
-          "title": "Good product",
-          "body": "Great product for the money.took about an hour to install but it does interfere with the. Crash sensor but all you have to do is turn off the sensor on the steering wheel",
-          "reviewer": "josh",
-          "date": "2021-01-10",
+          "title": "Very sturdy and look great",
+          "body": "Fit was nice and very sturdy feel...they look great as well..nice mod for the truck",
+          "reviewer": "Charles baez",
+          "date": "2021-05-17",
           "verified": true,
-          "helpful_votes": 5,
+          "helpful_votes": 0,
           "images": [
-            "/reviews/B07P32H1B7_R23AMQCGZIZASW_1.jpg"
+            "/reviews/B08QZ4J46C_RO7A0FBFDVQZA_1.jpg"
+          ]
+        }
+      ]
+    },
+    "2006-2016-chevy-impala-front-lower-bumper-grille-matte-black": {
+      "handle": "2006-2016-chevy-impala-front-lower-bumper-grille-matte-black",
+      "asin": "B08VDRSGPZ",
+      "amazon_title": "Stehlen 642167823711 Compatible With 2006-2013 Chevy Impala / 2014-2016 Limited Mesh Front Lower Bumper Grille - Chrome",
+      "avg_rating": 5,
+      "review_count": 1,
+      "reviews": [
+        {
+          "id": "R3SVTGQP6SKY4W",
+          "stars": 5,
+          "title": "Amazing very recommended",
+          "body": "Amazing grill i love it went on perfect",
+          "reviewer": "Nicholas Rodriguez",
+          "date": "2021-05-27",
+          "verified": true,
+          "helpful_votes": 0,
+          "images": [
+            "/reviews/B08VDRSGPZ_R3SVTGQP6SKY4W_1.jpg"
+          ]
+        }
+      ]
+    },
+    "06-11-honda-civic-4dr-crystal-headlights-led-light-bar-black-jdma": {
+      "handle": "06-11-honda-civic-4dr-crystal-headlights-led-light-bar-black-jdma",
+      "asin": "B0B7QQW48F",
+      "amazon_title": "DRL LED Strip Tube Bar Black Housing Crystal Headlights Signal Lamps Amber Reflector nb Compatible With 06-11 Honda Civic 4 Door Sedan",
+      "avg_rating": 5,
+      "review_count": 1,
+      "reviews": [
+        {
+          "id": "R1KJ7UMYDLZLDF",
+          "stars": 5,
+          "title": "Great",
+          "body": "Good quality, very satisfied",
+          "reviewer": "Juan Romo",
+          "date": "2023-11-26",
+          "verified": true,
+          "helpful_votes": 2,
+          "images": [
+            "/reviews/B0B7QQW48F_R1KJ7UMYDLZLDF_1.jpg",
+            "/reviews/B0B7QQW48F_R1KJ7UMYDLZLDF_2.jpg"
           ]
         }
       ]
