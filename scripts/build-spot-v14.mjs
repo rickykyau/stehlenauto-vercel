@@ -75,12 +75,16 @@ const BEATS = [
 ];
 // 7 × 5s = 35s + 2s end card = 37s total runtime
 
-// Per-beat extra filters (crops to fix Runway's diptych-preservation issue)
+// Per-beat extra filters. v15:
+//   - Beat 1: new install-clamp seed, no crop
+//   - Beat 2: bottom-half crop for pebble texture (intentional macro)
+//   - Beat 5: crop top 18% to hide a background person Runway hallucinated
+//   - Beat 6: REVERSE the clip so the fold-down motion plays as fold-OPEN
 const CROPS = {
-  "v14-beat1-install": "crop=iw:ih*0.55:0:0",       // top half — bracket/strap (cleanest piece)
-  "v14-beat2-aluminum": "crop=iw:ih/2:0:ih/2",      // bottom half — pebble texture
-  "v14-beat6-foldopen": "crop=iw:ih/2:0:ih/2",      // bottom half — folded-open state
+  "v14-beat2-aluminum": "crop=iw:ih/2:0:ih/2",
+  "v14-beat5-load": "crop=iw:ih*0.82:0:ih*0.18",
 };
+const REVERSED = new Set(["v14-beat6-foldopen"]);
 
 for (const b of BEATS) {
   const src = path.join(STOCK, `runway-${b.name}.mp4`);
@@ -89,6 +93,7 @@ for (const b of BEATS) {
     continue;
   }
   const cropFilter = CROPS[b.name] ? `${CROPS[b.name]},` : "";
+  const reverseFilter = REVERSED.has(b.name) ? "reverse," : "";
   const out = path.join(TMP, `${b.name}.mp4`);
 
   if (b.text) {
@@ -100,7 +105,7 @@ for (const b of BEATS) {
     const [inT, outT] = b.textRange;
     const fadeOutStart = outT - 0.3;
     const filter =
-      `[0:v]${cropFilter}${NORMALIZE}[bg];` +
+      `[0:v]${reverseFilter}${cropFilter}${NORMALIZE}[bg];` +
       `[1:v]format=rgba,fade=t=in:st=${inT}:d=0.3:alpha=1,` +
       `fade=t=out:st=${fadeOutStart}:d=0.3:alpha=1[txt];` +
       `[bg][txt]overlay=x=(W-w)/2:y=H-220:shortest=1[v]`;
@@ -110,7 +115,7 @@ for (const b of BEATS) {
     );
   } else {
     sh(
-      `ffmpeg -y -ss ${b.trim.ss} -t ${b.trim.t} -i "${src}" -an -vf "${cropFilter}${NORMALIZE}" ` +
+      `ffmpeg -y -ss ${b.trim.ss} -t ${b.trim.t} -i "${src}" -an -vf "${reverseFilter}${cropFilter}${NORMALIZE}" ` +
       `-c:v libx264 -crf 17 -preset slow "${out}"`,
     );
   }
