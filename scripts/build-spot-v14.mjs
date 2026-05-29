@@ -70,7 +70,9 @@ const BEATS = [
   { name: "v14-beat3-latch", trim: { ss: 0, t: 5 }, text: "BOLT-ACTION LATCH", textRange: [0.8, 4.4] },
   { name: "v14-beat4-water", trim: { ss: 0, t: 5 }, text: "WATER DRAINS · BED STAYS DRY", textRange: [0.8, 4.4] },
   { name: "v14-beat5-load", trim: { ss: 0, t: 5 }, text: "BUILT STURDY", textRange: [0.8, 4.4] },
-  { name: "v14-beat6-foldopen", trim: { ss: 0, t: 5 }, text: "OPENS IN SECONDS", textRange: [0.8, 4.4] },
+  // Beat 6: pull first 3.5s only (Kling artifact at 3.5–5s), stretch to 5s
+  // via setpts=PTS/0.7 (applied through speedFactor below).
+  { name: "v14-beat6-foldopen", trim: { ss: 0, t: 3.5 }, speedFactor: 0.7, text: "OPENS IN SECONDS", textRange: [0.8, 4.4] },
   { name: "v14-beat7-hero", trim: { ss: 0, t: 5 }, text: null },
 ];
 // 7 × 5s = 35s + 2s end card = 37s total runtime
@@ -84,9 +86,10 @@ const CROPS = {
   // boundary that was creating a visible gradient line at the top of v17.
   "v14-beat2-aluminum": "crop=iw:ih*0.4:0:ih*0.6",
 };
-// v18: Kling Beat 6 motion goes open→closed. Reverse so it plays as the
-// fold-open story (flat → hand grips at mid → panel rises). Hand geometry
-// is correct at 2.5s/4.5s (fingers on outside edge, no clipping).
+// v19: Beat 6 — first 3.5s are clean (Kling hand+thumb intact), but
+// 3.5–5.0s the hand morphs into a stick artifact. Trim to 0–3.5s,
+// reverse, stretch to 5s. The trim+stretch is applied in the trim block
+// below, then reverse is applied here.
 const REVERSED = new Set(["v14-beat6-foldopen"]);
 
 for (const b of BEATS) {
@@ -97,6 +100,8 @@ for (const b of BEATS) {
   }
   const cropFilter = CROPS[b.name] ? `${CROPS[b.name]},` : "";
   const reverseFilter = REVERSED.has(b.name) ? "reverse," : "";
+  // speedFactor < 1 means slow down (stretch). Applied via setpts before reverse.
+  const speedFilter = b.speedFactor ? `setpts=PTS/${b.speedFactor},` : "";
   const out = path.join(TMP, `${b.name}.mp4`);
 
   if (b.text) {
@@ -108,7 +113,7 @@ for (const b of BEATS) {
     const [inT, outT] = b.textRange;
     const fadeOutStart = outT - 0.3;
     const filter =
-      `[0:v]${reverseFilter}${cropFilter}${NORMALIZE}[bg];` +
+      `[0:v]${speedFilter}${reverseFilter}${cropFilter}${NORMALIZE}[bg];` +
       `[1:v]format=rgba,fade=t=in:st=${inT}:d=0.3:alpha=1,` +
       `fade=t=out:st=${fadeOutStart}:d=0.3:alpha=1[txt];` +
       `[bg][txt]overlay=x=(W-w)/2:y=H-220:shortest=1[v]`;
@@ -118,7 +123,7 @@ for (const b of BEATS) {
     );
   } else {
     sh(
-      `ffmpeg -y -ss ${b.trim.ss} -t ${b.trim.t} -i "${src}" -an -vf "${reverseFilter}${cropFilter}${NORMALIZE}" ` +
+      `ffmpeg -y -ss ${b.trim.ss} -t ${b.trim.t} -i "${src}" -an -vf "${speedFilter}${reverseFilter}${cropFilter}${NORMALIZE}" ` +
       `-c:v libx264 -crf 17 -preset slow "${out}"`,
     );
   }
@@ -162,7 +167,7 @@ const GRADE =
   "noise=alls=5:allf=t+u";
 
 // Build silent master with grade
-const silent = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v18-silent.mp4");
+const silent = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v19-silent.mp4");
 sh(
   `ffmpeg -y -i "${concatRaw}" -vf "${GRADE}" -c:v libx264 -crf 17 -preset slow -pix_fmt yuv420p -movflags +faststart -r ${FPS} "${silent}"`,
 );
@@ -173,13 +178,13 @@ sh(
 //   - fade out 25-30
 const VOL =
   `volume='if(lt(t,1),t,if(lt(t,${totalDur - 4}),1,1-(t-(${totalDur - 4}))/4))':eval=frame`;
-const final = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v18.mp4");
+const final = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v19.mp4");
 sh(
   `ffmpeg -y -i "${silent}" -stream_loop -1 -i "${MUSIC}" -map 0:v -map 1:a -af "${VOL},aformat=channel_layouts=stereo" -c:v copy -c:a aac -b:a 192k -shortest "${final}"`,
 );
 
 // Re-encode shareable
-const share = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v18-share.mp4");
+const share = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v19-share.mp4");
 sh(
   `ffmpeg -y -i "${final}" -c:v libx264 -crf 23 -preset slow -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 192k "${share}"`,
 );
