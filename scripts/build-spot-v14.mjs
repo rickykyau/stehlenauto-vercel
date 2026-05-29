@@ -65,7 +65,7 @@ function renderOverlayPng(text, outPath, fontPt = 56) {
 // (closer to the reference's 39.8s breathing room). Text overlay sits in the
 // middle 3.5s with 0.6s fade in/out at each edge.
 const BEATS = [
-  { name: "v14-beat1-install", trim: { ss: 0, t: 5 }, text: "NO DRILLING · NO TOOLS", textRange: [0.8, 4.4] },
+  { name: "v14-beat1-install", trim: { ss: 0, t: 5 }, text: "QUICK INSTALL", textRange: [0.8, 4.4] },
   { name: "v14-beat2-aluminum", trim: { ss: 0, t: 5 }, text: "ALUMINUM FRAME · IMPACT CORE", textRange: [0.8, 4.4] },
   { name: "v14-beat3-latch", trim: { ss: 0, t: 5 }, text: "BOLT-ACTION LATCH", textRange: [0.8, 4.4] },
   { name: "v14-beat4-water", trim: { ss: 0, t: 5 }, text: "WATER DRAINS · BED STAYS DRY", textRange: [0.8, 4.4] },
@@ -75,14 +75,12 @@ const BEATS = [
 ];
 // 7 × 5s = 35s + 2s end card = 37s total runtime
 
-// Per-beat extra filters. v15:
-//   - Beat 1: new install-clamp seed, no crop
-//   - Beat 2: bottom-half crop for pebble texture (intentional macro)
-//   - Beat 5: crop top 18% to hide a background person Runway hallucinated
-//   - Beat 6: REVERSE the clip so the fold-down motion plays as fold-OPEN
+// v16: new story-driven seeds for Beats 1, 4, 5, 6 — composition correct,
+// no crops needed except the macro on Beat 2. Beat 6 reverse stays — Runway
+// still tends to close the cover rather than open it, even with the right
+// motion seed; reversing produces the opening motion the title needs.
 const CROPS = {
   "v14-beat2-aluminum": "crop=iw:ih/2:0:ih/2",
-  "v14-beat5-load": "crop=iw:ih*0.82:0:ih*0.18",
 };
 const REVERSED = new Set(["v14-beat6-foldopen"]);
 
@@ -159,7 +157,7 @@ const GRADE =
   "noise=alls=5:allf=t+u";
 
 // Build silent master with grade
-const silent = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v14-silent.mp4");
+const silent = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v16-silent.mp4");
 sh(
   `ffmpeg -y -i "${concatRaw}" -vf "${GRADE}" -c:v libx264 -crf 17 -preset slow -pix_fmt yuv420p -movflags +faststart -r ${FPS} "${silent}"`,
 );
@@ -170,13 +168,13 @@ sh(
 //   - fade out 25-30
 const VOL =
   `volume='if(lt(t,1),t,if(lt(t,${totalDur - 4}),1,1-(t-(${totalDur - 4}))/4))':eval=frame`;
-const final = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v14.mp4");
+const final = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v16.mp4");
 sh(
   `ffmpeg -y -i "${silent}" -stream_loop -1 -i "${MUSIC}" -map 0:v -map 1:a -af "${VOL},aformat=channel_layouts=stereo" -c:v copy -c:a aac -b:a 192k -shortest "${final}"`,
 );
 
 // Re-encode shareable
-const share = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v14-share.mp4");
+const share = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v16-share.mp4");
 sh(
   `ffmpeg -y -i "${final}" -c:v libx264 -crf 23 -preset slow -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 192k "${share}"`,
 );
