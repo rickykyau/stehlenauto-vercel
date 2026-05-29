@@ -80,9 +80,14 @@ const BEATS = [
 // still tends to close the cover rather than open it, even with the right
 // motion seed; reversing produces the opening motion the title needs.
 const CROPS = {
-  "v14-beat2-aluminum": "crop=iw:ih/2:0:ih/2",
+  // Beat 2 — crop further into the bottom 40% to skip the seed-diptych
+  // boundary that was creating a visible gradient line at the top of v17.
+  "v14-beat2-aluminum": "crop=iw:ih*0.4:0:ih*0.6",
 };
-const REVERSED = new Set(); // v17: bare-hand seed has hand already on panel, no reverse needed
+// v18: Kling Beat 6 motion goes open→closed. Reverse so it plays as the
+// fold-open story (flat → hand grips at mid → panel rises). Hand geometry
+// is correct at 2.5s/4.5s (fingers on outside edge, no clipping).
+const REVERSED = new Set(["v14-beat6-foldopen"]);
 
 for (const b of BEATS) {
   const src = path.join(STOCK, `runway-${b.name}.mp4`);
@@ -157,7 +162,7 @@ const GRADE =
   "noise=alls=5:allf=t+u";
 
 // Build silent master with grade
-const silent = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v17-silent.mp4");
+const silent = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v18-silent.mp4");
 sh(
   `ffmpeg -y -i "${concatRaw}" -vf "${GRADE}" -c:v libx264 -crf 17 -preset slow -pix_fmt yuv420p -movflags +faststart -r ${FPS} "${silent}"`,
 );
@@ -168,13 +173,13 @@ sh(
 //   - fade out 25-30
 const VOL =
   `volume='if(lt(t,1),t,if(lt(t,${totalDur - 4}),1,1-(t-(${totalDur - 4}))/4))':eval=frame`;
-const final = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v17.mp4");
+const final = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v18.mp4");
 sh(
   `ffmpeg -y -i "${silent}" -stream_loop -1 -i "${MUSIC}" -map 0:v -map 1:a -af "${VOL},aformat=channel_layouts=stereo" -c:v copy -c:a aac -b:a 192k -shortest "${final}"`,
 );
 
 // Re-encode shareable
-const share = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v17-share.mp4");
+const share = path.join(OUT_DIR, "stehlen-tacoma-tonneau-spot-v18-share.mp4");
 sh(
   `ffmpeg -y -i "${final}" -c:v libx264 -crf 23 -preset slow -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 192k "${share}"`,
 );
