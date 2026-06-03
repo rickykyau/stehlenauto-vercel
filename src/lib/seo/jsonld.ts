@@ -70,6 +70,81 @@ export function howToJsonLd(
   };
 }
 
+// GEO (Generative Engine Optimization): the WebSite node with a
+// SearchAction is the single highest-leverage entity for AI answer engines
+// (ChatGPT Search, Perplexity, Google AI Overviews, Gemini). It declares
+// the canonical site name they should cite ("Stehlen Auto" — not the bare
+// domain), and the `potentialAction` tells them the machine-readable
+// site-search endpoint so they can deep-link a shopper straight to results
+// instead of dumping them on the homepage. It also unlocks the Google
+// sitelinks search box.
+export function websiteJsonLd(baseUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Stehlen Auto",
+    alternateName: "stehlenauto.com",
+    url: baseUrl,
+    publisher: { "@type": "Organization", name: "Stehlen Auto", url: baseUrl },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${baseUrl}/search?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
+// GEO: AI shopping answers ("where can I buy a tonneau cover that ships
+// free with easy returns?") rank Offers by trust signals. shippingDetails +
+// hasMerchantReturnPolicy are exactly the two structured fields Google's
+// free-listings + AI shopping surfaces read to render the "Free delivery"
+// and "Free 30-day returns" badges. Values mirror the on-site policy copy
+// (Cycle 14Q free shipping no-minimum; /legal/returns 30-day window).
+export function freeShippingDetailsJsonLd() {
+  return {
+    "@type": "OfferShippingDetails",
+    shippingRate: {
+      "@type": "MonetaryAmount",
+      value: "0",
+      currency: "USD",
+    },
+    shippingDestination: {
+      "@type": "DefinedRegion",
+      addressCountry: "US",
+    },
+    deliveryTime: {
+      "@type": "ShippingDeliveryTime",
+      handlingTime: {
+        "@type": "QuantitativeValue",
+        minValue: 0,
+        maxValue: 1,
+        unitCode: "DAY",
+      },
+      transitTime: {
+        "@type": "QuantitativeValue",
+        minValue: 2,
+        maxValue: 5,
+        unitCode: "DAY",
+      },
+    },
+  };
+}
+
+export function merchantReturnPolicyJsonLd() {
+  return {
+    "@type": "MerchantReturnPolicy",
+    applicableCountry: "US",
+    returnPolicyCategory:
+      "https://schema.org/MerchantReturnFiniteReturnWindow",
+    merchantReturnDays: 30,
+    returnMethod: "https://schema.org/ReturnByMail",
+    returnFees: "https://schema.org/FreeReturn",
+  };
+}
+
 export function organizationJsonLd(baseUrl: string) {
   return {
     "@context": "https://schema.org",
