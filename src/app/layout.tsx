@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Suspense } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
@@ -18,7 +19,11 @@ import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { IdentifyUser } from "@/components/analytics/identify-user";
 import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { getCart } from "@/lib/cart/server";
-import { jsonLdString, organizationJsonLd } from "@/lib/seo/jsonld";
+import {
+  jsonLdString,
+  organizationJsonLd,
+  websiteJsonLd,
+} from "@/lib/seo/jsonld";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://stehlenauto.com";
@@ -111,6 +116,23 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  // Search-engine ownership verification. Drop the tokens into env once and
+  // the <meta> tags emit site-wide — no code change needed at cutover.
+  //   NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION — Google Search Console
+  //   NEXT_PUBLIC_BING_SITE_VERIFICATION   — Bing Webmaster Tools (also
+  //   feeds ChatGPT search). Both are optional; absent → no tag emitted.
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? {
+          other: {
+            "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION,
+          },
+        }
+      : {}),
+  },
   // Cycle 14Z (Priya O-1 CRITICAL): the previous "Self-canonical fallback"
   // was poisoning every page that didn't explicitly override — /about,
   // /help, /collections, /welcome-back all canonicalized to "/", telling
@@ -125,6 +147,27 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // /admin runs a dedicated sidebar shell (src/app/admin/layout.tsx) with no
+  // storefront chrome — header, footer, YMM/cart/chat overlays, and customer
+  // analytics are all suppressed here. x-pathname is set by middleware.
+  const pathname = (await headers()).get("x-pathname") ?? "";
+  const isAdmin = pathname.startsWith("/admin");
+
+  if (isAdmin) {
+    return (
+      <ClerkProvider>
+        <html
+          lang="en"
+          className={`${inter.variable} ${archivo.variable} ${jetbrainsMono.variable} h-full`}
+        >
+          <body className="min-h-full bg-background text-foreground">
+            {children}
+          </body>
+        </html>
+      </ClerkProvider>
+    );
+  }
+
   const [vehicle, cart, user] = await Promise.all([
     getCurrentVehicle(),
     getCart(),
@@ -159,6 +202,14 @@ export default async function RootLayout({
             type="application/ld+json"
             dangerouslySetInnerHTML={{
               __html: jsonLdString(organizationJsonLd(SITE_URL)),
+            }}
+          />
+          {/* WebSite + SearchAction — names the site for AI answer engines
+              and exposes the site-search endpoint (GEO + sitelinks search box). */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: jsonLdString(websiteJsonLd(SITE_URL)),
             }}
           />
           <Header

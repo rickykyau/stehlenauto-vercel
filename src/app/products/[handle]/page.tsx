@@ -8,7 +8,8 @@ import {
   getRelatedProducts,
 } from "@/lib/catalog";
 import { complementsFor } from "@/lib/catalog/complements";
-import { getReviewsForHandle } from "@/lib/reviews";
+import { getReviewsForHandle, mergeNativeReviews } from "@/lib/reviews";
+import { getApprovedNativeReviews } from "@/lib/reviews/native";
 import { getInstallGuide } from "@/lib/install";
 import { RecentlyViewedTracker } from "@/components/commerce/recently-viewed-tracker";
 import { RecentlyViewedStrip } from "@/components/commerce/recently-viewed-strip";
@@ -22,6 +23,8 @@ import { MobileStickyAtc } from "@/components/commerce/mobile-sticky-atc";
 import { ViewItemTracker } from "@/components/analytics/view-item";
 import {
   breadcrumbJsonLd,
+  freeShippingDetailsJsonLd,
+  merchantReturnPolicyJsonLd,
   jsonLdString as seoJsonLdString,
 } from "@/lib/seo/jsonld";
 import { Icons } from "@/components/ui/icons";
@@ -106,7 +109,15 @@ export default async function PdpPage({
     getRelatedProducts(handle, 4, vehicle ?? null, subModelAnswers),
     Promise.resolve(getProductFitment(handle)),
   ]);
-  const amazonReviews = getReviewsForHandle(handle);
+  // Cycle 14BI: imported Amazon reviews + admin-approved native customer
+  // reviews, merged into one bundle (native carry source:"customer" so the
+  // review surface discloses provenance accurately).
+  const nativeReviews = await getApprovedNativeReviews(handle);
+  const amazonReviews = mergeNativeReviews(
+    getReviewsForHandle(handle),
+    nativeReviews,
+    handle,
+  );
   const installGuide = getInstallGuide(product.categoryHandle);
   const relatedRaw = relatedResult.products;
   // Heading on the rail switches based on whether every card actually fits.
@@ -410,6 +421,10 @@ export default async function PdpPage({
         name: "Stehlen Auto",
         url: SITE_URL,
       },
+      // GEO: free-shipping + 30-day free-return trust signals that Google
+      // free-listings and AI shopping answers surface as badges.
+      shippingDetails: freeShippingDetailsJsonLd(),
+      hasMerchantReturnPolicy: merchantReturnPolicyJsonLd(),
     },
   };
 

@@ -17,6 +17,9 @@ export type AmazonReview = {
   verified: boolean;
   helpful_votes: number;
   images: string[];
+  // Cycle 14BI: provenance so the PDP labels imported-vs-native reviews
+  // accurately for FTC disclosure. Absent = "amazon" (legacy imports).
+  source?: "amazon" | "customer";
 };
 
 export type AmazonReviewBundle = {
@@ -59,4 +62,44 @@ export function getReviewAggregate(
 
 export function getReviewDataSource(): string {
   return manifest.source;
+}
+
+/**
+ * Cycle 14BI: fold approved native (customer-submitted) reviews into the
+ * imported-Amazon bundle for a handle. Pure — the DB read happens in the
+ * server-only `getApprovedNativeReviews` (lib/reviews/native). Recomputes
+ * avg + count across both sources; returns null only when there are zero
+ * reviews from either source. Native reviews carry source:"customer" so the
+ * PDP can disclose provenance accurately.
+ */
+export function mergeNativeReviews(
+  bundle: AmazonReviewBundle | null,
+  native: AmazonReview[],
+  handle: string,
+): AmazonReviewBundle | null {
+  if ((!bundle || bundle.review_count === 0) && native.length === 0) {
+    return bundle;
+  }
+  const base: AmazonReviewBundle =
+    bundle ?? {
+      handle,
+      asin: "",
+      amazon_title: "",
+      avg_rating: 0,
+      review_count: 0,
+      reviews: [],
+    };
+  if (native.length === 0) return base;
+  // Native reviews first (newest customer voice), then imported.
+  const reviews = [...native, ...base.reviews];
+  const avg =
+    Math.round(
+      (reviews.reduce((s, r) => s + r.stars, 0) / reviews.length) * 10,
+    ) / 10;
+  return {
+    ...base,
+    reviews,
+    avg_rating: avg,
+    review_count: reviews.length,
+  };
 }

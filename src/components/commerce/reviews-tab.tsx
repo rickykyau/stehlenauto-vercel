@@ -24,6 +24,21 @@ type SortKey = "helpful" | "recent" | "highest";
 export function ReviewsTab({ bundle }: { bundle: AmazonReviewBundle }) {
   const { reviews, avg_rating, review_count } = bundle;
 
+  // Cycle 14BI: provenance for an accurate FTC disclosure. The set can now
+  // mix imported Amazon reviews with admin-approved customer submissions.
+  const hasCustomer = reviews.some((r) => r.source === "customer");
+  const hasAmazon = reviews.some((r) => r.source !== "customer");
+  const disclosureLabel = hasCustomer
+    ? hasAmazon
+      ? "Verified reviews · Amazon + customers"
+      : "Verified customer reviews"
+    : "Sourced from Amazon";
+  const disclosureBody = hasCustomer
+    ? hasAmazon
+      ? "Includes verified-purchase reviews imported from Amazon and reviews submitted by Stehlen customers and approved by our team."
+      : "Reviews submitted by Stehlen customers and approved by our team before publishing."
+    : "Every review is verified purchase, 4 stars or higher, and includes a customer-uploaded photo.";
+
   // Distribution: only 4 & 5 star exist in curated set; compute defensively
   const dist = useMemo(() => {
     const counts = [5, 4, 3, 2, 1].map(
@@ -89,6 +104,8 @@ export function ReviewsTab({ bundle }: { bundle: AmazonReviewBundle }) {
           avgRating={avg_rating}
           reviewCount={review_count}
           dist={dist}
+          disclosureLabel={disclosureLabel}
+          disclosureBody={disclosureBody}
         />
 
         <div>
@@ -202,10 +219,14 @@ function AggregateBlock({
   avgRating,
   reviewCount,
   dist,
+  disclosureLabel,
+  disclosureBody,
 }: {
   avgRating: number;
   reviewCount: number;
   dist: number[];
+  disclosureLabel: string;
+  disclosureBody: string;
 }) {
   return (
     <div
@@ -328,7 +349,7 @@ function AggregateBlock({
               background: "var(--color-primary)",
             }}
           />
-          Sourced from Amazon
+          {disclosureLabel}
         </div>
         <div
           style={{
@@ -338,7 +359,7 @@ function AggregateBlock({
             lineHeight: 1.5,
           }}
         >
-          Every review is verified purchase, 4 stars or higher, and includes a customer-uploaded photo.
+          {disclosureBody}
         </div>
       </div>
     </div>

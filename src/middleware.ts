@@ -14,6 +14,14 @@ const isProtected = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
+  // Expose the current path to server layouts. The root layout reads
+  // x-pathname to decide whether to render storefront chrome (suppressed
+  // on /admin so the admin sidebar shell stands alone).
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-pathname", req.nextUrl.pathname);
+  const proceed = () =>
+    NextResponse.next({ request: { headers: requestHeaders } });
+
   if (isProtected(req)) {
     const { userId } = await auth();
     if (!userId) {
@@ -29,7 +37,7 @@ export default clerkMiddleware(async (auth, req) => {
         req.nextUrl.pathname.startsWith("/account/orders/") &&
         req.nextUrl.searchParams.has("verify_email")
       ) {
-        return;
+        return proceed();
       }
       // Cycle 5 (Mike): auth.protect() was emitting `protect-rewrite` which
       // rewrote to a 404 page instead of bouncing to our custom /sign-in. The
@@ -45,6 +53,7 @@ export default clerkMiddleware(async (auth, req) => {
     // Centralizing in middleware would duplicate that logic and the
     // existing pages already enforce it correctly.
   }
+  return proceed();
 });
 
 export const config = {
