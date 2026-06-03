@@ -58,8 +58,12 @@ export default clerkMiddleware(async (auth, req) => {
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Skip Next.js internals and all static files, unless found in search params.
+    // `xml` + `txt` added so Clerk auth middleware never runs on SEO files
+    // (/sitemap.xml, /robots.txt, /llms.txt) — on Clerk dev instances the
+    // auth handshake was returning an interstitial to crawlers instead of the
+    // file, causing Search Console "Couldn't fetch".
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest|xml|txt)).*)",
     // Always run for API routes
     "/(api|trpc)(.*)",
   ],
