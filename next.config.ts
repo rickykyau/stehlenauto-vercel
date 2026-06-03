@@ -8,6 +8,19 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "img.clerk.com" },
     ],
   },
+  // DNS cutover (docs/runbooks/dns-cutover.md §3): preserve link equity from
+  // the legacy Lovable URL shapes that changed in this rebuild. Everything
+  // else (/, /products/*, /collections/*, /cart, /about, …) is path-identical
+  // and needs no redirect. 301 (permanent) so Google transfers ranking.
+  async redirects() {
+    return [
+      { source: "/contact", destination: "/help/contact", permanent: true },
+      { source: "/returns", destination: "/legal/returns", permanent: true },
+      { source: "/warranty", destination: "/legal/warranty", permanent: true },
+      { source: "/privacy", destination: "/legal/privacy", permanent: true },
+      { source: "/terms", destination: "/legal/terms", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

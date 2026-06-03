@@ -1,0 +1,5 @@
+# Heavy AI render artifacts — never upload to a Vercel deploy. These are
+# intermediate video/seed files kept locally only (also excluded from git).
+# Without this, a local `vercel` deploy would upload 1.3 GB+ and likely fail.
+public/videos
+public/images/spot-seeds
