@@ -147,8 +147,65 @@ export async function generateMetadata({
       ...baseOg(friendly, d, `/collections/${handle}`),
     };
   }
-  const t = `${cat.name} — Vehicle Accessories`;
-  const d = `Shop ${cat.name.toLowerCase()} — fitment guaranteed for your vehicle. Free shipping on every order.`;
+  // SEO (audit F-6): unique, differentiated title+description per category —
+  // not the same template with the name swapped in. Names real vehicles +
+  // benefits so each page earns its own CTR. Falls back to a generic line for
+  // any category not in the map.
+  const CATEGORY_META: Record<string, { title: string; desc: string }> = {
+    "tonneau-covers": {
+      title: "Tonneau Covers — Hard & Soft Truck Bed Covers",
+      desc: "Hard tri-fold & roll-up tonneau covers for F-150, Silverado, Ram 1500, Tacoma & more. No-drill fit, free shipping, fitment guaranteed.",
+    },
+    "trailer-hitches": {
+      title: "Trailer Hitches — Class 1–4 Receivers",
+      desc: "Bolt-on Class 1–4 trailer hitch receivers for Ford, Toyota, Honda, Jeep, Subaru & more. Hidden fit, free US shipping, 30-day returns.",
+    },
+    "bull-guards-grille-guards": {
+      title: "Bull Guards & Grille Guards w/ LED Light Bars",
+      desc: "Steel bull bars & grille guards with LED light bars for F-150, Silverado, Ram, 4Runner & Tundra. Front-end protection, bolt-on, no drilling.",
+    },
+    "front-grilles": {
+      title: "Front Grilles — Mesh, Honeycomb & Vertical",
+      desc: "Replacement front grilles for F-150, Silverado, Ram, Charger & more — mesh, rivet, honeycomb & chrome styles. Direct bolt-on fit, free shipping.",
+    },
+    headlights: {
+      title: "LED & Halo Projector Headlights",
+      desc: "Halo & full-LED projector headlights for Silverado, F-150, Ram, Tacoma & Wrangler. Plug-and-play, sequential turn signals, fitment guaranteed.",
+    },
+    "truck-bed-mats": {
+      title: "Truck Bed Mats — Heavy-Duty Rubber Liners",
+      desc: "Custom-fit heavy rubber bed mats for F-150, Silverado, Ram, Tacoma & Tundra. Trim-to-fit protection, free shipping, 30-day returns.",
+    },
+    "running-boards-side-steps": {
+      title: "Running Boards & Side Step Nerf Bars",
+      desc: "Oval & flat running boards and nerf bars for F-150, Silverado, Ram, Tacoma & 4Runner crew/cab. Bolt-on step access, free US shipping.",
+    },
+    "floor-mats": {
+      title: "All-Weather Hex Rubber Floor Mats",
+      desc: "Custom hex-pattern all-weather floor mats for trucks, SUVs & cars — deep-dish spill protection. Vehicle-specific fit, free shipping.",
+    },
+    "roof-racks-baskets": {
+      title: "Roof Racks & Cargo Baskets",
+      desc: "Universal & vehicle-specific roof racks, crossbars & cargo baskets for overlanding. Heavy-duty steel, bolt-on or door-frame mount, free shipping.",
+    },
+    "chase-racks-sport-bars": {
+      title: "Chase Racks & Bed Sport Bars w/ LED",
+      desc: "Universal truck chase racks & sport bars with LED lights and tire carriers for F-150, Silverado, Ram, Tacoma & Tundra. Bolt-in, free shipping.",
+    },
+    "molle-panels": {
+      title: "MOLLE Panels & Tactical Storage",
+      desc: "Bolt-on MOLLE gear panels for truck beds, bed rails & cab walls. Modular tactical storage in powder-coated steel. Free US shipping, 30-day returns.",
+    },
+    "under-seat-storage": {
+      title: "Accessories — Under-Seat Storage & More",
+      desc: "Under-seat storage organizers, hitch steps & truck accessories for F-150, Silverado, Ram & more. Secure, bolt-in fit, free shipping.",
+    },
+  };
+  const override = CATEGORY_META[handle];
+  const t = override?.title ?? `${cat.name} — Vehicle Accessories`;
+  const d =
+    override?.desc ??
+    `Shop ${cat.name.toLowerCase()} — fitment guaranteed for your vehicle. Free shipping on every order.`;
   return {
     title: t,
     description: d,

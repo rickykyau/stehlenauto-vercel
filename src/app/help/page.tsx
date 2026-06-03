@@ -71,6 +71,33 @@ const FAQS = [
     q: "What if my install goes sideways?",
     a: "Call our techs at 1-888-378-4536 Mon–Fri 9–5 PST. We'll walk you through it on the phone.",
   },
+  // Cycle 14BI (audit F-13): deeper FAQ set for AI-Overview citation + the FAQ
+  // rich result. Each answer mirrors a real policy so the schema matches the
+  // visible content (Google requirement).
+  {
+    q: "Does Stehlen Auto offer free shipping?",
+    a: "Yes — free ground shipping on every order to the lower 48 states, with no minimum spend.",
+  },
+  {
+    q: "What is the return policy?",
+    a: "30-day hassle-free returns. We email a prepaid FedEx label, and you choose a full refund or store credit with a 10% bonus.",
+  },
+  {
+    q: "How long does delivery take?",
+    a: "In-stock items leave our warehouse within 24 business hours. Standard ground transit is about 3–7 business days depending on your location.",
+  },
+  {
+    q: "Is there a warranty?",
+    a: "Yes. Stehlen backs its parts with a structural warranty plus a finish warranty — see the warranty policy for the per-category terms.",
+  },
+  {
+    q: "Can I pay over time?",
+    a: "Yes — Affirm pay-over-time is available at checkout on qualifying orders, alongside all major cards and the standard Shopify-secured checkout.",
+  },
+  {
+    q: "Where does Stehlen Auto ship from?",
+    a: "Orders ship direct from our warehouses in California, Nevada, and Texas — the same warehouses that fulfilled our eBay and Amazon orders.",
+  },
 ];
 
 // Cycle 14Z (Priya O-15 LOW): FAQPage schema makes the FAQ block eligible

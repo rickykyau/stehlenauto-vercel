@@ -432,12 +432,46 @@ export default async function VehicleHubPage({
   );
   const breadcrumbHtml = jsonLdString(breadcrumb);
 
+  // SEO/GEO (audit F-4): Vehicle entity so Google/AI grounds this page to the
+  // make+model when answering "<make> <model> accessories", and an ItemList of
+  // the categories available for it (carousel-eligible, internal-link signal).
+  const vehicleHtml = jsonLdString({
+    "@context": "https://schema.org",
+    "@type": "Vehicle",
+    name: `${make} ${model}`,
+    brand: { "@type": "Brand", name: make },
+    vehicleConfiguration: model,
+    url: `${SITE_URL}/vehicle/${slug}`,
+  });
+  const catListHtml = jsonLdString({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `${make} ${model} Accessories`,
+    numberOfItems: cats.length,
+    itemListElement: cats.map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: c.name,
+      url: `${SITE_URL}/collections/${c.slug}?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}`,
+    })),
+  });
+
   return (
     <main>
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger -- BreadcrumbList, server-built
         dangerouslySetInnerHTML={{ __html: breadcrumbHtml }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger -- Vehicle entity, server-built
+        dangerouslySetInnerHTML={{ __html: vehicleHtml }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger -- ItemList, server-built
+        dangerouslySetInnerHTML={{ __html: catListHtml }}
       />
       {/* HERO */}
       <div
@@ -512,7 +546,10 @@ export default async function VehicleHubPage({
                 {filterYear}
               </span>
             )}
-            {make.toUpperCase()}
+            {/* audit F-8: keep a real space before the <br> so the H1
+                textContent reads "FORD F-150", not "FORDF-150" (Google ignores
+                <br> as whitespace — the space preserves the keyword token). */}
+            {make.toUpperCase()}{" "}
             <br />
             <span style={{ color: "var(--color-primary)" }}>
               {model.toUpperCase()}
@@ -1063,7 +1100,9 @@ export default async function VehicleHubPage({
           {cats.map((c) => (
             <Link
               key={c.slug}
-              href={`/collections/${c.slug}`}
+              // audit F-11: carry the vehicle so the collection auto-filters to
+              // this make/model (canonical strips the params — SEO-safe).
+              href={`/collections/${c.slug}?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}`}
               style={{
                 padding: 0,
                 background: "var(--color-surface)",
