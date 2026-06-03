@@ -14,6 +14,14 @@ const nextConfig: NextConfig = {
   // and needs no redirect. 301 (permanent) so Google transfers ranking.
   async redirects() {
     return [
+      // Canonicalize www → apex so there's one indexable host (kills the
+      // duplicate-content signal; apex is our canonical everywhere).
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.stehlenauto.com" }],
+        destination: "https://stehlenauto.com/:path*",
+        permanent: true,
+      },
       { source: "/contact", destination: "/help/contact", permanent: true },
       { source: "/returns", destination: "/legal/returns", permanent: true },
       { source: "/warranty", destination: "/legal/warranty", permanent: true },
