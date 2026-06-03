@@ -86,7 +86,8 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/help`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/help/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/help/install`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/welcome-back`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    // audit F-7: /welcome-back is a promo reactivation landing page (noindex) —
+    // removed from the sitemap so it doesn't burn crawl budget or risk soft-404.
     ...collectionEntries,
     ...productEntries,
     ...vehicleEntries,

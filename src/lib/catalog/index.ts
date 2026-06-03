@@ -140,11 +140,27 @@ function adapt(p: ProductNode): CatalogProduct {
   if (images.length === 0 && p.featuredImage?.url) {
     images.push({ url: p.featuredImage.url, altText: p.featuredImage.altText ?? null });
   }
+  // SEO (audit F-1/F-5): a real meta/schema description, NOT the title
+  // repeated. Prefer the merch team's Shopify body copy (strip HTML); fall
+  // back to a benefit template. Keeps PDP descriptions unique + useful for
+  // SERP snippets, Product schema, and AI-Overview grounding.
+  const bodyText = (p.descriptionHtml || p.description || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const metaDescription =
+    bodyText.length >= 60
+      ? bodyText.length > 155
+        ? bodyText.slice(0, 152).replace(/[\s,;.]+\S*$/, "") + "…"
+        : bodyText
+      : `${p.title}. Free US shipping & 30-day returns. No-drill bolt-on fit, fitment guaranteed.`;
+
   return {
     sku,
     handle: p.handle,
     title: p.title,
     fitTitle: p.title,
+    metaDescription,
     price: min,
     compareAt: cmp > min ? cmp : null,
     image: p.featuredImage?.url ?? images[0]?.url ?? null,

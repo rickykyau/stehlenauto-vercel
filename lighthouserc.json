@@ -2,12 +2,12 @@
   "ci": {
     "collect": {
       "url": [
-        "https://stehlenauto-vercel.vercel.app/",
-        "https://stehlenauto-vercel.vercel.app/collections/roof-racks",
-        "https://stehlenauto-vercel.vercel.app/products/stehlen-universal-door-frame-mount-roof-rack",
-        "https://stehlenauto-vercel.vercel.app/vehicle/ford-f-150",
-        "https://stehlenauto-vercel.vercel.app/about",
-        "https://stehlenauto-vercel.vercel.app/legal/warranty"
+        "https://stehlenauto.com/",
+        "https://stehlenauto.com/collections/roof-racks-baskets",
+        "https://stehlenauto.com/products/2015-2026-ford-f-150-5-5ft-bed-hard-tri-fold-tonneau-cover-w-led",
+        "https://stehlenauto.com/vehicle/ford-f-150",
+        "https://stehlenauto.com/about",
+        "https://stehlenauto.com/legal/warranty"
       ],
       "numberOfRuns": 3,
       "settings": {

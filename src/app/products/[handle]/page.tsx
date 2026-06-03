@@ -57,13 +57,25 @@ export async function generateMetadata({
   const { handle } = await params;
   const p = await getProduct(handle);
   if (!p) return { title: "Product" };
+  // SEO (audit F-3): strip a leading "Stehlen " (the title.template re-adds
+  // "| Stehlen Auto") and trim so title + suffix stays ~≤60 chars in SERPs.
+  const cleanTitle = p.title.replace(/^stehlen\s+/i, "");
+  const MAX = 52;
+  const metaTitle =
+    cleanTitle.length > MAX
+      ? cleanTitle.slice(0, MAX - 1).replace(/[\s\-,]+\S*$/, "") + "…"
+      : cleanTitle;
+  // SEO (audit F-1): real description, not the title repeated.
+  const desc =
+    p.metaDescription ??
+    `${p.title}. Free US shipping & 30-day returns. Fitment guaranteed.`;
   return {
-    title: p.title,
-    description: p.fitTitle,
+    title: metaTitle,
+    description: desc,
     alternates: { canonical: `/products/${p.handle}` },
     openGraph: {
       title: p.title,
-      description: p.fitTitle,
+      description: desc,
       url: `/products/${p.handle}`,
       images: p.image ? [{ url: p.image }] : undefined,
     },
@@ -394,7 +406,10 @@ export default async function PdpPage({
     "@context": "https://schema.org/",
     "@type": "Product",
     name: product.title,
-    description: product.fitTitle,
+    // SEO (audit F-5): distinct from name — real body copy / benefit template.
+    description:
+      product.metaDescription ??
+      `${product.title}. No-drill bolt-on fit. Free US shipping, 30-day returns, fitment guaranteed.`,
     sku: product.sku,
     mpn: product.sku,
     image: allAbsoluteImages.length > 0 ? allAbsoluteImages : undefined,

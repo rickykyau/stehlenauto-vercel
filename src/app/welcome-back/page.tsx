@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   description:
     "Bought from Stehlen on eBay or Amazon? Same parts, same warehouse, lower prices direct.",
   alternates: { canonical: "/welcome-back" },
+  // audit F-7: promo reactivation landing (email/CRM traffic only) — keep it
+  // out of the index so it can't become a thin/stale soft-404.
+  robots: { index: false, follow: true },
 };
 
 const PROOF = [

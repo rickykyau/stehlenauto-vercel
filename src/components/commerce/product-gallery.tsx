@@ -91,7 +91,7 @@ export function ProductGallery({
           >
             <Image
               src={src}
-              alt=""
+              alt={`${alt} — view ${i + 1}`}
               width={120}
               height={120}
               style={{ width: "100%", height: "100%", objectFit: "contain" }}

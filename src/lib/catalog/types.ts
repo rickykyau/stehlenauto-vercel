@@ -19,6 +19,10 @@ export type CatalogProduct = {
   handle: string;
   title: string;
   fitTitle: string;
+  /** SEO meta + Product-schema description (audit F-1/F-5): real body copy or
+   *  a benefit template, never the title repeated. Optional — mock products
+   *  omit it and callers fall back. */
+  metaDescription?: string;
   price: number;
   compareAt: number | null;
   image: string | null;
