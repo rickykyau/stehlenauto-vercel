@@ -12,6 +12,9 @@ import { getProduct } from "@/lib/catalog";
 import type { Cart, CartLine, Money } from "./types";
 
 const CART_COOKIE = "stehlen_cart_id";
+// Campaign promo code dropped by a landing page (e.g. /welcome-back?code=WELCOME10).
+// Non-httpOnly so the LP can set it client-side; read here to auto-apply at checkout.
+const PROMO_COOKIE = "stehlen_promo";
 const ONE_MONTH = 60 * 60 * 24 * 30;
 
 type ShopifyCartLineNode = {
@@ -91,7 +94,31 @@ function adapt(cart: ShopifyCart): Cart {
  * Cost: 1-3 extra Shopify GET-product calls per cart action, all
  * concurrent. Typical add-to-cart now adds ~150-300ms; acceptable.
  */
+/**
+ * If a campaign landing page dropped a `stehlen_promo` cookie, append it to
+ * the Shopify checkout URL as `?discount=CODE`. Shopify auto-applies it at
+ * checkout, so the customer never has to copy/paste a code — removing the
+ * single biggest friction point in a promo-driven flow. Silent no-op if no
+ * cookie / unparsable URL; never blocks the cart.
+ */
+async function applyPromoCode(cart: Cart): Promise<Cart> {
+  if (!cart.checkoutUrl) return cart;
+  try {
+    const store = await cookies();
+    const code = store.get(PROMO_COOKIE)?.value?.trim();
+    if (!code) return cart;
+    const u = new URL(cart.checkoutUrl);
+    u.searchParams.set("discount", code);
+    return { ...cart, checkoutUrl: u.toString() };
+  } catch {
+    return cart;
+  }
+}
+
 async function enrichLinesWithFitment(cart: Cart): Promise<Cart> {
+  // Apply campaign promo first so the auto-applied checkout URL is present on
+  // every return path (early-return, success, and catch all carry it through).
+  cart = await applyPromoCode(cart);
   const uniqueHandles = Array.from(
     new Set(cart.lines.map((l) => l.productHandle).filter(Boolean)),
   );

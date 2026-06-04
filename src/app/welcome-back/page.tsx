@@ -2,39 +2,63 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Icons } from "@/components/ui/icons";
-import { Stars } from "@/components/ui/stars";
+import { WelcomeBackInit } from "./welcome-back-init";
 
 export const metadata: Metadata = {
   title: "Welcome back · 10% off your return order",
   description:
-    "Bought from Stehlen on eBay or Amazon? Same parts, same warehouse, lower prices direct.",
+    "Bought from Stehlen on eBay or Amazon? Same parts, same warehouse, lower prices direct — 10% off your first order, free shipping on everything.",
   alternates: { canonical: "/welcome-back" },
   // audit F-7: promo reactivation landing (email/CRM traffic only) — keep it
   // out of the index so it can't become a thin/stale soft-404.
   robots: { index: false, follow: true },
 };
 
-const PROOF = [
-  {
-    n: "Mike R.",
-    y: "2019 Ford F-150",
-    body: "Bought my roof rack on eBay 2 years ago. Switched to direct — same product, $40 cheaper, ships in a day.",
-  },
-  {
-    n: "Dale W.",
-    y: "2021 Silverado",
-    body: "Direct now. The eBay listings sent me to Stehlen anyway, why pay the middle?",
-  },
-  {
-    n: "Carlos T.",
-    y: "2017 Wrangler",
-    body: "Same warehouse, same parts. The trust is already built. Price is just better.",
-  },
-];
+const DEFAULT_CODE = "WELCOME10";
 
-export default function WelcomeBackPage() {
+function titleCase(s: string): string {
+  return s
+    .trim()
+    .split(/\s+/)
+    .map((w) =>
+      // keep all-caps tokens (F-150, GMC, RAM, V8) as-is; otherwise Title Case
+      w === w.toUpperCase() ? w : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(),
+    )
+    .join(" ");
+}
+
+function first(v: string | string[] | undefined): string {
+  return (Array.isArray(v) ? v[0] : v || "").trim();
+}
+
+export default async function WelcomeBackPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const sp = await searchParams;
+  const make = first(sp.make);
+  const model = first(sp.model);
+  const code = (first(sp.code) || DEFAULT_CODE).toUpperCase();
+  const utm = first(sp.utm_content) || first(sp.utm_campaign);
+
+  const hasVehicle = Boolean(make && model);
+  const vehicleLabel = hasVehicle ? `${titleCase(make)} ${titleCase(model)}` : "";
+  // Mirror the sitemap/email vehicle-slug derivation → /vehicle/[slug] hub
+  // (which already handles year selection + shows parts that fit).
+  const vehicleSlug = hasVehicle
+    ? `${make}-${model}`.toLowerCase().replace(/\s+/g, "-")
+    : "";
+
+  const shopHref = hasVehicle ? `/vehicle/${vehicleSlug}` : "/collections";
+  const shopLabel = hasVehicle
+    ? `SHOP PARTS FOR MY ${titleCase(make)} ${titleCase(model)}`
+    : "BROWSE PARTS FOR YOUR VEHICLE";
+
   return (
     <main>
+      <WelcomeBackInit code={code} make={make} model={model} utm={utm} />
+
       <section
         style={{
           position: "relative",
@@ -72,10 +96,7 @@ export default function WelcomeBackPage() {
         >
           <div
             className="eyebrow"
-            style={{
-              marginBottom: 16,
-              color: "var(--color-primary)",
-            }}
+            style={{ marginBottom: 16, color: "var(--color-primary)" }}
           >
             WELCOME BACK · NOW DIRECT
           </div>
@@ -103,21 +124,34 @@ export default function WelcomeBackPage() {
               lineHeight: 1.6,
             }}
           >
-            Bought from Stehlen on eBay or Amazon? You&apos;re in the right
-            place. Same warehouse, same parts, same lifetime warranty —
-            <strong style={{ color: "var(--color-foreground)" }}>
-              {" "}
-              10% off your first direct order
-            </strong>
-            .
+            {hasVehicle ? (
+              <>
+                You bought from Stehlen on eBay — thanks for trusting us with your{" "}
+                <strong style={{ color: "var(--color-foreground)" }}>
+                  {vehicleLabel}
+                </strong>
+                . Now get the same parts direct:{" "}
+                <strong style={{ color: "var(--color-foreground)" }}>
+                  10% off your first order
+                </strong>
+                , free shipping on everything.
+              </>
+            ) : (
+              <>
+                Bought from Stehlen on eBay or Amazon? You&apos;re in the right
+                place. Same warehouse, same parts, same lifetime warranty —{" "}
+                <strong style={{ color: "var(--color-foreground)" }}>
+                  10% off your first direct order
+                </strong>
+                , free shipping on everything.
+              </>
+            )}
           </p>
         </div>
       </section>
 
-      <section
-        className="container-x"
-        style={{ paddingTop: 64, paddingBottom: 32 }}
-      >
+      {/* Offer band — code auto-applies at checkout via the promo cookie */}
+      <section className="container-x" style={{ paddingTop: 64, paddingBottom: 32 }}>
         <div
           style={{
             background: "var(--color-primary)",
@@ -129,6 +163,7 @@ export default function WelcomeBackPage() {
             gap: 24,
             alignItems: "center",
           }}
+          className="welcome-offer-band"
         >
           <div>
             <div
@@ -140,7 +175,7 @@ export default function WelcomeBackPage() {
                 marginBottom: 6,
               }}
             >
-              YOUR CODE
+              YOUR CODE · APPLIED AUTOMATICALLY
             </div>
             <div
               style={{
@@ -151,21 +186,15 @@ export default function WelcomeBackPage() {
                 lineHeight: 1,
               }}
             >
-              WELCOME10
+              {code}
             </div>
-            <p
-              style={{
-                marginTop: 8,
-                fontSize: 13,
-                opacity: 0.85,
-              }}
-            >
-              Apply at checkout. One-time use per customer. Free shipping on
-              every order — no minimum.
+            <p style={{ marginTop: 8, fontSize: 13, opacity: 0.85 }}>
+              10% off your first order — added at checkout, no need to type it.{" "}
+              <strong>Free shipping on every order, no minimum.</strong>
             </p>
           </div>
           <Link
-            href="/collections"
+            href={shopHref}
             className="btn btn-lg"
             style={{
               background: "var(--color-background)",
@@ -173,15 +202,13 @@ export default function WelcomeBackPage() {
               color: "var(--color-foreground)",
             }}
           >
-            START SHOPPING <Icons.arrowR size={14} />
+            {shopLabel} <Icons.arrowR size={14} />
           </Link>
         </div>
       </section>
 
-      <section
-        className="container-x"
-        style={{ paddingTop: 48, paddingBottom: 64 }}
-      >
+      {/* Why direct */}
+      <section className="container-x" style={{ paddingTop: 48, paddingBottom: 64 }}>
         <div className="eyebrow" style={{ marginBottom: 8 }}>
           WHY DIRECT?
         </div>
@@ -196,10 +223,7 @@ export default function WelcomeBackPage() {
         >
           What changes when you skip the middleman.
         </h2>
-        <div
-          className="grid grid-cols-1 md:grid-cols-3"
-          style={{ gap: 16 }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 16 }}>
           {[
             {
               Icon: Icons.bolt,
@@ -208,7 +232,7 @@ export default function WelcomeBackPage() {
             },
             {
               Icon: Icons.shipping,
-              h: "Faster shipping",
+              h: "Free, fast shipping",
               b: "Ships from CA, NV, or TX warehouses within 24h. Always free, no minimum.",
             },
             {
@@ -239,13 +263,7 @@ export default function WelcomeBackPage() {
               >
                 {c.h}
               </h3>
-              <p
-                style={{
-                  color: "var(--color-muted)",
-                  fontSize: 13,
-                  lineHeight: 1.6,
-                }}
-              >
+              <p style={{ color: "var(--color-muted)", fontSize: 13, lineHeight: 1.6 }}>
                 {c.b}
               </p>
             </div>
@@ -253,15 +271,12 @@ export default function WelcomeBackPage() {
         </div>
       </section>
 
-      <section
-        style={{ background: "var(--color-surface)" }}
-      >
-        <div
-          className="container-x"
-          style={{ paddingTop: 64, paddingBottom: 64 }}
-        >
+      {/* Buy-with-confidence band (replaces the prior hardcoded testimonials —
+          factual guarantees, no fabricated names). */}
+      <section style={{ background: "var(--color-surface)" }}>
+        <div className="container-x" style={{ paddingTop: 64, paddingBottom: 64 }}>
           <div className="eyebrow" style={{ marginBottom: 8 }}>
-            FROM RETURNERS
+            BUY WITH CONFIDENCE
           </div>
           <h2
             style={{
@@ -272,15 +287,30 @@ export default function WelcomeBackPage() {
               marginBottom: 32,
             }}
           >
-            Drivers who already made the switch.
+            {hasVehicle
+              ? `Every part confirmed to fit your ${vehicleLabel}.`
+              : "Every part confirmed to fit before it ships."}
           </h2>
-          <div
-            className="grid grid-cols-1 md:grid-cols-3"
-            style={{ gap: 16 }}
-          >
-            {PROOF.map((r) => (
+          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 16 }}>
+            {[
+              {
+                Icon: Icons.shield,
+                h: "Fitment guaranteed",
+                b: "Tell us your year, make, and model — we confirm fit before it ships, or returns are free.",
+              },
+              {
+                Icon: Icons.shipping,
+                h: "Free shipping on all orders",
+                b: "No minimum, ever. 30-day hassle-free returns with a prepaid label.",
+              },
+              {
+                Icon: Icons.bolt,
+                h: "Same warehouse you trust",
+                b: "The exact parts you bought on eBay — same stock, same manufacturer warranty.",
+              },
+            ].map((c) => (
               <div
-                key={r.n}
+                key={c.h}
                 style={{
                   background: "var(--color-background)",
                   border: "1px solid var(--color-border)",
@@ -288,30 +318,32 @@ export default function WelcomeBackPage() {
                   padding: 24,
                 }}
               >
-                <Stars rating={5} size={13} />
-                <p
-                  style={{
-                    fontSize: 14,
-                    lineHeight: 1.55,
-                    margin: "12px 0 16px",
-                  }}
-                >
-                  &ldquo;{r.body}&rdquo;
-                </p>
-                <div
-                  className="mono"
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  {r.n.toUpperCase()}{" "}
-                  <span style={{ color: "var(--color-muted)" }}>
-                    · {r.y.toUpperCase()}
-                  </span>
+                <div style={{ color: "var(--color-primary)", marginBottom: 12 }}>
+                  <c.Icon size={22} />
                 </div>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 18,
+                    textTransform: "uppercase",
+                    marginBottom: 8,
+                  }}
+                >
+                  {c.h}
+                </h3>
+                <p
+                  style={{ color: "var(--color-muted)", fontSize: 13, lineHeight: 1.6 }}
+                >
+                  {c.b}
+                </p>
               </div>
             ))}
+          </div>
+
+          <div style={{ marginTop: 32 }}>
+            <Link href={shopHref} className="btn btn-primary btn-lg">
+              {shopLabel} <Icons.arrowR size={14} />
+            </Link>
           </div>
         </div>
       </section>
