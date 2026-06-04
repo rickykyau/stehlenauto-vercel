@@ -6,6 +6,7 @@ import {
   type ReviewStatus,
   REVIEW_STATUSES,
 } from "@/lib/admin/reviews";
+import { pingProduct } from "@/lib/seo/indexnow";
 
 export const runtime = "nodejs";
 
@@ -39,6 +40,12 @@ export async function PATCH(req: NextRequest) {
 
   if (result.handle) {
     revalidatePath(`/products/${result.handle}`);
+    // Approving a review changes the PDP's visible content (and its aggregate
+    // rating), so push the page to IndexNow → Bing re-crawls it fast, which
+    // feeds ChatGPT Search freshness. Fire-and-forget; never blocks the response.
+    if (status === "approved") {
+      void pingProduct(result.handle);
+    }
   }
   revalidatePath("/admin/reviews");
 
