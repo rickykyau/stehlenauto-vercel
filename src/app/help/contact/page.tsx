@@ -208,9 +208,9 @@ export default function ContactPage() {
               Stehlen Auto
             </strong>
             <br />
-            1160 W. Rincon St
+            21912 Garcia Lane
             <br />
-            Corona, CA 92878
+            Walnut, CA 91789
           </div>
           <div
             style={{

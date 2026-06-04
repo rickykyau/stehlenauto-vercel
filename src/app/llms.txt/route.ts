@@ -35,7 +35,7 @@ function buildLlmsTxt(base: string): string {
 
 > Heavy-duty vehicle accessories engineered from cold-rolled steel. No
 > drilling required, bolt-on installation, and fitment guaranteed for your
-> exact year/make/model. Family-run, shipping nationwide from Corona, CA
+> exact year/make/model. Family-run, shipping nationwide from Walnut, CA
 > since 2015.
 
 Stehlen Auto sells aftermarket accessories for pickup trucks and SUVs —
@@ -75,7 +75,7 @@ ${vehicleLines}
 
 ## Contact
 - Phone: +1-888-378-4536
-- Address: 1160 W. Rincon St, Corona, CA 92878, USA
+- Address: 21912 Garcia Lane, Walnut, CA 91789, USA
 - Sitemap: ${base}/sitemap.xml
 `;
 }

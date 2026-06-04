@@ -245,8 +245,8 @@ export function Footer() {
           }}
         >
           <div style={{ color: "var(--color-muted)", fontSize: 12 }}>
-            © {new Date().getFullYear()} Stehlen Auto. All Rights Reserved. 1160
-            W. Rincon St, Corona, CA 92878.
+            © {new Date().getFullYear()} Stehlen Auto. All Rights Reserved. 21912
+            Garcia Lane, Walnut, CA 91789.
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             {PAYMENTS.map((p) => (

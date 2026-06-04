@@ -156,10 +156,10 @@ export function organizationJsonLd(baseUrl: string) {
       "Heavy-duty vehicle accessories. Bolt-on engineering since 2015. Fitment guaranteed.",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "1160 W. Rincon St",
-      addressLocality: "Corona",
+      streetAddress: "21912 Garcia Lane",
+      addressLocality: "Walnut",
       addressRegion: "CA",
-      postalCode: "92878",
+      postalCode: "91789",
       addressCountry: "US",
     },
     contactPoint: {
