@@ -90,3 +90,7 @@ public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v18-silent.mp4
 # v19 full-quality masters — keep local only
 public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v19.mp4
 public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v19-silent.mp4
+
+# Marketing — campaign metadata + any customer-data exports (PII): never commit
+marketing/email/data/
+marketing/**/*.csv
