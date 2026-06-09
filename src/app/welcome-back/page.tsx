@@ -165,7 +165,7 @@ export default async function WelcomeBackPage({
           }}
           className="welcome-offer-band"
         >
-          <div>
+          <div style={{ minWidth: 0 }}>
             <div
               className="mono"
               style={{
@@ -180,10 +180,11 @@ export default async function WelcomeBackPage({
             <div
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: 56,
+                fontSize: "clamp(30px, 9vw, 56px)",
                 fontWeight: 800,
-                letterSpacing: "0.08em",
-                lineHeight: 1,
+                letterSpacing: "0.04em",
+                lineHeight: 1.1,
+                overflowWrap: "anywhere",
               }}
             >
               {code}

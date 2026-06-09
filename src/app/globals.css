@@ -440,6 +440,15 @@ h4 { line-height: 1.3; }
   .container-x {
     padding: 0 16px;
   }
+  /* Welcome-back offer band: stack code + CTA so the promo code never clips */
+  .welcome-offer-band {
+    grid-template-columns: 1fr !important;
+    padding: 24px !important;
+  }
+  .welcome-offer-band .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ===== Custom scrollbars (subtle) ===== */
