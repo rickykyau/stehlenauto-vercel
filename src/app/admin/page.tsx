@@ -179,6 +179,11 @@ export default async function AdminDashboardPage() {
           title="Sourcing gaps"
           body="Catalog fitment data that's missing — flag for the merch team."
         />
+        <ActionCard
+          href="/admin/notifications"
+          title="Order alerts"
+          body="Manage staff who get an email the moment a new order comes in."
+        />
       </div>
 
       <div

@@ -125,7 +125,20 @@ export const productReviews = pgTable("product_reviews", {
   approvedAt: timestamp("approved_at"),
 });
 
+/**
+ * Internal staff recipients for new-order alert emails (managed in
+ * /admin/notifications, fired by the Shopify orders/create webhook).
+ */
+export const notificationRecipients = pgTable("notification_recipients", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  label: text("label"), // optional name/role, e.g. "Warehouse" / "Sam"
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export type Vehicle = typeof vehicles.$inferSelect;
+export type NotificationRecipient = typeof notificationRecipients.$inferSelect;
 export type NewVehicle = typeof vehicles.$inferInsert;
 export type SubModelAnswer = typeof subModelAnswers.$inferSelect;
 export type Cart = typeof carts.$inferSelect;
