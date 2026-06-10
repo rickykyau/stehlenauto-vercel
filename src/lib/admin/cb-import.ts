@@ -160,7 +160,7 @@ async function fetchOrderRows(
       "ship date": orderDate,
       "item name": cbName,
       quantity: li.quantity,
-      price: Number(li.originalUnitPriceSet?.shopMoney?.amount ?? 0),
+      price: Math.round(Number(li.originalUnitPriceSet?.shopMoney?.amount ?? 0) * 100) / 100,
       Freight: 0,
       tax: "",
       discount: "",
@@ -178,6 +178,8 @@ async function workbookBuffer(rows: Row[]): Promise<Buffer> {
   const ws = wb.addWorksheet("Orders");
   ws.addRow([...HEADERS]);
   for (const r of rows) ws.addRow(HEADERS.map((h) => r[h]));
+  // Force the price column to always show 2 decimals (e.g. 132.00).
+  ws.getColumn(HEADERS.indexOf("price") + 1).numFmt = "0.00";
   return Buffer.from(await wb.xlsx.writeBuffer());
 }
 
