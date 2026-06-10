@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { listOrders } from "@/lib/admin/orders";
 import { requireOwner } from "@/lib/admin/guard";
+import { OrdersTable } from "./orders-table";
 
 export const dynamic = "force-dynamic";
 
@@ -46,12 +47,7 @@ export default async function AdminOrdersPage({
     <div>
       <form
         method="get"
-        style={{
-          display: "flex",
-          gap: 8,
-          marginBottom: 18,
-          flexWrap: "wrap",
-        }}
+        style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}
       >
         <input
           name="q"
@@ -85,107 +81,7 @@ export default async function AdminOrdersPage({
           <strong>Shopify Admin error:</strong> {liveError}
         </div>
       )}
-      {result && (
-        <div
-          style={{
-            background: "var(--color-surface)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "var(--radius-md)",
-            overflowX: "auto",
-          }}
-        >
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              fontSize: 13,
-              minWidth: 720,
-            }}
-          >
-            <thead>
-              <tr
-                style={{
-                  textAlign: "left",
-                  borderBottom: "1px solid var(--color-border)",
-                }}
-                className="mono"
-              >
-                <Th>ORDER</Th>
-                <Th>DATE</Th>
-                <Th>CUSTOMER</Th>
-                <Th>ITEMS</Th>
-                <Th>TOTAL</Th>
-                <Th>FINANCIAL</Th>
-                <Th>FULFILLMENT</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {result.orders.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={7}
-                    style={{
-                      padding: 24,
-                      textAlign: "center",
-                      color: "var(--color-muted)",
-                    }}
-                  >
-                    No orders match your filters.
-                  </td>
-                </tr>
-              ) : (
-                result.orders.map((o) => (
-                  <tr
-                    key={o.id}
-                    style={{ borderBottom: "1px solid var(--color-border)" }}
-                  >
-                    <Td>
-                      <Link
-                        href={`/admin/orders/${encodeURIComponent(o.legacyId)}`}
-                        style={{ color: "var(--color-primary)", fontWeight: 600 }}
-                      >
-                        {o.name}
-                      </Link>
-                    </Td>
-                    <Td>
-                      {new Date(o.createdAt).toLocaleDateString(undefined, {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </Td>
-                    <Td>
-                      <div>{o.customerName}</div>
-                      {o.customerEmail && (
-                        <div
-                          style={{
-                            fontSize: 11,
-                            color: "var(--color-muted)",
-                          }}
-                        >
-                          {o.customerEmail}
-                        </div>
-                      )}
-                    </Td>
-                    <Td>{o.itemCount}</Td>
-                    <Td>
-                      <span className="mono">
-                        ${parseFloat(o.totalPrice).toFixed(2)}
-                      </span>
-                    </Td>
-                    <Td>
-                      <StatusChip status={o.financialStatus} />
-                    </Td>
-                    <Td>
-                      <StatusChip status={o.fulfillmentStatus} />
-                    </Td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
+      {result && <OrdersTable orders={result.orders} />}
       {result && (
         <div
           style={{
@@ -226,55 +122,5 @@ export default async function AdminOrdersPage({
         </div>
       )}
     </div>
-  );
-}
-
-function Th({ children }: { children: React.ReactNode }) {
-  return (
-    <th
-      style={{
-        padding: "10px 14px",
-        fontSize: 10,
-        letterSpacing: "0.12em",
-        color: "var(--color-muted)",
-        fontWeight: 600,
-      }}
-    >
-      {children}
-    </th>
-  );
-}
-function Td({ children }: { children: React.ReactNode }) {
-  return (
-    <td style={{ padding: "12px 14px", verticalAlign: "top" }}>{children}</td>
-  );
-}
-function StatusChip({ status }: { status: string | null }) {
-  if (!status) return <span style={{ color: "var(--color-muted)" }}>—</span>;
-  const lc = status.toLowerCase();
-  const ok = /paid|fulfilled/.test(lc);
-  const warn = /pending|partially/.test(lc);
-  const bad = /refunded|voided|cancel|unfulfilled/.test(lc);
-  const color = ok
-    ? "var(--color-success)"
-    : warn
-      ? "var(--color-primary)"
-      : bad
-        ? "var(--color-destructive)"
-        : "var(--color-muted)";
-  return (
-    <span
-      className="mono"
-      style={{
-        fontSize: 10,
-        letterSpacing: "0.06em",
-        padding: "2px 8px",
-        borderRadius: "var(--radius-sm)",
-        border: `1px solid ${color}`,
-        color,
-      }}
-    >
-      {status.toUpperCase()}
-    </span>
   );
 }

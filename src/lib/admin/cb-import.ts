@@ -111,19 +111,20 @@ function fmtDate(iso: string): string {
   return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())} 00:00:00`;
 }
 
-export type CbImportResult =
-  | { ok: true; filename: string; buffer: Buffer; rowCount: number; missingItemName: string[] }
-  | { ok: false; error: string };
+type Row = Record<(typeof HEADERS)[number], string | number>;
 
-export async function buildCbImportWorkbook(orderGid: string): Promise<CbImportResult> {
+// Fetch one order and map it to CB import rows (one per line item).
+async function fetchOrderRows(
+  orderGid: string,
+): Promise<{ rows: Row[]; missing: string[]; orderNumber: string } | { error: string }> {
   let data: OrderResp;
   try {
     data = await shopifyAdminFetch<OrderResp>(ORDER_QUERY, { id: orderGid });
   } catch (err) {
-    return { ok: false, error: err instanceof Error ? err.message : "Shopify fetch failed" };
+    return { error: err instanceof Error ? err.message : "Shopify fetch failed" };
   }
   const o = data.order;
-  if (!o) return { ok: false, error: "Order not found" };
+  if (!o) return { error: `Order not found: ${orderGid}` };
 
   const orderNumber = o.name.replace(/^#/, "").trim();
   const salesRepOrderCode = `stehlen-${orderNumber}`;
@@ -135,10 +136,10 @@ export async function buildCbImportWorkbook(orderGid: string): Promise<CbImportR
     "";
   const phone = addr?.phone || o.customer?.phone || "";
 
-  const missingItemName: string[] = [];
+  const missing: string[] = [];
   const rows = o.lineItems.nodes.map((li) => {
     const cbName = (li.variant?.product?.metafield?.value || li.sku || "").trim().toLowerCase();
-    if (!cbName) missingItemName.push(li.title);
+    if (!cbName) missing.push(`${salesRepOrderCode}: ${li.title}`);
     const shipping = (cbName && SHIP_MAP[cbName]) || DEFAULT_SHIPPING;
     return {
       SalesRepOrderCode: salesRepOrderCode,
@@ -167,20 +168,55 @@ export async function buildCbImportWorkbook(orderGid: string): Promise<CbImportR
       PaymentType: "stehlen shopify",
       CheckNumber: "",
       FreightAccountOverride_DEV000081: "",
-    } as Record<(typeof HEADERS)[number], string | number>;
+    } as Row;
   });
+  return { rows, missing, orderNumber };
+}
 
+async function workbookBuffer(rows: Row[]): Promise<Buffer> {
   const wb = new ExcelJS.Workbook();
   const ws = wb.addWorksheet("Orders");
   ws.addRow([...HEADERS]);
   for (const r of rows) ws.addRow(HEADERS.map((h) => r[h]));
+  return Buffer.from(await wb.xlsx.writeBuffer());
+}
 
-  const ab = await wb.xlsx.writeBuffer();
+export type CbImportResult =
+  | { ok: true; filename: string; buffer: Buffer; rowCount: number; orderCount: number; missingItemName: string[] }
+  | { ok: false; error: string };
+
+/** Single order → .xlsx (used by the order detail page). */
+export async function buildCbImportWorkbook(orderGid: string): Promise<CbImportResult> {
+  const res = await fetchOrderRows(orderGid);
+  if ("error" in res) return { ok: false, error: res.error };
   return {
     ok: true,
-    filename: `${salesRepOrderCode}.xlsx`,
-    buffer: Buffer.from(ab),
-    rowCount: rows.length,
-    missingItemName,
+    filename: `stehlen-${res.orderNumber}.xlsx`,
+    buffer: await workbookBuffer(res.rows),
+    rowCount: res.rows.length,
+    orderCount: 1,
+    missingItemName: res.missing,
+  };
+}
+
+/** Multiple orders → one combined .xlsx (used by the orders-list bulk export). */
+export async function buildCbImportWorkbookMulti(orderGids: string[]): Promise<CbImportResult> {
+  if (orderGids.length === 0) return { ok: false, error: "No orders selected" };
+  const all: Row[] = [];
+  const missing: string[] = [];
+  for (const gid of orderGids) {
+    const res = await fetchOrderRows(gid);
+    if ("error" in res) return { ok: false, error: res.error };
+    all.push(...res.rows);
+    missing.push(...res.missing);
+  }
+  const stamp = fmtDate(new Date().toISOString()).slice(0, 10);
+  return {
+    ok: true,
+    filename: `stehlen-cb-import-${orderGids.length}orders-${stamp}.xlsx`,
+    buffer: await workbookBuffer(all),
+    rowCount: all.length,
+    orderCount: orderGids.length,
+    missingItemName: missing,
   };
 }
