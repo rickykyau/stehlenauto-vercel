@@ -53,8 +53,17 @@ export default async function AdminOrderDetailPage({
         >
           {order.name}
         </h2>
-        <div className="mono" style={{ fontSize: 11, color: "var(--color-muted)" }}>
-          {new Date(order.createdAt).toLocaleString()}
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <a
+            href={`/api/admin/order/cb-import?id=${id}`}
+            className="btn btn-primary"
+            style={{ fontSize: 13 }}
+          >
+            ↓ CB import (.xlsx)
+          </a>
+          <div className="mono" style={{ fontSize: 11, color: "var(--color-muted)" }}>
+            {new Date(order.createdAt).toLocaleString()}
+          </div>
         </div>
       </div>
 
