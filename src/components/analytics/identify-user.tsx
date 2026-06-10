@@ -28,7 +28,10 @@ export function IdentifyUser() {
         : null;
       const ageMs = created ? Date.now() - created : Infinity;
       const alreadyFired = localStorage.getItem(SIGNUP_KEY) === user.id;
-      if (created && ageMs < 60_000 && !alreadyFired) {
+      // 24h window (was 60s — too tight, missed real signups after email
+      // verification / slow redirects). The once-per-user localStorage guard
+      // prevents false positives for existing users (createdAt days old).
+      if (created && ageMs < 24 * 60 * 60_000 && !alreadyFired) {
         track("sign_up", { method: "clerk" });
         localStorage.setItem(SIGNUP_KEY, user.id);
       }
