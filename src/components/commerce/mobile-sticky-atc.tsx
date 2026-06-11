@@ -57,8 +57,17 @@ function readSubmodelAnswersForCurrentVehicle(): Record<string, string> {
  * Hidden by default; appears once the user scrolls past the in-page buy-box
  * (so we don't double the affordance above the fold).
  *
- * Tapping it scrolls back to the buy-box rather than auto-adding to cart —
- * the in-page sub-model strips must still gate the purchase.
+ * Tapping it:
+ *  - when the product is cleanly addable (in stock, fits, no unanswered
+ *    sub-model question) → fires the REAL buy-box ATC button so it actually
+ *    adds to cart + opens the drawer (Jordan F-2: a sticky "ADD TO CART" that
+ *    only scrolls is a mobile conversion killer — email traffic is mostly
+ *    mobile). We click the in-page button rather than re-implement the POST so
+ *    all of its gating (bed-length mismatch, qty, analytics, cart-drawer open)
+ *    stays in one place and can't drift.
+ *  - when gated (needs sub-model pick / confirmed misfit / out of stock, or
+ *    the real ATC is disabled for a reason this island can't see) → scrolls
+ *    back to the buy-box so the customer sees the gate/warning in context.
  */
 export function MobileStickyAtc({
   product,
@@ -172,6 +181,16 @@ export function MobileStickyAtc({
   }, [visible]);
 
   const onClick = () => {
+    // Gated states (OOS / unanswered sub-model / confirmed misfit) must take
+    // the customer to the in-page buy-box so they see the gate or red warning.
+    const gated = blocked || isMisfit || effectiveNeedsPick;
+    const atcBtn = document.querySelector<HTMLButtonElement>("[data-atc-anchor]");
+    // Clean + the real ATC isn't disabled (covers buy-box-only blocks the
+    // sticky can't see, e.g. bed-length mismatch) → fire the real add.
+    if (!gated && atcBtn && !atcBtn.disabled) {
+      atcBtn.click();
+      return;
+    }
     const target = document.querySelector<HTMLElement>(
       "[data-buy-box-anchor]",
     );

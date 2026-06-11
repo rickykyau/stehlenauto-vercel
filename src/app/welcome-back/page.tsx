@@ -36,12 +36,29 @@ function latestYearFor(make: string, model: string): number {
     if (!y) continue;
     const models = makes?.[titleCase(make)] ?? makes?.[make];
     if (!models) continue;
-    const hasModel = Object.keys(models).some(
-      (m) => m.toLowerCase() === ml || m.toLowerCase().startsWith(ml),
-    );
+    // Exact model match only. `startsWith` used to let "f-150" match
+    // "f-150 lightning", pulling the EV's latest year into a gas-truck
+    // context (P0-1) — the year then surfaced Lightning-only SKUs.
+    const hasModel = Object.keys(models).some((m) => m.toLowerCase() === ml);
     if (hasModel && y > best) best = y;
   }
   return best || new Date().getUTCFullYear() - 1;
+}
+
+// P0-1 guard: this reactivation LP targets gas/diesel pickup owners by
+// year+make+model only — we do NOT know the buyer's exact sub-model (e.g. an
+// F-150 buyer could be gas OR Lightning EV). Because the fitment check matches
+// a generic "F-150" against products whose applications list "F-150 Lightning"
+// (substring includes), EV-specific SKUs leak into the grid. We can't confirm
+// they fit the buyer's truck, so drop any product that reads as an EV-only
+// variant. Better to show one fewer card than a part that won't fit.
+function isEvOnlyVariant(p: { title?: string; fitTitle?: string; vehicleTags?: string[] }): boolean {
+  const text = [p.title ?? "", p.fitTitle ?? "", ...(p.vehicleTags ?? [])]
+    .join(" ")
+    .toLowerCase();
+  return /\b(lightning|\bev\b|electric|e-?tron|cybertruck|rivian|hummer ev)\b/.test(
+    text,
+  );
 }
 
 export const metadata: Metadata = {
@@ -104,19 +121,24 @@ export default async function WelcomeBackPage({
   if (hasVehicle) {
     const year = latestYearFor(make, model);
     const fitVehicle = { year: String(year), make: titleCase(make), model: titleCase(model) };
+    // Only surface products we can stand behind in a reactivation email:
+    // confirmed fit (fits === true, never the undefined "maybe"), in stock,
+    // and not an EV-only variant we can't confirm for this buyer (P0-1).
+    const sellable = (p: (typeof PRODUCTS)[number]) =>
+      p.fits === true && p.inventory > 0 && !isEvOnlyVariant(p);
     try {
       const hits = withFitment(
-        await searchProducts(`${year} ${make} ${model}`, 12),
+        await searchProducts(`${year} ${make} ${model}`, 16),
         fitVehicle,
         null,
-      ).filter((p) => p.fits !== false);
+      ).filter(sellable);
       if (hits.length < 4) {
         const seen = new Set(hits.map((p) => p.handle));
         const pad = withFitment(
-          await searchProducts(`${make} ${model}`, 16),
+          await searchProducts(`${make} ${model}`, 24),
           fitVehicle,
           null,
-        ).filter((p) => !seen.has(p.handle) && p.fits !== false);
+        ).filter((p) => !seen.has(p.handle) && sellable(p));
         fitProducts = [...hits, ...pad].slice(0, 4);
       } else {
         fitProducts = hits.slice(0, 4);
@@ -140,7 +162,13 @@ export default async function WelcomeBackPage({
 
   return (
     <main>
-      <WelcomeBackInit code={code} make={make} model={model} utm={utm} />
+      <WelcomeBackInit
+        code={code}
+        make={hasVehicle ? titleCase(make) : undefined}
+        model={hasVehicle ? titleCase(model) : undefined}
+        year={hasVehicle ? latestYearFor(make, model) : undefined}
+        utm={utm}
+      />
 
       <section
         style={{
