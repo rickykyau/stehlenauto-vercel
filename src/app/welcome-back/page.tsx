@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icons } from "@/components/ui/icons";
 import { ProductCard } from "@/components/commerce/product-card";
-import { searchProducts } from "@/lib/catalog";
+import { searchProducts, getBestSellers } from "@/lib/catalog";
 import { CATEGORIES, PRODUCTS } from "@/lib/catalog/mock";
 import { getAvailableCategoriesForMakeModel } from "@/lib/catalog/vehicle-categories";
 import { withFitment } from "@/lib/fitment/match";
@@ -173,16 +173,28 @@ export default async function WelcomeBackPage({
     } catch {
       fitProducts = [];
     }
-    // Surface real Amazon review stars on the cards (ProductCard renders the
-    // rating row when reviews > 0) — social proof is the conversion lever here.
-    fitProducts = fitProducts.map((p) => {
-      const r = REVIEW_BY_HANDLE[p.handle];
-      return r && r.count > 0 ? { ...p, rating: r.rating, reviews: r.count } : p;
-    });
     const avail = getAvailableCategoriesForMakeModel(make, model);
     browseCats = CATEGORIES.filter((c) => avail.has(c.slug)).slice(0, 6);
     if (browseCats.length === 0) browseCats = CATEGORIES.slice(0, 6);
+  } else {
+    // No vehicle in the link (generic email / shared URL): the LP must STILL be
+    // product-forward, never all-text. Lead with best-sellers + top categories
+    // so every visitor — any make/model or none — lands on real products.
+    try {
+      fitProducts = (await getBestSellers(8))
+        .filter((p) => p.inventory > 0 && !isEvOnlyVariant(p))
+        .slice(0, 6);
+    } catch {
+      fitProducts = [];
+    }
+    browseCats = CATEGORIES.slice(0, 6);
   }
+  // Surface real Amazon review stars on the cards (ProductCard renders the
+  // rating row when reviews > 0) — social proof is the conversion lever here.
+  fitProducts = fitProducts.map((p) => {
+    const r = REVIEW_BY_HANDLE[p.handle];
+    return r && r.count > 0 ? { ...p, rating: r.rating, reviews: r.count } : p;
+  });
   const fitVehicleForCard = hasVehicle
     ? { year: String(bestYearFor(make, model)), make: titleCase(make), model: titleCase(model) }
     : undefined;
@@ -346,14 +358,19 @@ export default async function WelcomeBackPage({
         </div>
       </section>
 
-      {/* Top picks that fit this vehicle — real products, photos, review stars */}
-      {hasVehicle && fitProducts.length > 0 && (
+      {/* Top picks — real products, photos, review stars. Vehicle-tailored when
+          the link carries a make/model, best-sellers otherwise (never all-text). */}
+      {fitProducts.length > 0 && (
         <section className="container-x" style={{ paddingTop: 56, paddingBottom: 16 }}>
           <div className="eyebrow" style={{ marginBottom: 8 }}>
-            PICKED FOR YOUR {titleCase(make).toUpperCase()} {titleCase(model).toUpperCase()}
+            {hasVehicle
+              ? `PICKED FOR YOUR ${titleCase(make).toUpperCase()} ${titleCase(model).toUpperCase()}`
+              : "POPULAR RIGHT NOW"}
           </div>
           <h2 className="fluid-h2" style={{ marginBottom: 8 }}>
-            Top upgrades for your {vehicleLabel}.
+            {hasVehicle
+              ? `Top upgrades for your ${vehicleLabel}.`
+              : "Best-selling upgrades."}
           </h2>
           <p style={{ color: "var(--color-muted-foreground)", marginBottom: 24, maxWidth: 560 }}>
             The same parts you trusted on eBay — now direct, for less. Your{" "}
@@ -378,14 +395,14 @@ export default async function WelcomeBackPage({
         </section>
       )}
 
-      {/* Shop by category for this vehicle — keep them browsing */}
-      {hasVehicle && browseCats.length > 0 && (
+      {/* Shop by category — keep them browsing */}
+      {browseCats.length > 0 && (
         <section className="container-x" style={{ paddingTop: 40, paddingBottom: 56 }}>
           <div className="eyebrow" style={{ marginBottom: 8 }}>
             SHOP BY CATEGORY
           </div>
           <h2 className="fluid-h3" style={{ marginBottom: 20 }}>
-            More for your {vehicleLabel}
+            {hasVehicle ? `More for your ${vehicleLabel}` : "Shop by category"}
           </h2>
           <div
             style={{
@@ -397,7 +414,11 @@ export default async function WelcomeBackPage({
             {browseCats.map((c) => (
               <Link
                 key={c.slug}
-                href={`/collections/${c.slug}?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}`}
+                href={
+                  hasVehicle
+                    ? `/collections/${c.slug}?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}`
+                    : `/collections/${c.slug}`
+                }
                 style={{
                   display: "flex",
                   alignItems: "center",
