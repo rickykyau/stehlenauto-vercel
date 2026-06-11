@@ -449,6 +449,61 @@ h4 { line-height: 1.3; }
     width: 100%;
     justify-content: center;
   }
+
+  /* Welcome-back redesign (Diana Cycle 14B):
+   * Mobile-first overrides for the new layout classes. */
+
+  /* Offer layout: hide stats column on mobile — code + copy is enough */
+  .wb-offer-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .wb-stats {
+    display: none !important;
+  }
+
+  /* Product grid: 2-up on mobile is correct; leave as-is */
+
+  /* Category tiles: 2-up on mobile (correct default) */
+
+  /* Stat bar: shrink padding on mobile */
+  .wb-stat-bar > div {
+    padding: 20px 10px !important;
+  }
+
+  /* Guarantee cards: single column on mobile */
+  .wb-guarantee-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ===== Welcome-back LP — responsive grid breakpoints (Diana Cycle 14B) =====
+ * Mobile defaults (390px): 2-col product grid, 2-col cat tiles, 3-col stat bar,
+ * 1-col guarantee cards. Tablet and desktop progressively open up. */
+
+/* Tablet 640px: show stats column in offer band; 3-col product grid */
+@media (min-width: 640px) {
+  .wb-stats {
+    display: flex !important;
+  }
+  .wb-product-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .wb-cat-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .wb-guarantee-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* Desktop 1024px: 3-col product grid + 6-col cat tiles */
+@media (min-width: 1024px) {
+  .wb-product-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .wb-cat-grid {
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
 }
 
 /* ===== Custom scrollbars (subtle) ===== */

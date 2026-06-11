@@ -140,8 +140,8 @@ export default async function WelcomeBackPage({
 
   const shopHref = hasVehicle ? `/vehicle/${vehicleSlug}` : "/collections";
   const shopLabel = hasVehicle
-    ? `SHOP PARTS FOR MY ${titleCase(make)} ${titleCase(model)}`
-    : "BROWSE PARTS FOR YOUR VEHICLE";
+    ? `SHOP PARTS FOR MY ${titleCase(make).toUpperCase()} ${titleCase(model).toUpperCase()}`
+    : "BROWSE ALL PARTS";
 
   // ── Vehicle-tailored merchandising ───────────────────────────────────────
   // Top picks that FIT this vehicle (same engine as /vehicle/[slug]) + the
@@ -200,7 +200,7 @@ export default async function WelcomeBackPage({
     : undefined;
 
   return (
-    <main>
+    <main style={{ background: "var(--color-background)" }}>
       <WelcomeBackInit
         code={code}
         make={hasVehicle ? titleCase(make) : undefined}
@@ -209,87 +209,157 @@ export default async function WelcomeBackPage({
         utm={utm}
       />
 
+      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      {/* Full-bleed image-first hero. Vehicle-personalized headline sits on a
+          layered gradient so text is always legible. CTA bleeds directly into
+          the offer band below — single yellow moment anchored at the bottom
+          of the hero. minHeight 100svh on mobile so the entire first screen
+          is the hero (no scrolling to see the offer). */}
       <section
         style={{
           position: "relative",
-          background: "var(--color-background)",
-          minHeight: 320,
+          minHeight: "min(100svh, 700px)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
           overflow: "hidden",
-          borderBottom: "1px solid var(--color-border)",
         }}
       >
+        {/* Background image — boosted opacity vs the old 0.35 ghost */}
         <Image
           src="/images/hero-stehlen.jpg"
           alt=""
           fill
           priority
           sizes="100vw"
-          style={{ objectFit: "cover", opacity: 0.35 }}
+          style={{ objectFit: "cover", objectPosition: "center center", opacity: 0.55 }}
         />
+
+        {/* Bottom-to-top gradient — text sits in the dark zone */}
         <div
           aria-hidden="true"
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(180deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.95) 100%)",
+              "linear-gradient(180deg, rgba(10,10,10,0.25) 0%, rgba(10,10,10,0.55) 40%, rgba(10,10,10,0.97) 100%)",
           }}
         />
+
+        {/* Yellow top-edge rule — brand entry signal */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 4,
+            background: "var(--color-primary)",
+          }}
+        />
+
+        {/* Hero copy */}
         <div
           className="container-x"
           style={{
             position: "relative",
-            paddingTop: 56,
-            paddingBottom: 44,
-            maxWidth: 880,
+            zIndex: 1,
+            paddingBottom: 48,
+            paddingTop: 80,
           }}
         >
+          {/* Eyebrow */}
           <div
-            className="eyebrow"
-            style={{ marginBottom: 16, color: "var(--color-primary)" }}
-          >
-            WELCOME BACK · NOW DIRECT
-          </div>
-          <h1
-            className="display-h1"
             style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(40px, 8vw, 76px)",
-              textTransform: "uppercase",
-              letterSpacing: "-0.03em",
-              lineHeight: 0.85,
-              fontWeight: 800,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: 20,
+              padding: "6px 12px",
+              background: "rgba(245,168,35,0.15)",
+              border: "1px solid rgba(245,168,35,0.35)",
+              borderRadius: "var(--radius-sm)",
             }}
           >
-            SAME PARTS.
-            <br />
-            <span style={{ color: "var(--color-primary)" }}>BETTER PRICE.</span>
-          </h1>
-          <p
+            <span
+              style={{
+                display: "inline-block",
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: "var(--color-primary)",
+                flexShrink: 0,
+              }}
+            />
+            <span
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "var(--color-primary)",
+              }}
+            >
+              WELCOME BACK &mdash; NOW DIRECT
+            </span>
+          </div>
+
+          {/* Main headline — personalized when vehicle present */}
+          <h1
             style={{
-              marginTop: 24,
-              fontSize: 18,
-              color: "var(--color-muted)",
-              maxWidth: 640,
-              lineHeight: 1.6,
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(40px, 10vw, 88px)",
+              fontWeight: 800,
+              textTransform: "uppercase",
+              letterSpacing: "-0.03em",
+              lineHeight: 0.9,
+              margin: "0 0 24px",
+              maxWidth: 820,
             }}
           >
             {hasVehicle ? (
               <>
-                You bought from Stehlen on eBay — thanks for trusting us with your{" "}
-                <strong style={{ color: "var(--color-foreground)" }}>
-                  {vehicleLabel}
-                </strong>
-                . Now get the same parts direct:{" "}
-                <strong style={{ color: "var(--color-foreground)" }}>
-                  10% off your first order
-                </strong>
-                , free shipping on everything.
+                YOUR{" "}
+                <span style={{ color: "var(--color-primary)" }}>
+                  {titleCase(make).toUpperCase()}
+                  <br />
+                  {titleCase(model).toUpperCase()}
+                </span>
+                <br />
+                UPGRADED.
               </>
             ) : (
               <>
-                Bought from Stehlen on eBay or Amazon? You&apos;re in the right
-                place. Same warehouse, same parts, same lifetime warranty —{" "}
+                SAME PARTS.
+                <br />
+                <span style={{ color: "var(--color-primary)" }}>BETTER PRICE.</span>
+              </>
+            )}
+          </h1>
+
+          {/* Sub-copy */}
+          <p
+            style={{
+              fontSize: 16,
+              lineHeight: 1.6,
+              color: "var(--color-muted-warm)",
+              maxWidth: 520,
+              margin: "0 0 32px",
+            }}
+          >
+            {hasVehicle ? (
+              <>
+                You bought from Stehlen on eBay. Now shop direct — same warehouse, same
+                lifetime warranty, lower price. Your{" "}
+                <strong style={{ color: "var(--color-foreground)" }}>10% off code</strong>{" "}
+                applies automatically. Free shipping, no minimum.
+              </>
+            ) : (
+              <>
+                Bought from Stehlen on eBay or Amazon? Same warehouse, same lifetime
+                warranty —{" "}
                 <strong style={{ color: "var(--color-foreground)" }}>
                   10% off your first direct order
                 </strong>
@@ -297,277 +367,570 @@ export default async function WelcomeBackPage({
               </>
             )}
           </p>
-        </div>
-      </section>
 
-      {/* Offer band — code auto-applies at checkout via the promo cookie */}
-      <section className="container-x" style={{ paddingTop: 64, paddingBottom: 32 }}>
-        <div
-          style={{
-            background: "var(--color-primary)",
-            color: "var(--color-primary-foreground)",
-            borderRadius: "var(--radius-md)",
-            padding: 32,
-            display: "grid",
-            gridTemplateColumns: "1fr auto",
-            gap: 24,
-            alignItems: "center",
-          }}
-          className="welcome-offer-band"
-        >
-          <div style={{ minWidth: 0 }}>
-            <div
-              className="mono"
-              style={{
-                fontSize: 11,
-                letterSpacing: "0.16em",
-                fontWeight: 700,
-                marginBottom: 6,
-              }}
-            >
-              YOUR CODE · APPLIED AUTOMATICALLY
-            </div>
-            <div
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(30px, 9vw, 56px)",
-                fontWeight: 800,
-                letterSpacing: "0.04em",
-                lineHeight: 1.1,
-                overflowWrap: "anywhere",
-              }}
-            >
-              {code}
-            </div>
-            <p style={{ marginTop: 8, fontSize: 13, opacity: 0.85 }}>
-              10% off your first order — added at checkout, no need to type it.{" "}
-              <strong>Free shipping on every order, no minimum.</strong>
-            </p>
-          </div>
+          {/* CTA */}
           <Link
             href={shopHref}
-            className="btn btn-lg"
-            style={{
-              background: "var(--color-background)",
-              borderColor: "var(--color-background)",
-              color: "var(--color-foreground)",
-            }}
+            className="btn btn-primary btn-lg"
+            style={{ fontSize: 14, letterSpacing: "0.1em" }}
           >
-            {shopLabel} <Icons.arrowR size={14} />
+            {shopLabel}
+            <Icons.arrowR size={16} />
           </Link>
         </div>
       </section>
 
-      {/* Top picks — real products, photos, review stars. Vehicle-tailored when
-          the link carries a make/model, best-sellers otherwise (never all-text). */}
-      {fitProducts.length > 0 && (
-        <section className="container-x" style={{ paddingTop: 56, paddingBottom: 16 }}>
-          <div className="eyebrow" style={{ marginBottom: 8 }}>
-            {hasVehicle
-              ? `PICKED FOR YOUR ${titleCase(make).toUpperCase()} ${titleCase(model).toUpperCase()}`
-              : "POPULAR RIGHT NOW"}
+      {/* ── OFFER BAND ───────────────────────────────────────────────────── */}
+      {/* Visual reward — the code is the hero of this strip, large and proud.
+          Warm-off-black bg shifts section tone and separates hero from products. */}
+      <section
+        style={{
+          background: "var(--color-surface-warm)",
+          borderTop: "1px solid rgba(245,168,35,0.2)",
+          borderBottom: "1px solid rgba(245,168,35,0.2)",
+        }}
+      >
+        <div
+          className="container-x"
+          style={{
+            paddingTop: 40,
+            paddingBottom: 40,
+          }}
+        >
+          <div
+            className="wb-offer-layout"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr auto",
+              gap: 32,
+              alignItems: "center",
+            }}
+          >
+            {/* Left: code + detail */}
+            <div>
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "var(--color-muted-warm)",
+                  marginBottom: 10,
+                }}
+              >
+                YOUR EXCLUSIVE CODE &mdash; APPLIED AT CHECKOUT
+              </div>
+
+              {/* Code stamp — large, monospaced feel, yellow on warm-dark */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 16,
+                  background: "var(--color-primary)",
+                  color: "var(--color-primary-foreground)",
+                  padding: "10px 24px",
+                  borderRadius: "var(--radius-sm)",
+                  marginBottom: 12,
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "clamp(28px, 8vw, 52px)",
+                    fontWeight: 900,
+                    letterSpacing: "0.06em",
+                    lineHeight: 1,
+                  }}
+                >
+                  {code}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    paddingLeft: 16,
+                    borderLeft: "2px solid rgba(10,10,10,0.25)",
+                  }}
+                >
+                  10% OFF
+                  <br />
+                  YOUR ORDER
+                </span>
+              </div>
+
+              <p style={{ fontSize: 14, color: "var(--color-muted-warm)", margin: 0 }}>
+                No need to type it &mdash; already in your cart. Plus{" "}
+                <strong style={{ color: "var(--color-foreground)" }}>
+                  free shipping on every order, no minimum.
+                </strong>
+              </p>
+            </div>
+
+            {/* Right: trust stats stack */}
+            <div
+              className="wb-stats"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+                borderLeft: "1px solid var(--color-border)",
+                paddingLeft: 32,
+              }}
+            >
+              {[
+                { num: "$30", label: "Avg savings vs eBay" },
+                { num: "24h", label: "Ships from CA · NV · TX" },
+                { num: "30d", label: "Free returns, prepaid label" },
+              ].map((s) => (
+                <div key={s.num} style={{ textAlign: "center" }}>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "clamp(22px, 4vw, 32px)",
+                      fontWeight: 800,
+                      color: "var(--color-foreground)",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {s.num}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      color: "var(--color-muted-warm)",
+                      letterSpacing: "0.06em",
+                      marginTop: 2,
+                    }}
+                  >
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <h2 className="fluid-h2" style={{ marginBottom: 8 }}>
-            {hasVehicle
-              ? `Top upgrades for your ${vehicleLabel}.`
-              : "Best-selling upgrades."}
-          </h2>
-          <p style={{ color: "var(--color-muted-foreground)", marginBottom: 24, maxWidth: 560 }}>
-            The same parts you trusted on eBay — now direct, for less. Your{" "}
-            <strong>{code}</strong> discount applies automatically at checkout.
-          </p>
+        </div>
+      </section>
+
+      {/* ── TOP PICKS ────────────────────────────────────────────────────── */}
+      {/* Products are the page's primary visual asset — lead with them, give
+          them room to breathe. Section on background keeps the warm-dark offer
+          band reading as a clear separator above. */}
+      {fitProducts.length > 0 && (
+        <section
+          className="container-x"
+          style={{ paddingTop: 64, paddingBottom: 64 }}
+        >
+          {/* Section header with yellow accent rule */}
+          <div style={{ marginBottom: 32 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                marginBottom: 10,
+              }}
+            >
+              <div
+                style={{
+                  width: 32,
+                  height: 3,
+                  background: "var(--color-primary)",
+                  borderRadius: 2,
+                  flexShrink: 0,
+                }}
+              />
+              <span
+                className="eyebrow"
+                style={{ color: "var(--color-primary)" }}
+              >
+                {hasVehicle
+                  ? `PICKED FOR YOUR ${titleCase(make).toUpperCase()} ${titleCase(model).toUpperCase()}`
+                  : "POPULAR RIGHT NOW"}
+              </span>
+            </div>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(26px, 5vw, 40px)",
+                fontWeight: 800,
+                textTransform: "uppercase",
+                letterSpacing: "-0.02em",
+                lineHeight: 1.05,
+                margin: 0,
+              }}
+            >
+              {hasVehicle
+                ? `Top upgrades for your ${vehicleLabel}.`
+                : "Best-selling upgrades."}
+            </h2>
+          </div>
+
+          {/* Product grid — 2-up on mobile (full-width cards), 3-up on tablet,
+              auto-fill on desktop. More generous gap than before. */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-              gap: 20,
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: 16,
             }}
+            className="wb-product-grid"
           >
             {fitProducts.map((p) => (
               <ProductCard key={p.sku} product={p} vehicle={fitVehicleForCard} />
             ))}
           </div>
-          <div style={{ marginTop: 28, textAlign: "center" }}>
-            <Link href={shopHref} className="btn btn-primary btn-lg">
-              {shopLabel} <Icons.arrowR size={14} />
+
+          <div
+            style={{
+              marginTop: 40,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Link
+              href={shopHref}
+              className="btn btn-primary btn-lg"
+              style={{ fontSize: 14, letterSpacing: "0.1em", minWidth: 280 }}
+            >
+              {shopLabel}
+              <Icons.arrowR size={16} />
             </Link>
           </div>
         </section>
       )}
 
-      {/* Shop by category — keep them browsing */}
+      {/* ── SHOP BY CATEGORY ─────────────────────────────────────────────── */}
+      {/* Photographic category tiles on a warm-off-black surface — visual
+          texture break between the product grid and the trust section.
+          Image-forward design borrowed from RoughCountry category entry
+          points: photo fills the tile, name overlays the bottom. */}
       {browseCats.length > 0 && (
-        <section className="container-x" style={{ paddingTop: 40, paddingBottom: 56 }}>
-          <div className="eyebrow" style={{ marginBottom: 8 }}>
-            SHOP BY CATEGORY
-          </div>
-          <h2 className="fluid-h3" style={{ marginBottom: 20 }}>
-            {hasVehicle ? `More for your ${vehicleLabel}` : "Shop by category"}
-          </h2>
+        <section style={{ background: "var(--color-surface-warm)" }}>
           <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
-              gap: 12,
-            }}
+            className="container-x"
+            style={{ paddingTop: 56, paddingBottom: 56 }}
           >
-            {browseCats.map((c) => (
-              <Link
-                key={c.slug}
-                href={
-                  hasVehicle
-                    ? `/collections/${c.slug}?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}`
-                    : `/collections/${c.slug}`
-                }
+            <div style={{ marginBottom: 28 }}>
+              <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 8,
-                  padding: "16px 18px",
-                  borderRadius: "var(--radius-md)",
-                  border: "1px solid var(--color-border)",
-                  background: "var(--color-card)",
-                  color: "var(--color-foreground)",
-                  fontWeight: 600,
-                  fontSize: 14,
-                  textDecoration: "none",
+                  gap: 12,
+                  marginBottom: 10,
                 }}
               >
-                {c.name}
-                <Icons.arrowR size={14} />
-              </Link>
-            ))}
+                <div
+                  style={{
+                    width: 32,
+                    height: 3,
+                    background: "var(--color-primary)",
+                    borderRadius: 2,
+                    flexShrink: 0,
+                  }}
+                />
+                <span
+                  className="eyebrow"
+                  style={{ color: "var(--color-muted-warm)" }}
+                >
+                  SHOP BY CATEGORY
+                </span>
+              </div>
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(22px, 4vw, 32px)",
+                  fontWeight: 800,
+                  textTransform: "uppercase",
+                  letterSpacing: "-0.02em",
+                  margin: 0,
+                }}
+              >
+                {hasVehicle
+                  ? `More for your ${vehicleLabel}`
+                  : "Everything your vehicle needs"}
+              </h2>
+            </div>
+
+            {/* Photo tiles — image-first, name overlay at bottom */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: 12,
+              }}
+              className="wb-cat-grid"
+            >
+              {browseCats.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={
+                    hasVehicle
+                      ? `/collections/${c.slug}?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}`
+                      : `/collections/${c.slug}`
+                  }
+                  style={{
+                    position: "relative",
+                    display: "block",
+                    aspectRatio: "4/3",
+                    borderRadius: "var(--radius-md)",
+                    overflow: "hidden",
+                    border: "1px solid var(--color-border)",
+                    background: "var(--color-surface)",
+                  }}
+                >
+                  {/* Category image */}
+                  {c.image && (
+                    <Image
+                      src={c.image}
+                      alt={c.name}
+                      fill
+                      sizes="(min-width: 1024px) 18vw, (min-width: 640px) 25vw, 45vw"
+                      style={{ objectFit: "cover", opacity: 0.72 }}
+                    />
+                  )}
+                  {/* Bottom gradient + label */}
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(180deg, transparent 35%, rgba(10,10,10,0.88) 100%)",
+                    }}
+                  />
+                  {/* Hover tint */}
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: "rgba(245,168,35,0.0)",
+                      transition: "background 160ms ease",
+                    }}
+                    className="wb-cat-hover-tint"
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      padding: "10px 14px 12px",
+                      display: "flex",
+                      alignItems: "flex-end",
+                      justifyContent: "space-between",
+                      gap: 8,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.04em",
+                        lineHeight: 1.2,
+                        color: "var(--color-foreground)",
+                      }}
+                    >
+                      {c.name}
+                    </span>
+                    <span
+                      style={{
+                        flexShrink: 0,
+                        color: "var(--color-primary)",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Icons.arrowR size={14} />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       )}
 
-      {/* Why direct */}
-      <section className="container-x" style={{ paddingTop: 48, paddingBottom: 64 }}>
-        <div className="eyebrow" style={{ marginBottom: 8 }}>
-          WHY DIRECT?
-        </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: 36,
-            textTransform: "uppercase",
-            letterSpacing: "-0.02em",
-            marginBottom: 32,
-          }}
+      {/* ── WHY DIRECT + CONFIDENCE — merged single section ──────────────── */}
+      {/* One trust section instead of two separate text-card blocks.
+          Large number stats (stat-bar style) read immediately on scan.
+          Individual guarantee cards below for detail. Surface on background
+          separates cleanly from the warm-dark category section above. */}
+      <section
+        style={{
+          background: "var(--color-background)",
+          borderTop: "1px solid var(--color-border)",
+        }}
+      >
+        <div
+          className="container-x"
+          style={{ paddingTop: 64, paddingBottom: 80 }}
         >
-          What changes when you skip the middleman.
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 16 }}>
-          {[
-            {
-              Icon: Icons.bolt,
-              h: "Lower prices",
-              b: "Average $30 less than the same SKU on eBay or Amazon.",
-            },
-            {
-              Icon: Icons.shipping,
-              h: "Free, fast shipping",
-              b: "Ships from CA, NV, or TX warehouses within 24h. Always free, no minimum.",
-            },
-            {
-              Icon: Icons.shield,
-              h: "Direct support",
-              b: "Real techs Mon–Fri 9–5 PST. No marketplace ticket queues.",
-            },
-          ].map((c) => (
+          {/* Heading */}
+          <div style={{ marginBottom: 40 }}>
             <div
-              key={c.h}
               style={{
-                background: "var(--color-surface)",
-                border: "1px solid var(--color-border)",
-                borderRadius: "var(--radius-md)",
-                padding: 24,
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                marginBottom: 10,
               }}
             >
-              <div style={{ color: "var(--color-primary)", marginBottom: 12 }}>
-                <c.Icon size={22} />
-              </div>
-              <h3
+              <div
                 style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: 18,
-                  textTransform: "uppercase",
-                  marginBottom: 8,
+                  width: 32,
+                  height: 3,
+                  background: "var(--color-primary)",
+                  borderRadius: 2,
+                  flexShrink: 0,
+                }}
+              />
+              <span className="eyebrow">WHY DIRECT?</span>
+            </div>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(26px, 5vw, 40px)",
+                fontWeight: 800,
+                textTransform: "uppercase",
+                letterSpacing: "-0.02em",
+                margin: 0,
+              }}
+            >
+              Skip the middleman. Keep the savings.
+            </h2>
+          </div>
+
+          {/* Stat bar — big numbers, scannable in 2 seconds */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              borderRadius: "var(--radius-md)",
+              border: "1px solid var(--color-border)",
+              background: "var(--color-surface)",
+              marginBottom: 40,
+              overflow: "hidden",
+            }}
+            className="wb-stat-bar"
+          >
+            {[
+              { num: "~$30", sub: "cheaper than eBay, same SKU" },
+              { num: "24h", sub: "ships from CA · NV · TX" },
+              { num: "Free", sub: "shipping on every order" },
+            ].map((s, i) => (
+              <div
+                key={s.num}
+                style={{
+                  padding: "28px 20px",
+                  borderRight: i < 2 ? "1px solid var(--color-border)" : "none",
+                  textAlign: "center",
                 }}
               >
-                {c.h}
-              </h3>
-              <p style={{ color: "var(--color-muted)", fontSize: 13, lineHeight: 1.6 }}>
-                {c.b}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Buy-with-confidence band (replaces the prior hardcoded testimonials —
-          factual guarantees, no fabricated names). */}
-      <section style={{ background: "var(--color-surface)" }}>
-        <div className="container-x" style={{ paddingTop: 64, paddingBottom: 64 }}>
-          <div className="eyebrow" style={{ marginBottom: 8 }}>
-            BUY WITH CONFIDENCE
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "clamp(28px, 6vw, 44px)",
+                    fontWeight: 900,
+                    letterSpacing: "-0.03em",
+                    color: "var(--color-foreground)",
+                    lineHeight: 1,
+                    marginBottom: 6,
+                  }}
+                >
+                  {s.num}
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: "var(--color-muted)",
+                    letterSpacing: "0.04em",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {s.sub}
+                </div>
+              </div>
+            ))}
           </div>
-          <h2
+
+          {/* Guarantee cards — 3-up, surface-2 for depth separation */}
+          <div
             style={{
-              fontFamily: "var(--font-display)",
-              fontSize: 36,
-              textTransform: "uppercase",
-              letterSpacing: "-0.02em",
-              marginBottom: 32,
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: 12,
             }}
+            className="wb-guarantee-grid"
           >
-            {hasVehicle
-              ? `Every part confirmed to fit your ${vehicleLabel}.`
-              : "Every part confirmed to fit before it ships."}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 16 }}>
             {[
               {
                 Icon: Icons.shield,
-                h: "Fitment guaranteed",
-                b: "Tell us your year, make, and model — we confirm fit before it ships, or returns are free.",
+                h: "Fitment guarantee",
+                b: "Tell us your year, make, and model. We confirm fit before it ships, or returns are free.",
               },
               {
                 Icon: Icons.shipping,
-                h: "Free shipping on all orders",
-                b: "No minimum, ever. 30-day hassle-free returns with a prepaid label.",
+                h: "Free returns — 30 days",
+                b: "Prepaid label included. No minimum order, no restocking fee, no questions.",
               },
               {
                 Icon: Icons.bolt,
                 h: "Same warehouse you trust",
-                b: "The exact parts you bought on eBay — same stock, same manufacturer warranty.",
+                b: "Exact parts you bought on eBay. Same stock, same manufacturer warranty.",
               },
             ].map((c) => (
               <div
                 key={c.h}
                 style={{
-                  background: "var(--color-background)",
+                  background: "var(--color-surface)",
                   border: "1px solid var(--color-border)",
                   borderRadius: "var(--radius-md)",
-                  padding: 24,
+                  padding: "24px 20px",
                 }}
               >
-                <div style={{ color: "var(--color-primary)", marginBottom: 12 }}>
-                  <c.Icon size={22} />
+                <div
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: "var(--radius-sm)",
+                    background: "rgba(245,168,35,0.1)",
+                    border: "1px solid rgba(245,168,35,0.2)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "var(--color-primary)",
+                    marginBottom: 16,
+                  }}
+                >
+                  <c.Icon size={20} />
                 </div>
                 <h3
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: 18,
+                    fontSize: 15,
+                    fontWeight: 700,
                     textTransform: "uppercase",
-                    marginBottom: 8,
+                    letterSpacing: "0.04em",
+                    marginBottom: 10,
                   }}
                 >
                   {c.h}
                 </h3>
                 <p
-                  style={{ color: "var(--color-muted)", fontSize: 13, lineHeight: 1.6 }}
+                  style={{
+                    color: "var(--color-muted)",
+                    fontSize: 14,
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
                 >
                   {c.b}
                 </p>
@@ -575,9 +938,21 @@ export default async function WelcomeBackPage({
             ))}
           </div>
 
-          <div style={{ marginTop: 32 }}>
-            <Link href={shopHref} className="btn btn-primary btn-lg">
-              {shopLabel} <Icons.arrowR size={14} />
+          {/* Final CTA */}
+          <div
+            style={{
+              marginTop: 48,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Link
+              href={shopHref}
+              className="btn btn-primary btn-lg"
+              style={{ fontSize: 14, letterSpacing: "0.1em", minWidth: 280 }}
+            >
+              {shopLabel}
+              <Icons.arrowR size={16} />
             </Link>
           </div>
         </div>
