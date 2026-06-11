@@ -2,7 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { listOrders } from "@/lib/admin/orders";
 import { listDiscounts } from "@/lib/admin/discounts";
-import { fetchTodaySnapshot } from "@/lib/admin/ga4";
+import {
+  fetchTodaySnapshot,
+  fetchFunnelTrend,
+  type FunnelWeek,
+  type FunnelSource,
+} from "@/lib/admin/ga4";
 import { requireOwner } from "@/lib/admin/guard";
 
 export const dynamic = "force-dynamic";
@@ -41,7 +46,10 @@ export default async function AdminDashboardPage() {
     liveError = err instanceof Error ? err.message : "Shopify Admin error";
   }
 
-  const ga = await fetchTodaySnapshot();
+  const [ga, funnel] = await Promise.all([
+    fetchTodaySnapshot(),
+    fetchFunnelTrend(4),
+  ]);
 
   return (
     <div>
@@ -113,6 +121,11 @@ export default async function AdminDashboardPage() {
           <Ga4Panel snapshot={ga} />
         )}
       </section>
+
+      {/* Funnel trend panel — cross-source user funnel, 4-week trend */}
+      {funnel.configured && !("error" in funnel) && funnel.weeks.length > 0 && (
+        <FunnelTrendPanel weeks={funnel.weeks} bySource={funnel.bySource} />
+      )}
 
       {/* Shopify ops tiles */}
       <h2
@@ -479,6 +492,174 @@ function ListPanel({
         children
       )}
     </div>
+  );
+}
+
+function FunnelTrendPanel({
+  weeks,
+  bySource,
+}: {
+  weeks: FunnelWeek[];
+  bySource: FunnelSource[];
+}) {
+  const steps: { label: string; key: keyof FunnelWeek }[] = [
+    { label: "Visited", key: "visited" },
+    { label: "Viewed product", key: "viewed" },
+    { label: "Added to cart", key: "cart" },
+    { label: "Began checkout", key: "checkout" },
+    { label: "Purchased", key: "purchase" },
+  ];
+  const pct = (a: number, b: number) => (b > 0 ? `${((a / b) * 100).toFixed(1)}%` : "—");
+  const cell: React.CSSProperties = {
+    padding: "6px 10px",
+    textAlign: "right",
+    fontVariantNumeric: "tabular-nums",
+    whiteSpace: "nowrap",
+  };
+  const head: React.CSSProperties = {
+    ...cell,
+    fontSize: 11,
+    color: "var(--color-muted)",
+    fontWeight: 600,
+  };
+  const arrow = (cur: number, prev: number | null) => {
+    if (prev === null) return null;
+    if (cur > prev) return <span style={{ color: "#22c55e" }}> ▲</span>;
+    if (cur < prev) return <span style={{ color: "#ef4444" }}> ▼</span>;
+    return <span style={{ color: "var(--color-muted)" }}> ▬</span>;
+  };
+
+  return (
+    <section style={{ marginBottom: 32 }}>
+      <div style={{ marginBottom: 12 }}>
+        <h2
+          className="mono"
+          style={{
+            fontSize: 12,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            marginBottom: 2,
+          }}
+        >
+          Funnel trend · last 4 weeks
+        </h2>
+        <p style={{ fontSize: 12, color: "var(--color-muted)" }}>
+          Distinct users per step (deduped, not event firings). Newest week on
+          the right · ▲▼ vs prior week.
+        </p>
+      </div>
+
+      <div
+        style={{
+          border: "1px solid var(--color-border)",
+          borderRadius: "var(--radius-md)",
+          background: "var(--color-surface)",
+          overflowX: "auto",
+          marginBottom: 16,
+        }}
+      >
+        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+          <thead>
+            <tr style={{ borderBottom: "1px solid var(--color-border)" }}>
+              <th style={{ ...head, textAlign: "left" }}>Step</th>
+              {weeks.map((w) => (
+                <th key={w.label} style={head}>{w.label}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {steps.map((s) => (
+              <tr key={s.key} style={{ borderBottom: "1px solid var(--color-border)" }}>
+                <td style={{ padding: "6px 10px", fontWeight: 600 }}>{s.label}</td>
+                {weeks.map((w, i) => {
+                  const cur = w[s.key] as number;
+                  const prev = i > 0 ? (weeks[i - 1][s.key] as number) : null;
+                  return (
+                    <td key={w.label} style={cell}>
+                      {fmtInt(cur)}
+                      {arrow(cur, prev)}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+            {/* conversion + engagement rows */}
+            <tr style={{ background: "var(--color-surface-2)" }}>
+              <td style={{ padding: "6px 10px", fontSize: 12, color: "var(--color-muted)" }}>
+                view→cart
+              </td>
+              {weeks.map((w) => (
+                <td key={w.label} style={{ ...cell, fontSize: 12, color: "var(--color-muted)" }}>
+                  {pct(w.cart, w.viewed)}
+                </td>
+              ))}
+            </tr>
+            <tr style={{ background: "var(--color-surface-2)" }}>
+              <td style={{ padding: "6px 10px", fontSize: 12, color: "var(--color-muted)" }}>
+                engagement
+              </td>
+              {weeks.map((w) => (
+                <td key={w.label} style={{ ...cell, fontSize: 12, color: "var(--color-muted)" }}>
+                  {pct(w.engaged, w.sessions)}
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {bySource.length > 0 && (
+        <>
+          <h3
+            className="mono"
+            style={{
+              fontSize: 11,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "var(--color-muted)",
+              marginBottom: 8,
+            }}
+          >
+            This week by source ({weeks[weeks.length - 1].label})
+          </h3>
+          <div
+            style={{
+              border: "1px solid var(--color-border)",
+              borderRadius: "var(--radius-md)",
+              background: "var(--color-surface)",
+              overflowX: "auto",
+            }}
+          >
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid var(--color-border)" }}>
+                  <th style={{ ...head, textAlign: "left" }}>Channel</th>
+                  <th style={head}>Users</th>
+                  <th style={head}>Eng%</th>
+                  <th style={head}>Viewed</th>
+                  <th style={head}>Cart</th>
+                  <th style={head}>Checkout</th>
+                  <th style={head}>Buy</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bySource.map((s) => (
+                  <tr key={s.channel} style={{ borderBottom: "1px solid var(--color-border)" }}>
+                    <td style={{ padding: "6px 10px", fontWeight: 600 }}>{s.channel}</td>
+                    <td style={cell}>{fmtInt(s.users)}</td>
+                    <td style={cell}>{(s.engRate * 100).toFixed(0)}%</td>
+                    <td style={cell}>{fmtInt(s.viewed)}</td>
+                    <td style={cell}>{fmtInt(s.cart)}</td>
+                    <td style={cell}>{fmtInt(s.checkout)}</td>
+                    <td style={cell}>{fmtInt(s.buy)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+    </section>
   );
 }
 

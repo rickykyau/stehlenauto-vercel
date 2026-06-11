@@ -216,6 +216,178 @@ async function runReport(
   return (await res.json()) as RunReportResponse;
 }
 
+// ── Funnel trend (admin panel) ──────────────────────────────────────────────
+// Cross-source USER funnel across N rolling 7-day windows. Every step is a
+// distinct-user count (totalUsers per eventName) — NEVER event firings — so the
+// funnel is monotonic and comparable. Engagement is session-scoped and reported
+// separately. Mirrors marketing/analytics/funnel_trend_report.py.
+
+export type FunnelWeek = {
+  label: string;
+  visited: number;
+  viewed: number;
+  cart: number;
+  checkout: number;
+  purchase: number;
+  sessions: number;
+  engaged: number;
+};
+export type FunnelSource = {
+  channel: string;
+  users: number;
+  engRate: number; // 0-1
+  viewed: number;
+  cart: number;
+  checkout: number;
+  buy: number;
+};
+export type FunnelTrendResult =
+  | { configured: true; weeks: FunnelWeek[]; bySource: FunnelSource[] }
+  | { configured: false; reason: string }
+  | { configured: true; error: string };
+
+function channelOf(sm: string): string {
+  const s = sm.toLowerCase();
+  if (s.includes("brevo") || s.includes("/email") || s.includes("sendibm")) return "Email (Brevo)";
+  if (s.includes("chatgpt") || s.includes("openai")) return "ChatGPT";
+  if (s.includes("perplexity")) return "Perplexity";
+  if (s.includes("gemini") || s.includes("bard")) return "Gemini";
+  if (s.includes("google") && s.includes("organic")) return "Google Organic";
+  if (s.includes("google") && (s.includes("cpc") || s.includes("product_sync") || s.includes("shopping"))) return "Google Shop/Ads";
+  if (s.includes("bing") && s.includes("organic")) return "Bing Organic";
+  if (s.includes("duckduckgo") || s.includes("yahoo")) return "Other Search";
+  if (s.includes("direct") || s.includes("(none)")) return "Direct";
+  if (s.includes("(not set)") || s.includes("data not available")) return "Unattributed";
+  return "Referral/Other";
+}
+
+const ymd = (d: Date) => d.toISOString().slice(0, 10);
+const md = (d: Date) => `${d.getUTCMonth() + 1}/${d.getUTCDate()}`;
+
+export async function fetchFunnelTrend(weeks = 4): Promise<FunnelTrendResult> {
+  const propertyId = process.env.GA4_PROPERTY_ID;
+  if (!propertyId) return { configured: false, reason: "GA4_PROPERTY_ID not set" };
+  if (!hasAuthConfigured()) {
+    return { configured: false, reason: "GA4 auth not set" };
+  }
+  let token: string | null;
+  try {
+    token = await getAccessToken();
+  } catch (err) {
+    return { configured: true, error: err instanceof Error ? err.message : "Token exchange failed" };
+  }
+  if (!token) return { configured: false, reason: "GA4 credentials malformed" };
+  const tok = token;
+
+  // Rolling 7-day windows, oldest → newest, ending today.
+  const ranges: { start: Date; end: Date }[] = [];
+  for (let i = weeks - 1; i >= 0; i--) {
+    const end = new Date();
+    end.setUTCDate(end.getUTCDate() - 7 * i);
+    const start = new Date(end);
+    start.setUTCDate(start.getUTCDate() - 6);
+    ranges.push({ start, end });
+  }
+
+  const usersByEvent = (rows: RunReportResponse["rows"]): Record<string, number> => {
+    const m: Record<string, number> = {};
+    for (const r of rows ?? []) {
+      const n = r.dimensionValues?.[0]?.value ?? "";
+      if (n) m[n] = parseFloat(r.metricValues?.[0]?.value ?? "0") || 0;
+    }
+    return m;
+  };
+
+  try {
+    const perWeek = await Promise.all(
+      ranges.map(async (r): Promise<FunnelWeek> => {
+        const dateRanges = [{ startDate: ymd(r.start), endDate: ymd(r.end) }];
+        const [ev, tot] = await Promise.all([
+          runReport(propertyId, tok, {
+            dateRanges,
+            dimensions: [{ name: "eventName" }],
+            metrics: [{ name: "totalUsers" }],
+            limit: "200",
+          }),
+          runReport(propertyId, tok, {
+            dateRanges,
+            dimensions: [{ name: "sessionSourceMedium" }],
+            metrics: [{ name: "totalUsers" }, { name: "sessions" }, { name: "engagedSessions" }],
+            limit: "500",
+          }),
+        ]);
+        const evMap = usersByEvent(ev.rows);
+        let users = 0, sessions = 0, engaged = 0;
+        for (const row of tot.rows ?? []) {
+          const m = row.metricValues ?? [];
+          users += parseFloat(m[0]?.value ?? "0") || 0;
+          sessions += parseFloat(m[1]?.value ?? "0") || 0;
+          engaged += parseFloat(m[2]?.value ?? "0") || 0;
+        }
+        return {
+          label: `${md(r.start)}–${md(r.end)}`,
+          visited: users,
+          viewed: evMap.view_item ?? 0,
+          cart: evMap.add_to_cart ?? 0,
+          checkout: evMap.begin_checkout ?? 0,
+          purchase: evMap.purchase ?? 0,
+          sessions,
+          engaged,
+        };
+      }),
+    );
+
+    // By-source for the most recent window.
+    const last = ranges[ranges.length - 1];
+    const dr = [{ startDate: ymd(last.start), endDate: ymd(last.end) }];
+    const [srcEv, srcTot] = await Promise.all([
+      runReport(propertyId, tok, {
+        dateRanges: dr,
+        dimensions: [{ name: "sessionSourceMedium" }, { name: "eventName" }],
+        metrics: [{ name: "totalUsers" }],
+        limit: "2000",
+      }),
+      runReport(propertyId, tok, {
+        dateRanges: dr,
+        dimensions: [{ name: "sessionSourceMedium" }],
+        metrics: [{ name: "totalUsers" }, { name: "sessions" }, { name: "engagedSessions" }],
+        limit: "500",
+      }),
+    ]);
+    const agg: Record<string, { users: number; sessions: number; engaged: number }> = {};
+    for (const row of srcTot.rows ?? []) {
+      const ch = channelOf(row.dimensionValues?.[0]?.value ?? "");
+      const m = row.metricValues ?? [];
+      const a = (agg[ch] ??= { users: 0, sessions: 0, engaged: 0 });
+      a.users += parseFloat(m[0]?.value ?? "0") || 0;
+      a.sessions += parseFloat(m[1]?.value ?? "0") || 0;
+      a.engaged += parseFloat(m[2]?.value ?? "0") || 0;
+    }
+    const evAgg: Record<string, Record<string, number>> = {};
+    for (const row of srcEv.rows ?? []) {
+      const ch = channelOf(row.dimensionValues?.[0]?.value ?? "");
+      const en = row.dimensionValues?.[1]?.value ?? "";
+      (evAgg[ch] ??= {})[en] = (evAgg[ch][en] ?? 0) + (parseFloat(row.metricValues?.[0]?.value ?? "0") || 0);
+    }
+    const bySource: FunnelSource[] = Object.keys(agg)
+      .map((ch) => ({
+        channel: ch,
+        users: agg[ch].users,
+        engRate: agg[ch].sessions > 0 ? agg[ch].engaged / agg[ch].sessions : 0,
+        viewed: evAgg[ch]?.view_item ?? 0,
+        cart: evAgg[ch]?.add_to_cart ?? 0,
+        checkout: evAgg[ch]?.begin_checkout ?? 0,
+        buy: evAgg[ch]?.purchase ?? 0,
+      }))
+      .filter((s) => s.users > 0)
+      .sort((a, b) => b.users - a.users);
+
+    return { configured: true, weeks: perWeek, bySource };
+  } catch (err) {
+    return { configured: true, error: err instanceof Error ? err.message : "GA4 funnel query failed" };
+  }
+}
+
 export async function fetchTodaySnapshot(): Promise<Ga4Result> {
   const propertyId = process.env.GA4_PROPERTY_ID;
   if (!propertyId) {
