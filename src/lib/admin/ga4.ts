@@ -5,14 +5,29 @@ import crypto from "node:crypto";
  * Cycle 14X+ post-sync (admin Tier 1): GA4 today tile.
  *
  * Pulls a snapshot of today's traffic + revenue from GA4 Data API v1beta.
- * Dep-free: signs a service-account JWT with Node crypto, exchanges for
- * an OAuth access token, calls runReport. Token is cached in-process for
- * 50 min (Google issues 1h tokens). Graceful degrade: if either env var
- * is missing, returns { configured: false } and the UI shows a setup CTA.
+ * Dep-free: gets an OAuth access token, calls runReport. Token is cached
+ * in-process for ~50 min (Google issues 1h tokens). Graceful degrade: if
+ * no auth is configured, returns { configured: false } and the UI shows a
+ * setup CTA.
+ *
+ * Two auth methods are supported (whichever is configured wins, SA first):
+ *
+ *  A) Service account (GA4_SERVICE_ACCOUNT_JSON) — signs a JWT with Node
+ *     crypto, exchanges for a token. Best for production but needs a Google
+ *     Cloud service account with the Viewer role on the property.
+ *
+ *  B) OAuth refresh token (GA4_OAUTH_CLIENT_ID + GA4_OAUTH_CLIENT_SECRET +
+ *     GA4_OAUTH_REFRESH_TOKEN) — reuses the existing user OAuth creds from
+ *     token.json (the same creds the marketing/analytics Python reports use).
+ *     Zero Google Cloud setup; just paste three env vars. Refresh tokens are
+ *     long-lived, so this keeps working unattended.
  *
  * Env vars:
- *   GA4_PROPERTY_ID         — numeric property id, e.g. "457123456"
- *   GA4_SERVICE_ACCOUNT_JSON — full JSON of a Viewer-role service account
+ *   GA4_PROPERTY_ID          — numeric property id, e.g. "529120634"
+ *   GA4_SERVICE_ACCOUNT_JSON — (method A) full JSON of a Viewer service account
+ *   GA4_OAUTH_CLIENT_ID      — (method B) OAuth client id
+ *   GA4_OAUTH_CLIENT_SECRET  — (method B) OAuth client secret
+ *   GA4_OAUTH_REFRESH_TOKEN  — (method B) long-lived refresh token
  */
 
 export type Ga4Snapshot = {
@@ -77,12 +92,55 @@ function base64url(buf: Buffer): string {
     .replace(/\//g, "_");
 }
 
+/** OAuth refresh-token grant (method B) — reuses token.json-style creds. */
+function readOAuthCreds(): {
+  client_id: string;
+  client_secret: string;
+  refresh_token: string;
+} | null {
+  const client_id = process.env.GA4_OAUTH_CLIENT_ID;
+  const client_secret = process.env.GA4_OAUTH_CLIENT_SECRET;
+  const refresh_token = process.env.GA4_OAUTH_REFRESH_TOKEN;
+  if (!client_id || !client_secret || !refresh_token) return null;
+  return { client_id, client_secret, refresh_token };
+}
+
+/** True when at least one auth method has its env vars present. */
+function hasAuthConfigured(): boolean {
+  return Boolean(process.env.GA4_SERVICE_ACCOUNT_JSON) || readOAuthCreds() !== null;
+}
+
+async function getOAuthToken(): Promise<string | null> {
+  const oauth = readOAuthCreds();
+  if (!oauth) return null;
+  const res = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: oauth.client_id,
+      client_secret: oauth.client_secret,
+      refresh_token: oauth.refresh_token,
+      grant_type: "refresh_token",
+    }).toString(),
+  });
+  if (!res.ok) {
+    throw new Error(`GA4 OAuth refresh failed: ${res.status} ${await res.text()}`);
+  }
+  const data = (await res.json()) as { access_token: string; expires_in: number };
+  _cachedToken = {
+    token: data.access_token,
+    expiresAt: Date.now() + data.expires_in * 1000,
+  };
+  return data.access_token;
+}
+
 async function getAccessToken(): Promise<string | null> {
   if (_cachedToken && _cachedToken.expiresAt > Date.now() + 60_000) {
     return _cachedToken.token;
   }
   const sa = readServiceAccount();
-  if (!sa) return null;
+  // No service account? Fall back to the OAuth refresh-token method.
+  if (!sa) return getOAuthToken();
 
   const now = Math.floor(Date.now() / 1000);
   const header = { alg: "RS256", typ: "JWT" };
@@ -163,8 +221,12 @@ export async function fetchTodaySnapshot(): Promise<Ga4Result> {
   if (!propertyId) {
     return { configured: false, reason: "GA4_PROPERTY_ID not set" };
   }
-  if (!process.env.GA4_SERVICE_ACCOUNT_JSON) {
-    return { configured: false, reason: "GA4_SERVICE_ACCOUNT_JSON not set" };
+  if (!hasAuthConfigured()) {
+    return {
+      configured: false,
+      reason:
+        "GA4 auth not set — add GA4_OAUTH_CLIENT_ID + GA4_OAUTH_CLIENT_SECRET + GA4_OAUTH_REFRESH_TOKEN (or GA4_SERVICE_ACCOUNT_JSON)",
+    };
   }
   let token: string | null;
   try {
@@ -176,7 +238,7 @@ export async function fetchTodaySnapshot(): Promise<Ga4Result> {
     };
   }
   if (!token) {
-    return { configured: false, reason: "Service account JSON malformed" };
+    return { configured: false, reason: "GA4 credentials malformed" };
   }
 
   const dateRanges = [{ startDate: "today", endDate: "today" }];

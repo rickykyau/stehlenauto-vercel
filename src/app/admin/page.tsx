@@ -518,18 +518,21 @@ function Ga4SetupCard({ reason }: { reason: string }) {
         </span>
       </div>
       <p style={{ fontSize: 13, marginBottom: 8, lineHeight: 1.5 }}>
-        Show today&apos;s visitors, sessions, conversions, and revenue here. Two
-        Vercel env vars unlock it:
+        Show today&apos;s visitors, sessions, conversions, and revenue here. Add
+        these Vercel env vars to unlock it (reuses the existing GA4 OAuth creds —
+        no Google Cloud service account needed):
       </p>
       <ol style={{ fontSize: 13, paddingLeft: 18, lineHeight: 1.7 }}>
         <li>
-          <code>GA4_PROPERTY_ID</code> — your numeric property id (Admin →
-          Property Settings).
+          <code>GA4_PROPERTY_ID</code> — numeric property id (Admin → Property
+          Settings). Currently <code>529120634</code>.
         </li>
         <li>
-          <code>GA4_SERVICE_ACCOUNT_JSON</code> — full JSON of a Google Cloud
-          service account with the GA4 <em>Viewer</em> role on the property.
-          Paste it as a single line.
+          <code>GA4_OAUTH_CLIENT_ID</code>,{" "}
+          <code>GA4_OAUTH_CLIENT_SECRET</code>,{" "}
+          <code>GA4_OAUTH_REFRESH_TOKEN</code> — from the project&apos;s{" "}
+          <code>token.json</code> (the same creds the marketing analytics
+          scripts use).
         </li>
       </ol>
       <p
@@ -539,8 +542,9 @@ function Ga4SetupCard({ reason }: { reason: string }) {
           marginTop: 8,
         }}
       >
-        Add both at vercel.com → Project → Settings → Environment Variables,
-        then redeploy.
+        Add at vercel.com → Project → Settings → Environment Variables, then
+        redeploy. (Alternatively, set <code>GA4_SERVICE_ACCOUNT_JSON</code> with
+        a Viewer-role service account.)
       </p>
     </div>
   );
