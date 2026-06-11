@@ -213,12 +213,14 @@ export default async function WelcomeBackPage({
       {/* Full-bleed image-first hero. Vehicle-personalized headline sits on a
           layered gradient so text is always legible. CTA bleeds directly into
           the offer band below — single yellow moment anchored at the bottom
-          of the hero. minHeight 100svh on mobile so the entire first screen
-          is the hero (no scrolling to see the offer). */}
+          of the hero. Height capped well under one screen so the offer band +
+          first product row PEEK at the bottom of the fold (retail pattern:
+          show there's more, pull the eye down to the products — owner asked to
+          see pictures without a full extra scroll). */}
       <section
         style={{
           position: "relative",
-          minHeight: "min(100svh, 700px)",
+          minHeight: "min(58svh, 480px)",
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-end",
