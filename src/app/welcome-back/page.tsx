@@ -45,6 +45,37 @@ function latestYearFor(make: string, model: string): number {
   return best || new Date().getUTCFullYear() - 1;
 }
 
+// Year with the MOST catalog coverage for this make/model. The email targets a
+// make/model, not an exact year, so probing fitment at the latest year (2026)
+// was wrong — most F-150 inventory is tagged for ranges ending ~2024, so at
+// 2026 nearly everything read "doesn't fit" and the grid collapsed to 1 card.
+// Coverage naturally peaks mid-range (where the most product year-ranges
+// overlap) and is sparse at the newest/EV edge — exactly the year that
+// surfaces the most fitting products and the greenest PDPs.
+function bestYearFor(make: string, model: string): number {
+  const tree = ymmTreeData as Record<string, Record<string, Record<string, string[]>>>;
+  const ml = model.toLowerCase();
+  let bestYear = 0;
+  let bestCount = -1;
+  for (const [yr, makes] of Object.entries(tree)) {
+    const y = Number(yr);
+    if (!y) continue;
+    const models = makes?.[titleCase(make)] ?? makes?.[make];
+    if (!models) continue;
+    let count = 0;
+    for (const [m, handles] of Object.entries(models)) {
+      if (m.toLowerCase() === ml) count += Array.isArray(handles) ? handles.length : 0;
+    }
+    // strict > keeps the EARLIEST year of a coverage plateau (mid-range),
+    // avoiding the sparse newest/EV edge on ties.
+    if (count > bestCount) {
+      bestCount = count;
+      bestYear = y;
+    }
+  }
+  return bestYear || latestYearFor(make, model);
+}
+
 // P0-1 guard: this reactivation LP targets gas/diesel pickup owners by
 // year+make+model only — we do NOT know the buyer's exact sub-model (e.g. an
 // F-150 buyer could be gas OR Lightning EV). Because the fitment check matches
@@ -119,30 +150,26 @@ export default async function WelcomeBackPage({
   let fitProducts: typeof PRODUCTS = [];
   let browseCats: typeof CATEGORIES = [];
   if (hasVehicle) {
-    const year = latestYearFor(make, model);
+    const year = bestYearFor(make, model);
     const fitVehicle = { year: String(year), make: titleCase(make), model: titleCase(model) };
-    // Only surface products we can stand behind in a reactivation email:
-    // confirmed fit (fits === true, never the undefined "maybe"), in stock,
-    // and not an EV-only variant we can't confirm for this buyer (P0-1).
+    // The email targets a make/model, not an exact year. Show make/model-relevant,
+    // in-stock products that are NOT a confirmed misfit and NOT an EV-only variant
+    // we can't vouch for. Allow unknown-fit (fits===undefined) — the card carries
+    // its own fitment badge and the PDP gives the honest per-year verdict, so we
+    // get a full, eye-catching grid without over-promising.
     const sellable = (p: (typeof PRODUCTS)[number]) =>
-      p.fits === true && p.inventory > 0 && !isEvOnlyVariant(p);
+      p.fits !== false && p.inventory > 0 && !isEvOnlyVariant(p);
     try {
-      const hits = withFitment(
-        await searchProducts(`${year} ${make} ${model}`, 16),
+      const found = withFitment(
+        await searchProducts(`${make} ${model}`, 24),
         fitVehicle,
         null,
       ).filter(sellable);
-      if (hits.length < 4) {
-        const seen = new Set(hits.map((p) => p.handle));
-        const pad = withFitment(
-          await searchProducts(`${make} ${model}`, 24),
-          fitVehicle,
-          null,
-        ).filter((p) => !seen.has(p.handle) && sellable(p));
-        fitProducts = [...hits, ...pad].slice(0, 4);
-      } else {
-        fitProducts = hits.slice(0, 4);
-      }
+      // Lead with confirmed-fit cards, then fill with unknown-fit so the grid is
+      // always full (6) instead of collapsing to the 1-2 exact-year matches.
+      const confirmed = found.filter((p) => p.fits === true);
+      const rest = found.filter((p) => p.fits !== true);
+      fitProducts = [...confirmed, ...rest].slice(0, 6);
     } catch {
       fitProducts = [];
     }
@@ -157,7 +184,7 @@ export default async function WelcomeBackPage({
     if (browseCats.length === 0) browseCats = CATEGORIES.slice(0, 6);
   }
   const fitVehicleForCard = hasVehicle
-    ? { year: String(latestYearFor(make, model)), make: titleCase(make), model: titleCase(model) }
+    ? { year: String(bestYearFor(make, model)), make: titleCase(make), model: titleCase(model) }
     : undefined;
 
   return (
@@ -166,7 +193,7 @@ export default async function WelcomeBackPage({
         code={code}
         make={hasVehicle ? titleCase(make) : undefined}
         model={hasVehicle ? titleCase(model) : undefined}
-        year={hasVehicle ? latestYearFor(make, model) : undefined}
+        year={hasVehicle ? bestYearFor(make, model) : undefined}
         utm={utm}
       />
 
@@ -174,7 +201,7 @@ export default async function WelcomeBackPage({
         style={{
           position: "relative",
           background: "var(--color-background)",
-          minHeight: 480,
+          minHeight: 320,
           overflow: "hidden",
           borderBottom: "1px solid var(--color-border)",
         }}
@@ -200,8 +227,8 @@ export default async function WelcomeBackPage({
           className="container-x"
           style={{
             position: "relative",
-            paddingTop: 96,
-            paddingBottom: 80,
+            paddingTop: 56,
+            paddingBottom: 44,
             maxWidth: 880,
           }}
         >
@@ -215,7 +242,7 @@ export default async function WelcomeBackPage({
             className="display-h1"
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: 96,
+              fontSize: "clamp(40px, 8vw, 76px)",
               textTransform: "uppercase",
               letterSpacing: "-0.03em",
               lineHeight: 0.85,
@@ -326,10 +353,10 @@ export default async function WelcomeBackPage({
             PICKED FOR YOUR {titleCase(make).toUpperCase()} {titleCase(model).toUpperCase()}
           </div>
           <h2 className="fluid-h2" style={{ marginBottom: 8 }}>
-            Top upgrades that fit — guaranteed.
+            Top upgrades for your {vehicleLabel}.
           </h2>
           <p style={{ color: "var(--color-muted-foreground)", marginBottom: 24, maxWidth: 560 }}>
-            Bolt-on, drilling-free, and confirmed for your {vehicleLabel}. Your{" "}
+            The same parts you trusted on eBay — now direct, for less. Your{" "}
             <strong>{code}</strong> discount applies automatically at checkout.
           </p>
           <div
