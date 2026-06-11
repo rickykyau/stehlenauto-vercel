@@ -264,6 +264,21 @@ function channelOf(sm: string): string {
 const ymd = (d: Date) => d.toISOString().slice(0, 10);
 const md = (d: Date) => `${d.getUTCMonth() + 1}/${d.getUTCDate()}`;
 
+/**
+ * "Today" anchored to Pacific time, returned as a Date at 12:00 UTC on that
+ * calendar day. Vercel runs in UTC, so a bare `new Date()` rolls to tomorrow
+ * ~5pm Pacific and shifts every funnel window a day ahead of what the owner
+ * (PST) and the GA4 UI show. Noon-UTC anchoring means getUTCDate()/ymd() read
+ * back the Pacific calendar date regardless of DST. Keeps the panel tied to the
+ * same day boundaries as marketing/analytics reports.
+ */
+function pacificToday(): Date {
+  const laDate = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Los_Angeles",
+  }).format(new Date()); // YYYY-MM-DD
+  return new Date(`${laDate}T12:00:00Z`);
+}
+
 export async function fetchFunnelTrend(weeks = 4): Promise<FunnelTrendResult> {
   const propertyId = process.env.GA4_PROPERTY_ID;
   if (!propertyId) return { configured: false, reason: "GA4_PROPERTY_ID not set" };
@@ -279,10 +294,11 @@ export async function fetchFunnelTrend(weeks = 4): Promise<FunnelTrendResult> {
   if (!token) return { configured: false, reason: "GA4 credentials malformed" };
   const tok = token;
 
-  // Rolling 7-day windows, oldest → newest, ending today.
+  // Rolling 7-day windows, oldest → newest, ending today (Pacific-anchored so
+  // the windows match the GA4 UI / owner's PST, not the UTC server clock).
   const ranges: { start: Date; end: Date }[] = [];
   for (let i = weeks - 1; i >= 0; i--) {
-    const end = new Date();
+    const end = pacificToday();
     end.setUTCDate(end.getUTCDate() - 7 * i);
     const start = new Date(end);
     start.setUTCDate(start.getUTCDate() - 6);
