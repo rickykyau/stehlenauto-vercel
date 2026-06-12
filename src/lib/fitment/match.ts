@@ -798,19 +798,40 @@ export function sharesVehicleAudience(
     fitmentTable?: FitmentTable;
   },
 ): boolean {
-  const appPairs = (p: { fitmentTable?: FitmentTable }): Set<string> =>
-    new Set(
-      (p.fitmentTable?.applications ?? []).map((a) =>
-        `${a.make}|${a.model}`.toLowerCase(),
-      ),
-    );
+  // Cycle 14BG-fix2 (Ren NOTE-14BG-PROD-01 P3): exact pair equality made
+  // the F-150 Lightning PDP rail vanish — its applications say
+  // (Ford, F-150 Lightning) while sibling tonneaus say (Ford, F-150), so
+  // no pair ever matched and the audience filter emptied the pool. Mirror
+  // checkFitment's model comparison (exact OR substring either way) so
+  // model-qualified variants (Lightning, Super Duty, TRD) stay in the
+  // same audience as their parent model.
+  const appPairs = (p: {
+    fitmentTable?: FitmentTable;
+  }): { make: string; model: string }[] => {
+    const seen = new Set<string>();
+    const out: { make: string; model: string }[] = [];
+    for (const a of p.fitmentTable?.applications ?? []) {
+      const make = a.make.toLowerCase();
+      const model = a.model.toLowerCase();
+      const key = `${make}|${model}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ make, model });
+    }
+    return out;
+  };
   const primaryPairs = appPairs(primary);
   const candidatePairs = appPairs(candidate);
-  if (primaryPairs.size > 0 && candidatePairs.size > 0) {
-    for (const pair of candidatePairs) {
-      if (primaryPairs.has(pair)) return true;
-    }
-    return false;
+  if (primaryPairs.length > 0 && candidatePairs.length > 0) {
+    return candidatePairs.some((c) =>
+      primaryPairs.some(
+        (p) =>
+          p.make === c.make &&
+          (p.model === c.model ||
+            p.model.includes(c.model) ||
+            c.model.includes(p.model)),
+      ),
+    );
   }
 
   // Title/tag fallback — alias-expanded make tokens with word boundaries
