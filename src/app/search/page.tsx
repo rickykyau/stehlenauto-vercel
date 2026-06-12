@@ -4,6 +4,7 @@ import { ProductCard } from "@/components/commerce/product-card";
 import { Icons } from "@/components/ui/icons";
 import { SearchInput } from "@/components/search/search-input";
 import { Stars } from "@/components/ui/stars";
+import { YmmButton } from "@/components/fitment/ymm-button";
 import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
 import { POPULAR_VEHICLES, PRODUCTS } from "@/lib/catalog/mock";
 import { searchProducts } from "@/lib/catalog";
@@ -56,10 +57,16 @@ const MATCHING_CATEGORIES = [
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; sort?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, sort } = await searchParams;
   const query = q?.trim() ?? "";
+  // Cycle 14BG (Jordan F-7): explicit sort control. Default (no param)
+  // keeps the fits-first relevance order; a price sort overrides globally
+  // (a buyer asking "cheapest first" expects exactly that — fitment
+  // ribbons on the cards still flag what fits).
+  const sortParam =
+    sort === "price-asc" || sort === "price-desc" ? sort : null;
   const vehicle = (await getCurrentVehicle()) ?? undefined;
   // Cycle 14X+ post-sync (Mike-O15): pass sub-model answers so search
   // result cards run the bed/cab gate, not just YMM.
@@ -84,6 +91,29 @@ export default async function SearchPage({
     }
   }
   const empty = !query;
+
+  // Cycle 14BG (Jordan F-7): compute the display order once. Default =
+  // fits-first (FITS → VERIFY → DOES NOT FIT, Shopify relevance within
+  // each bucket, per Cycle 14AU F-1). Price sort overrides globally.
+  const painted = withFitment(filtered, vehicle, subModelAnswers);
+  const displayProducts = sortParam
+    ? [...painted].sort((a, b) =>
+        sortParam === "price-asc" ? a.price - b.price : b.price - a.price,
+      )
+    : painted
+        .map((p, idx) => ({ p, idx }))
+        .sort((a, b) => {
+          const rank = (fits: boolean | undefined) =>
+            fits === true ? 0 : fits === undefined ? 1 : 2;
+          const ra = rank(a.p.fits);
+          const rb = rank(b.p.fits);
+          if (ra !== rb) return ra - rb;
+          return a.idx - b.idx;
+        })
+        .map(({ p }) => p);
+
+  const sortHref = (s: string | null) =>
+    `/search?q=${encodeURIComponent(query)}${s ? `&sort=${s}` : ""}`;
 
   return (
     <main>
@@ -351,6 +381,112 @@ export default async function SearchPage({
             </div>
           )}
 
+          {/* Cycle 14BG (Jordan F-7): results toolbar — vehicle context chip
+              (left) + sort control (right). The chip gives no-garage
+              sessions a one-tap path into the YMM modal at the moment
+              they're scanning results for fit confidence. */}
+          {filtered.length > 0 && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: 12,
+                marginBottom: 16,
+              }}
+            >
+              {vehicle ? (
+                <YmmButton
+                  ariaLabel="Change vehicle"
+                  className="chip"
+                  style={{
+                    minHeight: 44,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    cursor: "pointer",
+                    fontSize: 11,
+                  }}
+                >
+                  <Icons.truck size={12} />
+                  {vehicle.year} {vehicle.make.toUpperCase()}{" "}
+                  {vehicle.model.toUpperCase()}
+                  <span style={{ color: "var(--color-muted)" }}>· CHANGE</span>
+                </YmmButton>
+              ) : (
+                <YmmButton
+                  ariaLabel="Select your vehicle"
+                  className="chip"
+                  style={{
+                    minHeight: 44,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    cursor: "pointer",
+                    fontSize: 11,
+                    color: "var(--color-primary)",
+                    borderColor: "rgba(245,168,35,0.45)",
+                  }}
+                >
+                  <Icons.truck size={12} />
+                  SET VEHICLE — SEE WHAT FITS
+                </YmmButton>
+              )}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  flexWrap: "wrap",
+                }}
+              >
+                <span
+                  className="mono"
+                  style={{
+                    fontSize: 10,
+                    color: "var(--color-muted)",
+                    letterSpacing: "0.12em",
+                  }}
+                >
+                  SORT:
+                </span>
+                {(
+                  [
+                    { label: "RELEVANCE", value: null },
+                    { label: "PRICE ↑", value: "price-asc" },
+                    { label: "PRICE ↓", value: "price-desc" },
+                  ] as const
+                ).map((s) => {
+                  const active = sortParam === s.value;
+                  return (
+                    <Link
+                      key={s.label}
+                      href={sortHref(s.value)}
+                      className="chip"
+                      aria-current={active ? "true" : undefined}
+                      style={{
+                        minHeight: 44,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        fontSize: 11,
+                        ...(active
+                          ? {
+                              color: "var(--color-primary)",
+                              borderColor: "rgba(245,168,35,0.45)",
+                              fontWeight: 700,
+                            }
+                          : {}),
+                      }}
+                    >
+                      {s.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Cycle 5 (Mike): "MATCHES IN: …" used to render even when the
               query had 0 results, contradicting the "NO RESULTS" banner above
               it. Hide when there's nothing to match. */}
@@ -396,23 +532,11 @@ export default async function SearchPage({
               className="grid grid-cols-2 md:grid-cols-4"
               style={{ gap: 16 }}
             >
-              {/* Cycle 14AU F-1 (Jordan): sort FITS first → VERIFY → DOES
-                  NOT FIT, preserving Shopify relevance order within each
-                  bucket. With a garage set, the first card the customer
-                  sees should match their vehicle — anything else looks
-                  like the site doesn't know their truck. */}
-              {withFitment(filtered, vehicle, subModelAnswers)
-                .map((p, idx) => ({ p, idx }))
-                .sort((a, b) => {
-                  const rank = (fits: boolean | undefined) =>
-                    fits === true ? 0 : fits === undefined ? 1 : 2;
-                  const ra = rank(a.p.fits);
-                  const rb = rank(b.p.fits);
-                  if (ra !== rb) return ra - rb;
-                  return a.idx - b.idx;
-                })
-                .map(({ p }) => p)
-                .map((p) => (
+              {/* Cycle 14AU F-1 (Jordan): default order is FITS first →
+                  VERIFY → DOES NOT FIT, preserving Shopify relevance within
+                  each bucket. Cycle 14BG (Jordan F-7): explicit price sort
+                  overrides — see displayProducts above. */}
+              {displayProducts.map((p) => (
                 <ProductCard key={p.sku} product={p} vehicle={vehicle} />
               ))}
             </div>

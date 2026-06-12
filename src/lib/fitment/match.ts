@@ -775,6 +775,77 @@ export function filterByDimensionAnswers<
 }
 
 /**
+ * Cycle 14BG (Jordan F-3 CRITICAL): vehicle-audience overlap check for
+ * cross-sell rails in NO-GARAGE sessions. The "Complete the Build" rail
+ * on an F-150 tonneau PDP was showing a Toyota Tundra bed mat and a Ram
+ * grille guard because `hideMismatches: !!vehicle` is false without a
+ * garage vehicle — a trust failure at the exact ATC decision moment.
+ *
+ * Logic:
+ *   1. When BOTH products carry CA fitment applications, require at least
+ *      one shared (make, model) application pair.
+ *   2. Otherwise fall back to title/tag make tokens: a candidate that
+ *      names NO make is a universal product → keep. A candidate that only
+ *      names makes outside the primary product's make set → drop.
+ *   3. When the PRIMARY product is make-silent (universal), keep everything
+ *      — there's no audience to contradict.
+ */
+export function sharesVehicleAudience(
+  primary: Pick<CatalogProduct, "title" | "fitTitle" | "vehicleTags"> & {
+    fitmentTable?: FitmentTable;
+  },
+  candidate: Pick<CatalogProduct, "title" | "fitTitle" | "vehicleTags"> & {
+    fitmentTable?: FitmentTable;
+  },
+): boolean {
+  const appPairs = (p: { fitmentTable?: FitmentTable }): Set<string> =>
+    new Set(
+      (p.fitmentTable?.applications ?? []).map((a) =>
+        `${a.make}|${a.model}`.toLowerCase(),
+      ),
+    );
+  const primaryPairs = appPairs(primary);
+  const candidatePairs = appPairs(candidate);
+  if (primaryPairs.size > 0 && candidatePairs.size > 0) {
+    for (const pair of candidatePairs) {
+      if (primaryPairs.has(pair)) return true;
+    }
+    return false;
+  }
+
+  // Title/tag fallback — alias-expanded make tokens with word boundaries
+  // so "kia" can't fire inside another word.
+  const textOf = (p: {
+    title: string;
+    fitTitle?: string;
+    vehicleTags?: string[];
+  }): string =>
+    [p.title ?? "", p.fitTitle ?? "", ...(p.vehicleTags ?? [])]
+      .join(" ")
+      .toLowerCase();
+  const makesIn = (text: string): Set<string> => {
+    const out = new Set<string>();
+    for (const [key, aliases] of Object.entries(MAKE_ALIASES)) {
+      // Match the key OR any alias token (e.g. "Silverado" implies
+      // Chevrolet even when the title never says "Chevrolet").
+      const hit = [key, ...aliases].some((token) =>
+        new RegExp(`\\b${token.replace(/[-\s]/g, "[-\\s]")}\\b`, "i").test(text),
+      );
+      if (hit) for (const alias of aliases) out.add(alias);
+    }
+    return out;
+  };
+  const candidateMakes = makesIn(textOf(candidate));
+  if (candidateMakes.size === 0) return true; // universal candidate
+  const primaryMakes = makesIn(textOf(primary));
+  if (primaryMakes.size === 0) return true; // primary is make-silent
+  for (const m of candidateMakes) {
+    if (primaryMakes.has(m)) return true;
+  }
+  return false;
+}
+
+/**
  * Convenience: re-paint a product list with `fits` resolved against a vehicle.
  * Returns a shallow copy; never mutates input.
  */

@@ -205,11 +205,15 @@ export function MobileStickyAtc({
         position: "fixed",
         left: 0,
         right: 0,
-        bottom: 0,
+        // Cycle 14BG (Jordan F-1): stack above the mobile bottom nav. The
+        // nav (z-40) carries the safe-area inset, so this bar no longer
+        // needs its own env() padding when the nav is present — the var
+        // already includes it. Desktop fallback 0px keeps old behavior.
+        bottom: "var(--stehlen-bottom-nav-height, 0px)",
         zIndex: 50,
         background: "var(--color-background)",
         borderTop: "1px solid var(--color-border)",
-        padding: "10px 16px calc(env(safe-area-inset-bottom, 0px) + 10px)",
+        padding: "10px 16px 10px",
         transform: visible ? "translateY(0)" : "translateY(120%)",
         transition: "transform 200ms ease",
         boxShadow: "0 -8px 24px rgba(0,0,0,0.4)",

@@ -424,14 +424,21 @@ export default async function WelcomeBackPage({
                 YOUR EXCLUSIVE CODE &mdash; APPLIED AT CHECKOUT
               </div>
 
-              {/* Code stamp — large, monospaced feel, yellow on warm-dark */}
+              {/* Code stamp — Cycle 14BG (Jordan F-12): demoted from full
+                  yellow fill to outlined yellow-on-dark. The hero's yellow
+                  "BROWSE ALL PARTS" CTA and this stamp were two yellow
+                  blocks in the same viewport — violating the one-yellow-
+                  per-viewport rule and splitting attention. The stamp still
+                  reads as the offer (yellow type + border) without
+                  competing with the primary CTA for the yellow slot. */}
               <div
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 16,
-                  background: "var(--color-primary)",
-                  color: "var(--color-primary-foreground)",
+                  background: "var(--color-surface-2)",
+                  color: "var(--color-primary)",
+                  border: "1px solid rgba(245,168,35,0.55)",
                   padding: "10px 24px",
                   borderRadius: "var(--radius-sm)",
                   marginBottom: 12,
@@ -456,7 +463,8 @@ export default async function WelcomeBackPage({
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
                     paddingLeft: 16,
-                    borderLeft: "2px solid rgba(10,10,10,0.25)",
+                    borderLeft: "2px solid rgba(245,168,35,0.3)",
+                    color: "var(--color-foreground)",
                   }}
                 >
                   10% OFF

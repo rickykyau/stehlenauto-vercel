@@ -31,7 +31,12 @@ import { Icons } from "@/components/ui/icons";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { getCurrentVehicle } from "@/lib/garage/server";
 import { getSubModelAnswers } from "@/lib/garage/server";
-import { checkFitment, getFitmentReason, withFitment } from "@/lib/fitment/match";
+import {
+  checkFitment,
+  getFitmentReason,
+  sharesVehicleAudience,
+  withFitment,
+} from "@/lib/fitment/match";
 import {
   buildStripConfig,
   requiredGroupsForCategory,
@@ -56,15 +61,37 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { handle } = await params;
   const p = await getProduct(handle);
-  if (!p) return { title: "Product" };
+  // Cycle 14BG (Jordan F-9): the bare `{ title: "Product" }` fallback was
+  // observed live — "Product | Stehlen Auto" in the tab, zero SEO value.
+  // Fall back to the mock catalog title for the same handle before giving
+  // up; only emit the generic title when the handle is truly unknown
+  // (the page body will 404 anyway).
+  if (!p) {
+    const mock = PRODUCTS.find((m) => m.handle === handle);
+    if (!mock) return { title: "Product" };
+    return {
+      title: mock.title.replace(/^stehlen\s+/i, ""),
+      alternates: { canonical: `/products/${handle}` },
+    };
+  }
   // SEO (audit F-3): strip a leading "Stehlen " (the title.template re-adds
   // "| Stehlen Auto") and trim so title + suffix stays ~≤60 chars in SERPs.
   const cleanTitle = p.title.replace(/^stehlen\s+/i, "");
   const MAX = 52;
-  const metaTitle =
-    cleanTitle.length > MAX
-      ? cleanTitle.slice(0, MAX - 1).replace(/[\s\-,]+\S*$/, "") + "…"
+  // Cycle 14BG (Jordan F-14): end-truncation was cutting the product-type
+  // noun — "…Ford F-150 6.5 ft Bed Soft Roll-Up…" lost "Tonneau Cover",
+  // the highest-value classification keyword. When over budget, drop the
+  // leading year-range FIRST (it's repeated in the URL + description),
+  // then fall back to word-boundary end-truncation only if still long.
+  const withoutYearRange = cleanTitle.replace(/^\s*(19|20)\d{2}\s*[-–]\s*(19|20)?\d{2}\s+/, "");
+  const titleBase =
+    cleanTitle.length > MAX && withoutYearRange.length <= MAX
+      ? withoutYearRange
       : cleanTitle;
+  const metaTitle =
+    titleBase.length > MAX
+      ? titleBase.slice(0, MAX - 1).replace(/[\s\-,]+\S*$/, "") + "…"
+      : titleBase;
   // SEO (audit F-1): real description, not the title repeated.
   const desc =
     p.metaDescription ??
@@ -162,7 +189,17 @@ export default async function PdpPage({
     .map((c) => {
       if (!c || c.products.length === 0) return null;
       const pick = c.products.find(
-        (p) => p.inventory > 0 && !completeTheBuildSeen.has(p.handle),
+        (p) =>
+          p.inventory > 0 &&
+          !completeTheBuildSeen.has(p.handle) &&
+          // Cycle 14BG (Jordan F-3 CRITICAL): in NO-GARAGE sessions the
+          // complement query isn't vehicle-filtered (hideMismatches was
+          // false), so the rail showed a Tundra bed mat + Ram grille
+          // guard on an F-150 tonneau PDP. Require the candidate to share
+          // a vehicle audience with THIS product (CA applications overlap,
+          // or make-token overlap; universal products always pass). With
+          // a garage vehicle set the query already filtered upstream.
+          (vehicle ? true : sharesVehicleAudience(product, p)),
       );
       if (pick) completeTheBuildSeen.add(pick.handle);
       return pick ?? null;
@@ -639,6 +676,59 @@ export default async function PdpPage({
             </span>
           </div>
 
+          {/* Price — Cycle 14BG (Jordan F-6): moved ABOVE the fitment hero.
+              The mobile stacked buy-box was rendering VERIFY FITMENT before
+              the price, inverting the buyer's scan path (name → price →
+              fitment → CTA). Price is the primary decision filter; a buyer
+              decides budget first, THEN confirms fitment. Engine note +
+              fitment card now follow the price. */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: 12,
+              marginBottom: 4,
+              flexWrap: "wrap",
+            }}
+          >
+            <span
+              className="mono"
+              style={{ fontSize: 36, fontWeight: 700 }}
+            >
+              ${product.price.toFixed(2)}
+            </span>
+            {product.compareAt && (
+              <>
+                <span
+                  className="mono"
+                  style={{
+                    fontSize: 16,
+                    color: "var(--color-muted)",
+                    textDecoration: "line-through",
+                  }}
+                >
+                  ${product.compareAt.toFixed(2)}
+                </span>
+                <span className="badge badge-sale">
+                  SAVE ${(product.compareAt - product.price).toFixed(0)}
+                </span>
+              </>
+            )}
+          </div>
+          <div
+            style={{
+              fontSize: 12,
+              color: "var(--color-muted)",
+              marginBottom: 20,
+            }}
+          >
+            or 4 interest-free payments of ${(product.price / 4).toFixed(2)}{" "}
+            with{" "}
+            <span style={{ color: "var(--color-foreground)", fontWeight: 600 }}>
+              Affirm
+            </span>
+          </div>
+
           {/* Cycle 14X+ post-sync (Mike Product 4): engine exclusion callout
               renders UNCONDITIONALLY when the metafield has engineExclusions —
               not nested inside any specific verdict card. EcoBoost owners
@@ -1098,54 +1188,6 @@ export default async function PdpPage({
             )}
           </div>
 
-          {/* Price */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "baseline",
-              gap: 12,
-              marginBottom: 4,
-              flexWrap: "wrap",
-            }}
-          >
-            <span
-              className="mono"
-              style={{ fontSize: 36, fontWeight: 700 }}
-            >
-              ${product.price.toFixed(2)}
-            </span>
-            {product.compareAt && (
-              <>
-                <span
-                  className="mono"
-                  style={{
-                    fontSize: 16,
-                    color: "var(--color-muted)",
-                    textDecoration: "line-through",
-                  }}
-                >
-                  ${product.compareAt.toFixed(2)}
-                </span>
-                <span className="badge badge-sale">
-                  SAVE ${(product.compareAt - product.price).toFixed(0)}
-                </span>
-              </>
-            )}
-          </div>
-          <div
-            style={{
-              fontSize: 12,
-              color: "var(--color-muted)",
-              marginBottom: 20,
-            }}
-          >
-            or 4 interest-free payments of ${(product.price / 4).toFixed(2)}{" "}
-            with{" "}
-            <span style={{ color: "var(--color-foreground)", fontWeight: 600 }}>
-              Affirm
-            </span>
-          </div>
-
           {/* Cycle 14O (admin): warehouse-verified fitment note. Render
               ABOVE the buy-box so customers read body-style/trim caveats
               like "Will Not Fit 2007 Classic Models" before tapping Add to
@@ -1343,7 +1385,9 @@ export default async function PdpPage({
           ABOVE SIMILAR PRODUCTS so the AOV-lifting rail is the first
           thing customers see after reading the buy box. Hidden when no
           complementary picks exist or category isn't mapped. */}
-      {completeTheBuildWithFit.length > 0 && (
+      {/* Cycle 14BG (Jordan F-11): require ≥2 picks — a heading + one
+          lonely card reads as an under-populated catalog, not curation. */}
+      {completeTheBuildWithFit.length >= 2 && (
         <section className="container-x" style={{ paddingBottom: 48 }}>
           {/* Cycle 14BE-fix1 (Jordan N-3): visual differentiation from
               the SIMILAR PRODUCTS rail below. Yellow left-accent + tighter

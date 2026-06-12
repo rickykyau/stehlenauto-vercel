@@ -1,7 +1,11 @@
 const ITEMS = [
   "FREE GROUND SHIPPING ON EVERY ORDER — 48 STATES · NO MINIMUM",
   "FITMENT GUARANTEED OR YOUR MONEY BACK",
-  "NOW DIRECT FROM STEHLENAUTO.COM",
+  // Cycle 14BG (Jordan F-18): "NOW DIRECT FROM STEHLENAUTO.COM" replaced —
+  // a visitor already ON stehlenauto.com gains nothing from it. Copy
+  // mirrors the PDP shipping-ETA math (cycle 14BE-fix3: 2PM PT cutoff →
+  // 1-day processing), so the bar never promises faster than the PDP.
+  "ORDER BY 2PM PT — SHIPS NEXT BUSINESS DAY",
   "30-DAY HASSLE-FREE RETURNS",
 ];
 

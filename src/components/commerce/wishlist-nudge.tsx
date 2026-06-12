@@ -97,7 +97,9 @@ export function WishlistNudge() {
       aria-describedby="stehlen-wishlist-nudge-body"
       style={{
         position: "fixed",
-        bottom: 20,
+        // Cycle 14BG (Jordan F-1): lift above the mobile bottom nav so the
+        // nudge never renders under the tab bar. Desktop fallback 0px.
+        bottom: "calc(var(--stehlen-bottom-nav-height, 0px) + 20px)",
         right: 20,
         zIndex: 1000,
         maxWidth: 340,

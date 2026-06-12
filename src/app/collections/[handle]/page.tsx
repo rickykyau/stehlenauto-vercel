@@ -692,8 +692,15 @@ export default async function CollectionPage({
                   >
                     {collection.title}
                   </h1>
+                  {/* Cycle 14BG (Jordan F-4): explainer hidden on mobile.
+                      Collection shoppers are task-driven — at 390px the
+                      paragraph pushed the toolbar + product grid further
+                      below the fold without aiding the buy decision. The
+                      copy stays in the SSR HTML (display:none, not
+                      removed), so SEO keyword value is preserved. */}
                   {explainer && (
                     <p
+                      className="hidden md:block"
                       style={{
                         color: "rgba(255,255,255,0.72)",
                         fontSize: 15,

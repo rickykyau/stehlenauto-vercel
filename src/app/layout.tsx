@@ -9,6 +9,7 @@ import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { BottomNav } from "@/components/layout/bottom-nav";
 import { BlurOnNav } from "@/components/layout/blur-on-nav";
 import { YmmModal } from "@/components/fitment/ymm-modal";
 import { CartDrawer } from "@/components/cart/cart-drawer";
@@ -196,7 +197,7 @@ export default async function RootLayout({
         lang="en"
         className={`${inter.variable} ${archivo.variable} ${jetbrainsMono.variable} h-full`}
       >
-        <body className="min-h-full flex flex-col bg-background text-foreground">
+        <body className="min-h-full flex flex-col bg-background text-foreground has-bottom-nav">
           {/* Server-built Organization JSON-LD; `<` escaped to neutralize script-breakout. */}
           <script
             type="application/ld+json"
@@ -219,6 +220,14 @@ export default async function RootLayout({
           />
           <div className="flex-1">{children}</div>
           <Footer />
+          {/* Cycle 14BG (Jordan F-1 CRITICAL): persistent mobile tab bar —
+              Home / Search / Garage / Cart / Account. Garage + Cart tabs
+              dispatch the same global events as the header triggers. */}
+          <BottomNav
+            signedIn={!!signedInLabel}
+            hasVehicle={!!vehicle}
+            cartCount={cart?.totalQuantity ?? 0}
+          />
           <YmmModal />
           <CartDrawer
             initialCart={cart}

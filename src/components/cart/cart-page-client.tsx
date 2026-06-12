@@ -24,20 +24,26 @@ export function CartPageClient({
   const [busy, setBusy] = useState(false);
   const [promo, setPromo] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
-  const [promoError, setPromoError] = useState<string | null>(null);
+  const [promoPassthrough, setPromoPassthrough] = useState<string | null>(null);
 
   // Cycle-1 fix (Jordan, Marcus #4): cart used to accept any non-empty string
-  // as a 10% code. Whitelist real codes here; checkout still authoritatively
-  // validates via Shopify discount engine.
-  const VALID_PROMOS = new Set(["WELCOME10"]);
+  // as a 10% code. Whitelist KNOWN codes here for the local 10%-off preview.
+  // Cycle 14BG (Jordan F-16): the client must never REJECT a code — Shopify
+  // checkout is the authority on discount validity. Unknown codes used to
+  // get "That code isn't valid" even when they were live in Shopify (a
+  // false rejection at the highest-intent moment). Now unknown codes pass
+  // through to checkout via ?discount= and Shopify validates them there.
+  const KNOWN_PROMOS = new Set(["WELCOME10"]);
 
   const tryApplyPromo = () => {
-    setPromoError(null);
-    if (VALID_PROMOS.has(promo.trim().toUpperCase())) {
+    const code = promo.trim().toUpperCase();
+    if (!code) return;
+    if (KNOWN_PROMOS.has(code)) {
       setPromoApplied(true);
+      setPromoPassthrough(null);
     } else {
       setPromoApplied(false);
-      setPromoError("That code isn't valid. Check your email for the latest promo.");
+      setPromoPassthrough(code);
     }
   };
 
@@ -156,6 +162,26 @@ export function CartPageClient({
   const tax = (subtotal - discount) * 0.0875;
   const total = subtotal - discount + shipping + tax;
   const itemCount = lines.reduce((s, l) => s + l.quantity, 0);
+
+  // Cycle 14BG (Jordan F-16): carry the promo code into Shopify hosted
+  // checkout via the ?discount= URL param so the discount engine applies
+  // it authoritatively. Covers BOTH the known WELCOME10 preview (which
+  // previously showed -10% locally but never reached checkout) and
+  // unknown pass-through codes.
+  const checkoutHref = (() => {
+    const base = cart?.checkoutUrl ?? "/checkout";
+    const code = promoApplied ? "WELCOME10" : promoPassthrough;
+    if (!code) return base;
+    // Cycle 14BG-fix1 (Ren BUG-14BG-01 P3): the welcome-back flow seeds
+    // checkoutUrl with its own discount param — strip any existing
+    // discount= before appending so the user's code is the only one.
+    const [path, query = ""] = base.split("?");
+    const params = query
+      .split("&")
+      .filter((kv) => kv && !/^discount=/i.test(kv));
+    params.push(`discount=${encodeURIComponent(code)}`);
+    return `${path}?${params.join("&")}`;
+  })();
 
   if (lines.length === 0) {
     return (
@@ -669,15 +695,24 @@ export function CartPageClient({
                     <Icons.check size={11} /> 10% off applied
                   </div>
                 )}
-                {promoError && !promoApplied && (
+                {promoPassthrough && !promoApplied && (
                   <div
                     style={{
                       marginTop: 8,
                       fontSize: 11,
-                      color: "var(--color-destructive)",
+                      color: "var(--color-muted)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
                     }}
                   >
-                    {promoError}
+                    <Icons.check size={11} />
+                    <span>
+                      <strong style={{ color: "var(--color-foreground)" }}>
+                        {promoPassthrough}
+                      </strong>{" "}
+                      will be applied at checkout
+                    </span>
                   </div>
                 )}
               </div>
@@ -745,7 +780,7 @@ export function CartPageClient({
                 }}
               >
                 <a
-                  href={cart?.checkoutUrl ?? "/checkout"}
+                  href={checkoutHref}
                   className="btn btn-primary btn-block btn-lg"
                 >
                   CHECKOUT · ${total.toFixed(2)}
@@ -806,18 +841,21 @@ export function CartPageClient({
           className="md:hidden"
           style={{
             position: "fixed",
-            bottom: 0,
+            // Cycle 14BG (Jordan F-1): stack above the mobile bottom nav.
+            // The nav carries the safe-area inset, so this bar drops its
+            // own env() padding (the var already includes it).
+            bottom: "var(--stehlen-bottom-nav-height, 0px)",
             left: 0,
             right: 0,
-            padding: "12px 16px calc(12px + env(safe-area-inset-bottom))",
+            padding: "12px 16px",
             background: "var(--color-background)",
             borderTop: "1px solid var(--color-border)",
             boxShadow: "0 -8px 24px rgba(0,0,0,0.4)",
-            zIndex: 40,
+            zIndex: 45,
           }}
         >
           <a
-            href={cart.checkoutUrl ?? "/checkout"}
+            href={checkoutHref}
             className="btn btn-primary btn-block btn-lg"
             style={{ justifyContent: "space-between", textDecoration: "none" }}
           >

@@ -6,7 +6,11 @@ import {
 } from "@/lib/shopify/queries";
 import type { CollectionNode, ProductNode } from "@/lib/shopify/types";
 import { parseFitmentTable } from "@/lib/fitment/metafields";
-import { checkFitment, filterByDimensionAnswers } from "@/lib/fitment/match";
+import {
+  checkFitment,
+  filterByDimensionAnswers,
+  sharesVehicleAudience,
+} from "@/lib/fitment/match";
 import { getProductHandlesForVehicle } from "@/lib/fitment/products-by-ymm";
 import { getReviewAggregate } from "@/lib/reviews";
 import type { SubModelAnswer } from "@/lib/garage/types";
@@ -1328,9 +1332,16 @@ export async function getRelatedProducts(
   // VEHICLE" (when allFitVehicle is true) and "SIMILAR PRODUCTS" otherwise.
   if (!shopifyConfigured) {
     const base = PRODUCTS.find((p) => p.handle === handle);
-    const pool = base
+    let pool = base
       ? PRODUCTS.filter((p) => p.handle !== handle && p.category === base.category)
       : PRODUCTS.filter((p) => p.handle !== handle);
+    // Cycle 14BG follow-up (Ren NOTE-14BG-03 P2): in NO-GARAGE sessions the
+    // rail showed cross-vehicle siblings (Tundra covers on an F-150 PDP).
+    // Scope to products sharing a vehicle audience with the viewed product;
+    // universal products always pass. Same rule as Complete the Build (F-3).
+    if (base && !vehicle) {
+      pool = pool.filter((p) => sharesVehicleAudience(base, p));
+    }
     return { products: pool.slice(0, first), allFitVehicle: false };
   }
   try {
@@ -1370,7 +1381,15 @@ export async function getRelatedProducts(
       .map(adapt);
 
     if (!vehicle) {
-      return { products: broadPool.slice(0, first), allFitVehicle: false };
+      // Cycle 14BG follow-up (Ren NOTE-14BG-03 P2): same no-garage
+      // vehicle-audience scoping as the mock path above — an F-150 tonneau
+      // PDP must not pad SIMILAR PRODUCTS with Tundra/Ram siblings when no
+      // garage vehicle is set. If the filter empties the pool, the rail
+      // hides — per the F-3 rule, no rail beats a wrong-vehicle rail.
+      const audienceScoped = me
+        ? broadPool.filter((p) => sharesVehicleAudience(me, p))
+        : broadPool;
+      return { products: audienceScoped.slice(0, first), allFitVehicle: false };
     }
 
     // Cycle 14AW-fix6: pass subModelAnswers so chips like bed_length

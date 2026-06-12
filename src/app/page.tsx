@@ -8,7 +8,6 @@ import {
   type CatalogProduct,
 } from "@/lib/catalog";
 import { withFitment } from "@/lib/fitment/match";
-import { TrustRow } from "@/components/ui/trust-row";
 import { Icons } from "@/components/ui/icons";
 import { YmmButton } from "@/components/fitment/ymm-button";
 import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
@@ -864,8 +863,12 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Trust row */}
-      <TrustRow />
+      {/* Cycle 14BG (Jordan F-5): <TrustRow /> removed from home. It
+          duplicated the BrandTrustStrip near the top (both carried free
+          shipping / fitment guarantee / 30-day returns) — two trust rows
+          in one funnel step dilute each other's authority. The strip with
+          social-proof metrics (50,000+ trucks, real techs) wins; TrustRow
+          remains in use on other surfaces. */}
 
       {/* Cycle 14BF: recently-viewed strip surfaces "pick up where you
           left off" history for returning visitors. Hidden when no

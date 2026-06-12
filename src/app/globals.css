@@ -429,6 +429,26 @@ h4 { line-height: 1.3; }
   color: var(--color-border-2);
 }
 
+/* ===== Mobile bottom nav (Cycle 14BG, Jordan F-1) =====
+ * The bar itself lives in components/layout/bottom-nav.tsx (md:hidden,
+ * fixed bottom, z-40). This block is the layout contract:
+ *  - --stehlen-bottom-nav-height is the bar's total height including the
+ *    iOS home-indicator inset. Every other fixed-bottom element (PDP
+ *    sticky ATC, cart CHECKOUT bar, chat FAB, wishlist nudge) offsets
+ *    itself by this var so nothing renders underneath the tab bar.
+ *  - body.has-bottom-nav reserves matching padding so the footer's last
+ *    links are never permanently occluded.
+ * Desktop (≥768px): var resolves to 0px via the fallback at each usage
+ * site; no padding is applied. */
+@media (max-width: 767px) {
+  :root {
+    --stehlen-bottom-nav-height: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+  body.has-bottom-nav {
+    padding-bottom: var(--stehlen-bottom-nav-height);
+  }
+}
+
 /* ===== Container widths ===== */
 .container-x {
   width: 100%;

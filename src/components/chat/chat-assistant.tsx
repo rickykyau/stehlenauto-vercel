@@ -86,7 +86,9 @@ export function ChatAssistant() {
           position: "fixed",
           // Lift above the mobile sticky ATC bar when present (var set by
           // <MobileStickyAtc>; falls back to 24 elsewhere). Jordan regression.
-          bottom: "calc(var(--stehlen-sticky-atc-height, 0px) + 24px)",
+          // Cycle 14BG: also lift above the mobile bottom nav (Jordan F-1).
+          bottom:
+            "calc(var(--stehlen-sticky-atc-height, 0px) + var(--stehlen-bottom-nav-height, 0px) + 24px)",
           right: 16,
           zIndex: 80,
           background: "var(--color-primary)",
