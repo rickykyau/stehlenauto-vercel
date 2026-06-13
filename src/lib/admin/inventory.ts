@@ -78,6 +78,107 @@ type Resp = {
   };
 };
 
+/**
+ * Full active-catalog inventory for the admin inventory browser.
+ *
+ * The /admin/inventory page needs every item (search / sort / filter /
+ * paginate happen client-side over the whole set — ~1,300 products is
+ * trivial to hold). Unlike listLowStock this does NOT early-exit on the
+ * threshold; it pages the entire active catalog and returns the CB Item Name
+ * (product metafield cb_integration.item_name) which is the identifier the
+ * owner works with — NOT the variant SKU (ITEM-###### = the CB Item *Number*).
+ */
+export type InventoryRow = {
+  productId: string;
+  productHandle: string;
+  productTitle: string;
+  variantTitle: string;
+  cbItemName: string | null; // cb_integration.item_name — shown as "SKU"
+  variantSku: string | null; // ITEM-###### legacy CB Item Number
+  quantity: number;
+  price: string;
+  imageUrl: string | null;
+};
+
+const ALL_INVENTORY_QUERY = /* GraphQL */ `
+  query AllInventory($first: Int!, $after: String) {
+    products(first: $first, after: $after, query: "status:active") {
+      pageInfo { hasNextPage endCursor }
+      nodes {
+        id
+        handle
+        title
+        featuredImage { url(transform: { maxWidth: 80, maxHeight: 80 }) }
+        metafield(namespace: "cb_integration", key: "item_name") { value }
+        variants(first: 1) {
+          nodes {
+            title
+            sku
+            price
+            inventoryQuantity
+            inventoryItem { tracked }
+            image { url(transform: { maxWidth: 80, maxHeight: 80 }) }
+          }
+        }
+      }
+    }
+  }
+`;
+
+type AllResp = {
+  products: {
+    pageInfo: { hasNextPage: boolean; endCursor: string | null };
+    nodes: {
+      id: string;
+      handle: string;
+      title: string;
+      featuredImage: { url: string } | null;
+      metafield: { value: string } | null;
+      variants: {
+        nodes: {
+          title: string;
+          sku: string | null;
+          price: string;
+          inventoryQuantity: number | null;
+          inventoryItem: { tracked: boolean };
+          image: { url: string } | null;
+        }[];
+      };
+    }[];
+  };
+};
+
+export async function listAllInventory(): Promise<InventoryRow[]> {
+  const rows: InventoryRow[] = [];
+  let cursor: string | null = null;
+  // ~1,300 active products / 250 per page ≈ 6 round trips. Hard cap at 40
+  // pages (10k products) as a runaway guard.
+  for (let page = 0; page < 40; page++) {
+    const data: AllResp = await shopifyAdminFetch<AllResp>(ALL_INVENTORY_QUERY, {
+      first: 250,
+      after: cursor,
+    });
+    for (const p of data.products.nodes) {
+      const v = p.variants.nodes[0];
+      if (!v || !v.inventoryItem.tracked) continue; // untracked qty is meaningless
+      rows.push({
+        productId: p.id,
+        productHandle: p.handle,
+        productTitle: p.title,
+        variantTitle: v.title,
+        cbItemName: p.metafield?.value?.trim() || null,
+        variantSku: v.sku,
+        quantity: v.inventoryQuantity ?? 0,
+        price: v.price,
+        imageUrl: v.image?.url ?? p.featuredImage?.url ?? null,
+      });
+    }
+    if (!data.products.pageInfo.hasNextPage) break;
+    cursor = data.products.pageInfo.endCursor;
+  }
+  return rows;
+}
+
 export async function listLowStock(opts: {
   threshold?: number;
   maxItems?: number;
