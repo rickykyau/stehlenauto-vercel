@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Logo } from "@/components/ui/logo";
 import { Icons } from "@/components/ui/icons";
 import { BeginCheckoutTracker } from "@/components/analytics/begin-checkout";
+import { CheckoutAttribution } from "@/components/analytics/checkout-attribution";
 import { getCart } from "@/lib/cart/server";
 import { getCurrentVehicle } from "@/lib/garage/server";
 import { checkFitment } from "@/lib/fitment/match";
@@ -58,6 +59,7 @@ export default async function CheckoutPage() {
       }}
     >
       <BeginCheckoutTracker lines={cart.lines} total={total} />
+      <CheckoutAttribution />
       <div
         style={{
           borderBottom: "1px solid var(--color-border)",

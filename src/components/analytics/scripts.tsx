@@ -19,7 +19,10 @@ export function AnalyticsScripts() {
               function gtag(){dataLayer.push(arguments);}
               window.gtag = gtag;
               gtag('js', new Date());
-              gtag('config', '${GA4}', { send_page_view: false });
+              gtag('config', '${GA4}', {
+                send_page_view: false,
+                linker: { domains: ['stehlenauto.com', 'checkout.shopify.com', 'http-stehlenauto-com.myshopify.com'] }
+              });
             `}
           </Script>
         </>

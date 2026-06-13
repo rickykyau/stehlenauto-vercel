@@ -64,6 +64,21 @@ export const CART_CREATE = /* GraphQL */ `
   }
 `;
 
+export const CART_ATTRIBUTES_UPDATE = /* GraphQL */ `
+  ${CART_FRAGMENT}
+  mutation CartAttributesUpdate($cartId: ID!, $attributes: [AttributeInput!]!) {
+    cartAttributesUpdate(cartId: $cartId, attributes: $attributes) {
+      cart {
+        ...CartFields
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
 export const CART_QUERY = /* GraphQL */ `
   ${CART_FRAGMENT}
   query Cart($id: ID!) {

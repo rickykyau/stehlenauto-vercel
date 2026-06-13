@@ -16,6 +16,7 @@ import { CartDrawer } from "@/components/cart/cart-drawer";
 import { ChatAssistant } from "@/components/chat/chat-assistant";
 import { WishlistNudge } from "@/components/commerce/wishlist-nudge";
 import { AnalyticsScripts } from "@/components/analytics/scripts";
+import { AttributionCapture } from "@/components/analytics/attribution-capture";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { IdentifyUser } from "@/components/analytics/identify-user";
 import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
@@ -237,6 +238,7 @@ export default async function RootLayout({
           <ChatAssistant />
           <WishlistNudge />
           <AnalyticsScripts />
+          <AttributionCapture />
           <Suspense fallback={null}>
             <PageViewTracker />
           </Suspense>

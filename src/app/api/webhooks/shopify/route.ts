@@ -5,6 +5,49 @@ import {
   buildOrderAlertEmail,
   listActiveEmails,
 } from "@/lib/admin/notifications";
+import {
+  sendPurchaseToGA4,
+  type PurchaseItem,
+  type PurchaseAttribution,
+} from "@/lib/analytics/ga-mp";
+
+/**
+ * Pull the GA4 client_id + utm_* we stashed into the cart (→ order
+ * note_attributes) before the buyer left for Shopify checkout, then fire a
+ * server-side GA4 `purchase`. Hosted checkout never lets the client-side
+ * purchase event fire, so this is the only reliable place to record revenue.
+ */
+async function recordPurchaseGA4(order: Record<string, unknown>): Promise<void> {
+  const noteAttrs = Array.isArray(order.note_attributes)
+    ? (order.note_attributes as { name: string; value: string }[])
+    : [];
+  const attrMap = new Map(noteAttrs.map((a) => [a.name, a.value]));
+  const attr: PurchaseAttribution = {
+    clientId: attrMap.get("_ga_cid") || null,
+    utmSource: attrMap.get("utm_source") || undefined,
+    utmMedium: attrMap.get("utm_medium") || undefined,
+    utmCampaign: attrMap.get("utm_campaign") || undefined,
+  };
+  const lineItems = Array.isArray(order.line_items)
+    ? (order.line_items as Record<string, unknown>[])
+    : [];
+  const items: PurchaseItem[] = lineItems.map((li) => ({
+    item_id: String(li.sku ?? li.product_id ?? li.id ?? ""),
+    item_name: String(li.title ?? li.name ?? ""),
+    quantity: Number(li.quantity ?? 1),
+    price: Number(li.price ?? 0),
+  }));
+  const status = await sendPurchaseToGA4(
+    {
+      transactionId: String(order.name ?? order.order_number ?? order.id ?? ""),
+      value: Number(order.total_price ?? 0),
+      currency: String(order.currency ?? "USD"),
+      items,
+    },
+    attr,
+  );
+  console.log("[shopify-webhook] GA4 purchase:", status);
+}
 
 export const runtime = "nodejs";
 // Webhooks must never be statically cached / prerendered.
@@ -58,6 +101,11 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
+
+  // GA4 server-side purchase (independent of the staff email; never blocks it).
+  await recordPurchaseGA4(order).catch((e) =>
+    console.error("[shopify-webhook] GA4 purchase error:", e),
+  );
 
   const recipients = await listActiveEmails();
   const to = recipients.length > 0 ? recipients : ownerEmails();

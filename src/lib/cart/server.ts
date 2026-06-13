@@ -2,12 +2,14 @@ import "server-only";
 import { cookies } from "next/headers";
 import { shopifyConfigured, shopifyFetch } from "@/lib/shopify/client";
 import {
+  CART_ATTRIBUTES_UPDATE,
   CART_CREATE,
   CART_LINES_ADD,
   CART_LINES_REMOVE,
   CART_LINES_UPDATE,
   CART_QUERY,
 } from "@/lib/shopify/cart-queries";
+import { gaClientIdFromCookie } from "@/lib/analytics/ga-mp";
 import { getProduct } from "@/lib/catalog";
 import type { Cart, CartLine, Money } from "./types";
 
@@ -15,7 +17,59 @@ const CART_COOKIE = "stehlen_cart_id";
 // Campaign promo code dropped by a landing page (e.g. /welcome-back?code=WELCOME10).
 // Non-httpOnly so the LP can set it client-side; read here to auto-apply at checkout.
 const PROMO_COOKIE = "stehlen_promo";
+// First-party UTM cookie written client-side by <AttributionCapture> on landing.
+const UTM_COOKIE = "stehlen_utm";
 const ONE_MONTH = 60 * 60 * 24 * 30;
+
+/**
+ * Build Shopify cart `attributes` carrying GA4 attribution into the order.
+ * Reads the first-party `_ga` cookie (client_id) + `stehlen_utm` cookie so the
+ * `orders/create` webhook can fire a correctly-attributed server-side GA4
+ * `purchase` (hosted checkout can't fire it client-side). Empty array when we
+ * have nothing — never blocks the cart.
+ */
+async function attributionAttributes(): Promise<{ key: string; value: string }[]> {
+  try {
+    const store = await cookies();
+    const out: { key: string; value: string }[] = [];
+    const cid = gaClientIdFromCookie(store.get("_ga")?.value);
+    if (cid) out.push({ key: "_ga_cid", value: cid });
+    const utmRaw = store.get(UTM_COOKIE)?.value;
+    if (utmRaw) {
+      try {
+        const utm = JSON.parse(decodeURIComponent(utmRaw)) as Record<string, string>;
+        for (const k of ["utm_source", "utm_medium", "utm_campaign"]) {
+          if (utm[k]) out.push({ key: k, value: String(utm[k]).slice(0, 255) });
+        }
+      } catch {
+        /* malformed cookie — ignore */
+      }
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Push attribution attributes onto the current cart (returning carts created
+ * before attribution was captured). Called from /api/cart/attributes on the
+ * checkout page. Safe no-op when there's no cart or nothing to attach.
+ */
+export async function attachAttributionToCart(): Promise<boolean> {
+  if (!shopifyConfigured) return false;
+  const id = await readCartId();
+  if (!id) return false;
+  const attributes = await attributionAttributes();
+  if (attributes.length === 0) return false;
+  try {
+    await shopifyFetch(CART_ATTRIBUTES_UPDATE, { cartId: id, attributes });
+    return true;
+  } catch (err) {
+    console.error("[cart] attachAttribution failed:", err);
+    return false;
+  }
+}
 
 type ShopifyCartLineNode = {
   id: string;
@@ -215,7 +269,12 @@ export async function addToCart(
         userErrors: { message: string }[];
       };
     }>(CART_CREATE, {
-      input: { lines: [{ merchandiseId: variantId, quantity }] },
+      input: {
+        lines: [{ merchandiseId: variantId, quantity }],
+        // Carry GA4 client_id + utm into the cart at creation so the order
+        // (note_attributes) lets the webhook fire an attributed purchase.
+        attributes: await attributionAttributes(),
+      },
     });
     if (created.cartCreate.userErrors.length) {
       throw new Error(
