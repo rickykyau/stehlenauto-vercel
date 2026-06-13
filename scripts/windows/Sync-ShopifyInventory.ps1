@@ -14,11 +14,12 @@
    Only items whose Shopify quantity DIFFERS from CB are written.
 
  WHY IT IS SAFE TO RUN HOURLY
-   * Read-only against CB. Writes only "available" inventory in Shopify.
-   * ABORTS if the CB view returns fewer than $MinRowsGuard rows, so a broken
-     query / empty result can NEVER zero out the catalog.
-   * Optional $MaxZeroOutGuard aborts if an implausible number of items would
-     drop to 0 in a single run (protects against a bad CB data load).
+   * The CB view is the source of truth — the script applies exactly what it
+     returns, including large swings and mass zero-outs. No second-guessing.
+   * Read-only against CB. Writes only "available" inventory in Shopify, and
+     only for items whose quantity actually changed.
+   * The one guard is against a FAILED read: if the view returns 0 rows the run
+     aborts (that is a broken query/connection, not an empty catalog).
    * -DryRun writes a CSV of intended changes and pushes NOTHING.
    * Every run appends a timestamped log under $LogDir.
 
@@ -36,7 +37,7 @@
 
  EXIT CODES (Task Scheduler "Last Run Result")
    0 = success (or dry run)
-   1 = aborted by a safety guard (CB rows too few / too many zero-outs)
+   1 = aborted: CB view read returned 0 rows (failed query/connection)
    2 = configuration error (missing token, location, SQL/Shopify auth)
    3 = completed but one or more Shopify batches reported errors
 ================================================================================
@@ -44,8 +45,7 @@
 
 [CmdletBinding()]
 param(
-    [switch]$DryRun,
-    [switch]$Force   # bypass $MaxZeroOutGuard for this run only
+    [switch]$DryRun
 )
 
 # ============================== CONFIG ========================================
@@ -69,13 +69,14 @@ $SqlAuth     = 'Integrated'       # 'Integrated' (Windows acct) or 'Sql'
 $SqlUser     = ''                 # only if $SqlAuth = 'Sql'
 $SqlPassword = ''                 # only if $SqlAuth = 'Sql'
 
-# Safety + logging
-$MinRowsGuard    = 1000           # abort if the CB view returns fewer rows
-$MaxZeroOutGuard = 400            # abort if more than this many items would go
-                                  # to 0 in one run (use -Force to override).
-                                  # 0 = disable this guard.
-$BatchSize       = 100            # Shopify quantities per mutation (<=250)
-$LogDir          = Join-Path $PSScriptRoot 'logs'
+# The CB view is the source of truth — the script applies whatever it returns,
+# including large swings and mass zero-outs. The ONLY guard is against a failed
+# / empty read (0 rows = the query or connection broke, which is an
+# infrastructure error, not "the catalog is empty"). This is not second-guessing
+# the data; it just refuses to act on a non-result.
+$AbortIfEmpty = $true             # abort if the view returns 0 rows
+$BatchSize    = 100               # Shopify quantities per mutation (<=250)
+$LogDir       = Join-Path $PSScriptRoot 'logs'
 # ============================ END CONFIG ======================================
 
 $ErrorActionPreference = 'Stop'
@@ -125,8 +126,8 @@ try {
     Fail "SQL read failed: $($_.Exception.Message)" 2
 }
 Log "CB view rows: $($cb.Count)"
-if ($cb.Count -lt $MinRowsGuard) {
-    Fail "CB returned $($cb.Count) rows (< MinRowsGuard $MinRowsGuard). Aborting to protect the catalog." 1
+if ($AbortIfEmpty -and $cb.Count -eq 0) {
+    Fail "CB view returned 0 rows — treating as a failed read, not an empty catalog. Aborting." 1
 }
 
 # ----- 2. Shopify GraphQL helper ---------------------------------------------
@@ -205,11 +206,7 @@ foreach ($key in $map.Keys) {
         $changes.Add([pscustomobject]@{ Item=$key; Inv=$map[$key].inv; From=$current; To=$target })
     }
 }
-Log "Matched CB<->Shopify: $matched ; changes: $($changes.Count) ; would-zero-out: $zeroOut ; already-correct: $($matched - $changes.Count)"
-
-if ($MaxZeroOutGuard -gt 0 -and $zeroOut -gt $MaxZeroOutGuard -and -not $Force) {
-    Fail "Would zero out $zeroOut items (> MaxZeroOutGuard $MaxZeroOutGuard). Aborting. Re-run with -Force if this is expected." 1
-}
+Log "Matched CB<->Shopify: $matched ; changes: $($changes.Count) ; to-zero: $zeroOut ; already-correct: $($matched - $changes.Count)"
 
 # ----- 6. dry run exit --------------------------------------------------------
 if ($DryRun) {
