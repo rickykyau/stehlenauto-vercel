@@ -1,6 +1,6 @@
 <#
 ================================================================================
- Sync-ShopifyInventory.ps1   —  Stehlen Auto  (CB / JLDataMart -> Shopify)
+ Sync-ShopifyInventory.ps1   -  Stehlen Auto  (CB / JLDataMart -> Shopify)
 ================================================================================
 
  WHAT IT DOES
@@ -14,7 +14,7 @@
    Only items whose Shopify quantity DIFFERS from CB are written.
 
  WHY IT IS SAFE TO RUN HOURLY
-   * The CB view is the source of truth — the script applies exactly what it
+   * The CB view is the source of truth - the script applies exactly what it
      returns, including large swings and mass zero-outs. No second-guessing.
    * Read-only against CB. Writes only "available" inventory in Shopify, and
      only for items whose quantity actually changed.
@@ -58,7 +58,7 @@ $ApiVersion  = '2025-01'
 $AdminToken  = ''
 
 # Shopify location to write to. Leave '' to auto-detect the single active
-# inventory-shipping location (recommended — there is exactly one today:
+# inventory-shipping location (recommended - there is exactly one today:
 # "21912 Garcia Lane"). Pin it here only if you ever add more locations.
 $LocationId  = ''   # e.g. 'gid://shopify/Location/84099563567'
 
@@ -69,7 +69,7 @@ $SqlAuth     = 'Integrated'       # 'Integrated' (Windows acct) or 'Sql'
 $SqlUser     = ''                 # only if $SqlAuth = 'Sql'
 $SqlPassword = ''                 # only if $SqlAuth = 'Sql'
 
-# The CB view is the source of truth — the script applies whatever it returns,
+# The CB view is the source of truth - the script applies whatever it returns,
 # including large swings and mass zero-outs. The ONLY guard is against a failed
 # / empty read (0 rows = the query or connection broke, which is an
 # infrastructure error, not "the catalog is empty"). This is not second-guessing
@@ -127,7 +127,7 @@ try {
 }
 Log "CB view rows: $($cb.Count)"
 if ($AbortIfEmpty -and $cb.Count -eq 0) {
-    Fail "CB view returned 0 rows — treating as a failed read, not an empty catalog. Aborting." 1
+    Fail "CB view returned 0 rows - treating as a failed read, not an empty catalog. Aborting." 1
 }
 
 # ----- 2. Shopify GraphQL helper ---------------------------------------------
@@ -212,11 +212,11 @@ Log "Matched CB<->Shopify: $matched ; changes: $($changes.Count) ; to-zero: $zer
 if ($DryRun) {
     $csv = Join-Path $LogDir "inventory-sync_dryrun_$stamp.csv"
     $changes | Export-Csv -Path $csv -NoTypeInformation -Encoding UTF8
-    Log "DRY RUN — wrote $($changes.Count) intended changes to $csv. No writes performed."
+    Log "DRY RUN - wrote $($changes.Count) intended changes to $csv. No writes performed."
     Log "=== END (dry run) ==="
     exit 0
 }
-if ($changes.Count -eq 0) { Log 'Nothing to update — Shopify already matches CB.'; Log '=== END ==='; exit 0 }
+if ($changes.Count -eq 0) { Log 'Nothing to update - Shopify already matches CB.'; Log '=== END ==='; exit 0 }
 
 # ----- 7. push in batches -----------------------------------------------------
 $setMutation = @'
@@ -235,14 +235,14 @@ for ($i = 0; $i -lt $changes.Count; $i += $BatchSize) {
     $quantities = foreach ($c in $slice) {
         @{ inventoryItemId = $c.Inv; locationId = $LocationId; quantity = [int]$c.To }
     }
-    # NOTE: do not name this $input — that is a PowerShell automatic variable.
+    # NOTE: do not name this $input - that is a PowerShell automatic variable.
     $setInput = @{
         name                 = 'available'
         reason               = 'correction'
         # Required by inventorySetQuantities: without this, Shopify demands a
         # per-item compareQuantity (optimistic-lock). We overwrite from the ERP
         # source of truth, so we explicitly ignore it. (Verified against the
-        # live 2025-01 API — the mutation rejects the call otherwise.)
+        # live 2025-01 API - the mutation rejects the call otherwise.)
         ignoreCompareQuantity = $true
         referenceDocumentUri = 'cb://jldatamart/shopify.vInventoryItem'
         quantities           = @($quantities)
@@ -271,7 +271,7 @@ exit 0
 
 <#
 ================================================================================
- WINDOWS TASK SCHEDULER  (run hourly — recommended cadence)
+ WINDOWS TASK SCHEDULER  (run hourly - recommended cadence)
 --------------------------------------------------------------------------------
  Recommended: every hour, on the hour. Stock changes are driven by orders
  (Shopify decrements live on each sale) and CB restocks/adjustments; an hourly
