@@ -137,6 +137,28 @@ export const notificationRecipients = pgTable("notification_recipients", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+/**
+ * Abandoned carts the owner has dismissed from the /admin/abandoned-carts list
+ * ("ignore/archive"). Keyed by the Shopify abandonedCheckout legacy id. Archived
+ * carts are filtered out of the live list. Reversible (DELETE row to un-archive).
+ */
+export const archivedCarts = pgTable("archived_carts", {
+  checkoutId: text("checkout_id").primaryKey(), // Shopify abandonedCheckout legacy id
+  archivedBy: text("archived_by").notNull(), // Clerk user id
+  archivedAt: timestamp("archived_at").notNull().defaultNow(),
+});
+
+/**
+ * Log of recovery follow-up emails sent from /admin/abandoned-carts so the UI
+ * can show SENT state and the server can refuse to double-send the same cart.
+ */
+export const abandonedCartSends = pgTable("abandoned_cart_sends", {
+  checkoutId: text("checkout_id").primaryKey(), // one recovery email per cart
+  sentBy: text("sent_by").notNull(), // Clerk user id
+  sentTo: text("sent_to").notNull(), // recipient email at send time
+  sentAt: timestamp("sent_at").notNull().defaultNow(),
+});
+
 export type Vehicle = typeof vehicles.$inferSelect;
 export type NotificationRecipient = typeof notificationRecipients.$inferSelect;
 export type NewVehicle = typeof vehicles.$inferInsert;
@@ -146,3 +168,5 @@ export type WishlistItem = typeof wishlistItems.$inferSelect;
 export type SearchMiss = typeof searchMisses.$inferSelect;
 export type ProductReview = typeof productReviews.$inferSelect;
 export type NewProductReview = typeof productReviews.$inferInsert;
+export type ArchivedCart = typeof archivedCarts.$inferSelect;
+export type AbandonedCartSend = typeof abandonedCartSends.$inferSelect;

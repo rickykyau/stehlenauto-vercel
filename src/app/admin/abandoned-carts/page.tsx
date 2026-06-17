@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { listAbandonedCarts } from "@/lib/admin/abandoned-carts";
 import { requireOwner } from "@/lib/admin/guard";
-import { CopyRecoveryButton } from "./recover-button";
+import { CartRowActions } from "./recover-button";
 
 export const dynamic = "force-dynamic";
 
@@ -41,8 +41,11 @@ export default async function AdminAbandonedCartsPage({
     liveError = err instanceof Error ? err.message : "Shopify Admin error";
   }
 
+  // Recoverable = carts the customer hasn't already converted on.
   const totalValue =
-    result?.items.reduce((acc, i) => acc + parseFloat(i.totalPrice || "0"), 0) ?? 0;
+    result?.items
+      .filter((i) => !i.alreadyPurchased)
+      .reduce((acc, i) => acc + parseFloat(i.totalPrice || "0"), 0) ?? 0;
 
   return (
     <div>
@@ -57,9 +60,12 @@ export default async function AdminAbandonedCartsPage({
         }}
       >
         <p style={{ color: "var(--color-muted)", fontSize: 13, maxWidth: 580 }}>
-          Customers who reached checkout but didn&apos;t pay. Tap RECOVER to
-          copy the resume-checkout link, then paste it into a personal email
-          or SMS. Klaviyo automation runs separately.
+          Customers who reached checkout but didn&apos;t pay. <strong>SEND
+          FOLLOW-UP</strong> emails a branded recovery message via Brevo &mdash;
+          but only when the customer has an email and hasn&apos;t already
+          purchased (those are flagged <span style={{ color: "var(--color-success)" }}>ALREADY
+          PURCHASED</span> with send disabled). <strong>ARCHIVE</strong> ignores
+          a cart so it drops off the list.
         </p>
       </div>
 
@@ -201,18 +207,14 @@ export default async function AdminAbandonedCartsPage({
                       </span>
                     </Td>
                     <Td>
-                      {c.recoveryUrl ? (
-                        <CopyRecoveryButton
-                          url={c.recoveryUrl}
-                          email={c.email}
-                        />
-                      ) : (
-                        <span
-                          style={{ fontSize: 11, color: "var(--color-muted)" }}
-                        >
-                          No recovery URL
-                        </span>
-                      )}
+                      <CartRowActions
+                        checkoutId={c.legacyId}
+                        url={c.recoveryUrl}
+                        email={c.email}
+                        alreadyPurchased={c.alreadyPurchased}
+                        purchasedOrderName={c.purchasedOrderName}
+                        alreadySentAt={c.alreadySentAt}
+                      />
                     </Td>
                   </tr>
                 ))
