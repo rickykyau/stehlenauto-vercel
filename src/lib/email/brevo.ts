@@ -22,6 +22,12 @@ export async function sendTransactionalEmail(opts: {
   toName?: string;
   subject: string;
   html: string;
+  /**
+   * Plain-text alternative. ALWAYS pass this — without it Brevo auto-generates
+   * a text part by stripping the HTML, which produces a mess of stray line
+   * breaks that some clients (and "show plain text" views) display.
+   */
+  text?: string;
   tags?: string[];
 }): Promise<SendResult> {
   const key = process.env.BREVO_API_KEY;
@@ -42,6 +48,7 @@ export async function sendTransactionalEmail(opts: {
         replyTo: { email: REPLY_TO },
         subject: opts.subject,
         htmlContent: opts.html,
+        ...(opts.text ? { textContent: opts.text } : {}),
         ...(opts.tags ? { tags: opts.tags } : {}),
       }),
     });

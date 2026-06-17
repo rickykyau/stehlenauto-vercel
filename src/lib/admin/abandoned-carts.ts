@@ -210,6 +210,7 @@ function esc(s: string): string {
 export function buildRecoveryEmail(item: AbandonedCartItem): {
   subject: string;
   html: string;
+  text: string;
 } {
   const firstName = item.customerName.split(" ")[0];
   const greeting =
@@ -236,7 +237,32 @@ ${itemsList}
 <p style="color:#888; font-size:13px;">Ran into a fitment question or anything else? Just reply to this email and a human will help.</p>
 <p>&mdash; The Stehlen Auto Team<br/><a href="https://stehlenauto.com?utm_source=brevo&utm_medium=email&utm_campaign=abandoned-cart-recovery&utm_content=footer">stehlenauto.com</a></p>
 </div></body></html>`;
-  return { subject, html };
+
+  // Hand-written plain-text alternative — intentional breaks only between
+  // paragraphs. Prevents the mangled auto-generated text part.
+  const textGreeting =
+    firstName && firstName !== "Guest" ? `Hi ${firstName},` : "Hi there,";
+  const textItems = item.topItemTitles.length
+    ? "\n" + item.topItemTitles.map((t) => `  - ${t}`).join("\n") + "\n"
+    : "";
+  const text = [
+    textGreeting,
+    "",
+    "You started checkout at stehlenauto.com but didn't get to finish - your cart is still saved:",
+    textItems || "",
+    "Every part we ship is fitment-guaranteed for your vehicle, with free shipping and 30-day returns. Pick up right where you left off:",
+    "",
+    cta,
+    "",
+    "Ran into a fitment question or anything else? Just reply to this email and a human will help.",
+    "",
+    "- The Stehlen Auto Team",
+    "stehlenauto.com",
+  ]
+    .filter((line, i, arr) => !(line === "" && arr[i - 1] === ""))
+    .join("\n");
+
+  return { subject, html, text };
 }
 
 // ---------------------------------------------------------------------------

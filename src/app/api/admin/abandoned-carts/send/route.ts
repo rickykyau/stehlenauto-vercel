@@ -77,12 +77,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { subject, html } = buildRecoveryEmail(cart);
+  const { subject, html, text } = buildRecoveryEmail(cart);
   const result = await sendTransactionalEmail({
     to: cart.email,
     toName: cart.customerName !== "Guest" ? cart.customerName : undefined,
     subject,
     html,
+    text,
     tags: ["abandoned-cart-recovery"],
   });
   if (!result.ok) {
