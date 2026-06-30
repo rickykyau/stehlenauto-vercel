@@ -27,6 +27,15 @@ function logDebug(name: EventName, payload: AnalyticsPayload | undefined) {
 function gaTrack(name: EventName, payload?: AnalyticsPayload) {
   if (typeof window === "undefined") return;
   if (typeof window.gtag !== "function") return;
+  // GA4 `purchase` is recorded SERVER-SIDE only, via the Shopify orders/create
+  // webhook → Measurement Protocol (see lib/analytics/ga-mp.ts). The hosted
+  // Shopify checkout rarely returns to /order/confirmation, so the server event
+  // is the reliable one and fires for every order. Letting the client ALSO send
+  // `purchase` here produced a second GA4 event with no `transaction_id` to
+  // dedupe against — double-counting revenue (~75% inflation, observed
+  // 2026-06). Klaviyo "Placed Order" + Clarity still fire (separate calls in
+  // track()); only the GA4 purchase is suppressed client-side.
+  if (name === "purchase") return;
   window.gtag("event", name, payload ?? {});
 }
 
