@@ -10,6 +10,7 @@ import {
   type PurchaseItem,
   type PurchaseAttribution,
 } from "@/lib/analytics/ga-mp";
+import { pingProduct } from "@/lib/seo/indexnow";
 
 /**
  * Pull the GA4 client_id + utm_* we stashed into the cart (→ order
@@ -54,13 +55,16 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
- * Shopify webhook receiver. Currently handles `orders/create` → fires an
- * internal staff alert email to the recipients managed in /admin/notifications
- * (falling back to ADMIN_OWNER_EMAILS if the list is empty).
+ * Shopify webhook receiver. Handles:
+ *   - `orders/create`  → staff alert email (/admin/notifications recipients,
+ *      fallback ADMIN_OWNER_EMAILS) + server-side GA4 purchase.
+ *   - `products/update` / `products/create` → ping IndexNow so Bing/ChatGPT
+ *      re-crawl the changed PDP (catalog freshness, no manual re-push).
+ * Everything else is acked and ignored.
  *
  * Security: verifies the HMAC-SHA256 signature using SHOPIFY_WEBHOOK_SECRET.
- * Register the webhook in Shopify Admin → Settings → Notifications → Webhooks
- * (or via Admin API) pointing topic `orders/create` at:
+ * Register each topic in Shopify Admin → Settings → Notifications → Webhooks
+ * (or via Admin API) pointing at:
  *   https://stehlenauto.com/api/webhooks/shopify
  */
 function verifyHmac(rawBody: string, hmacHeader: string | null, secret: string): boolean {
@@ -90,7 +94,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid HMAC" }, { status: 401 });
   }
 
-  // Only act on order creation; ack everything else.
+  // Catalog change → ping IndexNow so Bing (and thus ChatGPT Search) re-crawls
+  // the PDP promptly. Fire-and-forget; never blocks the ack. Covers add/edit;
+  // a product flipped to draft/archived still gets pinged so Bing re-fetches
+  // and drops the now-noindex/404 page.
+  if (topic === "products/update" || topic === "products/create") {
+    let handle: string | undefined;
+    try {
+      handle = (JSON.parse(raw) as { handle?: string }).handle;
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    }
+    if (!handle) {
+      return NextResponse.json({ ok: true, note: "no-handle" });
+    }
+    const pinged = await pingProduct(handle).catch(() => false);
+    return NextResponse.json({ ok: true, topic, handle, indexnow: pinged });
+  }
+
+  // Only act on order creation beyond this point; ack everything else.
   if (topic !== "orders/create") {
     return NextResponse.json({ ok: true, ignored: topic });
   }
