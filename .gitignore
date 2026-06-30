@@ -94,3 +94,11 @@ public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v19-silent.mp4
 # Marketing — campaign metadata + any customer-data exports (PII): never commit
 marketing/email/data/
 marketing/**/*.csv
+token.json
+oauth-credentials.json
+
+# OpenAI ACP feed — generated catalog data (regenerable via scripts/build-openai-acp-feed.py)
+marketing/feeds/openai/products.jsonl
+marketing/feeds/openai/products.jsonl.gz
+marketing/feeds/openai/sample.json
+marketing/feeds/openai/report.txt
