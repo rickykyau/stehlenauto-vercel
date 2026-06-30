@@ -109,6 +109,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, note: "no-handle" });
     }
     const pinged = await pingProduct(handle).catch(() => false);
+    console.log(
+      `[shopify-webhook] ${topic} ${handle} → IndexNow ${pinged ? "ok" : "failed"}`,
+    );
     return NextResponse.json({ ok: true, topic, handle, indexnow: pinged });
   }
 
