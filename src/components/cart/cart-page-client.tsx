@@ -120,7 +120,15 @@ export function CartPageClient({
     }
   };
 
-  const lines = cart?.lines ?? [];
+  // Cycle 14BH (mobile CR teardown F-4): drop quantity-0 "ghost" lines so a
+  // line decremented to 0 (rather than removed) can't render as a $0.00
+  // misfit row or trip a false "MIXED FITMENT" banner. Mirrors cart-drawer.
+  // Memoized on `cart` so the downstream `fitments` useMemo keeps a stable
+  // `lines` dependency (a bare .filter() would recompute fitment every render).
+  const lines = useMemo(
+    () => (cart?.lines ?? []).filter((l) => l.quantity > 0),
+    [cart],
+  );
   const subtotal = lines.reduce(
     (s, l) => s + parseFloat(l.price.amount) * l.quantity,
     0,

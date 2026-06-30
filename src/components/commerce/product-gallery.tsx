@@ -102,13 +102,16 @@ export function ProductGallery({
 
       {/* Main */}
       <div
-        className="product-img-bg"
+        className="product-img-bg pdp-gallery-main"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         style={{
           borderRadius: "var(--radius-md)",
           position: "relative",
-          aspectRatio: "1",
+          // aspect-ratio lives in globals.css (.pdp-gallery-main): square on
+          // desktop, shorter 4:3 on mobile so the square gallery no longer
+          // eats ~41% of the viewport and pushes the fitment-confirmation
+          // card below the fold (Cycle 14BH mobile CR teardown F-5).
           overflow: "hidden",
           touchAction: "pan-y",
         }}

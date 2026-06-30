@@ -106,7 +106,12 @@ export function CartDrawer({
   // Cycle 5 (Mike): cart drawer used to lie by omission — cart PAGE shows a
   // fitment banner, drawer didn't. Match the page's logic so the customer sees
   // mixed-vehicle warnings the moment the drawer opens, not only on /cart.
-  const lines = cart?.lines ?? [];
+  // Cycle 14BH (mobile CR teardown F-4): drop quantity-0 "ghost" lines
+  // before computing fitment or rendering. A line decremented to 0 in the
+  // stepper (rather than removed) lingered as a $0.00 row badged "DOES NOT
+  // FIT", which tripped a false "MIXED FITMENT" alarm contradicting the
+  // real cart contents — a trust hit at the exact moment of a $400+ decision.
+  const lines = (cart?.lines ?? []).filter((l) => l.quantity > 0);
   const fitments = useMemo(
     () =>
       lines.map((l) =>

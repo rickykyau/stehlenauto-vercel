@@ -317,6 +317,14 @@ export type CollectionFitMeta = {
   fitsCount: number;
   /** True when a vehicle is set but zero products in the page positively fit. */
   noExactFit: boolean;
+  /**
+   * Cycle 14BH (mobile CR teardown F-2): set by the collection page's
+   * zero-exact-fits fallback, which re-fetches the WHOLE category (no vehicle
+   * filter) so the grid isn't empty. The products shown are the full range,
+   * NOT universal-fit parts — the banner copy must say so rather than
+   * mislabel confirmed-mismatch parts as "universal-fit options".
+   */
+  fullCatalogFallback?: boolean;
 };
 
 export type CollectionResult = {

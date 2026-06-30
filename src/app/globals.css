@@ -449,6 +449,20 @@ h4 { line-height: 1.3; }
   }
 }
 
+/* ===== PDP main gallery image (Cycle 14BH mobile CR teardown F-5) =====
+ * Square on desktop; shorter 4:3 on phones so the gallery stops consuming
+ * ~41% of the viewport and the green "CONFIRMED FITMENT" card clears the
+ * first scroll (fitment_flow_decision.md: fitment badge must be within the
+ * first scroll on mobile). objectFit:contain means 4:3 never crops the part. */
+.pdp-gallery-main {
+  aspect-ratio: 1;
+}
+@media (max-width: 767px) {
+  .pdp-gallery-main {
+    aspect-ratio: 4 / 3;
+  }
+}
+
 /* ===== Container widths ===== */
 .container-x {
   width: 100%;

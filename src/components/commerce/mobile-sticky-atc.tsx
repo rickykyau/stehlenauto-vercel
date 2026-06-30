@@ -125,45 +125,51 @@ export function MobileStickyAtc({
   }, [requiredStripGroups]);
 
   useEffect(() => {
-    // Cycle 14AR-fix18 (Mike R5 BLOCKER): IntersectionObserver on the buy-box
-    // anchor — sticky shows when the anchor scrolls out of view.
-    // Cycle 14AR-fix21 (Ren R6 OBS): the buy-box-anchor wraps the entire
-    // 989px buy-box column on mobile. The IO didn't fire until the WHOLE
-    // column scrolled out, which on tall PDPs meant the sticky surfaced
-    // far past the visible content. Prefer the tighter [data-atc-anchor]
-    // (the ATC button itself) and drop the rootMargin so the sticky
-    // appears the moment the ATC button leaves the viewport.
+    // Sticky must appear AFTER the customer scrolls PAST the in-page ATC
+    // button — never while the button is still below the fold (they haven't
+    // reached it yet, so a duplicate sticky ATC is just noise).
+    //
+    // Cycle 14BH (mobile CR teardown): this used an IntersectionObserver +
+    // a `hasBeenSeen` flag, which only surfaced the sticky if the ATC button
+    // passed THROUGH the viewport during a continuous scroll. An IO fires
+    // only on threshold crossings, so an instant jump that skips the element
+    // entirely — a momentum flick top→bottom, an in-page anchor link, or the
+    // browser restoring scroll position on back-nav — never flipped the flag,
+    // and the primary mobile buy affordance silently never appeared
+    // (verified live: jump to page bottom left the bar aria-hidden).
+    //
+    // Replace it with a direct position read, rAF-throttled: show the sticky
+    // exactly when the ATC button's bottom edge has passed above the viewport
+    // top. Reading the live rect every frame is robust to ALL scroll types
+    // (continuous, fast flick, and instant jump) and self-corrects when the
+    // buy box grows (sub-model strips expanding shifts the anchor).
     const anchor =
       document.querySelector<HTMLElement>("[data-atc-anchor]") ??
       document.querySelector<HTMLElement>("[data-buy-box-anchor]");
-    if (!anchor || typeof IntersectionObserver === "undefined") {
-      // Fallback: show after a modest scroll if the anchor isn't found.
+    if (!anchor) {
+      // No anchor found → show after a modest scroll as a safe fallback.
       const onScroll = () => setVisible(window.scrollY > 400);
       window.addEventListener("scroll", onScroll, { passive: true });
       onScroll();
       return () => window.removeEventListener("scroll", onScroll);
     }
-    // Cycle 14AR-fix23 (Ren R8 OBS): sticky must appear AFTER the customer
-    // has seen the ATC button at least once — otherwise on tall PDPs where
-    // the buy-box starts below the initial fold, the sticky paints from
-    // page load and duplicates the not-yet-seen ATC. Track first-sighting
-    // and only show sticky on subsequent exits.
-    let hasBeenSeen = false;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            hasBeenSeen = true;
-            setVisible(false);
-          } else if (hasBeenSeen) {
-            setVisible(true);
-          }
-        }
-      },
-      { threshold: 0 },
-    );
-    io.observe(anchor);
-    return () => io.disconnect();
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      // bottom <= 0 → the entire ATC button has scrolled above the viewport.
+      setVisible(anchor.getBoundingClientRect().bottom <= 0);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(check);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    check(); // initial state (hidden at scrollY=0; button is below the fold)
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   // Tell the chat FAB how tall we are so it can lift itself out of our way
@@ -214,7 +220,16 @@ export function MobileStickyAtc({
         background: "var(--color-background)",
         borderTop: "1px solid var(--color-border)",
         padding: "10px 16px 10px",
-        transform: visible ? "translateY(0)" : "translateY(120%)",
+        // Cycle 14BH (mobile CR teardown): the bar sits `bottom: nav-height`
+        // (56px) above the viewport floor, so translateY(120%) of its own
+        // ~69px height (≈83px) was NOT enough to clear the screen — a ~42px
+        // sliver of the "hidden" bar (z-50) stayed painted over the bottom
+        // nav (z-40), reading as a broken/colliding ATC on every PDP at rest.
+        // Translate by its full height PLUS the bottom-nav offset (PLUS a
+        // little slack) so the hidden bar fully leaves the viewport.
+        transform: visible
+          ? "translateY(0)"
+          : "translateY(calc(100% + var(--stehlen-bottom-nav-height, 0px) + 24px))",
         transition: "transform 200ms ease",
         boxShadow: "0 -8px 24px rgba(0,0,0,0.4)",
       }}

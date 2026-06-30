@@ -460,7 +460,18 @@ export default async function CollectionPage({
       // customer sees FITS / DOES NOT FIT badges without being blocked.
     });
     if (fallback && fallback.products.length > 0) {
-      collection = fallback;
+      // Cycle 14BH (mobile CR teardown F-2): the fallback re-fetch drops the
+      // vehicle, so it carries no fitMeta — which silently gated out the
+      // explanatory banner (page.tsx ~805) while the per-card badges still
+      // rendered a wall of red "DOES NOT FIT". For cold Shopping traffic
+      // that reads as "this store has nothing for my truck". Re-attach a
+      // zero-fits fitMeta (flagged as a full-catalog fallback) so the banner
+      // renders the honest "no exact fits yet — here's the full range,
+      // verify fitment" context instead of going dark.
+      collection = {
+        ...fallback,
+        fitMeta: { fitsCount: 0, noExactFit: true, fullCatalogFallback: true },
+      };
     }
   }
 
@@ -833,8 +844,9 @@ export default async function CollectionPage({
                     NO EXACT FITS YET FOR YOUR {vehicle.year}{" "}
                     {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()}
                   </span>{" "}
-                  — showing universal-fit options. Verify fitment on each
-                  product page before ordering.
+                  {collection.fitMeta.fullCatalogFallback
+                    ? "— showing the full range in this category. Verify fitment on each product page before ordering."
+                    : "— showing universal-fit options. Verify fitment on each product page before ordering."}
                 </>
               )}
             </div>
