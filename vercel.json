@@ -4,6 +4,10 @@
     {
       "path": "/api/admin/cron/daily-summary",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/admin/cron/review-requests",
+      "schedule": "0 17 * * *"
     }
   ]
 }

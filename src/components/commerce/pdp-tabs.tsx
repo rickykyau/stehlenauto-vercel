@@ -335,6 +335,24 @@ export function PdpTabs({
     return () => window.removeEventListener("stehlen:tabs:switch", handler);
   }, []);
 
+  // Cycle 14BI-rev: a customer arriving from their post-purchase review-request
+  // email lands on /products/<handle>?review=<token>. Open the REVIEWS tab and
+  // scroll it into view so the write-a-review form is right there — otherwise
+  // they'd land on the default FITMENT tab and never see it.
+  useEffect(() => {
+    if (!new URLSearchParams(window.location.search).get("review")) return;
+    // Intentional mount-time sync from the URL (client-only — can't read
+    // window in a useState initializer because this component also SSRs).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTab("reviews");
+    const t = setTimeout(() => {
+      document
+        .getElementById("pdp-tabs")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <section id="pdp-tabs" className="container-x" style={{ paddingBottom: 64 }}>
       {/* Cycle 14AZ-fix1 (Ren BUG-AZ-R1-010): on 375px the tab strip

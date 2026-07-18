@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 
 /**
@@ -33,6 +33,17 @@ export function ReviewForm({
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<"idle" | "ok" | "err">("idle");
   const [errMessage, setErrMessage] = useState("");
+  // Cycle 14BI-rev: a `?review=<token>` param means the customer arrived from
+  // their post-purchase review-request email. We pass the token to the API so
+  // the review is stamped verified-purchase (the email is pinned server-side).
+  const [reviewToken, setReviewToken] = useState<string | null>(null);
+  useEffect(() => {
+    const t = new URLSearchParams(window.location.search).get("review");
+    // Intentional mount-time sync from the URL (client-only — can't read
+    // window in a useState initializer because this component also SSRs).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (t) setReviewToken(t);
+  }, []);
 
   // Cycle 14BG-fix1 (Mike gate-test BLOCKER): button was disabled until
   // every field passed. Mike's Playwright session showed it stuck even
@@ -75,6 +86,7 @@ export function ReviewForm({
           body: reviewBody.trim(),
           authorName: authorName.trim(),
           authorEmail: authorEmail.trim(),
+          ...(reviewToken ? { token: reviewToken } : {}),
         }),
       });
       if (!res.ok) {
@@ -178,6 +190,33 @@ export function ReviewForm({
         Help other {productTitle.split(" ").slice(0, 3).join(" ")} owners decide.
         Reviews are moderated for spam — every rating counts.
       </p>
+
+      {/* Cycle 14BI-rev: verified-purchase badge when the customer arrived from
+          their post-purchase review-request email. */}
+      {reviewToken && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginBottom: 18,
+            padding: "8px 12px",
+            background: "rgba(34,197,94,0.08)",
+            border: "1px solid rgba(34,197,94,0.4)",
+            borderRadius: "var(--radius-sm)",
+            fontSize: 12,
+            color: "var(--color-foreground)",
+          }}
+        >
+          <Icons.shield size={14} />
+          <span>
+            <strong style={{ color: "var(--color-success)" }}>
+              Verified purchase
+            </strong>{" "}
+            — this review will be marked verified once approved.
+          </span>
+        </div>
+      )}
 
       {/* Star picker */}
       <div style={{ marginBottom: 18 }}>

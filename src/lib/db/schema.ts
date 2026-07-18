@@ -121,8 +121,27 @@ export const productReviews = pgTable("product_reviews", {
   title: text("title").notNull(),
   body: text("body").notNull(),
   status: text("status").notNull().default("pending"), // pending | approved | rejected
+  // Cycle 14BI-rev: verified-purchase provenance. Set true only when the
+  // submission carried a valid signed token from a post-purchase review
+  // request email (see lib/reviews/token.ts). Drives the "Verified Purchase"
+  // badge + the `verified` flag in AggregateRating/Review JSON-LD — the
+  // strongest trust signal for buyers and AI answer engines.
+  verified: boolean("verified").notNull().default(false),
+  orderId: text("order_id"), // Shopify order id the review is tied to (verified only)
   createdAt: timestamp("created_at").notNull().defaultNow(),
   approvedAt: timestamp("approved_at"),
+});
+
+/**
+ * Cycle 14BI-rev: one post-purchase review-request email per order, so the
+ * daily sender never double-asks. Mirrors abandoned_cart_sends. Keyed by the
+ * Shopify order id.
+ */
+export const reviewRequestSends = pgTable("review_request_sends", {
+  orderId: text("order_id").primaryKey(),
+  orderName: text("order_name").notNull(), // e.g. "#1012" for logs/audit
+  sentTo: text("sent_to").notNull(), // recipient email at send time
+  sentAt: timestamp("sent_at").notNull().defaultNow(),
 });
 
 /**
@@ -170,3 +189,4 @@ export type ProductReview = typeof productReviews.$inferSelect;
 export type NewProductReview = typeof productReviews.$inferInsert;
 export type ArchivedCart = typeof archivedCarts.$inferSelect;
 export type AbandonedCartSend = typeof abandonedCartSends.$inferSelect;
+export type ReviewRequestSend = typeof reviewRequestSends.$inferSelect;

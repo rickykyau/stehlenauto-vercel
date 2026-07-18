@@ -9,8 +9,9 @@ import type { AmazonReview } from "./index";
  * mapped into the shared AmazonReview shape so the PDP review surface can
  * render them alongside imported Amazon reviews. Only `approved` rows are
  * returned — pending/rejected never reach the storefront (FTC + spam).
- * Native reviews are NOT verified-purchase, so verified:false and they get
- * source:"customer" for accurate disclosure.
+ * Cycle 14BI-rev: reviews submitted via a post-purchase request email carry a
+ * validated order token, so `verified` reflects the real column now (not a
+ * hardcoded false). source:"customer" either way for accurate disclosure.
  */
 export async function getApprovedNativeReviews(
   handle: string | null | undefined,
@@ -34,7 +35,7 @@ export async function getApprovedNativeReviews(
       body: r.body,
       reviewer: r.authorName,
       date: (r.approvedAt ?? r.createdAt).toISOString().slice(0, 10),
-      verified: false,
+      verified: r.verified,
       helpful_votes: 0,
       images: [],
       source: "customer" as const,
