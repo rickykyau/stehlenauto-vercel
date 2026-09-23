@@ -664,6 +664,17 @@ async function writeFitmentMetafields(
   }
 }
 
+// CA mixes spellings for the same vehicle ("TITAN"/"Titan", "2500HD"/"2500 HD").
+// Same canonical forms as scripts/standardize-vehicle-names.mjs + build-ymm-index.py.
+function standardizeVehicleNames(raw: string): string {
+  return raw
+    .replace(/\bINFINITI\b/g, "Infiniti")
+    .replace(/\bTITAN XD\b/g, "Titan XD")
+    .replace(/\bTITAN\b/g, "Titan")
+    .replace(/\b(\d{4})HD\b/g, "$1 HD")
+    .replace(/\bTransit (\d{3})\b/g, "Transit-$1");
+}
+
 // ---------- main ----------
 function sleep(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
@@ -703,7 +714,8 @@ async function main() {
     const cb = p.cbItemName!.value!.trim();
     const tag = `[${i + 1}/${queue.length}] ${p.handle} (${cb})`;
     try {
-      const result = await lookupFitmentForCbItemName(cb);
+      const found = await lookupFitmentForCbItemName(cb);
+      const result = found && { ...found, fitmentRaw: standardizeVehicleNames(found.fitmentRaw) };
       if (!result) {
         notFound++;
         snapshot[p.handle] = { cbItemName: cb, status: "not-found" };
