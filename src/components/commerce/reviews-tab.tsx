@@ -18,8 +18,10 @@ type SortKey = "helpful" | "recent" | "highest";
  *   [D] Review cards
  *   [E] Footer CTA
  *
- * No fake reviews. All shown reviews are 4-5★ verified-purchase imports
- * from Amazon. The disclosure makes that explicit per FTC guidance.
+ * No fake reviews. Imported reviews are real verified-purchase reviews
+ * of the same product with their original star ratings (reviews whose
+ * rating had to be inferred are never imported). Owner direction
+ * 2026-09-23: don't name the marketplace in the UI.
  */
 export function ReviewsTab({ bundle }: { bundle: AmazonReviewBundle }) {
   const { reviews, avg_rating, review_count } = bundle;
@@ -28,16 +30,12 @@ export function ReviewsTab({ bundle }: { bundle: AmazonReviewBundle }) {
   // mix imported Amazon reviews with admin-approved customer submissions.
   const hasCustomer = reviews.some((r) => r.source === "customer");
   const hasAmazon = reviews.some((r) => r.source !== "customer");
-  const disclosureLabel = hasCustomer
-    ? hasAmazon
-      ? "Verified reviews · Amazon + customers"
-      : "Verified customer reviews"
-    : "Sourced from Amazon";
+  const disclosureLabel = "Verified customer reviews";
   const disclosureBody = hasCustomer
     ? hasAmazon
-      ? "Includes verified-purchase reviews imported from Amazon and reviews submitted by Stehlen customers and approved by our team."
+      ? "Verified-purchase reviews from Stehlen customers. Reviews submitted here are approved by our team before publishing."
       : "Reviews submitted by Stehlen customers and approved by our team before publishing."
-    : "Every review is verified purchase, 4 stars or higher, and includes a customer-uploaded photo.";
+    : "Every review is from a verified purchase.";
 
   // Distribution: only 4 & 5 star exist in curated set; compute defensively
   const dist = useMemo(() => {
@@ -656,14 +654,12 @@ function ReviewCard({
         }}
       >
         <span>{r.reviewer}</span>
-        <span style={{ color: "var(--color-border-2)" }}>·</span>
         {r.verified && (
           <>
-            <span style={{ color: "var(--color-success)" }}>✓ Verified Purchase</span>
             <span style={{ color: "var(--color-border-2)" }}>·</span>
+            <span style={{ color: "var(--color-success)" }}>✓ Verified Purchase</span>
           </>
         )}
-        <span>Amazon</span>
       </div>
 
       <p style={{ fontSize: 14, lineHeight: 1.55, margin: 0 }}>{r.body}</p>

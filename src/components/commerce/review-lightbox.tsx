@@ -249,7 +249,7 @@ export function ReviewLightbox({
           <strong style={{ color: "#fff" }}>{current.title || "Verified review"}</strong>
           <br />
           <span style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}>
-            {current.reviewerName} · ✓ verified purchase · sourced from amazon
+            {current.reviewerName} · ✓ verified purchase
           </span>
           <br />
           <span style={{ fontSize: 11, color: "rgba(255,255,255,0.45)" }}>
