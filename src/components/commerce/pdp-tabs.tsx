@@ -491,7 +491,7 @@ export function PdpTabs({
                     NEEDS MORE INFO
                   </div>
                   <div style={{ fontSize: 12, color: "var(--color-muted)", lineHeight: 1.5 }}>
-                    We have your vehicle ({vehicle.year} {vehicle.make} {vehicle.model}) but this product&apos;s compatibility data isn&apos;t fully tagged yet. Check the buy-box on the right for sub-model selectors (bed length, cab type) or call 1-888-378-4536 to confirm.
+                    We have your vehicle ({vehicle.year} {vehicle.make} {vehicle.model}) but this product&apos;s compatibility data isn&apos;t fully tagged yet. Check the buy-box on the right for sub-model selectors (bed length, cab type) or call 951-332-7000 to confirm.
                   </div>
                 </div>
               )}
@@ -890,7 +890,7 @@ export function PdpTabs({
                 <strong style={{ color: "var(--color-foreground)" }}>
                   {product.title}
                 </strong>{" "}
-                yet. Call 1-888-378-4536 and we&apos;ll send you the spec sheet
+                yet. Call 951-332-7000 and we&apos;ll send you the spec sheet
                 from the warehouse.
               </div>
             )}
@@ -935,10 +935,10 @@ export function PdpTabs({
                   Detailed specs for this product haven&apos;t been parsed
                   yet. Spec sheet ships in the box, or call our techs at{" "}
                   <a
-                    href="tel:+18883784536"
+                    href="tel:+19513327000"
                     style={{ color: "var(--color-primary)" }}
                   >
-                    1-888-378-4536
+                    951-332-7000
                   </a>{" "}
                   for material, dimensions, hardware count, and torque values
                   before you order.
@@ -1215,7 +1215,7 @@ export function PdpTabs({
                   <Link href="/help/install" style={{ color: "var(--color-primary)" }}>
                     install help center
                   </Link>{" "}
-                  or call 1-888-378-4536.
+                  or call 951-332-7000.
                 </div>
               )}
             </div>
@@ -1256,10 +1256,10 @@ export function PdpTabs({
                 phone ready.
               </p>
               <a
-                href="tel:+18883784536"
+                href="tel:+19513327000"
                 className="btn btn-primary btn-block"
               >
-                CALL 1-888-378-4536
+                CALL 951-332-7000
               </a>
               <Link
                 href="/help/install"

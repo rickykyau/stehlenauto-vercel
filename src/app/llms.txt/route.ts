@@ -74,7 +74,7 @@ ${vehicleLines}
 - [Warranty](${base}/legal/warranty)
 
 ## Contact
-- Phone: +1-888-378-4536
+- Phone: +1-951-332-7000
 - Address: 21912 Garcia Lane, Walnut, CA 91789, USA
 - Sitemap: ${base}/sitemap.xml
 `;

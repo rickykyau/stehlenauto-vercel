@@ -346,7 +346,7 @@ export default async function OrderConfirmationPage({
               GUIDES
             </Link>
             <a
-              href="tel:18883784536"
+              href="tel:+19513327000"
               className="btn"
               style={{
                 background: "var(--color-background)",
@@ -354,7 +354,7 @@ export default async function OrderConfirmationPage({
                 color: "var(--color-foreground)",
               }}
             >
-              1-888-378-4536
+              951-332-7000
             </a>
           </div>
         </div>

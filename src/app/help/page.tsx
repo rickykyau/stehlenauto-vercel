@@ -69,7 +69,7 @@ const FAQS = [
   },
   {
     q: "What if my install goes sideways?",
-    a: "Call our techs at 1-888-378-4536 Mon–Fri 9–5 PST. We'll walk you through it on the phone.",
+    a: "Call our techs at 951-332-7000 Mon–Fri 9–5 PST. We'll walk you through it on the phone.",
   },
   // Cycle 14BI (audit F-13): deeper FAQ set for AI-Overview citation + the FAQ
   // rich result. Each answer mirrors a real policy so the schema matches the
@@ -365,7 +365,7 @@ export default function SupportPage() {
               MESSAGE
             </Link>
             <a
-              href="tel:18883784536"
+              href="tel:+19513327000"
               className="btn"
               style={{
                 background: "var(--color-background)",
@@ -373,7 +373,7 @@ export default function SupportPage() {
                 color: "var(--color-foreground)",
               }}
             >
-              1-888-378-4536
+              951-332-7000
             </a>
           </div>
         </div>

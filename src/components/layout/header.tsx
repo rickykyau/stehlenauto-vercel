@@ -201,7 +201,7 @@ export function Header({
                   so the tap area meets the standard. The visual 36px
                   strip stays the same; the tap target is just taller. */}
               <a
-                href="tel:18883784536"
+                href="tel:+19513327000"
                 style={{
                   display: "inline-flex",
                   gap: 8,
@@ -214,7 +214,7 @@ export function Header({
               >
                 <Icons.phone size={12} />
                 <span className="mono" style={{ letterSpacing: "0.08em" }}>
-                  1-888-378-4536
+                  951-332-7000
                 </span>
               </a>
               <Link

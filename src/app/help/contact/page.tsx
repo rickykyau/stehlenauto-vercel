@@ -11,9 +11,9 @@ const CHANNELS = [
   {
     Icon: Icons.phone,
     label: "PHONE",
-    value: "1-888-378-4536",
+    value: "951-332-7000",
     sub: "Mon–Fri 9–5 PST",
-    href: "tel:18883784536",
+    href: "tel:+19513327000",
   },
   {
     Icon: Icons.mail,

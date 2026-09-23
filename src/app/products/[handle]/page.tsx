@@ -760,7 +760,7 @@ export default async function PdpPage({
                 ).join(" / ")}{" "}
                 engine.{" "}
                 <span style={{ color: "var(--color-muted)" }}>
-                  Confirm your engine before ordering — call 1-888-378-4536
+                  Confirm your engine before ordering — call 951-332-7000
                   if unsure.
                 </span>
               </div>
@@ -1126,10 +1126,10 @@ export default async function PdpPage({
                 >
                   Use the compatibility table below or{" "}
                   <a
-                    href="tel:+18883784536"
+                    href="tel:+19513327000"
                     style={{ color: "var(--color-primary)" }}
                   >
-                    call 1-888-378-4536
+                    call 951-332-7000
                   </a>{" "}
                   before ordering.
                 </div>

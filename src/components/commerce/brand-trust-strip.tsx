@@ -51,7 +51,7 @@ export function BrandTrustStrip() {
           {
             Icon: Icons.phone,
             stat: "Real techs",
-            label: "1-888-378-4536 · Mon–Fri 9–5 PT",
+            label: "951-332-7000 · Mon–Fri 9–5 PT",
           },
         ].map(({ Icon, stat, label }) => (
           <div

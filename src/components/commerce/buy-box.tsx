@@ -297,7 +297,7 @@ export function BuyBox({
               ? "This product is currently out of stock."
               : res.status === 503
                 ? "Our cart is briefly unavailable. Try again in a moment."
-                : `Something went wrong adding to cart (HTTP ${res.status}). Try again or call 1-888-378-4536.`;
+                : `Something went wrong adding to cart (HTTP ${res.status}). Try again or call 951-332-7000.`;
         throw new Error(message);
       }
       const okData = await res.json().catch(() => null);
@@ -829,7 +829,7 @@ export function BuyBox({
           hesitation. Always visible — buyers want to know they CAN
           reach a human, even if they never call. */}
       <a
-        href="tel:+18883784536"
+        href="tel:+19513327000"
         style={{
           display: "flex",
           alignItems: "center",
@@ -852,7 +852,7 @@ export function BuyBox({
         <Icons.phone size={12} />
         Fitment question? Call a tech ·{" "}
         <span style={{ color: "var(--color-primary)", fontWeight: 700 }}>
-          1-888-378-4536
+          951-332-7000
         </span>
       </a>
 

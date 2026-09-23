@@ -21,22 +21,22 @@ export const metadata: Metadata = {
 const GUIDES = [
   {
     title: "Door-Frame Mount Roof Rack",
-    sub: "Talk to install support · 1-888-378-4536",
+    sub: "Talk to install support · 951-332-7000",
     href: "/help/contact",
   },
   {
     title: "Modular Steel Bumper",
-    sub: "Talk to install support · 1-888-378-4536",
+    sub: "Talk to install support · 951-332-7000",
     href: "/help/contact",
   },
   {
     title: "Lock & Roll-Up Tonneau",
-    sub: "Talk to install support · 1-888-378-4536",
+    sub: "Talk to install support · 951-332-7000",
     href: "/help/contact",
   },
   {
     title: "LED Bed Light Kit",
-    sub: "Talk to install support · 1-888-378-4536",
+    sub: "Talk to install support · 951-332-7000",
     href: "/help/contact",
   },
 ];
@@ -182,10 +182,10 @@ export default function InstallGuidePage() {
             <span>
               <strong>Need a hand?</strong> Call our techs at{" "}
               <a
-                href="tel:18883784536"
+                href="tel:+19513327000"
                 style={{ color: "var(--color-primary)" }}
               >
-                1-888-378-4536
+                951-332-7000
               </a>{" "}
               Mon–Fri 9–5 PST.
             </span>

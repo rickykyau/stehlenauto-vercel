@@ -67,10 +67,10 @@ export default function NotFound() {
           The page you&apos;re looking for moved or was discontinued. Use the
           search above, browse a category below, or call our techs at{" "}
           <a
-            href="tel:+18883784536"
+            href="tel:+19513327000"
             style={{ color: "var(--color-primary)" }}
           >
-            1-888-378-4536
+            951-332-7000
           </a>{" "}
           and we&apos;ll find it.
         </p>
@@ -138,10 +138,10 @@ export default function NotFound() {
           Type it in the search bar at the top of the page or call our techs
           at{" "}
           <a
-            href="tel:+18883784536"
+            href="tel:+19513327000"
             style={{ color: "var(--color-primary)" }}
           >
-            1-888-378-4536
+            951-332-7000
           </a>{" "}
           Mon–Fri 9–5 PST.
         </div>

@@ -328,7 +328,7 @@ export function ChatAssistant() {
               color: "var(--color-destructive)",
             }}
           >
-            Connection issue — try again or call 1-888-378-4536.
+            Connection issue — try again or call 951-332-7000.
           </div>
         )}
       </div>
