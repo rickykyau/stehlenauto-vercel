@@ -300,7 +300,13 @@ def is_retail_make(make: str) -> bool:
 def canonicalize_model(make: str, model: str) -> str:
     """Apply MODEL_CANONICALIZE to fix bare/ambiguous model names."""
     canonical = MODEL_CANONICALIZE.get((make.lower(), model.lower().strip()))
-    return canonical if canonical else model
+    if canonical:
+        return canonical
+    # Spacing variants from different fitment sources collapse to one node:
+    # "Sierra 2500HD" -> "Sierra 2500 HD", "Transit 150" -> "Transit-150".
+    model = re.sub(r"(\d)HD\b", r"\1 HD", model)
+    model = re.sub(r"^Transit (\d{3})\b", r"Transit-\1", model)
+    return model
 
 
 def main() -> None:

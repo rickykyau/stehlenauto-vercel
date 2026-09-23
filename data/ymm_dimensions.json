@@ -1646,7 +1646,7 @@
       "2-Door"
     ]
   },
-  "1991|Chevrolet|C3500HD": {
+  "1991|Chevrolet|C3500 HD": {
     "trims": [
       "Base Cab & Chassis - Conventional"
     ],
@@ -1931,7 +1931,7 @@
       "4-Door"
     ]
   },
-  "1992|Chevrolet|C3500HD": {
+  "1992|Chevrolet|C3500 HD": {
     "trims": [
       "Base Cab & Chassis - Conventional"
     ],
@@ -2213,12 +2213,6 @@
     ]
   },
   "1993|Chevrolet|C3500 HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "1993|Chevrolet|C3500HD": {
     "trims": [
       "Base Cab & Chassis - Conventional"
     ],
@@ -2510,12 +2504,6 @@
     ]
   },
   "1994|Chevrolet|C3500 HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "1994|Chevrolet|C3500HD": {
     "trims": [
       "Base Cab & Chassis - Conventional"
     ],
@@ -2875,12 +2863,6 @@
     ]
   },
   "1995|Chevrolet|C3500 HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "1995|Chevrolet|C3500HD": {
     "trims": [
       "Base Cab & Chassis - Conventional"
     ],
@@ -3309,12 +3291,6 @@
     ]
   },
   "1996|Chevrolet|C3500 HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "1996|Chevrolet|C3500HD": {
     "trims": [
       "Base Cab & Chassis -",
       "Base Cab & Chassis - Conventional"
@@ -3860,12 +3836,6 @@
     ]
   },
   "1997|Chevrolet|C3500 HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "1997|Chevrolet|C3500HD": {
     "trims": [
       "Base Cab & Chassis -",
       "Base Cab & Chassis - Conventional"
@@ -4504,12 +4474,6 @@
     ]
   },
   "1998|Chevrolet|C3500 HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "1998|Chevrolet|C3500HD": {
     "trims": [
       "Base Cab & Chassis -",
       "Base Cab & Chassis - Conventional"
@@ -5206,12 +5170,6 @@
     ]
   },
   "1999|Chevrolet|C3500 HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "1999|Chevrolet|C3500HD": {
     "trims": [
       "Base Cab & Chassis -",
       "Base Cab & Chassis - Conventional"
@@ -5995,12 +5953,6 @@
     ]
   },
   "2000|Chevrolet|C3500 HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2000|Chevrolet|C3500HD": {
     "trims": [
       "Base Cab & Chassis -",
       "Base Cab & Chassis - Conventional"
@@ -6813,7 +6765,7 @@
     "cabTypes": [],
     "doors": []
   },
-  "2001|Chevrolet|C3500HD": {
+  "2001|Chevrolet|C3500 HD": {
     "trims": [
       "Base Cab & Chassis -",
       "Base Cab & Chassis - Conventional"
@@ -7683,7 +7635,7 @@
     "cabTypes": [],
     "doors": []
   },
-  "2002|Chevrolet|C3500HD": {
+  "2002|Chevrolet|C3500 HD": {
     "trims": [
       "Base Cab & Chassis -",
       "Base Cab & Chassis - Conventional"
@@ -26766,12 +26718,6 @@
       "4-Door"
     ]
   },
-  "2015|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2015|Chevrolet|Silverado 3500": {
     "trims": [],
     "bedLengths": [
@@ -26799,12 +26745,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2015|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2015|Chevrolet|Suburban": {
     "trims": [],
@@ -26991,24 +26931,6 @@
     "cabTypes": [],
     "doors": []
   },
-  "2015|Ford|Transit 150": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2015|Ford|Transit 250": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2015|Ford|Transit 350": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2015|Ford|Transit Connect": {
     "trims": [],
     "bedLengths": [],
@@ -27138,12 +27060,6 @@
       "4-Door"
     ]
   },
-  "2015|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2015|GMC|Sierra 3500 HD": {
     "trims": [
       "Base",
@@ -27162,12 +27078,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2015|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2015|GMC|Terrain": {
     "trims": [],
@@ -28307,12 +28217,6 @@
       "4-Door"
     ]
   },
-  "2016|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2016|Chevrolet|Silverado 3500": {
     "trims": [],
     "bedLengths": [
@@ -28340,12 +28244,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2016|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2016|Chevrolet|Suburban": {
     "trims": [],
@@ -28532,24 +28430,6 @@
     "cabTypes": [],
     "doors": []
   },
-  "2016|Ford|Transit 150": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2016|Ford|Transit 250": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2016|Ford|Transit 350": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2016|Ford|Transit Connect": {
     "trims": [],
     "bedLengths": [],
@@ -28679,12 +28559,6 @@
       "4-Door"
     ]
   },
-  "2016|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2016|GMC|Sierra 3500 HD": {
     "trims": [
       "Base",
@@ -28703,12 +28577,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2016|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2016|GMC|Terrain": {
     "trims": [],
@@ -29753,12 +29621,6 @@
       "4-Door"
     ]
   },
-  "2017|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2017|Chevrolet|Silverado 3500": {
     "trims": [],
     "bedLengths": [
@@ -29786,12 +29648,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2017|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2017|Chevrolet|Suburban": {
     "trims": [],
@@ -30026,24 +29882,6 @@
     "cabTypes": [],
     "doors": []
   },
-  "2017|Ford|Transit 150": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2017|Ford|Transit 250": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2017|Ford|Transit 350": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2017|Ford|Transit Connect": {
     "trims": [],
     "bedLengths": [],
@@ -30180,12 +30018,6 @@
       "4-Door"
     ]
   },
-  "2017|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2017|GMC|Sierra 3500 HD": {
     "trims": [
       "Base",
@@ -30204,12 +30036,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2017|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2017|GMC|Terrain": {
     "trims": [],
@@ -31341,12 +31167,6 @@
       "4-Door"
     ]
   },
-  "2018|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2018|Chevrolet|Silverado 3500": {
     "trims": [],
     "bedLengths": [
@@ -31374,12 +31194,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2018|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2018|Chevrolet|Suburban": {
     "trims": [],
@@ -31613,24 +31427,6 @@
     "cabTypes": [],
     "doors": []
   },
-  "2018|Ford|Transit 150": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2018|Ford|Transit 250": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2018|Ford|Transit 350": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2018|Ford|Transit Connect": {
     "trims": [],
     "bedLengths": [],
@@ -31762,12 +31558,6 @@
       "4-Door"
     ]
   },
-  "2018|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2018|GMC|Sierra 3500 HD": {
     "trims": [
       "Base",
@@ -31786,12 +31576,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2018|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2018|GMC|Terrain": {
     "trims": [
@@ -32804,12 +32588,6 @@
       "4-Door"
     ]
   },
-  "2019|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2019|Chevrolet|Silverado 3500 HD": {
     "trims": [
       "High Country",
@@ -32826,12 +32604,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2019|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2019|Chevrolet|Suburban": {
     "trims": [],
@@ -33070,24 +32842,6 @@
       "4-Door"
     ]
   },
-  "2019|Ford|Transit 150": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2019|Ford|Transit 250": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2019|Ford|Transit 350": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2019|Ford|Transit Connect": {
     "trims": [],
     "bedLengths": [],
@@ -33243,12 +32997,6 @@
       "4-Door"
     ]
   },
-  "2019|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2019|GMC|Sierra 3500 HD": {
     "trims": [
       "Base",
@@ -33265,12 +33013,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2019|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2019|GMC|Terrain": {
     "trims": [
@@ -34201,12 +33943,6 @@
       "4-Door"
     ]
   },
-  "2020|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2020|Chevrolet|Silverado 3500 HD": {
     "trims": [
       "High Country",
@@ -34225,12 +33961,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2020|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2020|Chevrolet|Suburban": {
     "trims": [],
@@ -34466,24 +34196,6 @@
       "4-Door"
     ]
   },
-  "2020|Ford|Transit 150": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2020|Ford|Transit 250": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2020|Ford|Transit 350": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2020|Ford|Transit Connect": {
     "trims": [],
     "bedLengths": [],
@@ -34633,12 +34345,6 @@
       "4-Door"
     ]
   },
-  "2020|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2020|GMC|Sierra 3500 HD": {
     "trims": [
       "AT4",
@@ -34658,12 +34364,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2020|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2020|GMC|Terrain": {
     "trims": [],
@@ -35613,12 +35313,6 @@
       "4-Door"
     ]
   },
-  "2021|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2021|Chevrolet|Silverado 3500 HD": {
     "trims": [
       "High Country",
@@ -35637,12 +35331,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2021|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2021|Chevrolet|Suburban": {
     "trims": [],
@@ -35891,24 +35579,6 @@
       "4-Door"
     ]
   },
-  "2021|Ford|Transit 150": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2021|Ford|Transit 250": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2021|Ford|Transit 350": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2021|Ford|Transit Connect": {
     "trims": [],
     "bedLengths": [],
@@ -36052,12 +35722,6 @@
       "4-Door"
     ]
   },
-  "2021|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2021|GMC|Sierra 3500 HD": {
     "trims": [
       "AT4",
@@ -36077,12 +35741,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2021|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2021|GMC|Terrain": {
     "trims": [],
@@ -37076,12 +36734,6 @@
       "4-Door"
     ]
   },
-  "2022|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2022|Chevrolet|Silverado 3500 HD": {
     "trims": [
       "High Country",
@@ -37100,12 +36752,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2022|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2022|Chevrolet|Suburban": {
     "trims": [],
@@ -37368,25 +37014,25 @@
       "4-Door"
     ]
   },
-  "2022|Ford|Transit 150": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2022|Ford|Transit 250": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2022|Ford|Transit 350": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2022|Ford|Transit Connect": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Ford|Transit-150": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Ford|Transit-250": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Ford|Transit-350": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -37525,12 +37171,6 @@
       "4-Door"
     ]
   },
-  "2022|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2022|GMC|Sierra 3500 HD": {
     "trims": [
       "AT4",
@@ -37550,12 +37190,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2022|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2022|GMC|Terrain": {
     "trims": [],
@@ -38518,12 +38152,6 @@
       "4-Door"
     ]
   },
-  "2023|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2023|Chevrolet|Silverado 3500 HD": {
     "trims": [
       "High Country",
@@ -38542,12 +38170,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2023|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2023|Chevrolet|Suburban": {
     "trims": [],
@@ -38813,25 +38435,25 @@
       "4-Door"
     ]
   },
-  "2023|Ford|Transit 150": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2023|Ford|Transit 250": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
-  "2023|Ford|Transit 350": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2023|Ford|Transit Connect": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Ford|Transit-150": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Ford|Transit-250": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Ford|Transit-350": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -38946,12 +38568,6 @@
       "4-Door"
     ]
   },
-  "2023|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2023|GMC|Sierra 3500 HD": {
     "trims": [
       "AT4",
@@ -38971,12 +38587,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2023|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2023|GMC|Terrain": {
     "trims": [],
@@ -39910,12 +39520,6 @@
       "4-Door"
     ]
   },
-  "2024|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2024|Chevrolet|Silverado 3500 HD": {
     "trims": [
       "High Country",
@@ -39934,12 +39538,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2024|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2024|Chevrolet|Traverse": {
     "trims": [],
@@ -40189,19 +39787,19 @@
       "4-Door"
     ]
   },
-  "2024|Ford|Transit 150": {
+  "2024|Ford|Transit-150": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
-  "2024|Ford|Transit 250": {
+  "2024|Ford|Transit-250": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
-  "2024|Ford|Transit 350": {
+  "2024|Ford|Transit-350": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -40304,12 +39902,6 @@
       "4-Door"
     ]
   },
-  "2024|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2024|GMC|Sierra 3500 HD": {
     "trims": [
       "AT4",
@@ -40330,12 +39922,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2024|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2024|GMC|Terrain": {
     "trims": [],
@@ -41112,12 +40698,6 @@
       "4-Door"
     ]
   },
-  "2025|Chevrolet|Silverado 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2025|Chevrolet|Silverado 3500 HD": {
     "trims": [
       "High Country",
@@ -41135,12 +40715,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2025|Chevrolet|Silverado 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2025|Chevrolet|Trax": {
     "trims": [],
@@ -41347,19 +40921,19 @@
       "4-Door"
     ]
   },
-  "2025|Ford|Transit 150": {
+  "2025|Ford|Transit-150": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
-  "2025|Ford|Transit 250": {
+  "2025|Ford|Transit-250": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
-  "2025|Ford|Transit 350": {
+  "2025|Ford|Transit-350": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -41454,12 +41028,6 @@
       "4-Door"
     ]
   },
-  "2025|GMC|Sierra 2500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
-  },
   "2025|GMC|Sierra 3500 HD": {
     "trims": [
       "AT4",
@@ -41479,12 +41047,6 @@
     "doors": [
       "4-Door"
     ]
-  },
-  "2025|GMC|Sierra 3500HD": {
-    "trims": [],
-    "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
   },
   "2025|GMC|Terrain": {
     "trims": [],
@@ -42339,19 +41901,19 @@
       "4-Door"
     ]
   },
-  "2026|Ford|Transit 150": {
+  "2026|Ford|Transit-150": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
-  "2026|Ford|Transit 250": {
+  "2026|Ford|Transit-250": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
-  "2026|Ford|Transit 350": {
+  "2026|Ford|Transit-350": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
