@@ -272,13 +272,21 @@ NON_RETAIL_MAKES = {
 MODEL_CANONICALIZE: dict[tuple[str, str], str] = {
     ("gmc", "sierra"): "Sierra 1500",
     ("chevrolet", "silverado"): "Silverado 1500",
+    # CA mixes all-caps and title-case for the same model; one tree node each.
+    ("nissan", "titan"): "Titan",
+    ("nissan", "titan xd"): "Titan XD",
 }
+
+# CA sometimes sends makes all-caps ("INFINITI"); collapse to the site's casing.
+MAKE_CANONICALIZE = {"infiniti": "Infiniti"}
 
 
 def normalize_make(make: str) -> str:
     """Title-case but preserve known acronyms (GMC, BMW, etc.)."""
     upper_overrides = {"gmc", "bmw", "kia", "fiat", "mini"}
     m = make.strip()
+    if m.lower() in MAKE_CANONICALIZE:
+        return MAKE_CANONICALIZE[m.lower()]
     if m.lower() in upper_overrides and m.lower() in {"gmc", "bmw"}:
         return m.upper()
     # Title-case other makes (Chevrolet, Ford, Toyota...)

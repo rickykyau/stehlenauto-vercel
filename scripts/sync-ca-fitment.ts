@@ -32,6 +32,9 @@
  *   --handle=foo     process only the product with this Shopify handle
  *   --dry-run        parse + log, do NOT write to Shopify
  *   --verbose        log every CA query
+ *   --handles-file=f process only the handles listed in f (one per line)
+ *   --merge          merge results into the existing snapshot instead of
+ *                    replacing it (use with --handle / --handles-file)
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -65,6 +68,8 @@ for (const a of process.argv.slice(2)) {
 }
 const LIMIT = args.has("limit") ? parseInt(args.get("limit") ?? "0", 10) : 0;
 const ONLY_HANDLE = args.get("handle") ?? null;
+const HANDLES_FILE = args.get("handles-file") ?? null;
+const MERGE = args.get("merge") === "true";
 const DRY_RUN = args.get("dry-run") === "true";
 const VERBOSE = args.get("verbose") === "true";
 
@@ -679,6 +684,12 @@ async function main() {
     (p) => p.cbItemName?.value && p.cbItemName.value.trim(),
   );
   if (ONLY_HANDLE) queue = queue.filter((p) => p.handle === ONLY_HANDLE);
+  if (HANDLES_FILE) {
+    const wanted = new Set(
+      (await fs.readFile(HANDLES_FILE, "utf8")).split(/\r?\n/).map((s) => s.trim()).filter(Boolean),
+    );
+    queue = queue.filter((p) => wanted.has(p.handle));
+  }
   if (LIMIT > 0) queue = queue.slice(0, LIMIT);
   console.log(`  → ${queue.length} products in sync queue`);
 
@@ -735,7 +746,10 @@ async function main() {
     "ca_fitment_snapshot.json",
   );
   await fs.mkdir(path.dirname(snapshotPath), { recursive: true });
-  await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, 2));
+  const merged = MERGE
+    ? { ...JSON.parse(await fs.readFile(snapshotPath, "utf8").catch(() => "{}")), ...snapshot }
+    : snapshot;
+  await fs.writeFile(snapshotPath, JSON.stringify(merged, null, 2));
 
   console.log(
     `\nDone. synced=${synced}, not-found=${notFound}, errored=${errored}. Snapshot: ${snapshotPath}`,

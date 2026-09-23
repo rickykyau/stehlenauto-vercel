@@ -4,7 +4,7 @@ import path from "node:path";
 
 const RULES: Array<[string, RegExp]> = [
   ["tonneau-covers", /tonneau/],
-  ["trailer-hitches", /trailer-hitch|hitch-step|hitch-cargo/],
+  ["trailer-hitches", /trailer-hitch|hitch-step|hitch-cargo|wiring-harness/],
   ["bull-guards-grille-guards", /bull-guard|grille-guard|brush-guard/],
   ["front-grilles", /(?<!grille-)grille(?!-guard)|front-grill\b|badgeless/],
   ["headlights", /headlight|projector-light/],
