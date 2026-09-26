@@ -1,0 +1,135 @@
+[
+ {
+  "handle": "chevrolet-gmc-suburban-tahoe-yukon-bull-guard-gbu10050",
+  "title": "",
+  "current_first": "bghd-mbba-2",
+  "new_first": "listing_bghd-mbba-ws-1",
+  "remove": [
+   {
+    "key": "bghd-mbba-2",
+    "reason": "wrong vehicle: Toyota Tundra / Ram 1500 lifestyle photo"
+   }
+  ],
+  "demote_to_end": [],
+  "final_order": [
+   "listing_bghd-mbba-ws-1",
+   "bghd-mbba-3",
+   "bghd-mbba-4",
+   "bghd-mbba-5",
+   "bghd-mbba-6",
+   "bghd-mbba-wst"
+  ],
+  "n_before": 7,
+  "n_after": 6
+ },
+ {
+  "handle": "92-99-chevy-gmc-suburban-tahoe-yukon-bull-guard-w-led-light-bar-1",
+  "title": "",
+  "current_first": "bghd-mbba_2bflbw-40cree-lb-wh-2",
+  "new_first": "listing_bghd-mbba_2bflbw-40cree-lb-wh-ws-1",
+  "remove": [
+   {
+    "key": "bghd-mbba_2bflbw-40cree-lb-wh-2",
+    "reason": "wrong vehicle: Toyota Tundra / Ram 1500 lifestyle photo"
+   },
+   {
+    "key": "bghd-mbba_2bflbw-40cree-lb-wh-1",
+    "reason": "wrong vehicle: Toyota Tundra / Ram 1500 lifestyle photo"
+   }
+  ],
+  "demote_to_end": [],
+  "final_order": [
+   "listing_bghd-mbba_2bflbw-40cree-lb-wh-ws-1",
+   "bg_2b40cree-2",
+   "bghd-mbba_2bflbw-40cree-lb-wh-3",
+   "bghd-mbba_2bflbw-40cree-lb-wh-4",
+   "bghd-mbba_2bflbw-40cree-lb-wh-5",
+   "bghd-mbba_2bflbw-40cree-lb-wh-6",
+   "bghd-mbba_2bflbw-40cree-lb-wh-7",
+   "bghd-mbba_2bflbw-40cree-lb-wh-8"
+  ],
+  "n_before": 10,
+  "n_after": 8
+ },
+ {
+  "handle": "05-11-dodge-dakota-ram-mitsubishi-raider-front-bull-bar-black",
+  "title": "",
+  "current_first": "bghd-bk-2",
+  "new_first": "listing_bghd-bk-ws-1",
+  "remove": [
+   {
+    "key": "bghd-bk-2",
+    "reason": "wrong vehicle: Toyota Tundra / Ram 1500 lifestyle photo"
+   },
+   {
+    "key": "bghd-bk-1",
+    "reason": "wrong vehicle: Toyota Tundra / Ram 1500 lifestyle photo"
+   }
+  ],
+  "demote_to_end": [],
+  "final_order": [
+   "listing_bghd-bk-ws-1",
+   "bghd-bk-3",
+   "bghd-bk-4",
+   "bghd-bk-5",
+   "bghd-bk-6"
+  ],
+  "n_before": 7,
+  "n_after": 5
+ },
+ {
+  "handle": "2004-2009-dodge-durango-chrysler-aspen-bull-guard-chrome-a070309a",
+  "title": "",
+  "current_first": "bghd-ch-2",
+  "new_first": "listing_bghd-ch-ws-1",
+  "remove": [
+   {
+    "key": "bghd-ch-2",
+    "reason": "wrong vehicle: Toyota Tundra / Ram 1500 lifestyle photo"
+   },
+   {
+    "key": "bghd-ch-1",
+    "reason": "wrong vehicle: Toyota Tundra / Ram 1500 lifestyle photo"
+   }
+  ],
+  "demote_to_end": [],
+  "final_order": [
+   "listing_bghd-ch-ws-1",
+   "bghd-ch-3",
+   "bghd-ch-4",
+   "bghd-ch-5",
+   "bghd-ch-6"
+  ],
+  "n_before": 7,
+  "n_after": 5
+ },
+ {
+  "handle": "2004-2009-dodge-durango-chrome-bull-guard-with-led-light-bar",
+  "title": "",
+  "current_first": "bghd-ch_2bflbw-40cree-lb-wh-2",
+  "new_first": "listing_bghd-ch_2bflbw-40cree-lb-wh-ws-1",
+  "remove": [
+   {
+    "key": "bghd-ch_2bflbw-40cree-lb-wh-2",
+    "reason": "wrong vehicle: Toyota Tundra / Ram 1500 lifestyle photo"
+   },
+   {
+    "key": "bghd-ch_2bflbw-40cree-lb-wh-1",
+    "reason": "wrong vehicle: Toyota Tundra / Ram 1500 lifestyle photo"
+   }
+  ],
+  "demote_to_end": [],
+  "final_order": [
+   "listing_bghd-ch_2bflbw-40cree-lb-wh-ws-1",
+   "bg_2b40cree-2",
+   "bghd-ch_2bflbw-40cree-lb-wh-3",
+   "bghd-ch_2bflbw-40cree-lb-wh-4",
+   "bghd-ch_2bflbw-40cree-lb-wh-5",
+   "bghd-ch_2bflbw-40cree-lb-wh-6",
+   "bghd-ch_2bflbw-40cree-lb-wh-7",
+   "bghd-ch_2bflbw-40cree-lb-wh-8"
+  ],
+  "n_before": 10,
+  "n_after": 8
+ }
+]

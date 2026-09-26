@@ -6,6 +6,7 @@ import {
 } from "@/lib/shopify/queries";
 import type { CollectionNode, ProductNode } from "@/lib/shopify/types";
 import { parseFitmentTable } from "@/lib/fitment/metafields";
+import { metaDescriptionFromHtml } from "@/lib/catalog/meta-description";
 import {
   checkFitment,
   filterByDimensionAnswers,
@@ -148,16 +149,10 @@ function adapt(p: ProductNode): CatalogProduct {
   // repeated. Prefer the merch team's Shopify body copy (strip HTML); fall
   // back to a benefit template. Keeps PDP descriptions unique + useful for
   // SERP snippets, Product schema, and AI-Overview grounding.
-  const bodyText = (p.descriptionHtml || p.description || "")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  const metaDescription =
-    bodyText.length >= 60
-      ? bodyText.length > 155
-        ? bodyText.slice(0, 152).replace(/[\s,;.]+\S*$/, "") + "…"
-        : bodyText
-      : `${p.title}. Free US shipping & 30-day returns. No-drill bolt-on fit, fitment guaranteed.`;
+  const metaDescription = metaDescriptionFromHtml(
+    p.descriptionHtml || p.description || "",
+    `${p.title}. Free US shipping & 30-day returns. No-drill bolt-on fit, fitment guaranteed.`,
+  );
 
   return {
     sku,
