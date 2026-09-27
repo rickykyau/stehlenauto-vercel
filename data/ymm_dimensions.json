@@ -1916,16 +1916,13 @@
   "1992|Chevrolet|C3500": {
     "trims": [
       "Cheyenne Cab & Chassis",
-      "Scottsdale",
       "Scottsdale Cab & Chassis",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [
-      "CREW CAB"
-    ],
+    "cabTypes": [],
     "doors": [
       "2-Door",
       "4-Door"
@@ -1958,18 +1955,12 @@
     "doors": []
   },
   "1992|Chevrolet|K3500": {
-    "trims": [
-      "Scottsdale"
-    ],
+    "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [
-      "CREW CAB"
-    ],
-    "doors": [
-      "4-Door"
-    ]
+    "cabTypes": [],
+    "doors": []
   },
   "1992|Chevrolet|S10": {
     "trims": [],
@@ -2057,12 +2048,8 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [
-      "CREW CAB"
-    ],
-    "doors": [
-      "4-Door"
-    ]
+    "cabTypes": [],
+    "doors": []
   },
   "1992|GMC|C3500 HD": {
     "trims": [],
@@ -2091,12 +2078,8 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [
-      "CREW CAB"
-    ],
-    "doors": [
-      "4-Door"
-    ]
+    "cabTypes": [],
+    "doors": []
   },
   "1992|GMC|Sonoma": {
     "trims": [],

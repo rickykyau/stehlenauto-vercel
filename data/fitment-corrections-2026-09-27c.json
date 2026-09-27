@@ -1,0 +1,20 @@
+[
+ {
+  "handle": "1988-2000-gmc-c-k-series-class-4-trailer-hitch-w-ball-mount",
+  "add": [],
+  "remove_patterns": [
+   "\\|(Chevrolet|GMC)\\|[CK][23]500\\|[^:]*Crew Cab"
+  ],
+  "universal": false,
+  "reason": "rows self-contradict their own note \"Will Not Fit ... Crew Cab\"; conservative removal"
+ },
+ {
+  "handle": "1988-2000-gmc-c-k-series-class-4-trailer-hitch-14081",
+  "add": [],
+  "remove_patterns": [
+   "\\|(Chevrolet|GMC)\\|[CK][23]500\\|[^:]*Crew Cab"
+  ],
+  "universal": false,
+  "reason": "rows self-contradict their own note \"Will Not Fit ... Crew Cab\"; conservative removal"
+ }
+]
