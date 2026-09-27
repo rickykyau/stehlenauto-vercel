@@ -1,0 +1,290 @@
+[
+ {
+  "id": "gid://shopify/Product/8172581290031",
+  "handle": "2008-2014-honda-accord-acura-tl-tsx-class-1-trailer-hitch",
+  "old": "Torxx",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8172632997935",
+  "handle": "2018-2024-chevy-equinox-gmc-terrain-class-3-trailer-hitch-2-receiver",
+  "old": "CURT",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Proexhaust": 1,
+   "TLAPS": 1
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8198766493743",
+  "handle": "2016-2021-nissan-titan-xd-studded-mesh-bull-guard-matte-black",
+  "old": "Black Horse Off Road",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "TLAPS": 1,
+   "Topline_autopart": 1
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8198783467567",
+  "handle": "2005-2011-toyota-tacoma-front-grille-matte-black-mesh-style",
+  "old": "Pegasus",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Proexhaust": 3,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8198785728559",
+  "handle": "2000-2005-chevy-impala-front-grille-chrome-finish",
+  "old": "Pegasus",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline_autopart": 2,
+   "TLAPS": 2,
+   "GTRacers": 1
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8198809681967",
+  "handle": "07-13-chevy-silverado-1500-front-grille-matte-black",
+  "old": "Grizzly",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline_autopart": 2,
+   "TLAPS": 2,
+   "GTRacers": 1
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8198963167279",
+  "handle": "05-06-toyota-tundra-chrome-crystal-headlights-w-led-light-bar-4pc",
+  "old": "Feberg",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "TLAPS": 2,
+   "Topline_autopart": 1
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8198990495791",
+  "handle": "2009-2022-dodge-ram-full-led-projector-headlights-black-amber",
+  "old": "Spyder Auto",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Proexhaust": 12,
+   "Topline Autopart": 2,
+   "Topline_autopart": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8198996394031",
+  "handle": "88-98-chevy-gmc-c10-projector-headlights-8pc-set-chrome-led-bar",
+  "old": "Spec-D Tuning",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "TLAPS": 2,
+   "Topline_autopart": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199060291631",
+  "handle": "2005-2021-nissan-frontier-crew-cab-viewpoint-running-boards-chrome",
+  "old": "Viewpoint",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199138639919",
+  "handle": "02-22-dodge-ram-1500-2500-3500-8ft-bed-rubber-mat-aa031-v2",
+  "old": "AA Products",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "GTRacers": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199140147247",
+  "handle": "02-22-dodge-ram-1500-2500-3500-5-7-bed-mat-w-rambox-v2",
+  "old": "AA Products",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199141621807",
+  "handle": "02-22-dodge-ram-1500-2500-3500-5-7-ft-rubber-bed-mat-v2",
+  "old": "AA Products",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "GTRacers": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199181336623",
+  "handle": "1999-2007-silverado-sierra-stepside-6-5-ft-rubber-bed-mat-v2",
+  "old": "AA Products",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "GTRacers": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199228686383",
+  "handle": "2015-chevy-colorado-gmc-canyon-6ft-bed-hard-tri-fold-tonneau-cover",
+  "old": "Tyger Auto",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "GTRacers": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199303725103",
+  "handle": "2019-dodge-ram-5-8ft-bed-flush-roll-up-vinyl-tonneau-cover",
+  "old": "Trident",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "TLAPS": 1,
+   "Topline_autopart": 1
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199304216623",
+  "handle": "2019-2024-ram-1500-5-7ft-bed-lock-roll-up-tonneau-cover",
+  "old": "TruXedo",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "GTRacers": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199309951023",
+  "handle": "1982-1993-chevy-s10-gmc-s15-sonoma-6-bed-roll-up-tonneau-cover",
+  "old": "TruXedo",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199310999599",
+  "handle": "94-03-chevy-s10-gmc-sonoma-6-tonneau-cover-led-bed-light-kit",
+  "old": "Spec-D",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199311556655",
+  "handle": "1994-2004-chevy-s10-gmc-sonoma-6ft-tri-fold-tonneau-cover-w-led",
+  "old": "Spec-D",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "TLAPS": 2,
+   "Topline_autopart": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199315226671",
+  "handle": "07-14-chevy-silverado-gmc-sierra-6-5-roll-up-tonneau-cover",
+  "old": "TruXedo",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "Streetune": 2,
+   "Topline_autopart": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199316930607",
+  "handle": "2014-2018-chevy-silverado-gmc-sierra-5-8-tri-fold-tonneau-cover",
+  "old": "Tonno Pro",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "Streetune": 2,
+   "Topline_autopart": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199378436143",
+  "handle": "2015-2026-ford-f-150-class-4-trailer-hitch-black-14017",
+  "old": "Torxx",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199382401071",
+  "handle": "04-09-toyota-highlander-lexus-rx-class-3-trailer-hitch-black",
+  "old": "Torxx",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "Topline Autopart": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8199382728751",
+  "handle": "2004-2007-toyota-highlander-class-3-trailer-hitch-wiring-combo",
+  "old": "Torxx",
+  "new": "Stehlen Auto",
+  "ca_brand": {
+   "GTRacers": 2,
+   "Topline_autopart": 2,
+   "TLAPS": 2
+  }
+ },
+ {
+  "id": "gid://shopify/Product/8435579781167",
+  "handle": "2021-2025-ford-f-150-rvt-style-studded-mesh-abs-front-grille-glossy-black-armordillo",
+  "old": "Armordillo",
+  "new": "Stehlen Auto",
+  "ca_brand": {}
+ },
+ {
+  "id": "gid://shopify/Product/8435579813935",
+  "handle": "2021-2025-ford-f-150-rvt-style-mesh-front-grille-w-sequential-led-light-bar-glossy-black-armordillo",
+  "old": "Armordillo",
+  "new": "Stehlen Auto",
+  "ca_brand": {}
+ }
+]

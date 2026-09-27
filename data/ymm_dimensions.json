@@ -2057,8 +2057,12 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "CREW CAB"
+    ],
+    "doors": [
+      "4-Door"
+    ]
   },
   "1992|GMC|C3500 HD": {
     "trims": [],
@@ -2087,8 +2091,12 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "CREW CAB"
+    ],
+    "doors": [
+      "4-Door"
+    ]
   },
   "1992|GMC|Sonoma": {
     "trims": [],
@@ -2319,12 +2327,18 @@
     "doors": []
   },
   "1993|GMC|C2500": {
-    "trims": [],
+    "trims": [
+      "400 SS"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1993|GMC|C3500": {
     "trims": [],
@@ -3035,10 +3049,16 @@
     "doors": []
   },
   "1995|GMC|C2500": {
-    "trims": [],
+    "trims": [
+      "60th Anniversary"
+    ],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1995|GMC|C3500": {
     "trims": [],
@@ -3583,8 +3603,10 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -4176,8 +4198,10 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -4787,8 +4811,12 @@
   "1998|GMC|C2500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1998|GMC|C3500": {
     "trims": [],
@@ -4811,8 +4839,12 @@
   "1998|GMC|K2500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1998|GMC|K3500": {
     "trims": [],
@@ -4836,13 +4868,16 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
     "doors": [
-      "3-Door"
+      "3-Door",
+      "5-Door"
     ]
   },
   "1998|GMC|Sonoma": {
@@ -5499,10 +5534,16 @@
     "doors": []
   },
   "1999|GMC|C2500": {
-    "trims": [],
+    "trims": [
+      "Austera"
+    ],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1999|GMC|C3500": {
     "trims": [],
@@ -5550,8 +5591,10 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -6367,8 +6410,10 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -7138,8 +7183,10 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "SLT Extended",
-      "SLT Standard"
+      "SLT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -8032,8 +8079,10 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "SLT Extended",
-      "SLT Standard"
+      "SLT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -8959,8 +9008,10 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -10084,8 +10135,10 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -11300,8 +11353,10 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -12620,10 +12675,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -14212,10 +14269,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -15921,10 +15980,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -17581,6 +17642,7 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
@@ -17588,7 +17650,8 @@
       "SL Extended",
       "SL Standard",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -19237,6 +19300,7 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
@@ -19244,7 +19308,8 @@
       "SL Extended",
       "SL Standard",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -20792,10 +20857,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -22364,6 +22431,7 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
@@ -22371,7 +22439,8 @@
       "SL Extended",
       "SL Standard",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -23938,6 +24007,7 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
@@ -23945,7 +24015,8 @@
       "SL Extended",
       "SL Standard",
       "SLE Extended",
-      "SLE Standard"
+      "SLE Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -25507,10 +25578,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -27010,10 +27083,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -28509,10 +28584,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -29968,10 +30045,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -31508,10 +31587,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -32929,10 +33010,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -34290,10 +34373,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -35667,10 +35752,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -37093,10 +37180,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -38513,10 +38602,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -39846,10 +39937,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -40979,10 +41072,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -41960,10 +42055,12 @@
     "trims": [
       "Base Extended",
       "Base Standard",
+      "Extended",
       "LS Extended",
       "LS Standard",
       "LT Extended",
-      "LT Standard"
+      "LT Standard",
+      "Standard"
     ],
     "bedLengths": [],
     "cabTypes": [],
