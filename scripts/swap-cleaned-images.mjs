@@ -8,13 +8,14 @@
  *   - readd (original was detached by fix-listing-photos for the watermark)
  *                              → attach cleaned at min(origPos, end)
  *   - featured                 → cleaned image becomes position 0
+ *   - pos (optional int)       → explicit position for the new image
  *   - detachKeys               → also detach these image keys (wrong vehicle)
  *
  * Detach never deletes (fileUpdate referencesToRemove), so rollback =
  * `--rollback <log>`: re-attach detached ids, detach the cleaned id, restore
  * the logged original order.
  *
- * Usage: node scripts/swap-cleaned-images.mjs [--apply] [--handle H] [--rollback LOG]
+ * Usage: node scripts/swap-cleaned-images.mjs [--plan FILE] [--apply] [--handle H] [--rollback LOG]
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -92,7 +93,8 @@ async function rollback(logFile) {
 
 async function main() {
   if (argVal("--rollback")) return rollback(argVal("--rollback"));
-  let plan = JSON.parse(fs.readFileSync(path.join(REPO, "data/image-cleanup-swap-plan-2026-09-26.json"), "utf8"));
+  const planFile = argVal("--plan") ? path.resolve(argVal("--plan")) : path.join(REPO, "data/image-cleanup-swap-plan-2026-09-26.json");
+  let plan = JSON.parse(fs.readFileSync(planFile, "utf8"));
   if (argVal("--handle")) plan = plan.filter((j) => j.handle === argVal("--handle"));
   const log = path.join(REPO, `data/image-cleanup-swap-log-${new Date().toISOString().replace(/[:.]/g, "-")}.jsonl`);
 
@@ -105,7 +107,7 @@ async function main() {
     const extraIds = j.detachKeys.flatMap(byKey);
     const detachIds = [...oldIds, ...extraIds];
     const keep = originalOrder.filter((id) => !detachIds.includes(id));
-    const at = j.featured ? 0 : oldIds.length ? originalOrder.indexOf(oldIds[0]) - originalOrder.slice(0, originalOrder.indexOf(oldIds[0])).filter((id) => detachIds.includes(id)).length : Math.min(j.origPos, keep.length);
+    const at = Number.isInteger(j.pos) ? Math.min(j.pos, keep.length) : j.featured ? 0 : oldIds.length ? originalOrder.indexOf(oldIds[0]) - originalOrder.slice(0, originalOrder.indexOf(oldIds[0])).filter((id) => detachIds.includes(id)).length : Math.min(j.origPos, keep.length);
     if (!oldIds.length && !j.readd) { console.log("skip (original not attached, not a re-add)", j.handle); continue; }
     const newOrder = [...keep.slice(0, at), j.newId, ...keep.slice(at)];
     if (!APPLY) { console.log(`DRY ${j.handle} ${j.key}: pos ${at}, detach ${detachIds.length}`); continue; }
