@@ -145,6 +145,19 @@ BED_PATTERNS = [
 DOOR_RE = re.compile(r"\b(\d+)\s*-\s*Door\b", re.I)
 
 
+def expand_year_ranges(raw: str) -> list[str]:
+    """CA writes one year per line ("2019|Ford|...") or a range
+    ("2015-2026|Ford|..."). Expand ranges to one line per year."""
+    out = []
+    for line in raw.splitlines():
+        m = re.match(r"^\s*(\d{4})\s*[-\u2013]\s*(\d{4})\s*(\|.*)$", line)
+        if m and 0 <= int(m.group(2)) - int(m.group(1)) <= 60:
+            out += [f"{y}{m.group(3)}" for y in range(int(m.group(1)), int(m.group(2)) + 1)]
+        else:
+            out.append(line)
+    return out
+
+
 def _fmt_bed(s: str) -> str:
     f = float(s)
     # Normalize trailing .0 → integer
@@ -358,7 +371,7 @@ def main() -> None:
                 # Fallback: uppercase-bed
                 product_beds_canonical.add(cleaned.upper())
 
-        for line in raw.splitlines():
+        for line in expand_year_ranges(raw):
             # Strip trailing notes like "::Drilling Is Required"
             line = line.split("::", 1)[0].strip()
             if not line or "|" not in line:

@@ -955,23 +955,39 @@
     "doors": []
   },
   "1988|Chevrolet|C2500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1988|Chevrolet|C3500": {
     "trims": [
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Scottsdale",
       "Scottsdale Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
@@ -985,20 +1001,38 @@
     "doors": []
   },
   "1988|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1988|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1988|Chevrolet|S10": {
     "trims": [],
@@ -1066,16 +1100,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1988|GMC|C3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1988|GMC|K1500": {
     "trims": [],
@@ -1090,16 +1134,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1988|GMC|K3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1988|GMC|S15": {
     "trims": [],
@@ -1147,28 +1201,41 @@
   },
   "1989|Chevrolet|C2500": {
     "trims": [
+      "Base",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Scottsdale",
       "Scottsdale Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
   },
   "1989|Chevrolet|C3500": {
     "trims": [
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Scottsdale",
       "Scottsdale Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
@@ -1182,20 +1249,38 @@
     "doors": []
   },
   "1989|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1989|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1989|Chevrolet|S10": {
     "trims": [],
@@ -1273,16 +1358,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1989|GMC|C3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1989|GMC|K1500": {
     "trims": [],
@@ -1297,16 +1392,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1989|GMC|K3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1989|GMC|S15": {
     "trims": [],
@@ -1351,6 +1456,18 @@
     "cabTypes": [],
     "doors": []
   },
+  "1990|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1990|Chevrolet|Blazer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "1990|Chevrolet|C/K 1500": {
     "trims": [],
     "bedLengths": [],
@@ -1379,28 +1496,41 @@
   },
   "1990|Chevrolet|C2500": {
     "trims": [
+      "Base",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Scottsdale",
       "Scottsdale Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
   },
   "1990|Chevrolet|C3500": {
     "trims": [
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Scottsdale",
       "Scottsdale Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
@@ -1414,18 +1544,42 @@
     "doors": []
   },
   "1990|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1990|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
+  },
+  "1990|Chevrolet|R3500": {
+    "trims": [],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -1444,6 +1598,12 @@
     "doors": [
       "2-Door"
     ]
+  },
+  "1990|Chevrolet|V3500": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
   },
   "1990|Dodge|Dakota": {
     "trims": [],
@@ -1505,16 +1665,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1990|GMC|C3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1990|GMC|K1500": {
     "trims": [],
@@ -1529,16 +1699,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1990|GMC|K3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1990|GMC|S15": {
     "trims": [],
@@ -1592,6 +1772,24 @@
     "cabTypes": [],
     "doors": []
   },
+  "1991|Buick|Commercial Chassis": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1991|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1991|Chevrolet|Blazer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "1991|Chevrolet|C/K 1500": {
     "trims": [],
     "bedLengths": [],
@@ -1620,28 +1818,41 @@
   },
   "1991|Chevrolet|C2500": {
     "trims": [
+      "Base",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Scottsdale",
       "Scottsdale Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
   },
   "1991|Chevrolet|C3500": {
     "trims": [
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Scottsdale",
       "Scottsdale Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
@@ -1665,18 +1876,42 @@
     "doors": []
   },
   "1991|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1991|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
+  },
+  "1991|Chevrolet|R3500": {
+    "trims": [],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -1695,6 +1930,12 @@
     "doors": [
       "2-Door"
     ]
+  },
+  "1991|Chevrolet|V3500": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
   },
   "1991|Dodge|Dakota": {
     "trims": [],
@@ -1766,16 +2007,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1991|GMC|C3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1991|GMC|C3500 HD": {
     "trims": [],
@@ -1796,16 +2047,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1991|GMC|K3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1991|GMC|Sonoma": {
     "trims": [],
@@ -1873,6 +2134,30 @@
     "cabTypes": [],
     "doors": []
   },
+  "1992|AM General|Hummer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1992|Buick|Commercial Chassis": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1992|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1992|Chevrolet|Blazer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "1992|Chevrolet|C/K 1500": {
     "trims": [],
     "bedLengths": [],
@@ -1901,28 +2186,41 @@
   },
   "1992|Chevrolet|C2500": {
     "trims": [
+      "Base",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Scottsdale",
       "Scottsdale Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
   },
   "1992|Chevrolet|C3500": {
     "trims": [
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Scottsdale",
       "Scottsdale Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -1947,20 +2245,38 @@
     "doors": []
   },
   "1992|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1992|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Scottsdale",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1992|Chevrolet|S10": {
     "trims": [],
@@ -2040,16 +2356,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1992|GMC|C3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1992|GMC|C3500 HD": {
     "trims": [],
@@ -2070,16 +2396,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1992|GMC|K3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1992|GMC|Sonoma": {
     "trims": [],
@@ -2146,6 +2482,30 @@
     "cabTypes": [],
     "doors": []
   },
+  "1993|AM General|Hummer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1993|Buick|Commercial Chassis": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1993|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1993|Chevrolet|Blazer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "1993|Chevrolet|C/K 1500": {
     "trims": [],
     "bedLengths": [],
@@ -2175,15 +2535,18 @@
   "1993|Chevrolet|C2500": {
     "trims": [
       "400 SS",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
       "Custom",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
     "cabTypes": [
-      "REGULAR CAB"
+      "REGULAR CAB",
+      "SUPERCAB"
     ],
     "doors": [
       "2-Door"
@@ -2191,13 +2554,18 @@
   },
   "1993|Chevrolet|C3500": {
     "trims": [
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -2222,20 +2590,36 @@
     "doors": []
   },
   "1993|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1993|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1993|Chevrolet|S10": {
     "trims": [],
@@ -2317,7 +2701,8 @@
       "6.5' BED"
     ],
     "cabTypes": [
-      "REGULAR CAB"
+      "REGULAR CAB",
+      "SUPERCAB"
     ],
     "doors": [
       "2-Door"
@@ -2328,8 +2713,13 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1993|GMC|C3500 HD": {
     "trims": [],
@@ -2350,16 +2740,26 @@
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1993|GMC|K3500": {
     "trims": [],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1993|GMC|Sonoma": {
     "trims": [],
@@ -2433,6 +2833,30 @@
     "cabTypes": [],
     "doors": []
   },
+  "1994|AM General|Hummer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1994|Buick|Commercial Chassis": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1994|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1994|Chevrolet|Blazer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "1994|Chevrolet|C/K 1500": {
     "trims": [],
     "bedLengths": [],
@@ -2467,14 +2891,21 @@
   },
   "1994|Chevrolet|C2500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
-      "Silverado Cab & Chassis"
+      "Silverado",
+      "Silverado Cab & Chassis",
+      "WT"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
@@ -2487,14 +2918,20 @@
   },
   "1994|Chevrolet|C3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -2525,12 +2962,22 @@
     "doors": []
   },
   "1994|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "Cheyenne",
+      "Silverado",
+      "WT"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1994|Chevrolet|K2500 Suburban": {
     "trims": [],
@@ -2539,12 +2986,21 @@
     "doors": []
   },
   "1994|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "Cheyenne",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1994|Chevrolet|S10": {
     "trims": [],
@@ -2654,14 +3110,24 @@
   "1994|GMC|C2500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1994|GMC|C3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1994|GMC|C3500 HD": {
     "trims": [],
@@ -2678,14 +3144,24 @@
   "1994|GMC|K2500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1994|GMC|K3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1994|GMC|Sonoma": {
     "trims": [],
@@ -2789,6 +3265,30 @@
     "cabTypes": [],
     "doors": []
   },
+  "1995|AM General|Hummer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1995|Buick|Commercial Chassis": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1995|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1995|Chevrolet|Blazer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "1995|Chevrolet|C/K 1500": {
     "trims": [],
     "bedLengths": [],
@@ -2823,16 +3323,23 @@
   },
   "1995|Chevrolet|C2500": {
     "trims": [
+      "400 SS",
       "60th Anniversary",
+      "Base",
       "Base Cab & Chassis",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
-      "Silverado Cab & Chassis"
+      "Custom",
+      "Silverado",
+      "Silverado Cab & Chassis",
+      "WT"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
     "cabTypes": [
-      "REGULAR CAB"
+      "REGULAR CAB",
+      "SUPERCAB"
     ],
     "doors": [
       "2-Door"
@@ -2846,14 +3353,20 @@
   },
   "1995|Chevrolet|C3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -2896,12 +3409,22 @@
     "doors": []
   },
   "1995|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "Cheyenne",
+      "Silverado",
+      "WT"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1995|Chevrolet|K2500 Suburban": {
     "trims": [],
@@ -2910,12 +3433,21 @@
     "doors": []
   },
   "1995|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "Cheyenne",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1995|Chevrolet|S10": {
     "trims": [],
@@ -3033,11 +3565,13 @@
   },
   "1995|GMC|C2500": {
     "trims": [
+      "400 SS",
       "60th Anniversary"
     ],
     "bedLengths": [],
     "cabTypes": [
-      "REGULAR CAB"
+      "REGULAR CAB",
+      "SUPERCAB"
     ],
     "doors": [
       "2-Door"
@@ -3046,8 +3580,13 @@
   "1995|GMC|C3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1995|GMC|C3500 HD": {
     "trims": [],
@@ -3064,14 +3603,24 @@
   "1995|GMC|K2500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1995|GMC|K3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1995|GMC|Sonoma": {
     "trims": [],
@@ -3208,6 +3757,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "1996|AM General|Hummer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "1996|Acura|SLX": {
     "trims": [],
     "bedLengths": [],
@@ -3221,6 +3776,24 @@
     "doors": []
   },
   "1996|Audi|A4 Quattro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1996|Buick|Commercial Chassis": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1996|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1996|Chevrolet|Blazer": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -3260,14 +3833,22 @@
   },
   "1996|Chevrolet|C2500": {
     "trims": [
+      "400 SS",
+      "Base",
       "Base Cab & Chassis",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Custom",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
@@ -3280,14 +3861,20 @@
   },
   "1996|Chevrolet|C3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -3359,12 +3946,21 @@
     "doors": []
   },
   "1996|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "Cheyenne",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1996|Chevrolet|K2500 Suburban": {
     "trims": [],
@@ -3373,12 +3969,21 @@
     "doors": []
   },
   "1996|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "Cheyenne",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1996|Chevrolet|S10": {
     "trims": [],
@@ -3535,16 +4140,28 @@
     "doors": []
   },
   "1996|GMC|C2500": {
-    "trims": [],
+    "trims": [
+      "400 SS"
+    ],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1996|GMC|C3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1996|GMC|C3500 HD": {
     "trims": [],
@@ -3561,14 +4178,24 @@
   "1996|GMC|K2500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1996|GMC|K3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1996|GMC|Savana 1500": {
     "trims": [],
@@ -3749,6 +4376,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "1997|AM General|Hummer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "1997|Acura|SLX": {
     "trims": [],
     "bedLengths": [],
@@ -3768,6 +4401,18 @@
     "doors": []
   },
   "1997|Buick|Regal": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1997|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1997|Chevrolet|Blazer": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -3807,14 +4452,22 @@
   },
   "1997|Chevrolet|C2500": {
     "trims": [
+      "400 SS",
+      "Base",
       "Base Cab & Chassis",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Custom",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
@@ -3827,14 +4480,20 @@
   },
   "1997|Chevrolet|C3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -3907,12 +4566,21 @@
     "doors": []
   },
   "1997|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "Cheyenne",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1997|Chevrolet|K2500 Suburban": {
     "trims": [],
@@ -3921,10 +4589,25 @@
     "doors": []
   },
   "1997|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "Cheyenne",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
+  },
+  "1997|Chevrolet|LUV": {
+    "trims": [],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -4130,16 +4813,28 @@
     "doors": []
   },
   "1997|GMC|C2500": {
-    "trims": [],
+    "trims": [
+      "400 SS"
+    ],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1997|GMC|C3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1997|GMC|C3500 HD": {
     "trims": [],
@@ -4156,14 +4851,24 @@
   "1997|GMC|K2500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1997|GMC|K3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1997|GMC|Savana 1500": {
     "trims": [],
@@ -4382,6 +5087,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "1998|AM General|Hummer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "1998|Acura|SLX": {
     "trims": [],
     "bedLengths": [],
@@ -4401,6 +5112,12 @@
     "doors": []
   },
   "1998|Buick|Regal": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1998|Chevrolet|Astro": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -4446,7 +5163,12 @@
   },
   "1998|Chevrolet|C2500": {
     "trims": [
+      "400 SS",
+      "Base",
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Custom",
+      "Silverado",
       "Silverado Cab & Chassis",
       "WT"
     ],
@@ -4454,10 +5176,12 @@
       "6.5' BED"
     ],
     "cabTypes": [
-      "REGULAR CAB"
+      "REGULAR CAB",
+      "SUPERCAB"
     ],
     "doors": [
-      "2-Door"
+      "2-Door",
+      "3-Door"
     ]
   },
   "1998|Chevrolet|C2500 Suburban": {
@@ -4468,13 +5192,18 @@
   },
   "1998|Chevrolet|C3500": {
     "trims": [
+      "Cheyenne",
       "Cheyenne Cab & Chassis",
+      "Silverado",
       "Silverado Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -4549,13 +5278,16 @@
   },
   "1998|Chevrolet|K2500": {
     "trims": [
+      "Cheyenne",
+      "Silverado",
       "WT"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
     "cabTypes": [
-      "REGULAR CAB"
+      "REGULAR CAB",
+      "SUPERCAB"
     ],
     "doors": [
       "2-Door"
@@ -4568,10 +5300,24 @@
     "doors": []
   },
   "1998|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Cheyenne",
+      "Silverado"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
+  },
+  "1998|Chevrolet|LUV": {
+    "trims": [],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -4792,20 +5538,29 @@
     "doors": []
   },
   "1998|GMC|C2500": {
-    "trims": [],
+    "trims": [
+      "400 SS"
+    ],
     "bedLengths": [],
     "cabTypes": [
-      "REGULAR CAB"
+      "REGULAR CAB",
+      "SUPERCAB"
     ],
     "doors": [
-      "2-Door"
+      "2-Door",
+      "3-Door"
     ]
   },
   "1998|GMC|C3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1998|GMC|C3500 HD": {
     "trims": [],
@@ -4823,7 +5578,8 @@
     "trims": [],
     "bedLengths": [],
     "cabTypes": [
-      "REGULAR CAB"
+      "REGULAR CAB",
+      "SUPERCAB"
     ],
     "doors": [
       "2-Door"
@@ -4832,8 +5588,13 @@
   "1998|GMC|K3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1998|GMC|Savana 1500": {
     "trims": [],
@@ -5083,6 +5844,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "1999|AM General|Hummer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "1999|Acura|SLX": {
     "trims": [],
     "bedLengths": [],
@@ -5108,6 +5875,18 @@
     "doors": []
   },
   "1999|Buick|Regal": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1999|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "1999|Chevrolet|Astro": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -5153,18 +5932,25 @@
   },
   "1999|Chevrolet|C2500": {
     "trims": [
+      "400 SS",
       "Austera",
+      "Base",
       "Base Cab & Chassis",
+      "Cheyenne",
+      "Custom",
+      "LS",
       "LS Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
     "cabTypes": [
-      "REGULAR CAB"
+      "REGULAR CAB",
+      "SUPERCAB"
     ],
     "doors": [
-      "2-Door"
+      "2-Door",
+      "3-Door"
     ]
   },
   "1999|Chevrolet|C2500 Suburban": {
@@ -5175,13 +5961,18 @@
   },
   "1999|Chevrolet|C3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
+      "LS",
       "LS Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -5254,12 +6045,20 @@
     "doors": []
   },
   "1999|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "LS"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1999|Chevrolet|K2500 Suburban": {
     "trims": [],
@@ -5268,10 +6067,24 @@
     "doors": []
   },
   "1999|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "LS"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
+  },
+  "1999|Chevrolet|LUV": {
+    "trims": [],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -5518,21 +6331,29 @@
   },
   "1999|GMC|C2500": {
     "trims": [
+      "400 SS",
       "Austera"
     ],
     "bedLengths": [],
     "cabTypes": [
-      "REGULAR CAB"
+      "REGULAR CAB",
+      "SUPERCAB"
     ],
     "doors": [
-      "2-Door"
+      "2-Door",
+      "3-Door"
     ]
   },
   "1999|GMC|C3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1999|GMC|C3500 HD": {
     "trims": [],
@@ -5549,14 +6370,24 @@
   "1999|GMC|K2500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1999|GMC|K3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "1999|GMC|Savana 1500": {
     "trims": [],
@@ -5883,6 +6714,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2000|AM General|Hummer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2000|Acura|TL": {
     "trims": [],
     "bedLengths": [],
@@ -5925,6 +6762,18 @@
     "cabTypes": [],
     "doors": []
   },
+  "2000|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2000|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2000|Chevrolet|Blazer": {
     "trims": [],
     "bedLengths": [],
@@ -5958,22 +6807,35 @@
     "doors": []
   },
   "2000|Chevrolet|C2500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "LS"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "2000|Chevrolet|C3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
+      "LS",
       "LS Cab & Chassis"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
     "doors": [
       "2-Door"
     ]
@@ -6037,18 +6899,40 @@
     "doors": []
   },
   "2000|Chevrolet|K2500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "LS"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "2000|Chevrolet|K3500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "LS"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
+  },
+  "2000|Chevrolet|LUV": {
+    "trims": [],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -6350,14 +7234,24 @@
   "2000|GMC|C2500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "2000|GMC|C3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "2000|GMC|C3500 HD": {
     "trims": [],
@@ -6368,14 +7262,24 @@
   "2000|GMC|K2500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "2000|GMC|K3500": {
     "trims": [],
     "bedLengths": [],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB"
+    ],
+    "doors": [
+      "2-Door"
+    ]
   },
   "2000|GMC|Savana 1500": {
     "trims": [],
@@ -6733,6 +7637,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2001|AM General|Hummer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2001|Acura|CL": {
     "trims": [],
     "bedLengths": [],
@@ -6787,7 +7697,19 @@
     "cabTypes": [],
     "doors": []
   },
+  "2001|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2001|Chevrolet|Blazer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2001|Chevrolet|C1500": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -6851,6 +7773,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2001|Chevrolet|LUV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2001|Chevrolet|S10": {
     "trims": [],
     "bedLengths": [],
@@ -6891,13 +7819,21 @@
   },
   "2001|Chevrolet|Silverado 3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
-      "LS Cab & Chassis"
+      "HD",
+      "LS",
+      "LS Cab & Chassis",
+      "LT"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
+      "CREW CAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -7221,12 +8157,23 @@
     "doors": []
   },
   "2001|GMC|Sierra 3500": {
-    "trims": [],
+    "trims": [
+      "SL",
+      "SLE",
+      "SLT"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
+      "CREW CAB"
+    ],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
   },
   "2001|GMC|Sonoma": {
     "trims": [],
@@ -7629,6 +8576,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2002|Buick|Rendezvous": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2002|Cadillac|DeVille": {
     "trims": [],
     "bedLengths": [],
@@ -7647,6 +8600,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2002|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2002|Chevrolet|Avalanche 1500": {
     "trims": [],
     "bedLengths": [],
@@ -7660,6 +8619,12 @@
     "doors": []
   },
   "2002|Chevrolet|Blazer": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2002|Chevrolet|C1500": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -7723,6 +8688,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2002|Chevrolet|LUV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2002|Chevrolet|S10": {
     "trims": [],
     "bedLengths": [],
@@ -7763,13 +8734,21 @@
   },
   "2002|Chevrolet|Silverado 3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
-      "LS Cab & Chassis"
+      "HD",
+      "LS",
+      "LS Cab & Chassis",
+      "LT"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
+      "CREW CAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -8119,12 +9098,24 @@
     "doors": []
   },
   "2002|GMC|Sierra 3500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "SL",
+      "SLE",
+      "SLT"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
+      "CREW CAB"
+    ],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
   },
   "2002|GMC|Sonoma": {
     "trims": [],
@@ -8561,6 +9552,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2003|Buick|Rendezvous": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2003|Cadillac|DeVille": {
     "trims": [],
     "bedLengths": [],
@@ -8580,6 +9577,12 @@
     "doors": []
   },
   "2003|Cadillac|Escalade EXT": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2003|Chevrolet|Astro": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -8646,6 +9649,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2003|Chevrolet|LUV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2003|Chevrolet|S10": {
     "trims": [],
     "bedLengths": [],
@@ -8686,13 +9695,21 @@
   },
   "2003|Chevrolet|Silverado 3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
-      "LS Cab & Chassis"
+      "HD",
+      "LS",
+      "LS Cab & Chassis",
+      "LT"
     ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
+      "CREW CAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -9047,12 +10064,23 @@
     "doors": []
   },
   "2003|GMC|Sierra 3500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "SLE",
+      "SLT"
+    ],
     "bedLengths": [
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
+      "CREW CAB"
+    ],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
   },
   "2003|GMC|Sonoma": {
     "trims": [],
@@ -9614,7 +10642,19 @@
     "cabTypes": [],
     "doors": []
   },
+  "2004|Buick|Rainier": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2004|Buick|Regal": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2004|Buick|Rendezvous": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -9639,6 +10679,18 @@
     "doors": []
   },
   "2004|Cadillac|Escalade EXT": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2004|Cadillac|SRX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2004|Chevrolet|Astro": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -9729,6 +10781,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2004|Chevrolet|LUV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2004|Chevrolet|S10": {
     "trims": [],
     "bedLengths": [],
@@ -9764,8 +10822,12 @@
   },
   "2004|Chevrolet|Silverado 3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
+      "HD",
+      "LS",
       "LS Cab & Chassis",
+      "LT",
       "WT",
       "WT Cab & Chassis"
     ],
@@ -10169,13 +11231,25 @@
     "doors": []
   },
   "2004|GMC|Sierra 3500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "SLE",
+      "SLT",
+      "WT"
+    ],
     "bedLengths": [
       "5.8' BED",
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
+      "CREW CAB"
+    ],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
   },
   "2004|GMC|Yukon": {
     "trims": [
@@ -10823,6 +11897,24 @@
     "cabTypes": [],
     "doors": []
   },
+  "2005|Buick|Rainier": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2005|Buick|Rendezvous": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2005|Buick|Terraza": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2005|Cadillac|DeVille": {
     "trims": [],
     "bedLengths": [],
@@ -10847,6 +11939,18 @@
     "cabTypes": [],
     "doors": []
   },
+  "2005|Cadillac|SRX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2005|Chevrolet|Astro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2005|Chevrolet|Avalanche 1500": {
     "trims": [],
     "bedLengths": [],
@@ -10854,6 +11958,12 @@
     "doors": []
   },
   "2005|Chevrolet|Avalanche 2500": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2005|Chevrolet|Blazer": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -10941,6 +12051,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2005|Chevrolet|LUV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2005|Chevrolet|Silverado 1500": {
     "trims": [],
     "bedLengths": [
@@ -10979,14 +12095,21 @@
   },
   "2005|Chevrolet|Silverado 3500": {
     "trims": [
+      "Base",
       "Base Cab & Chassis",
-      "LS Cab & Chassis"
+      "LS",
+      "LS Cab & Chassis",
+      "LT"
     ],
     "bedLengths": [
       "5.8' BED",
       "6.5' BED"
     ],
-    "cabTypes": [],
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
+      "CREW CAB"
+    ],
     "doors": [
       "2-Door",
       "4-Door"
@@ -11394,13 +12517,25 @@
     "doors": []
   },
   "2005|GMC|Sierra 3500": {
-    "trims": [],
+    "trims": [
+      "Base",
+      "SLE",
+      "SLT",
+      "WT"
+    ],
     "bedLengths": [
       "5.8' BED",
       "6.5' BED"
     ],
-    "cabTypes": [],
-    "doors": []
+    "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
+      "CREW CAB"
+    ],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
   },
   "2005|GMC|Yukon": {
     "trims": [
@@ -12111,6 +13246,24 @@
     "cabTypes": [],
     "doors": []
   },
+  "2006|Buick|Rainier": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2006|Buick|Rendezvous": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2006|Buick|Terraza": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2006|Cadillac|DTS": {
     "trims": [],
     "bedLengths": [],
@@ -12130,6 +13283,12 @@
     "doors": []
   },
   "2006|Cadillac|Escalade EXT": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2006|Cadillac|SRX": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -12264,8 +13423,11 @@
   },
   "2006|Chevrolet|Silverado 3500": {
     "trims": [
+      "Base",
       "HD",
+      "LS",
       "LS Cab & Chassis",
+      "LT",
       "LT Cab & Chassis",
       "WT",
       "WT Cab & Chassis"
@@ -12720,7 +13882,10 @@
   },
   "2006|GMC|Sierra 3500": {
     "trims": [
-      "SL"
+      "SL",
+      "SLE",
+      "SLT",
+      "WT"
     ],
     "bedLengths": [
       "5.8' BED",
@@ -13539,6 +14704,24 @@
     "cabTypes": [],
     "doors": []
   },
+  "2007|Buick|Rainier": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2007|Buick|Rendezvous": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2007|Buick|Terraza": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2007|Cadillac|DTS": {
     "trims": [],
     "bedLengths": [],
@@ -13562,6 +14745,12 @@
     "doors": []
   },
   "2007|Cadillac|Escalade EXT": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2007|Cadillac|SRX": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -13667,6 +14856,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -13722,6 +14912,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -13792,9 +14983,12 @@
       "8' BED"
     ],
     "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -14394,9 +15588,12 @@
       "8' BED"
     ],
     "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -15335,6 +16532,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2008|BMW|X6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2008|Buick|Enclave": {
     "trims": [],
     "bedLengths": [],
@@ -15369,7 +16572,19 @@
     "cabTypes": [],
     "doors": []
   },
+  "2008|Cadillac|SRX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2008|Chevrolet|Avalanche": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2008|Chevrolet|Captiva Sport": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -15463,6 +16678,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -15490,6 +16706,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -15517,9 +16734,12 @@
       "8' BED"
     ],
     "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -16027,9 +17247,12 @@
       "8' BED"
     ],
     "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -16959,6 +18182,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2009|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2009|Audi|Q7": {
     "trims": [],
     "bedLengths": [],
@@ -16990,6 +18219,12 @@
     ]
   },
   "2009|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2009|BMW|X6": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -17030,7 +18265,19 @@
     "cabTypes": [],
     "doors": []
   },
+  "2009|Cadillac|SRX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2009|Chevrolet|Avalanche": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2009|Chevrolet|Captiva Sport": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -17124,6 +18371,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -17151,6 +18399,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -17178,9 +18427,12 @@
       "8' BED"
     ],
     "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -17694,9 +18946,12 @@
       "8' BED"
     ],
     "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -18614,6 +19869,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2010|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2010|Audi|Q7": {
     "trims": [],
     "bedLengths": [],
@@ -18627,6 +19888,12 @@
     "doors": []
   },
   "2010|Audi|S6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2010|BMW|X1": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -18646,6 +19913,12 @@
     ]
   },
   "2010|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2010|BMW|X6": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -18686,7 +19959,19 @@
     "cabTypes": [],
     "doors": []
   },
+  "2010|Cadillac|SRX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2010|Chevrolet|Avalanche": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2010|Chevrolet|Captiva Sport": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -18814,6 +20099,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -18841,9 +20127,12 @@
       "8' BED"
     ],
     "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -19354,9 +20643,12 @@
       "8' BED"
     ],
     "cabTypes": [
+      "REGULAR CAB",
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -20299,6 +21591,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2011|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2011|Audi|Q7": {
     "trims": [],
     "bedLengths": [],
@@ -20317,7 +21615,25 @@
     "cabTypes": [],
     "doors": []
   },
+  "2011|BMW|X1": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2011|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2011|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2011|BMW|X6": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -20360,6 +21676,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2011|Cadillac|SRX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2011|Chevrolet|Avalanche": {
     "trims": [],
     "bedLengths": [],
@@ -20376,6 +21698,12 @@
     "doors": [
       "2-Door"
     ]
+  },
+  "2011|Chevrolet|Captiva Sport": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
   },
   "2011|Chevrolet|Colorado": {
     "trims": [],
@@ -20460,6 +21788,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -20475,6 +21804,7 @@
       "6.5' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -20493,6 +21823,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -20520,6 +21851,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -20870,6 +22202,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -20889,6 +22222,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -20908,6 +22242,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -21827,6 +23162,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2012|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2012|Audi|Q7": {
     "trims": [],
     "bedLengths": [],
@@ -21903,7 +23244,25 @@
       "4-Door"
     ]
   },
+  "2012|BMW|X1": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2012|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2012|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2012|BMW|X6": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -21947,6 +23306,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2012|Cadillac|SRX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2012|Chevrolet|Avalanche": {
     "trims": [],
     "bedLengths": [],
@@ -21964,6 +23329,12 @@
     "doors": [
       "2-Door"
     ]
+  },
+  "2012|Chevrolet|Captiva Sport": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
   },
   "2012|Chevrolet|Colorado": {
     "trims": [],
@@ -22035,6 +23406,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -22050,6 +23422,7 @@
       "6.5' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -22068,6 +23441,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -22095,6 +23469,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -22448,6 +23823,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -22467,6 +23843,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -22486,6 +23863,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -23397,6 +24775,18 @@
     "cabTypes": [],
     "doors": []
   },
+  "2013|Audi|Q3 Quattro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2013|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2013|Audi|Q7": {
     "trims": [],
     "bedLengths": [],
@@ -23498,7 +24888,25 @@
       "4-Door"
     ]
   },
+  "2013|BMW|X1": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2013|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2013|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2013|BMW|X6": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -23547,6 +24955,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2013|Cadillac|SRX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2013|Chevrolet|Avalanche": {
     "trims": [],
     "bedLengths": [],
@@ -23564,6 +24978,12 @@
     "doors": [
       "2-Door"
     ]
+  },
+  "2013|Chevrolet|Captiva Sport": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
   },
   "2013|Chevrolet|Cruze": {
     "trims": [],
@@ -23626,6 +25046,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -23660,6 +25081,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -23687,6 +25109,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -24024,6 +25447,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -24043,6 +25467,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -24062,6 +25487,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -24946,6 +26372,18 @@
     "cabTypes": [],
     "doors": []
   },
+  "2014|Audi|Q3 Quattro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2014|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2014|Audi|Q7": {
     "trims": [],
     "bedLengths": [],
@@ -24959,6 +26397,12 @@
     "doors": []
   },
   "2014|Audi|S5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2014|Audi|SQ5": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -25076,6 +26520,18 @@
       "4-Door"
     ]
   },
+  "2014|BMW|X1": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2014|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2014|BMW|X5": {
     "trims": [],
     "bedLengths": [],
@@ -25124,6 +26580,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2014|Cadillac|SRX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2014|Chevrolet|Camaro": {
     "trims": [
       "LT",
@@ -25135,6 +26597,12 @@
     "doors": [
       "2-Door"
     ]
+  },
+  "2014|Chevrolet|Captiva Sport": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
   },
   "2014|Chevrolet|Cruze": {
     "trims": [
@@ -25202,6 +26670,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -25588,6 +27057,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -26501,6 +27971,24 @@
     "cabTypes": [],
     "doors": []
   },
+  "2015|Audi|Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2015|Audi|Q3 Quattro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2015|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2015|Audi|Q7": {
     "trims": [],
     "bedLengths": [],
@@ -26514,6 +28002,12 @@
     "doors": []
   },
   "2015|Audi|S5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2015|Audi|SQ5": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -26611,6 +28105,24 @@
       "4-Door"
     ]
   },
+  "2015|BMW|X1": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2015|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2015|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2015|BMW|X5": {
     "trims": [],
     "bedLengths": [],
@@ -26641,6 +28153,24 @@
     "cabTypes": [],
     "doors": []
   },
+  "2015|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2015|Cadillac|Escalade ESV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2015|Cadillac|SRX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2015|Chevrolet|Camaro": {
     "trims": [
       "LT",
@@ -26652,6 +28182,12 @@
     "doors": [
       "2-Door"
     ]
+  },
+  "2015|Chevrolet|Captiva Sport": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
   },
   "2015|Chevrolet|Colorado": {
     "trims": [
@@ -26734,6 +28270,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -26768,6 +28305,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -26796,6 +28334,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -27093,6 +28632,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -27112,6 +28652,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -27131,6 +28672,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -27974,6 +29516,30 @@
     "cabTypes": [],
     "doors": []
   },
+  "2016|Audi|Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2016|Audi|Q3 Quattro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2016|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2016|Audi|Q7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2016|Audi|S4": {
     "trims": [],
     "bedLengths": [],
@@ -27981,6 +29547,12 @@
     "doors": []
   },
   "2016|Audi|S5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2016|Audi|SQ5": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -28120,6 +29692,18 @@
     "cabTypes": [],
     "doors": []
   },
+  "2016|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2016|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2016|BMW|X5": {
     "trims": [],
     "bedLengths": [],
@@ -28151,6 +29735,24 @@
     "doors": []
   },
   "2016|Buick|Verano": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2016|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2016|Cadillac|Escalade ESV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2016|Cadillac|SRX": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -28235,6 +29837,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -28269,6 +29872,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -28297,6 +29901,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -28594,6 +30199,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -28613,6 +30219,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -28632,6 +30239,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -29400,7 +31008,43 @@
     "cabTypes": [],
     "doors": []
   },
+  "2017|Alfa Romeo|Stelvio": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2017|Audi|Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2017|Audi|Q3 Quattro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2017|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2017|Audi|Q7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2017|Audi|RS Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2017|Audi|SQ5": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -29526,6 +31170,18 @@
     "cabTypes": [],
     "doors": []
   },
+  "2017|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2017|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2017|BMW|X5": {
     "trims": [],
     "bedLengths": [],
@@ -29533,6 +31189,12 @@
     "doors": []
   },
   "2017|BMW|X6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2017|Bentley|Bentayga": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -29557,6 +31219,18 @@
     "doors": []
   },
   "2017|Buick|Verano": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2017|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2017|Cadillac|Escalade ESV": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -29628,6 +31302,7 @@
   },
   "2017|Chevrolet|Silverado 1500": {
     "trims": [
+      "Custom",
       "High Country",
       "LS",
       "LT",
@@ -29640,6 +31315,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -29675,6 +31351,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -29703,6 +31380,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -30055,6 +31733,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -30074,6 +31753,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -30093,6 +31773,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -30925,7 +32606,49 @@
       "4-Door"
     ]
   },
+  "2018|Audi|Q2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|Audi|Q2 Quattro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|Audi|Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|Audi|Q3 Quattro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2018|Audi|Q7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|Audi|RS Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|Audi|SQ5": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -31066,6 +32789,24 @@
     "cabTypes": [],
     "doors": []
   },
+  "2018|BMW|X2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2018|BMW|X5": {
     "trims": [],
     "bedLengths": [],
@@ -31073,6 +32814,12 @@
     "doors": []
   },
   "2018|BMW|X6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|Bentley|Bentayga": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -31097,6 +32844,18 @@
     "doors": []
   },
   "2018|Buick|Envision": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2018|Cadillac|Escalade ESV": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -31189,6 +32948,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -31223,6 +32983,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -31251,6 +33012,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -31597,6 +33359,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -31616,6 +33379,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -31635,6 +33399,7 @@
       "8' BED"
     ],
     "cabTypes": [
+      "SUPERCAB",
       "CREW CAB"
     ],
     "doors": [
@@ -31775,6 +33540,24 @@
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
+  },
+  "2018|Jeep|Wrangler": {
+    "trims": [
+      "Rubicon",
+      "Sport",
+      "Sport S",
+      "Unlimited Moab",
+      "Unlimited Rubicon",
+      "Unlimited Sahara",
+      "Unlimited Sport",
+      "Unlimited Sport S"
+    ],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
   },
   "2018|Jeep|Wrangler JK": {
     "trims": [
@@ -32428,6 +34211,30 @@
       "4-Door"
     ]
   },
+  "2019|Audi|Q2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|Audi|Q2 Quattro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|Audi|Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2019|Audi|Q7": {
     "trims": [],
     "bedLengths": [],
@@ -32435,6 +34242,12 @@
     "doors": []
   },
   "2019|Audi|Q8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|Audi|SQ5": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -32490,7 +34303,43 @@
     "cabTypes": [],
     "doors": []
   },
+  "2019|BMW|X2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2019|BMW|X6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|BMW|X7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|Bentley|Bentayga": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -32509,6 +34358,24 @@
     "doors": []
   },
   "2019|Buick|Envision": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|Cadillac|Escalade ESV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2019|Cadillac|XT4": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -33213,6 +35080,26 @@
     "cabTypes": [],
     "doors": []
   },
+  "2019|Jeep|Wrangler": {
+    "trims": [
+      "Rubicon",
+      "Rubicon Deluxe",
+      "Sport",
+      "Sport S",
+      "Unlimited Moab",
+      "Unlimited Rubicon",
+      "Unlimited Sahara",
+      "Unlimited Sahara Altitude",
+      "Unlimited Sport",
+      "Unlimited Sport S"
+    ],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
+  },
   "2019|Kia|Sorento": {
     "trims": [],
     "bedLengths": [],
@@ -33860,6 +35747,30 @@
       "4-Door"
     ]
   },
+  "2020|Audi|Q2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Audi|Q2 Quattro": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Audi|Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2020|Audi|Q7": {
     "trims": [],
     "bedLengths": [],
@@ -33872,7 +35783,73 @@
     "cabTypes": [],
     "doors": []
   },
+  "2020|Audi|RS Q8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Audi|SQ5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Audi|SQ7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Audi|SQ8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2020|BMW|X1": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|BMW|X2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|BMW|X6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|BMW|X7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Bentley|Bentayga": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -33884,7 +35861,37 @@
     "cabTypes": [],
     "doors": []
   },
+  "2020|Buick|Encore": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Buick|Encore GX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2020|Buick|Envision": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Cadillac|Escalade ESV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2020|Cadillac|XT4": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -34576,13 +36583,22 @@
   },
   "2020|Jeep|Wrangler": {
     "trims": [
+      "Rubicon",
+      "Rubicon Deluxe",
+      "Sport",
+      "Sport S",
       "Unlimited Black and Tan",
       "Unlimited Freedom",
       "Unlimited North Edition",
       "Unlimited Recon",
+      "Unlimited Rubicon",
       "Unlimited Rubicon Deluxe",
       "Unlimited Rubicon Xtreme",
+      "Unlimited Sahara",
+      "Unlimited Sahara Altitude",
+      "Unlimited Sport",
       "Unlimited Sport Altitude",
+      "Unlimited Sport S",
       "Unlimited Willys"
     ],
     "bedLengths": [],
@@ -35226,6 +37242,24 @@
       "4-Door"
     ]
   },
+  "2021|Aston Martin|DBX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Audi|Q2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Audi|Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2021|Audi|Q4 e-tron": {
     "trims": [],
     "bedLengths": [],
@@ -35233,6 +37267,18 @@
     "doors": []
   },
   "2021|Audi|Q4 e-tron Sportback": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Audi|Q5 Sportback": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -35250,13 +37296,133 @@
     "cabTypes": [],
     "doors": []
   },
+  "2021|Audi|RS Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Audi|RS Q8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Audi|SQ5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Audi|SQ5 Sportback": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Audi|SQ7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Audi|SQ8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|BMW|Alpina XB7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2021|BMW|X1": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
+  "2021|BMW|X2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|BMW|X6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|BMW|X7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Bentley|Bentayga": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2021|Buick|Enclave": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Buick|Encore": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Buick|Encore GX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Buick|Envision": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Cadillac|Escalade ESV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2021|Cadillac|XT4": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -35960,9 +38126,28 @@
       "80th Anniversary",
       "Freedom",
       "Islander",
+      "Rubicon",
+      "Sport",
+      "Sport S",
       "Unlimited 80th Anniversary",
       "Unlimited Freedom",
-      "Unlimited Islander"
+      "Unlimited High Altitude",
+      "Unlimited High Altitude 4xe",
+      "Unlimited Islander",
+      "Unlimited Rubicon",
+      "Unlimited Rubicon 392",
+      "Unlimited Rubicon 4xe",
+      "Unlimited Sahara",
+      "Unlimited Sahara 4xe",
+      "Unlimited Sahara Altitude",
+      "Unlimited Sahara High Altitude",
+      "Unlimited Sport",
+      "Unlimited Sport Altitude",
+      "Unlimited Sport S",
+      "Unlimited Willys",
+      "Unlimited Willys Sport",
+      "Willys",
+      "Willys Sport"
     ],
     "bedLengths": [],
     "cabTypes": [],
@@ -36627,6 +38812,24 @@
       "4-Door"
     ]
   },
+  "2022|Aston Martin|DBX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Audi|Q2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Audi|Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2022|Audi|Q4 e-tron": {
     "trims": [],
     "bedLengths": [],
@@ -36634,6 +38837,18 @@
     "doors": []
   },
   "2022|Audi|Q4 e-tron Sportback": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Audi|Q5 Sportback": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -36651,13 +38866,133 @@
     "cabTypes": [],
     "doors": []
   },
+  "2022|Audi|RS Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Audi|RS Q8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Audi|SQ5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Audi|SQ5 Sportback": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Audi|SQ7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Audi|SQ8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|BMW|Alpina XB7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2022|BMW|X1": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
+  "2022|BMW|X2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|BMW|X6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|BMW|X7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Bentley|Bentayga": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2022|Buick|Enclave": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Buick|Encore": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Buick|Encore GX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Buick|Envision": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Cadillac|Escalade ESV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2022|Cadillac|XT4": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -36675,6 +39010,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2022|Changan|CS35": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2022|Chevrolet|Blazer": {
     "trims": [
       "LT",
@@ -36686,6 +39027,12 @@
     "doors": [
       "4-Door"
     ]
+  },
+  "2022|Chevrolet|Captiva": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
   },
   "2022|Chevrolet|Colorado": {
     "trims": [
@@ -37409,13 +39756,32 @@
   },
   "2022|Jeep|Wrangler": {
     "trims": [
+      "Rubicon",
+      "Sport",
+      "Sport S",
       "Unlimited High Altitude",
+      "Unlimited High Altitude 4xe",
       "Unlimited High Tide",
-      "Unlimited Rubicon Tuscadero"
+      "Unlimited Rubicon",
+      "Unlimited Rubicon 392",
+      "Unlimited Rubicon 4xe",
+      "Unlimited Rubicon Tuscadero",
+      "Unlimited Sahara",
+      "Unlimited Sahara 4xe",
+      "Unlimited Sahara Altitude",
+      "Unlimited Sahara High Altitude",
+      "Unlimited Sport",
+      "Unlimited Sport Altitude",
+      "Unlimited Sport S",
+      "Unlimited Willys",
+      "Unlimited Willys Sport",
+      "Willys",
+      "Willys Sport"
     ],
     "bedLengths": [],
     "cabTypes": [],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -38078,6 +40444,36 @@
       "4-Door"
     ]
   },
+  "2023|Alfa Romeo|Tonale": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Aston Martin|DBX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Aston Martin|DBX707": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Audi|Q2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Audi|Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2023|Audi|Q4 e-tron": {
     "trims": [],
     "bedLengths": [],
@@ -38085,6 +40481,18 @@
     "doors": []
   },
   "2023|Audi|Q4 e-tron Sportback": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Audi|Q5 Sportback": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -38102,7 +40510,145 @@
     "cabTypes": [],
     "doors": []
   },
+  "2023|Audi|RS Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Audi|RS Q8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Audi|SQ5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Audi|SQ5 Sportback": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Audi|SQ7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Audi|SQ8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|BMW|Alpina XB7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|BMW|X1": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|BMW|X2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|BMW|X6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|BMW|X7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|BMW|XM": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Bentley|Bentayga": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Bentley|Bentayga EWB": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2023|Buick|Enclave": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Buick|Encore GX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Buick|Envision": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Cadillac|Escalade ESV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Cadillac|LYRIQ": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Cadillac|XT4": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -38120,6 +40666,18 @@
     "cabTypes": [],
     "doors": []
   },
+  "2023|Changan|CS35": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2023|Changan|CS55 Plus": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2023|Chevrolet|Blazer": {
     "trims": [
       "LT",
@@ -38131,6 +40689,12 @@
     "doors": [
       "4-Door"
     ]
+  },
+  "2023|Chevrolet|Captiva": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
   },
   "2023|Chevrolet|Colorado": {
     "trims": [
@@ -38798,16 +41362,23 @@
     "trims": [
       "Freedom",
       "High Altitude",
+      "High Altitude 4xe",
       "High Tide",
       "Rubicon",
+      "Rubicon 392",
+      "Rubicon 4xe",
       "Sahara",
+      "Sahara 4xe",
       "Sahara Altitude",
       "Sahara High Altitude",
       "Sport",
       "Sport Altitude",
       "Sport S",
+      "Unlimited Rubicon",
       "Unlimited Rubicon Xtreme Sunrider",
+      "Unlimited Sahara",
       "Willys",
+      "Willys 4xe",
       "Willys Sport"
     ],
     "bedLengths": [],
@@ -39428,6 +41999,12 @@
     "cabTypes": [],
     "doors": []
   },
+  "2024|Acura|ZDX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2024|Alfa Romeo|Stelvio": {
     "trims": [
       "Competizione",
@@ -39441,6 +42018,36 @@
       "4-Door"
     ]
   },
+  "2024|Alfa Romeo|Tonale": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Aston Martin|DBX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Aston Martin|DBX707": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Audi|Q2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Audi|Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2024|Audi|Q4 e-tron": {
     "trims": [],
     "bedLengths": [],
@@ -39448,6 +42055,18 @@
     "doors": []
   },
   "2024|Audi|Q4 e-tron Sportback": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Audi|Q5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Audi|Q5 Sportback": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -39465,13 +42084,151 @@
     "cabTypes": [],
     "doors": []
   },
+  "2024|Audi|RS Q3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Audi|RS Q8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Audi|SQ5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Audi|SQ5 Sportback": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Audi|SQ7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Audi|SQ8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|BMW|Alpina XB7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|BMW|X1": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|BMW|X2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|BMW|X3": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|BMW|X6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|BMW|X7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|BMW|XM": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Bentley|Bentayga": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Bentley|Bentayga EWB": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2024|Buick|Enclave": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
+  "2024|Buick|Encore GX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Buick|Envision": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2024|Buick|Envista": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Cadillac|Escalade ESV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Cadillac|LYRIQ": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Cadillac|XT4": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -39489,6 +42246,18 @@
     "cabTypes": [],
     "doors": []
   },
+  "2024|Changan|CS35": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2024|Changan|CS55 Plus": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2024|Chevrolet|Blazer": {
     "trims": [
       "LT",
@@ -39501,6 +42270,12 @@
     "doors": [
       "4-Door"
     ]
+  },
+  "2024|Chevrolet|Captiva": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
   },
   "2024|Chevrolet|Colorado": {
     "trims": [
@@ -40113,6 +42888,34 @@
     "cabTypes": [],
     "doors": []
   },
+  "2024|Jeep|Wrangler": {
+    "trims": [
+      "High Altitude 4xe",
+      "Rubicon",
+      "Rubicon 392",
+      "Rubicon 392 Final Edition",
+      "Rubicon 4xe",
+      "Rubicon X",
+      "Rubicon X 4xe",
+      "Sahara",
+      "Sahara 4xe",
+      "Sport",
+      "Sport S",
+      "Sport S 4xe",
+      "Unlimited Rubicon",
+      "Unlimited Sahara",
+      "Unlimited Willys",
+      "Willys",
+      "Willys 4xe",
+      "Willys Sport"
+    ],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": [
+      "2-Door",
+      "4-Door"
+    ]
+  },
   "2024|Kia|Carnival": {
     "trims": [],
     "bedLengths": [],
@@ -40637,6 +43440,24 @@
     "cabTypes": [],
     "doors": []
   },
+  "2025|Acura|ZDX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Alfa Romeo|Tonale": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Aston Martin|DBX707": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2025|Audi|Q4 e-tron": {
     "trims": [],
     "bedLengths": [],
@@ -40655,6 +43476,96 @@
     "cabTypes": [],
     "doors": []
   },
+  "2025|Audi|Q8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Audi|RS Q8": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Audi|SQ7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|BMW|Alpina XB7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|BMW|X1": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|BMW|X2": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|BMW|X4": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|BMW|X5": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|BMW|X6": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|BMW|X7": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|BMW|XM": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Bentley|Bentayga EWB": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Buick|Enclave": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Buick|Encore GX": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Buick|Envision": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
   "2025|Buick|Envista": {
     "trims": [],
     "bedLengths": [],
@@ -40662,6 +43573,30 @@
     "doors": []
   },
   "2025|Cadillac|ESCALADE IQ": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Cadillac|Escalade": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Cadillac|Escalade ESV": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Cadillac|LYRIQ": {
+    "trims": [],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": []
+  },
+  "2025|Cadillac|XT4": {
     "trims": [],
     "bedLengths": [],
     "cabTypes": [],
@@ -41230,11 +44165,28 @@
   },
   "2025|Jeep|Wrangler": {
     "trims": [
-      "Unlimited Sahara 4xe"
+      "High Altitude 4xe",
+      "Rubicon",
+      "Rubicon 392 Final Edition",
+      "Rubicon 4xe",
+      "Rubicon X",
+      "Rubicon X 4xe",
+      "Sahara",
+      "Sahara 4xe",
+      "Sport",
+      "Sport S",
+      "Sport S 4xe",
+      "Unlimited Rubicon",
+      "Unlimited Sahara",
+      "Unlimited Sahara 4xe",
+      "Unlimited Willys",
+      "Willys",
+      "Willys 4xe"
     ],
     "bedLengths": [],
     "cabTypes": [],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },
@@ -42178,11 +45130,18 @@
   "2026|Jeep|Wrangler": {
     "trims": [
       "Moab 392",
-      "Rubicon 392"
+      "Rubicon",
+      "Rubicon 392",
+      "Rubicon X",
+      "Sahara",
+      "Sport",
+      "Sport S",
+      "Willys"
     ],
     "bedLengths": [],
     "cabTypes": [],
     "doors": [
+      "2-Door",
       "4-Door"
     ]
   },

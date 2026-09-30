@@ -11,9 +11,13 @@
  *      metafield (the canonical CB Item Name, e.g. "FG-ACC084D-ME-BK").
  *   2. For each, query CA profile #1 with
  *      `$filter=startswith(Sku, '<cbItemName>-')`.
- *   3. From returned products, sort by 3-digit suffix ascending, drop
- *      any ending in -601 / -801, return the first whose `Fitment`
- *      custom-attribute is non-empty.
+ *   3. From returned products keep only exact `<cbItemName>-NNN` SKUs
+ *      (not `<cbItemName>-d2-001` etc. — those are DEFECTIVE-stock
+ *      listings), sort by 3-digit suffix ascending, drop any ending in
+ *      -601 / -801, return the first whose `Fitment` attribute is non-empty.
+ *      Not found → keep the last-known fitment from the snapshot.
+ *      Handles with a manual correction (data/fitment-corrections-log-*)
+ *      are left alone until CA matches the correction.
  *   4. If nothing in profile #1, fall through to #2, #3, ...
  *   5. Parse the raw Fitment string (one application per line:
  *      YEAR|MAKE|MODEL|SUBMODEL::NOTE) into structured years / makes /
@@ -35,6 +39,8 @@
  *   --handles-file=f process only the handles listed in f (one per line)
  *   --merge          merge results into the existing snapshot instead of
  *                    replacing it (use with --handle / --handles-file)
+ *   --override-corrections=true
+ *                    let CA overwrite manually corrected handles
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -72,6 +78,7 @@ const HANDLES_FILE = args.get("handles-file") ?? null;
 const MERGE = args.get("merge") === "true";
 const DRY_RUN = args.get("dry-run") === "true";
 const VERBOSE = args.get("verbose") === "true";
+const OVERRIDE_CORRECTIONS = args.get("override-corrections") === "true";
 
 if (
   !SHOPIFY_DOMAIN ||
@@ -152,6 +159,7 @@ type CAProduct = {
   ID: number;
   ProfileID: number;
   Sku: string;
+  Title?: string | null;
   Attributes?: { Name: string; Value: string | null }[];
 };
 
@@ -192,8 +200,14 @@ function suffixOf(sku: string): number | null {
   return m ? parseInt(m[1], 10) : null;
 }
 
-function pickCandidate(products: CAProduct[]): CAProduct | null {
+// Only `<cbItemName>-NNN` counts. The startswith() prefix also returns
+// sibling SKUs such as `<cbItemName>-d2-001`, which are CA listings for
+// DEFECTIVE / returned stock — never take fitment from those.
+function pickCandidate(products: CAProduct[], cbItemName: string): CAProduct | null {
+  const exact = new RegExp(`^${cbItemName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}-\\d{3}$`, "i");
   const candidates = products
+    .filter((p) => exact.test(p.Sku))
+    .filter((p) => !/^\W*defective/i.test(p.Title ?? ""))
     .filter((p) => suffixOf(p.Sku) !== null)
     .filter((p) => !p.Sku.endsWith("-601") && !p.Sku.endsWith("-801"))
     .sort((a, b) => (suffixOf(a.Sku)! - suffixOf(b.Sku)!));
@@ -217,7 +231,7 @@ async function lookupFitmentForCbItemName(
     if (VERBOSE) console.log(`  ↳ try profile ${profileId}`);
     const products = await searchCABySkuPrefix(profileId, cbItemName);
     if (VERBOSE) console.log(`    returned ${products.length} SKUs`);
-    const match = pickCandidate(products);
+    const match = pickCandidate(products, cbItemName);
     if (match) {
       const fitment = match.Attributes!.find(
         (a) => a.Name?.toLowerCase() === "fitment",
@@ -320,6 +334,15 @@ const FUNCTIONAL_TRIMS = new Set([
   "platinum reserve",
 ]);
 
+function expandYears(s: string): string[] {
+  const m = s.match(/^(\d{4})(?:\s*[-–]\s*(\d{4}))?$/);
+  if (!m) return [];
+  const from = parseInt(m[1], 10);
+  const to = m[2] ? parseInt(m[2], 10) : from;
+  if (to < from || to - from > 60) return [];
+  return Array.from({ length: to - from + 1 }, (_, i) => String(from + i));
+}
+
 function parseFitmentString(raw: string): ParsedFitment {
   const years = new Set<string>();
   const makes = new Set<string>();
@@ -365,16 +388,18 @@ function parseFitmentString(raw: string): ParsedFitment {
     const model = parts[2]?.trim() ?? "";
     const submodel = parts.slice(3).join("|").trim();
 
-    if (/^\d{4}$/.test(year)) years.add(year);
+    // CA writes either one year per line ("2019") or a range ("2015-2026").
+    const lineYears = expandYears(year);
+    for (const y of lineYears) years.add(y);
     if (make) makes.add(make);
     if (model) models.add(model);
     // Cycle 14AS: per-application record (year × make × model required, submodel optional).
-    if (/^\d{4}$/.test(year) && make && model) {
-      const key = `${year}|${make}|${model}|${submodel ?? ""}`;
+    for (const y of make && model ? lineYears : []) {
+      const key = `${y}|${make}|${model}|${submodel ?? ""}`;
       if (!appsKey.has(key)) {
         appsKey.add(key);
         apps.push({
-          year,
+          year: y,
           make,
           model,
           ...(submodel ? { submodel } : {}),
@@ -707,7 +732,26 @@ async function main() {
   let synced = 0;
   let notFound = 0;
   let errored = 0;
+  let keptCorrections = 0;
   const snapshot: Record<string, unknown> = {};
+
+  // Previous snapshot: a SKU that has since disappeared from CA keeps its
+  // last-known fitment instead of dropping out of the YMM index.
+  const snapshotFile = path.join(process.cwd(), "data", "ca_fitment_snapshot.json");
+  const previous: Record<string, { fitmentRaw?: string }> = JSON.parse(
+    await fs.readFile(snapshotFile, "utf8").catch(() => "{}"),
+  );
+  // Manual fitment corrections (scripts/apply-fitment-corrections.py) sit on
+  // top of CA. Keep them until CA itself carries the corrected fitment,
+  // unless --override-corrections=true.
+  const corrected = new Map<string, string>();
+  const dataDir = path.join(process.cwd(), "data");
+  for (const f of (await fs.readdir(dataDir)).filter((f) => f.startsWith("fitment-corrections-log-")).sort()) {
+    for (const e of JSON.parse(await fs.readFile(path.join(dataDir, f), "utf8")) as { handle: string; after: string }[])
+      corrected.set(e.handle, e.after);
+  }
+  const lineSet = (s: string) =>
+    [...new Set(s.split(/\r?\n/).map((l) => l.trim()).filter(Boolean))].sort().join("\n");
 
   for (let i = 0; i < queue.length; i++) {
     const p = queue[i];
@@ -718,8 +762,22 @@ async function main() {
       const result = found && { ...found, fitmentRaw: standardizeVehicleNames(found.fitmentRaw) };
       if (!result) {
         notFound++;
-        snapshot[p.handle] = { cbItemName: cb, status: "not-found" };
-        console.log(`${tag} → NOT FOUND in any profile`);
+        const prev = previous[p.handle];
+        if (prev?.fitmentRaw) {
+          snapshot[p.handle] = { ...prev, status: "not-found-kept" };
+          console.log(`${tag} → NOT FOUND in any profile; kept last-known fitment`);
+        } else {
+          snapshot[p.handle] = { cbItemName: cb, status: "not-found" };
+          console.log(`${tag} → NOT FOUND in any profile`);
+        }
+      } else if (
+        corrected.has(p.handle) &&
+        !OVERRIDE_CORRECTIONS &&
+        lineSet(result.fitmentRaw) !== lineSet(corrected.get(p.handle)!)
+      ) {
+        keptCorrections++;
+        snapshot[p.handle] = previous[p.handle] ?? { cbItemName: cb, status: "not-found" };
+        console.log(`${tag} → CA differs from manual correction; kept correction (fix CA or pass --override-corrections=true)`);
       } else {
         const parsed = parseFitmentString(result.fitmentRaw);
         snapshot[p.handle] = {
@@ -764,7 +822,7 @@ async function main() {
   await fs.writeFile(snapshotPath, JSON.stringify(merged, null, 2));
 
   console.log(
-    `\nDone. synced=${synced}, not-found=${notFound}, errored=${errored}. Snapshot: ${snapshotPath}`,
+    `\nDone. synced=${synced}, not-found=${notFound}, kept-corrections=${keptCorrections}, errored=${errored}. Snapshot: ${snapshotPath}`,
   );
 }
 
