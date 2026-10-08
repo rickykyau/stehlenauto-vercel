@@ -50,7 +50,7 @@ export function categoryFaqs(handle: string, name: string): { q: string; a: stri
     const vs = f.topVehicles.slice(0, 6).map((v) => `${v.make} ${v.model} (${v.years})`);
     faqs.push({
       q: `Which vehicles do you carry ${lower} for?`,
-      a: `Our widest ${lower} coverage is for the ${list(vs)}. Enter your vehicle at the top of the page to see only the ${lower} that fit it.`,
+      a: `We carry ${lower} for many vehicles, with the widest choice for the ${list(vs)}. Enter your vehicle at the top of the page to see only the ${lower} that fit it.`,
     });
   }
   if (f.bedLengths?.length) {

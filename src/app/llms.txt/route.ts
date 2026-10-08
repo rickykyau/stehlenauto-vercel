@@ -29,7 +29,7 @@ function buildLlmsTxt(base: string): string {
   const vehicleLines = topVehicles(16)
     .map((v) => {
       const slug = `${v.make}-${v.model}`.toLowerCase().replace(/\s+/g, "-");
-      return `- [${v.make} ${v.model} (${v.from}–${v.to}), ${v.count} parts](${base}/vehicle/${slug})`;
+      return `- [${v.make} ${v.model} (${v.from}–${v.to})](${base}/vehicle/${slug})`;
     })
     .join("\n");
 
@@ -97,6 +97,7 @@ ${vehicleLines}
 type TopVehicle = { make: string; model: string; from: number; to: number; count: number };
 
 // Vehicles with the most fitting products, from the CA-built fitment index.
+// Ranked by count, but counts are never printed (stakeholder rule).
 function topVehicles(n: number): TopVehicle[] {
   let index: Record<string, string[]> = {};
   try {
