@@ -1,4 +1,5 @@
 import { shopifyConfigured, shopifyFetch } from "@/lib/shopify/client";
+import { normalizeSearchQuery } from "@/lib/search/normalize";
 import {
   GET_COLLECTION_BY_HANDLE_QUERY,
   GET_PRODUCT_BY_HANDLE_QUERY,
@@ -12,7 +13,7 @@ import {
   filterByDimensionAnswers,
   sharesVehicleAudience,
 } from "@/lib/fitment/match";
-import { getProductHandlesForVehicle } from "@/lib/fitment/products-by-ymm";
+import { fitsModelYear, getProductHandlesForVehicle } from "@/lib/fitment/products-by-ymm";
 import { getReviewAggregate } from "@/lib/reviews";
 import type { SubModelAnswer } from "@/lib/garage/types";
 import {
@@ -1293,12 +1294,17 @@ export async function searchProducts(
     ).slice(0, first);
   }
   try {
+    // "2020 silverado hitch": titles carry year ranges, so search without
+    // the year and keep only products whose fitment includes it.
+    const norm = normalizeSearchQuery(query);
     const data = await shopifyFetch<GetProductsResponse>(GET_PRODUCTS_QUERY, {
-      first,
-      query,
+      first: norm.year ? 100 : first,
+      query: norm.query,
       sortKey: "RELEVANCE",
     });
-    return (data.products?.nodes ?? []).map(adapt);
+    const nodes = data.products?.nodes ?? [];
+    const kept = norm.year ? nodes.filter((n) => fitsModelYear(n.handle, norm.year!)) : nodes;
+    return kept.slice(0, first).map(adapt);
   } catch (err) {
     console.error("[catalog] searchProducts fell back to mock:", err);
     return PRODUCTS.filter((p) =>

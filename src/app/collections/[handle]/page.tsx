@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CategoryFaq } from "@/components/pages/category-faq";
 // Cycle 14AY (Ren R1 BUG-002 P2): notFound() reinstated for unknown
 // slugs that aren't on a small whitelist of marketing handles. The
 // Cycle-1 friendly-empty-state behaviour was scoped to known chrome
@@ -1180,6 +1181,9 @@ export default async function CollectionPage({
           )}
         </div>
       </div>
+      {CATEGORIES.some((c) => c.slug === handle) && (
+        <CategoryFaq handle={handle} name={CATEGORIES.find((c) => c.slug === handle)!.name} />
+      )}
     </main>
   );
 }

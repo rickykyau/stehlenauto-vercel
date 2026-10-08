@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { normalizeSearchQuery } from "@/lib/search/normalize";
 import { shopifyConfigured, shopifyFetch } from "@/lib/shopify/client";
 import { PREDICTIVE_SEARCH_QUERY } from "@/lib/shopify/queries";
 import { CATEGORIES, PRODUCTS } from "@/lib/catalog/mock";
@@ -141,7 +142,11 @@ export async function GET(req: Request) {
           collections: ShopifyCollection[];
           queries: { text: string }[];
         };
-      }>(PREDICTIVE_SEARCH_QUERY, { query: q }),
+      }>(PREDICTIVE_SEARCH_QUERY, {
+        // Predictive search has no OR syntax: roman numerals + year handled,
+        // "a/b" sent as plain words.
+        query: normalizeSearchQuery(q).query.replace(/\(|\)|\bOR\b/g, " ").replace(/\s+/g, " ").trim() || q,
+      }),
       getCurrentVehicle().catch(() => null),
     ]);
 

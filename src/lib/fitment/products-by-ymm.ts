@@ -67,3 +67,28 @@ export function getProductHandlesForVehicle(
   }
   return [];
 }
+
+let byYear: Map<string, Set<string>> | null = null;
+let indexed: Set<string> | null = null;
+
+/**
+ * Search year filter: does this product fit any vehicle of `year`?
+ * Products with no CA fitment at all (universal accessories) pass.
+ */
+export function fitsModelYear(handle: string, year: number | string): boolean {
+  if (!byYear || !indexed) {
+    byYear = new Map();
+    indexed = new Set();
+    for (const [key, handles] of Object.entries(load())) {
+      const y = key.split("|", 1)[0];
+      let set = byYear.get(y);
+      if (!set) byYear.set(y, (set = new Set()));
+      for (const h of handles) {
+        set.add(h);
+        indexed.add(h);
+      }
+    }
+  }
+  if (!indexed.has(handle)) return true;
+  return byYear.get(String(year))?.has(handle) ?? false;
+}

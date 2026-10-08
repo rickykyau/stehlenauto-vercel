@@ -43,6 +43,16 @@ ROOT = Path(__file__).parent.parent
 SNAPSHOT = ROOT / "data" / "ca_fitment_snapshot.json"
 OVERRIDES = ROOT / "data" / "ymm_overrides.json"
 TREE_OUT = ROOT / "data" / "ymm_tree.json"
+VEHICLE_WORDS_OUT = ROOT / "src" / "lib" / "seo" / "vehicle-words.json"
+# Words that occur in CA model names but are product words in our titles.
+VEHICLE_WORD_STOPLIST = {
+    "bed", "brackets", "additional", "adapter", "sport", "cab", "crew", "cargo",
+    "truck", "van", "light", "lights", "led", "black", "steel", "class",
+    "hitch", "rack", "step", "box", "cover", "mat", "mats", "front", "rear",
+    # cab / bed words describe the product fit, not the vehicle name
+    "ext", "extended", "double", "quad", "regular", "supercab", "supercrew", "crewmax",
+    "access", "king", "mega", "standard", "short", "long", "ft", "for", "fit", "with",
+}
 DIMS_OUT = ROOT / "data" / "ymm_dimensions.json"
 # Cycle 14AR-fix2 (QA-found BUG-14AR-3+4): per-YMM list of every product
 # handle that fits, sourced from CA fitmentRaw. Used by the collection
@@ -516,6 +526,21 @@ def main() -> None:
     print(f"Writing {DIMS_OUT}...")
     with DIMS_OUT.open("w") as f:
         json.dump(dims_out, f, indent=2)
+
+    # Make/model words — src/lib/seo/product-title.ts uses them to tell
+    # where the vehicle part of a product title ends.
+    words = {"chevy", "vw", "gmc", "mercedes-benz", "land", "rover", "b-series"}
+    for year in tree_out:
+        for make, models in tree_out[year].items():
+            for name in [make, *models]:
+                words.update(w.lower() for w in re.split(r"[\s/]+", name))
+    words = sorted(
+        w for w in words
+        if re.search(r"[a-z]", w) and len(w) > 1 and w not in VEHICLE_WORD_STOPLIST
+    )
+    print(f"Writing {VEHICLE_WORDS_OUT} ({len(words)} words)...")
+    with VEHICLE_WORDS_OUT.open("w") as f:
+        json.dump(words, f, indent=0)
 
     # Cycle 14AR-fix2: per-YMM list of fitting product handles
     products_by_ymm_out: dict[str, list[str]] = {

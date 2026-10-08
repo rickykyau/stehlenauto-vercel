@@ -61,7 +61,7 @@ const FAQS = [
   },
   {
     q: "Do I need to drill or weld?",
-    a: "No. Every Stehlen part is bolt-on with included hardware. If a product requires drilling, the listing says so up top.",
+    a: "Most parts bolt on with the included hardware. Some, such as certain trailer hitches, need drilling — when they do, the product page says so in its Installation section.",
   },
   {
     q: "How fast does it ship?",
@@ -84,7 +84,7 @@ const FAQS = [
   },
   {
     q: "How long does delivery take?",
-    a: "In-stock items leave our warehouse within 24 business hours. Standard ground transit is about 3–7 business days depending on your location.",
+    a: "In-stock items leave our warehouse within 24 business hours. Free standard ground takes 4–6 business days to the lower 48; FedEx 2-Day and Overnight are available at checkout.",
   },
   {
     q: "Is there a warranty?",

@@ -41,6 +41,8 @@
  *                    replacing it (use with --handle / --handles-file)
  *   --override-corrections=true
  *                    let CA overwrite manually corrected handles
+ *   --restore-from=f re-apply fitmentRaw from snapshot file f instead of CA
+ *                    (combine with --handles-file + --override-corrections)
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -79,6 +81,8 @@ const MERGE = args.get("merge") === "true";
 const DRY_RUN = args.get("dry-run") === "true";
 const VERBOSE = args.get("verbose") === "true";
 const OVERRIDE_CORRECTIONS = args.get("override-corrections") === "true";
+// Re-apply fitment from a saved snapshot instead of CA (undo a sync).
+const RESTORE_FROM = args.get("restore-from") ?? null;
 
 if (
   !SHOPIFY_DOMAIN ||
@@ -758,7 +762,13 @@ async function main() {
     const cb = p.cbItemName!.value!.trim();
     const tag = `[${i + 1}/${queue.length}] ${p.handle} (${cb})`;
     try {
-      const found = await lookupFitmentForCbItemName(cb);
+      const restored = RESTORE_FROM
+        ? (JSON.parse(await fs.readFile(RESTORE_FROM, "utf8")) as Record<string, { matchedSku?: string; fitmentRaw?: string }>)[p.handle]
+        : null;
+      if (RESTORE_FROM && !restored?.fitmentRaw) throw new Error(`no fitmentRaw for ${p.handle} in ${RESTORE_FROM}`);
+      const found = restored
+        ? { profileId: "restore", matchedSku: restored.matchedSku ?? "", fitmentRaw: restored.fitmentRaw! }
+        : await lookupFitmentForCbItemName(cb);
       const result = found && { ...found, fitmentRaw: standardizeVehicleNames(found.fitmentRaw) };
       if (!result) {
         notFound++;

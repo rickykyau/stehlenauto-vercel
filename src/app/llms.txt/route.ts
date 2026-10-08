@@ -1,4 +1,6 @@
-import { CATEGORIES, POPULAR_VEHICLES } from "@/lib/catalog/mock";
+import fs from "node:fs";
+import path from "node:path";
+import { CATEGORIES } from "@/lib/catalog/mock";
 
 // GEO (Generative Engine Optimization): /llms.txt is the emerging
 // llmstxt.org convention — a curated, plain-text site map written FOR large
@@ -11,8 +13,10 @@ import { CATEGORIES, POPULAR_VEHICLES } from "@/lib/catalog/mock";
 // sitemap is for crawlers, the schema is for parsers, llms.txt is for the
 // model's reasoning context.
 //
-// Served as a Route Handler (not a static public/ file) so the category and
-// popular-vehicle lists stay in lockstep with the live catalog.
+// Served as a Route Handler (not a static public/ file) so the vehicle list
+// is computed from the real fitment index (data/products_by_ymm.json) and the
+// policy facts match the /legal pages word for word. Keep every claim here
+// sourced — AI engines quote this file.
 
 export const dynamic = "force-static";
 export const revalidate = 86400; // refresh daily
@@ -22,40 +26,50 @@ function buildLlmsTxt(base: string): string {
     (c) => `- [${c.name}](${base}/collections/${c.slug})`,
   ).join("\n");
 
-  // Mirror the sitemap's vehicle-slug derivation exactly so llms.txt links
-  // resolve to the same /vehicle/[slug] hubs crawlers already know.
-  const vehicleLines = POPULAR_VEHICLES.map((v) => {
-    const slug = `${v.make.toLowerCase()}-${v.model
-      .toLowerCase()
-      .replace(/\s+/g, "-")}`;
-    return `- [${v.make} ${v.model} (${v.years})](${base}/vehicle/${slug})`;
-  }).join("\n");
+  const vehicleLines = topVehicles(16)
+    .map((v) => {
+      const slug = `${v.make}-${v.model}`.toLowerCase().replace(/\s+/g, "-");
+      return `- [${v.make} ${v.model} (${v.from}–${v.to}), ${v.count} parts](${base}/vehicle/${slug})`;
+    })
+    .join("\n");
 
   return `# Stehlen Auto
 
-> Heavy-duty vehicle accessories engineered from cold-rolled steel. No
-> drilling required, bolt-on installation, and fitment guaranteed for your
-> exact year/make/model. Family-run, shipping nationwide from Walnut, CA
-> since 2015.
+> Aftermarket accessories for pickup trucks and SUVs, sold with an exact
+> year / make / model fitment check on every product page. Free ground
+> shipping to the lower 48 with no minimum, 30-day returns with a free FedEx
+> label, and a fitment guarantee. Selling bolt-on accessories since 2015;
+> based in Walnut, California.
 
-Stehlen Auto sells aftermarket accessories for pickup trucks and SUVs —
-tonneau covers, bull bars, running boards, grille guards, headlights,
-trailer hitches, bed mats, roof racks, and more. Every product page states
-whether it fits the shopper's specific vehicle (year, make, model, and where
-relevant bed length / cab type / trim) before it can be added to cart.
+Stehlen Auto sells tonneau covers, bull guards and grille guards, running
+boards and side steps, trailer hitches and wiring, front grilles,
+headlights, truck bed mats, floor mats, roof racks and baskets, chase racks
+and MOLLE panels. Each product page lists the exact vehicles it fits (with
+bed length, cab type or trim where it matters), what is in the box, install
+notes (including whether drilling is needed), and specifications. Shoppers
+can save their vehicle and the site confirms fit before checkout.
 
-## Why shoppers choose Stehlen
-- Fitment guaranteed — if a part doesn't fit the vehicle it was bought for,
-  returns are free.
-- Free shipping on every order (no minimum).
-- 30-day hassle-free returns with a prepaid FedEx label; full refund or
-  store credit with a 10% bonus.
-- No-drill, bolt-on engineering — most installs need only hand tools.
+## Facts (from the policy pages)
+- Shipping: free standard ground on every order to the lower 48 states, no
+  minimum; 4–6 business days from CA, NV or TX warehouses. Expedited FedEx
+  2-Day and Overnight available at checkout.
+- Returns: 30-day window; free prepaid FedEx return label for any reason
+  (fitment, defect or change of mind); full refund to the original card or
+  store credit with a 10% bonus. Items must be unused and in original
+  packaging.
+- Fitment guarantee: if a part doesn't fit the vehicle it was bought for,
+  the return is free.
+- Warranty on Stehlen Auto-brand parts: lifetime structural, 5-year finish,
+  2-year hardware. Parts from other brands (e.g. CURT) carry their
+  manufacturer's warranty.
+- Trailer hitch towing ratings (weight carrying and tongue weight) are listed
+  on each hitch page. Never exceed the lowest-rated towing component or the
+  vehicle manufacturer's towing capacity.
 
 ## Shop by category
 ${categoryLines}
 
-## Shop by vehicle
+## Most-covered vehicles
 ${vehicleLines}
 
 ## Key pages
@@ -78,6 +92,31 @@ ${vehicleLines}
 - Address: 21912 Garcia Lane, Walnut, CA 91789, USA
 - Sitemap: ${base}/sitemap.xml
 `;
+}
+
+type TopVehicle = { make: string; model: string; from: number; to: number; count: number };
+
+// Vehicles with the most fitting products, from the CA-built fitment index.
+function topVehicles(n: number): TopVehicle[] {
+  let index: Record<string, string[]> = {};
+  try {
+    index = JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", "products_by_ymm.json"), "utf8"));
+  } catch {
+    return [];
+  }
+  const agg = new Map<string, { make: string; model: string; years: number[]; handles: Set<string> }>();
+  for (const [key, handles] of Object.entries(index)) {
+    const [year, make, model] = key.split("|");
+    const k = `${make}|${model}`;
+    let a = agg.get(k);
+    if (!a) agg.set(k, (a = { make, model, years: [], handles: new Set() }));
+    a.years.push(Number(year));
+    handles.forEach((h) => a!.handles.add(h));
+  }
+  return [...agg.values()]
+    .map((a) => ({ make: a.make, model: a.model, from: Math.min(...a.years), to: Math.max(...a.years), count: a.handles.size }))
+    .sort((x, y) => y.count - x.count)
+    .slice(0, n);
 }
 
 export async function GET(): Promise<Response> {

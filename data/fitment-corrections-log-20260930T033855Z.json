@@ -1,0 +1,8 @@
+[
+ {
+  "handle": "class-3-trailer-hitch-for-2009-2015-ram-c-v-volkswagen-routan",
+  "before": "2012|Ram|C/V\n2013|Ram|C/V\n2014|Ram|C/V\n2015|Ram|C/V\n2009|Volkswagen|Routan\n2010|Volkswagen|Routan\n2011|Volkswagen|Routan\n2012|Volkswagen|Routan\n2013|Volkswagen|Routan\n2014|Volkswagen|Routan",
+  "after": "2012|Ram|C/V\n2013|Ram|C/V\n2014|Ram|C/V\n2015|Ram|C/V\n2009|Volkswagen|Routan\n2010|Volkswagen|Routan\n2011|Volkswagen|Routan\n2012|Volkswagen|Routan\n2013|Volkswagen|Routan\n2014|Volkswagen|Routan\n2008|Dodge|Grand Caravan\n2009|Dodge|Grand Caravan\n2010|Dodge|Grand Caravan\n2011|Dodge|Grand Caravan\n2012|Dodge|Grand Caravan\n2013|Dodge|Grand Caravan\n2014|Dodge|Grand Caravan\n2015|Dodge|Grand Caravan\n2016|Dodge|Grand Caravan\n2017|Dodge|Grand Caravan\n2018|Dodge|Grand Caravan\n2019|Dodge|Grand Caravan\n2020|Dodge|Grand Caravan\n2008|Chrysler|Town & Country\n2009|Chrysler|Town & Country\n2010|Chrysler|Town & Country\n2011|Chrysler|Town & Country\n2012|Chrysler|Town & Country\n2013|Chrysler|Town & Country\n2014|Chrysler|Town & Country\n2015|Chrysler|Town & Country\n2016|Chrysler|Town & Country",
+  "reason": "CURT 13364 spec sheet (curtmfg.com/part/13364, checked 2026-09-29) lists 2008-2016 Town & Country and 2008-2020 Grand Caravan; confirmed by ops (Ricky Tsui)"
+ }
+]

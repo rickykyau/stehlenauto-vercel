@@ -1,0 +1,38 @@
+[
+ {
+  "handle": "2019-2022-chevy-silverado-gmc-sierra-5-8-rubber-truck-bed-mat",
+  "before": "(ChannelAdvisor version of 2026-10-08: 2019-2026, bed 6.6 ft/79.4\" or 8 ft/98.2\" or 5.8 ft/69.9\", new-body exclusion removed, CarbonPro exclusion added)",
+  "after": "2019|Chevrolet|Silverado 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2020|Chevrolet|Silverado 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2021|Chevrolet|Silverado 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2022|Chevrolet|Silverado 1500 LTD::Will Fit 5.8 Ft ( 68\" ) Short Bed Models ; Will Not Fit Chevy Silverado 1500 Models\n2019|GMC|Sierra 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2020|GMC|Sierra 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2021|GMC|Sierra 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2022|GMC|Sierra 1500 Limited::Will Fit 5.8 Ft ( 68\" ) Short Bed Models ; Will Not Fit GMC Sierra 1500 New Body Models",
+  "reason": "HOLD 2026-10-08: CA rewrote bed measurements and dropped the 'Will Not Fit 2022 new body' exclusion; listing copy says 2019-2022 (some '2022 LTD/Limited only'). Kept previous fitment until ops confirms. See data/exports/channeladvisor-changes-to-review-2026-09-30.xlsx."
+ },
+ {
+  "handle": "2019-2022-chevy-silverado-gmc-sierra-1500-5-8-ft-rubber-bed-mat-v2",
+  "before": "(ChannelAdvisor version of 2026-10-08: 2019-2026, bed 6.6 ft/79.4\" or 8 ft/98.2\" or 5.8 ft/69.9\", new-body exclusion removed, CarbonPro exclusion added)",
+  "after": "2019|Chevrolet|Silverado 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2020|Chevrolet|Silverado 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2021|Chevrolet|Silverado 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2022|Chevrolet|Silverado 1500 LTD::Will Fit 5.8 Ft ( 68\" ) Short Bed Models ; Will Not Fit Chevy Silverado 1500 Models\n2019|GMC|Sierra 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2020|GMC|Sierra 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2021|GMC|Sierra 1500::Will Fit 5.8 Ft ( 68\" ) Short Bed Models\n2022|GMC|Sierra 1500 Limited::Will Fit 5.8 Ft ( 68\" ) Short Bed Models ; Will Not Fit GMC Sierra 1500 New Body Models",
+  "reason": "HOLD 2026-10-08: CA rewrote bed measurements and dropped the 'Will Not Fit 2022 new body' exclusion; listing copy says 2019-2022 (some '2022 LTD/Limited only'). Kept previous fitment until ops confirms. See data/exports/channeladvisor-changes-to-review-2026-09-30.xlsx."
+ },
+ {
+  "handle": "2019-2022-chevy-silverado-gmc-sierra-6-5-rubber-bed-mat-mpn-66",
+  "before": "(ChannelAdvisor version of 2026-10-08: 2019-2026, bed 6.6 ft/79.4\" or 8 ft/98.2\" or 5.8 ft/69.9\", new-body exclusion removed, CarbonPro exclusion added)",
+  "after": "2019|Chevrolet|Silverado 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models ; Will Not Fit Chevy Silverado 1500 LD Models\n2020|Chevrolet|Silverado 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models\n2021|Chevrolet|Silverado 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models\n2022|Chevrolet|Silverado 1500 LTD::Will Fit 6.5 Ft ( 78\" ) Bed Models ; Will Not Fit Chevy Silverado 1500 Models\n2019|GMC|Sierra 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models ; Will Not Fit GMC Sierra 1500 Limited Models\n2020|GMC|Sierra 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models\n2021|GMC|Sierra 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models\n2022|GMC|Sierra 1500 Limited::Will Fit 6.5 Ft ( 78\" ) Bed Models ; Will Not Fit GMC Sierra 1500 New Body Models",
+  "reason": "HOLD 2026-10-08: CA rewrote bed measurements and dropped the 'Will Not Fit 2022 new body' exclusion; listing copy says 2019-2022 (some '2022 LTD/Limited only'). Kept previous fitment until ops confirms. See data/exports/channeladvisor-changes-to-review-2026-09-30.xlsx."
+ },
+ {
+  "handle": "2019-2022-chevy-silverado-gmc-sierra-1500-6-5-ft-rubber-bed-mat",
+  "before": "(ChannelAdvisor version of 2026-10-08: 2019-2026, bed 6.6 ft/79.4\" or 8 ft/98.2\" or 5.8 ft/69.9\", new-body exclusion removed, CarbonPro exclusion added)",
+  "after": "2019|Chevrolet|Silverado 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models ; Will Not Fit Chevy Silverado 1500 LD Models\n2020|Chevrolet|Silverado 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models\n2021|Chevrolet|Silverado 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models\n2022|Chevrolet|Silverado 1500 LTD::Will Fit 6.5 Ft ( 78\" ) Bed Models ; Will Not Fit Chevy Silverado 1500 Models\n2019|GMC|Sierra 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models ; Will Not Fit GMC Sierra 1500 Limited Models\n2020|GMC|Sierra 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models\n2021|GMC|Sierra 1500::Will Fit 6.5 Ft ( 78\" ) Bed Models\n2022|GMC|Sierra 1500 Limited::Will Fit 6.5 Ft ( 78\" ) Bed Models ; Will Not Fit GMC Sierra 1500 New Body Models",
+  "reason": "HOLD 2026-10-08: CA rewrote bed measurements and dropped the 'Will Not Fit 2022 new body' exclusion; listing copy says 2019-2022 (some '2022 LTD/Limited only'). Kept previous fitment until ops confirms. See data/exports/channeladvisor-changes-to-review-2026-09-30.xlsx."
+ },
+ {
+  "handle": "2019-chevy-silverado-gmc-sierra-1500-8ft-bed-rubber-mat-diamond",
+  "before": "(ChannelAdvisor version of 2026-10-08: 2019-2026, bed 6.6 ft/79.4\" or 8 ft/98.2\" or 5.8 ft/69.9\", new-body exclusion removed, CarbonPro exclusion added)",
+  "after": "2019|Chevrolet|Silverado 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2020|Chevrolet|Silverado 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2021|Chevrolet|Silverado 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2022|Chevrolet|Silverado 1500 LTD::Will Fit 8 Ft ( 96\" ) Long Bed Models ; Will Not Fit New Body Models\n2019|GMC|Sierra 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2020|GMC|Sierra 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2021|GMC|Sierra 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2022|GMC|Sierra 1500 Limited::Will Fit 8 Ft ( 96\" ) Long Bed Models ; Will Not Fit New Body Models",
+  "reason": "HOLD 2026-10-08: CA rewrote bed measurements and dropped the 'Will Not Fit 2022 new body' exclusion; listing copy says 2019-2022 (some '2022 LTD/Limited only'). Kept previous fitment until ops confirms. See data/exports/channeladvisor-changes-to-review-2026-09-30.xlsx."
+ },
+ {
+  "handle": "2019-chevy-silverado-gmc-sierra-1500-8ft-bed-rubber-mat-v2",
+  "before": "(ChannelAdvisor version of 2026-10-08: 2019-2026, bed 6.6 ft/79.4\" or 8 ft/98.2\" or 5.8 ft/69.9\", new-body exclusion removed, CarbonPro exclusion added)",
+  "after": "2019|Chevrolet|Silverado 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2020|Chevrolet|Silverado 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2021|Chevrolet|Silverado 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2022|Chevrolet|Silverado 1500 LTD::Will Fit 8 Ft ( 96\" ) Long Bed Models ; Will Not Fit New Body Models\n2019|GMC|Sierra 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2020|GMC|Sierra 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2021|GMC|Sierra 1500::Will Fit 8 Ft ( 96\" ) Long Bed Models\n2022|GMC|Sierra 1500 Limited::Will Fit 8 Ft ( 96\" ) Long Bed Models ; Will Not Fit New Body Models",
+  "reason": "HOLD 2026-10-08: CA rewrote bed measurements and dropped the 'Will Not Fit 2022 new body' exclusion; listing copy says 2019-2022 (some '2022 LTD/Limited only'). Kept previous fitment until ops confirms. See data/exports/channeladvisor-changes-to-review-2026-09-30.xlsx."
+ }
+]

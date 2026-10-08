@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { productMetaTitle } from "@/lib/seo/product-title";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -74,24 +75,9 @@ export async function generateMetadata({
       alternates: { canonical: `/products/${handle}` },
     };
   }
-  // SEO (audit F-3): strip a leading "Stehlen " (the title.template re-adds
-  // "| Stehlen Auto") and trim so title + suffix stays ~≤60 chars in SERPs.
-  const cleanTitle = p.title.replace(/^stehlen\s+/i, "");
-  const MAX = 52;
-  // Cycle 14BG (Jordan F-14): end-truncation was cutting the product-type
-  // noun — "…Ford F-150 6.5 ft Bed Soft Roll-Up…" lost "Tonneau Cover",
-  // the highest-value classification keyword. When over budget, drop the
-  // leading year-range FIRST (it's repeated in the URL + description),
-  // then fall back to word-boundary end-truncation only if still long.
-  const withoutYearRange = cleanTitle.replace(/^\s*(19|20)\d{2}\s*[-–]\s*(19|20)?\d{2}\s+/, "");
-  const titleBase =
-    cleanTitle.length > MAX && withoutYearRange.length <= MAX
-      ? withoutYearRange
-      : cleanTitle;
-  const metaTitle =
-    titleBase.length > MAX
-      ? titleBase.slice(0, MAX - 1).replace(/[\s\-,]+\S*$/, "") + "…"
-      : titleBase;
+  // SEO: product name first, vehicles after, so the main keyword survives
+  // SERP truncation (see src/lib/seo/product-title.ts).
+  const metaTitle = productMetaTitle(p.title);
   // SEO (audit F-1): real description, not the title repeated.
   const desc =
     p.metaDescription ??
