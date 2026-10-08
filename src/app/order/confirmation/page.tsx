@@ -27,7 +27,7 @@ const TIMELINE = [
   { label: "SHIPPED", sub: "Est. tomorrow", done: false, current: false },
   {
     label: "DELIVERED",
-    sub: "Est. 4–6 business days",
+    sub: "Est. 2–6 business days",
     done: false,
     current: false,
   },

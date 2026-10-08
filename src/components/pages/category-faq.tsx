@@ -75,7 +75,7 @@ export function categoryFaqs(handle: string, name: string): { q: string; a: stri
   });
   faqs.push({
     q: "How much is shipping, and can I return it?",
-    a: "Standard ground shipping is free on every order to the lower 48 states, with no minimum, and takes 4–6 business days. Returns are accepted for 30 days with a free prepaid FedEx label, for a full refund or store credit with a 10% bonus.",
+    a: "Shipping is free on every order to the lower 48 states, with no minimum. In-stock orders ship within 1 business day and arrive in 2–6 business days. Returns are accepted for 30 days with a free prepaid FedEx label, for a full refund or store credit with a 10% bonus.",
   });
   if (WARRANTY_CATEGORIES.has(handle)) {
     faqs.push({

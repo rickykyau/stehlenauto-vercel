@@ -50,9 +50,10 @@ notes (including whether drilling is needed), and specifications. Shoppers
 can save their vehicle and the site confirms fit before checkout.
 
 ## Facts (from the policy pages)
-- Shipping: free standard ground on every order to the lower 48 states, no
-  minimum; 4–6 business days from CA, NV or TX warehouses. Expedited FedEx
-  2-Day and Overnight available at checkout.
+- Shipping: free ground shipping on every order to the lower 48 states, no
+  minimum. In-stock orders ship within 1 business day from CA, NV or TX
+  warehouses and arrive in 2–6 business days. FedEx 2-Day and Overnight
+  available at checkout.
 - Returns: 30-day window; free prepaid FedEx return label for any reason
   (fitment, defect or change of mind); full refund to the original card or
   store credit with a 10% bonus. Items must be unused and in original

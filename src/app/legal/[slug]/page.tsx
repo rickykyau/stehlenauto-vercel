@@ -98,19 +98,19 @@ const POLICIES: Record<string, PolicyContent> = {
   shipping: {
     title: "Shipping",
     description:
-      "Free ground shipping on every order to the lower 48 — no minimum. Same-day handling Mon–Fri.",
+      "Free ground shipping on every order to the lower 48 — no minimum. In-stock orders ship within 1 business day.",
     updated: "March 2026",
     sections: [
       {
         heading: "Standard Ground (always FREE)",
         body: [
-          "4–6 business days to the lower 48 from CA, NV, or TX warehouses. Free on every order — no minimum spend, no fine print.",
+          "2–6 business days to the lower 48, depending on where you live. Ships from our CA, NV, or TX warehouses. Free on every order — no minimum spend.",
         ],
       },
       {
         heading: "Expedited",
         body: [
-          "FedEx 2-Day: $24.95. Overnight: $49.95. Order by 1pm PST Mon–Fri to ship same day.",
+          "FedEx 2-Day: $24.95. Overnight: $49.95. Delivery time starts when your order ships.",
         ],
       },
       {

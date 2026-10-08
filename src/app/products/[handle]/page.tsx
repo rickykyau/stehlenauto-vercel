@@ -1270,46 +1270,28 @@ export default async function PdpPage({
                 text:
                   product.inventory > 0
                     ? (() => {
-                        // Cycle 14BE-fix3 (Jordan F-3): replace ambiguous
-                        // "3-7 days" with a specific arrival window the
-                        // buyer can plan an install around. Math: today +
-                        // 1-2 day processing (1 if before 2PM PT, 2
-                        // otherwise) + 3 day median UPS Ground transit from
-                        // Corona CA. Server renders on each request
-                        // (dynamic = "force-dynamic") so the date is fresh
-                        // per visit.
-                        const now = new Date();
-                        const ptHour = parseInt(
-                          new Intl.DateTimeFormat("en-US", {
+                        // Same promise as the banner and /legal/shipping:
+                        // ships within 1 business day, then 2–6 business
+                        // days ground → arrives 3–7 business days out.
+                        const label = (businessDays: number) => {
+                          const d = new Date();
+                          for (let n = 0; n < businessDays; ) {
+                            d.setDate(d.getDate() + 1);
+                            if (d.getDay() !== 0 && d.getDay() !== 6) n++;
+                          }
+                          return new Intl.DateTimeFormat("en-US", {
                             timeZone: "America/Los_Angeles",
-                            hour: "numeric",
-                            hour12: false,
-                          }).format(now),
-                          10,
-                        );
-                        const sameDayCutoff = ptHour < 14;
-                        // Process: 1 day if pre-cutoff, 2 days otherwise.
-                        // Transit: 3 business days from CA to US median.
-                        // Skip weekends — approximate by adding 2 extra
-                        // days when the arrival lands on Sat/Sun.
-                        const processDays = sameDayCutoff ? 1 : 2;
-                        const transitDays = 3;
-                        const arrival = new Date(now);
-                        arrival.setDate(now.getDate() + processDays + transitDays);
-                        const day = arrival.getDay();
-                        if (day === 0) arrival.setDate(arrival.getDate() + 1);
-                        if (day === 6) arrival.setDate(arrival.getDate() + 2);
-                        const arrivalLabel = new Intl.DateTimeFormat("en-US", {
-                          weekday: "short",
-                          month: "short",
-                          day: "numeric",
-                        }).format(arrival);
+                            weekday: "short",
+                            month: "short",
+                            day: "numeric",
+                          }).format(d);
+                        };
                         return (
                           <>
                             Free shipping ·{" "}
-                            <strong>Arrives by {arrivalLabel}</strong>{" "}
-                            if ordered{" "}
-                            {sameDayCutoff ? "today (before 2pm PT)" : "tomorrow"}
+                            <strong>
+                              Arrives {label(3)} – {label(7)}
+                            </strong>
                           </>
                         );
                       })()

@@ -65,7 +65,7 @@ const FAQS = [
   },
   {
     q: "How fast does it ship?",
-    a: "Stocked items ship within 24 business hours from CA, NV, or TX. Standard ground is free on every order to the lower 48 — no minimum spend.",
+    a: "In-stock orders ship within 1 business day from CA, NV, or TX. Ground shipping is free on every order to the lower 48 — no minimum.",
   },
   {
     q: "What if my install goes sideways?",
@@ -84,7 +84,7 @@ const FAQS = [
   },
   {
     q: "How long does delivery take?",
-    a: "In-stock items leave our warehouse within 24 business hours. Free standard ground takes 4–6 business days to the lower 48; FedEx 2-Day and Overnight are available at checkout.",
+    a: "In-stock orders ship within 1 business day. Free ground shipping then takes 2–6 business days, depending on where you live. FedEx 2-Day and Overnight are available at checkout.",
   },
   {
     q: "Is there a warranty?",
