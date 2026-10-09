@@ -948,9 +948,7 @@
   },
   "1988|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -961,9 +959,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -981,9 +977,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -994,9 +988,7 @@
   },
   "1988|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -1006,9 +998,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1023,9 +1013,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1089,17 +1077,13 @@
   },
   "1988|GMC|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1988|GMC|C2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1110,9 +1094,7 @@
   },
   "1988|GMC|C3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1123,17 +1105,13 @@
   },
   "1988|GMC|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1988|GMC|K2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1144,9 +1122,7 @@
   },
   "1988|GMC|K3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1193,9 +1169,7 @@
   },
   "1989|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -1209,9 +1183,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1229,9 +1201,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1242,9 +1212,7 @@
   },
   "1989|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -1254,9 +1222,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1271,9 +1237,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1347,17 +1311,13 @@
   },
   "1989|GMC|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1989|GMC|C2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1368,9 +1328,7 @@
   },
   "1989|GMC|C3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1381,17 +1339,13 @@
   },
   "1989|GMC|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1989|GMC|K2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1402,9 +1356,7 @@
   },
   "1989|GMC|K3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1488,9 +1440,7 @@
   },
   "1990|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -1504,9 +1454,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1524,9 +1472,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1537,9 +1483,7 @@
   },
   "1990|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -1549,9 +1493,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1566,9 +1508,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1654,17 +1594,13 @@
   },
   "1990|GMC|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1990|GMC|C2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1675,9 +1611,7 @@
   },
   "1990|GMC|C3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1688,17 +1622,13 @@
   },
   "1990|GMC|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1990|GMC|K2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1709,9 +1639,7 @@
   },
   "1990|GMC|K3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1810,9 +1738,7 @@
   },
   "1991|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -1826,9 +1752,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1846,9 +1770,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1869,9 +1791,7 @@
   },
   "1991|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -1881,9 +1801,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1898,9 +1816,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -1996,17 +1912,13 @@
   },
   "1991|GMC|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1991|GMC|C2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2017,9 +1929,7 @@
   },
   "1991|GMC|C3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2036,17 +1946,13 @@
   },
   "1991|GMC|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1991|GMC|K2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2057,9 +1963,7 @@
   },
   "1991|GMC|K3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2178,9 +2082,7 @@
   },
   "1992|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -2194,9 +2096,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2214,9 +2114,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2238,9 +2136,7 @@
   },
   "1992|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -2250,9 +2146,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2267,9 +2161,7 @@
       "Scottsdale",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2345,17 +2237,13 @@
   },
   "1992|GMC|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1992|GMC|C2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2366,9 +2254,7 @@
   },
   "1992|GMC|C3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2385,17 +2271,13 @@
   },
   "1992|GMC|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1992|GMC|K2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2406,9 +2288,7 @@
   },
   "1992|GMC|K3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2526,9 +2406,7 @@
   },
   "1993|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -2541,9 +2419,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2559,9 +2435,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2583,9 +2457,7 @@
   },
   "1993|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -2594,9 +2466,7 @@
       "Cheyenne",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2610,9 +2480,7 @@
       "Cheyenne",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2687,9 +2555,7 @@
   },
   "1993|GMC|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -2697,9 +2563,7 @@
     "trims": [
       "400 SS"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2710,9 +2574,7 @@
   },
   "1993|GMC|C3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2729,17 +2591,13 @@
   },
   "1993|GMC|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1993|GMC|K2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2750,9 +2608,7 @@
   },
   "1993|GMC|K3500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2877,9 +2733,7 @@
   },
   "1994|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -2899,9 +2753,7 @@
       "Silverado Cab & Chassis",
       "WT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2925,9 +2777,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2949,9 +2799,7 @@
   },
   "1994|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -2968,9 +2816,7 @@
       "Silverado",
       "WT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -2991,9 +2837,7 @@
       "Cheyenne",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -3309,9 +3153,7 @@
   },
   "1995|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -3334,9 +3176,7 @@
       "Silverado Cab & Chassis",
       "WT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -3360,9 +3200,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -3396,9 +3234,7 @@
   },
   "1995|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -3415,9 +3251,7 @@
       "Silverado",
       "WT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -3438,9 +3272,7 @@
       "Cheyenne",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -3819,9 +3651,7 @@
   },
   "1996|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -3842,9 +3672,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -3868,9 +3696,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -3933,9 +3759,7 @@
   },
   "1996|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -3951,9 +3775,7 @@
       "Cheyenne",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -3974,9 +3796,7 @@
       "Cheyenne",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -4438,9 +4258,7 @@
   },
   "1997|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -4461,9 +4279,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -4487,9 +4303,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -4553,9 +4367,7 @@
   },
   "1997|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -4571,9 +4383,7 @@
       "Cheyenne",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -4594,9 +4404,7 @@
       "Cheyenne",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -4733,17 +4541,13 @@
   },
   "1997|Ford|F-150": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1997|Ford|F-250": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -5149,9 +4953,7 @@
   },
   "1998|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -5172,9 +4974,7 @@
       "Silverado Cab & Chassis",
       "WT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -5197,9 +4997,7 @@
       "Silverado",
       "Silverado Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -5264,9 +5062,7 @@
   },
   "1998|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -5282,9 +5078,7 @@
       "Silverado",
       "WT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -5304,9 +5098,7 @@
       "Cheyenne",
       "Silverado"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -5458,17 +5250,13 @@
   },
   "1998|Ford|F-150": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1998|Ford|F-250": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -5918,9 +5706,7 @@
   },
   "1999|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -5941,9 +5727,7 @@
       "LS",
       "LS Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -5966,9 +5750,7 @@
       "LS",
       "LS Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -6032,9 +5814,7 @@
   },
   "1999|Chevrolet|K1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -6049,9 +5829,7 @@
       "Base",
       "LS"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -6071,9 +5849,7 @@
       "Base",
       "LS"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -6096,17 +5872,13 @@
   },
   "1999|Chevrolet|Silverado 1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1999|Chevrolet|Silverado 2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -6227,17 +5999,13 @@
   },
   "1999|Ford|F-150": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "1999|Ford|F-250": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -6422,9 +6190,7 @@
       "SLE",
       "SLT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -6436,9 +6202,7 @@
   },
   "1999|GMC|Sierra 2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -6800,9 +6564,7 @@
   },
   "2000|Chevrolet|C1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -6811,9 +6573,7 @@
       "Base",
       "LS"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -6829,9 +6589,7 @@
       "LS",
       "LS Cab & Chassis"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -6903,9 +6661,7 @@
       "Base",
       "LS"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -6919,9 +6675,7 @@
       "Base",
       "LS"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -6944,17 +6698,13 @@
   },
   "2000|Chevrolet|Silverado 1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2000|Chevrolet|Silverado 2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -7116,9 +6866,7 @@
   },
   "2000|Ford|F-150": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -7314,9 +7062,7 @@
       "SLE",
       "SLT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -7329,9 +7075,7 @@
   },
   "2000|GMC|Sierra 2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -7577,8 +7321,7 @@
   "2000|Toyota|Tundra": {
     "trims": [],
     "bedLengths": [
-      "6.2' BED",
-      "6.375' BED"
+      "6.4' BED"
     ],
     "cabTypes": [],
     "doors": []
@@ -7787,33 +7530,25 @@
   },
   "2001|Chevrolet|Silverado 1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2001|Chevrolet|Silverado 1500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2001|Chevrolet|Silverado 2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2001|Chevrolet|Silverado 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -7826,9 +7561,7 @@
       "LS Cab & Chassis",
       "LT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -7994,10 +7727,7 @@
   },
   "2001|Ford|F-150": {
     "trims": [],
-    "bedLengths": [
-      "5.5' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -8120,9 +7850,7 @@
       "SLE",
       "SLT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -8134,25 +7862,19 @@
   },
   "2001|GMC|Sierra 1500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2001|GMC|Sierra 2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2001|GMC|Sierra 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -8162,9 +7884,7 @@
       "SLE",
       "SLT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -8452,8 +8172,7 @@
   "2001|Toyota|Tundra": {
     "trims": [],
     "bedLengths": [
-      "6.2' BED",
-      "6.375' BED"
+      "6.4' BED"
     ],
     "cabTypes": [],
     "doors": []
@@ -8702,33 +8421,25 @@
   },
   "2002|Chevrolet|Silverado 1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2002|Chevrolet|Silverado 1500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2002|Chevrolet|Silverado 2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2002|Chevrolet|Silverado 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -8741,9 +8452,7 @@
       "LS Cab & Chassis",
       "LT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -8922,10 +8631,7 @@
   },
   "2002|Ford|F-150": {
     "trims": [],
-    "bedLengths": [
-      "5.5' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -9061,9 +8767,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -9075,25 +8779,19 @@
   },
   "2002|GMC|Sierra 1500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2002|GMC|Sierra 2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2002|GMC|Sierra 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -9104,9 +8802,7 @@
       "SLE",
       "SLT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -9427,8 +9123,7 @@
   "2002|Toyota|Tundra": {
     "trims": [],
     "bedLengths": [
-      "6.2' BED",
-      "6.375' BED"
+      "6.4' BED"
     ],
     "cabTypes": [],
     "doors": []
@@ -9663,33 +9358,25 @@
   },
   "2003|Chevrolet|Silverado 1500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2003|Chevrolet|Silverado 1500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2003|Chevrolet|Silverado 2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2003|Chevrolet|Silverado 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -9702,9 +9389,7 @@
       "LS Cab & Chassis",
       "LT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -9888,10 +9573,7 @@
   },
   "2003|Ford|F-150": {
     "trims": [],
-    "bedLengths": [
-      "5.5' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -10027,9 +9709,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB"
@@ -10041,25 +9721,19 @@
   },
   "2003|GMC|Sierra 1500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2003|GMC|Sierra 2500": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2003|GMC|Sierra 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -10069,9 +9743,7 @@
       "SLE",
       "SLT"
     ],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -10487,8 +10159,7 @@
   "2003|Toyota|Tundra": {
     "trims": [],
     "bedLengths": [
-      "6.2' BED",
-      "6.375' BED"
+      "6.4' BED"
     ],
     "cabTypes": [],
     "doors": []
@@ -10795,28 +10466,19 @@
   },
   "2004|Chevrolet|Silverado 1500": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2004|Chevrolet|Silverado 2500": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2004|Chevrolet|Silverado 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -10831,10 +10493,7 @@
       "WT",
       "WT Cab & Chassis"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -11047,9 +10706,7 @@
   },
   "2004|Ford|F-150 Heritage": {
     "trims": [],
-    "bedLengths": [
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -11198,10 +10855,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -11214,19 +10868,13 @@
   },
   "2004|GMC|Sierra 2500": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2004|GMC|Sierra 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -11237,10 +10885,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -11717,9 +11362,8 @@
     "trims": [],
     "bedLengths": [
       "5.5' BED",
-      "6.5' BED",
-      "6.2' BED",
-      "6.375' BED"
+      "6.4' BED",
+      "6.5' BED"
     ],
     "cabTypes": [],
     "doors": []
@@ -12059,37 +11703,25 @@
   },
   "2005|Chevrolet|Silverado 1500": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2005|Chevrolet|Silverado 1500 HD": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2005|Chevrolet|Silverado 2500": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2005|Chevrolet|Silverado 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -12101,10 +11733,7 @@
       "LS Cab & Chassis",
       "LT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -12478,10 +12107,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -12494,10 +12120,7 @@
   },
   "2005|GMC|Sierra 1500 HD": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -12509,10 +12132,7 @@
   },
   "2005|GMC|Sierra 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -12523,10 +12143,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -13055,9 +12672,8 @@
     ],
     "bedLengths": [
       "5.5' BED",
-      "6.5' BED",
-      "6.2' BED",
-      "6.375' BED"
+      "6.4' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -13387,37 +13003,25 @@
   },
   "2006|Chevrolet|Silverado 1500": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2006|Chevrolet|Silverado 1500 HD": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2006|Chevrolet|Silverado 2500": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
   "2006|Chevrolet|Silverado 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -13432,10 +13036,7 @@
       "WT",
       "WT Cab & Chassis"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -13842,10 +13443,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -13858,10 +13456,7 @@
   },
   "2006|GMC|Sierra 1500 HD": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -13873,10 +13468,7 @@
   },
   "2006|GMC|Sierra 2500 HD": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -13887,10 +13479,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -14531,9 +14120,8 @@
     ],
     "bedLengths": [
       "5.5' BED",
-      "6.5' BED",
-      "6.2' BED",
-      "6.375' BED"
+      "6.4' BED",
+      "6.5' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -14871,10 +14459,7 @@
       "SS",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "SUPERCAB"
     ],
@@ -14884,10 +14469,7 @@
   },
   "2007|Chevrolet|Silverado 1500 HD Classic": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -14925,10 +14507,7 @@
       "LT",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -14957,10 +14536,7 @@
       "WT",
       "WT Cab & Chassis"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -15487,10 +15063,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -15503,10 +15076,7 @@
   },
   "2007|GMC|Sierra 1500 HD Classic": {
     "trims": [],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -15541,10 +15111,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -15562,10 +15129,7 @@
       "SLT",
       "WT"
     ],
-    "bedLengths": [
-      "5.8' BED",
-      "6.5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "REGULAR CAB",
       "SUPERCAB",
@@ -18583,7 +18147,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -20262,7 +19825,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -20287,8 +19849,7 @@
       "TRX Extended"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -20308,8 +19869,7 @@
       "SXT Extended"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -22726,7 +22286,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -22752,8 +22311,7 @@
       "SXT"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -22774,8 +22332,7 @@
       "SXT"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -24351,7 +23908,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -24376,8 +23932,7 @@
       "ST"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -24397,8 +23952,7 @@
       "ST"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -25959,7 +25513,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -25989,8 +25542,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -26017,8 +25569,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -27563,7 +27114,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -27595,8 +27145,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -27623,8 +27172,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -28384,10 +27932,15 @@
     "doors": []
   },
   "2015|Dodge|Charger": {
-    "trims": [],
+    "trims": [
+      "SRT 392",
+      "SRT Hellcat"
+    ],
     "bedLengths": [],
     "cabTypes": [],
-    "doors": []
+    "doors": [
+      "4-Door"
+    ]
   },
   "2015|Dodge|Durango": {
     "trims": [],
@@ -29123,7 +28676,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -29157,8 +28709,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -29185,8 +28736,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -29951,10 +29501,15 @@
     "doors": []
   },
   "2016|Dodge|Charger": {
-    "trims": [],
+    "trims": [
+      "SRT 392",
+      "SRT Hellcat"
+    ],
     "bedLengths": [],
     "cabTypes": [],
-    "doors": []
+    "doors": [
+      "4-Door"
+    ]
   },
   "2016|Dodge|Durango": {
     "trims": [],
@@ -30663,7 +30218,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -30697,8 +30251,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -30726,8 +30279,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -31430,10 +30982,21 @@
     "doors": []
   },
   "2017|Dodge|Charger": {
-    "trims": [],
+    "trims": [
+      "Daytona",
+      "Daytona 392",
+      "Daytona R/T",
+      "R/T",
+      "R/T 392",
+      "R/T Scat Pack",
+      "SRT 392",
+      "SRT Hellcat"
+    ],
     "bedLengths": [],
     "cabTypes": [],
-    "doors": []
+    "doors": [
+      "4-Door"
+    ]
   },
   "2017|Dodge|Durango": {
     "trims": [],
@@ -31519,7 +31082,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -31539,7 +31101,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -31564,7 +31125,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -32220,7 +31780,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -32257,8 +31816,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -32288,8 +31846,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -33060,10 +32617,21 @@
     "doors": []
   },
   "2018|Dodge|Charger": {
-    "trims": [],
+    "trims": [
+      "Daytona",
+      "Daytona 392",
+      "Daytona R/T",
+      "R/T",
+      "R/T 392",
+      "R/T Scat Pack",
+      "SRT 392",
+      "SRT Hellcat"
+    ],
     "bedLengths": [],
     "cabTypes": [],
-    "doors": []
+    "doors": [
+      "4-Door"
+    ]
   },
   "2018|Dodge|Durango": {
     "trims": [
@@ -33154,7 +32722,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -33175,7 +32742,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -33201,7 +32767,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -33831,7 +33396,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -33868,8 +33432,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "CREW CAB"
@@ -33896,8 +33459,7 @@
       "Tradesman"
     ],
     "bedLengths": [
-      "6.4' BED",
-      "6.5' BED"
+      "6.4' BED"
     ],
     "cabTypes": [
       "REGULAR CAB",
@@ -34577,10 +34139,18 @@
     "doors": []
   },
   "2019|Dodge|Charger": {
-    "trims": [],
+    "trims": [
+      "Daytona R/T",
+      "GT",
+      "SRT Hellcat",
+      "Scat Pack",
+      "Scat Pack 392"
+    ],
     "bedLengths": [],
     "cabTypes": [],
-    "doors": []
+    "doors": [
+      "4-Door"
+    ]
   },
   "2019|Dodge|Durango": {
     "trims": [
@@ -34672,7 +34242,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -34693,7 +34262,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -34719,7 +34287,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -35417,7 +34984,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -36082,10 +35648,16 @@
     "doors": []
   },
   "2020|Dodge|Charger": {
-    "trims": [],
+    "trims": [
+      "GT",
+      "R/T",
+      "SRT Hellcat"
+    ],
     "bedLengths": [],
     "cabTypes": [],
-    "doors": []
+    "doors": [
+      "4-Door"
+    ]
   },
   "2020|Dodge|Durango": {
     "trims": [
@@ -36180,7 +35752,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -36201,7 +35772,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -36227,7 +35797,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -36534,9 +36103,7 @@
   },
   "2020|Jeep|Gladiator": {
     "trims": [],
-    "bedLengths": [
-      "5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -36930,7 +36497,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -37613,10 +37179,15 @@
     "doors": []
   },
   "2021|Dodge|Charger": {
-    "trims": [],
+    "trims": [
+      "GT",
+      "R/T"
+    ],
     "bedLengths": [],
     "cabTypes": [],
-    "doors": []
+    "doors": [
+      "4-Door"
+    ]
   },
   "2021|Dodge|Durango": {
     "trims": [
@@ -37723,7 +37294,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -37744,7 +37314,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -37770,7 +37339,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -38066,9 +37634,7 @@
   },
   "2021|Jeep|Gladiator": {
     "trims": [],
-    "bedLengths": [
-      "5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -38467,7 +38033,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -39210,6 +38775,18 @@
     "cabTypes": [],
     "doors": []
   },
+  "2022|Dodge|Charger": {
+    "trims": [
+      "GT",
+      "R/T",
+      "SRT Jailbreak"
+    ],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": [
+      "4-Door"
+    ]
+  },
   "2022|Dodge|Durango": {
     "trims": [
       "Citadel",
@@ -39324,7 +38901,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -39345,7 +38921,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -39371,7 +38946,6 @@
     ],
     "bedLengths": [
       "8' BED",
-      "6.75' BED",
       "6.8' BED"
     ],
     "cabTypes": [
@@ -39712,9 +39286,7 @@
   },
   "2022|Jeep|Gladiator": {
     "trims": [],
-    "bedLengths": [
-      "5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -40091,7 +39663,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -40847,6 +40418,17 @@
     "cabTypes": [],
     "doors": []
   },
+  "2023|Dodge|Charger": {
+    "trims": [
+      "GT",
+      "R/T"
+    ],
+    "bedLengths": [],
+    "cabTypes": [],
+    "doors": [
+      "4-Door"
+    ]
+  },
   "2023|Dodge|Durango": {
     "trims": [
       "Citadel",
@@ -41322,9 +40904,7 @@
   },
   "2023|Jeep|Gladiator": {
     "trims": [],
-    "bedLengths": [
-      "5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -41707,7 +41287,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -42858,9 +42437,7 @@
   },
   "2024|Jeep|Gladiator": {
     "trims": [],
-    "bedLengths": [
-      "5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -43207,7 +42784,6 @@
     "bedLengths": [
       "5.7' BED",
       "6.4' BED",
-      "6.5' BED",
       "8' BED"
     ],
     "cabTypes": [
@@ -44137,9 +43713,7 @@
   },
   "2025|Jeep|Gladiator": {
     "trims": [],
-    "bedLengths": [
-      "5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -44426,9 +44000,7 @@
       "Tungsten",
       "Warlock"
     ],
-    "bedLengths": [
-      "6.4' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "SUPERCAB",
       "CREW CAB"
@@ -45117,9 +44689,7 @@
   },
   "2026|Jeep|Gladiator": {
     "trims": [],
-    "bedLengths": [
-      "5' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [],
     "doors": []
   },
@@ -45265,9 +44835,7 @@
       "Tungsten",
       "Warlock"
     ],
-    "bedLengths": [
-      "6.4' BED"
-    ],
+    "bedLengths": [],
     "cabTypes": [
       "SUPERCAB",
       "CREW CAB"

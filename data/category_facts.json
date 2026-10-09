@@ -1,17 +1,17 @@
 {
  "tonneau-covers": {
-  "inStock": 282,
+  "inStock": 280,
   "universal": 0,
   "topVehicles": [
    {
-    "make": "GMC",
-    "model": "Sierra 1500",
+    "make": "Chevrolet",
+    "model": "Silverado 1500",
     "years": "1999\u20132026",
     "count": 40
    },
    {
-    "make": "Chevrolet",
-    "model": "Silverado 1500",
+    "make": "GMC",
+    "model": "Sierra 1500",
     "years": "1999\u20132026",
     "count": 40
    },
@@ -34,14 +34,14 @@
     "count": 26
    },
    {
-    "make": "Chevrolet",
-    "model": "Silverado 2500 HD",
+    "make": "GMC",
+    "model": "Sierra 2500 HD",
     "years": "2001\u20132026",
     "count": 24
    },
    {
-    "make": "GMC",
-    "model": "Sierra 2500 HD",
+    "make": "Chevrolet",
+    "model": "Silverado 2500 HD",
     "years": "2001\u20132026",
     "count": 24
    },
@@ -150,12 +150,6 @@
    },
    {
     "make": "Ford",
-    "model": "F-550 Super Duty",
-    "years": "1999\u20132016",
-    "count": 18
-   },
-   {
-    "make": "Ford",
     "model": "F-350 Super Duty",
     "years": "1999\u20132016",
     "count": 18
@@ -163,6 +157,12 @@
    {
     "make": "Ford",
     "model": "F-450 Super Duty",
+    "years": "1999\u20132016",
+    "count": 18
+   },
+   {
+    "make": "Ford",
+    "model": "F-550 Super Duty",
     "years": "1999\u20132016",
     "count": 18
    },
@@ -194,17 +194,17 @@
  },
  "front-grilles": {
   "inStock": 148,
-  "universal": 1,
+  "universal": 0,
   "topVehicles": [
    {
     "make": "Dodge",
-    "model": "Ram 2500",
+    "model": "Ram 3500",
     "years": "1994\u20132010",
     "count": 13
    },
    {
     "make": "Dodge",
-    "model": "Ram 3500",
+    "model": "Ram 2500",
     "years": "1994\u20132010",
     "count": 13
    },
@@ -248,7 +248,7 @@
  },
  "headlights": {
   "inStock": 166,
-  "universal": 1,
+  "universal": 0,
   "topVehicles": [
    {
     "make": "Dodge",
@@ -282,14 +282,14 @@
    },
    {
     "make": "Chevrolet",
-    "model": "Silverado 2500 HD",
-    "years": "2001\u20132014",
+    "model": "Silverado 1500",
+    "years": "1999\u20132013",
     "count": 18
    },
    {
     "make": "Chevrolet",
-    "model": "Silverado 1500",
-    "years": "1999\u20132013",
+    "model": "Silverado 2500 HD",
+    "years": "2001\u20132014",
     "count": 18
    },
    {
@@ -323,14 +323,14 @@
     "count": 24
    },
    {
-    "make": "Chevrolet",
-    "model": "Silverado 2500 HD",
+    "make": "GMC",
+    "model": "Sierra 2500 HD",
     "years": "2001\u20132018, 2020\u20132026",
     "count": 23
    },
    {
-    "make": "GMC",
-    "model": "Sierra 2500 HD",
+    "make": "Chevrolet",
+    "model": "Silverado 2500 HD",
     "years": "2001\u20132018, 2020\u20132026",
     "count": 23
    },
@@ -342,14 +342,14 @@
    },
    {
     "make": "Chevrolet",
-    "model": "Silverado 3500",
-    "years": "2001\u20132013, 2015\u20132018",
+    "model": "Silverado 2500",
+    "years": "1999\u20132018",
     "count": 16
    },
    {
     "make": "Chevrolet",
-    "model": "Silverado 2500",
-    "years": "1999\u20132018",
+    "model": "Silverado 3500",
+    "years": "2001\u20132013, 2015\u20132018",
     "count": 16
    }
   ],
@@ -419,8 +419,8 @@
     "count": 8
    },
    {
-    "make": "Chevrolet",
-    "model": "Silverado 2500 HD",
+    "make": "GMC",
+    "model": "Sierra 3500 HD",
     "years": "2007\u20132026",
     "count": 8
    }
@@ -449,14 +449,8 @@
     "count": 2
    },
    {
-    "make": "Chevrolet",
-    "model": "Silverado 2500",
-    "years": "2015\u20132018",
-    "count": 2
-   },
-   {
-    "make": "Chevrolet",
-    "model": "Silverado 2500 HD",
+    "make": "GMC",
+    "model": "Sierra 3500 HD",
     "years": "2015\u20132019",
     "count": 2
    },
@@ -467,9 +461,15 @@
     "count": 2
    },
    {
-    "make": "GMC",
-    "model": "Sierra 3500 HD",
-    "years": "2015\u20132019",
+    "make": "Chevrolet",
+    "model": "Silverado 1500",
+    "years": "2014\u20132018",
+    "count": 2
+   },
+   {
+    "make": "Chevrolet",
+    "model": "Silverado 2500",
+    "years": "2015\u20132018",
     "count": 2
    },
    {
@@ -497,18 +497,6 @@
     "count": 4
    },
    {
-    "make": "Chevrolet",
-    "model": "Silverado 2500 HD",
-    "years": "2015\u20132025",
-    "count": 3
-   },
-   {
-    "make": "GMC",
-    "model": "Sierra 2500 HD",
-    "years": "2015\u20132025",
-    "count": 3
-   },
-   {
     "make": "GMC",
     "model": "Sierra 3500 HD",
     "years": "2015\u20132025",
@@ -521,14 +509,26 @@
     "count": 3
    },
    {
+    "make": "GMC",
+    "model": "Sierra 2500 HD",
+    "years": "2015\u20132025",
+    "count": 3
+   },
+   {
     "make": "Chevrolet",
-    "model": "Silverado 1500",
-    "years": "2014\u20132018",
-    "count": 2
+    "model": "Silverado 2500 HD",
+    "years": "2015\u20132025",
+    "count": 3
    },
    {
     "make": "GMC",
     "model": "Sierra 1500",
+    "years": "2014\u20132018",
+    "count": 2
+   },
+   {
+    "make": "Chevrolet",
+    "model": "Silverado 1500",
     "years": "2014\u20132018",
     "count": 2
    }
@@ -539,18 +539,6 @@
   "universal": 1,
   "topVehicles": [
    {
-    "make": "Cadillac",
-    "model": "Escalade EXT",
-    "years": "2002\u20132013",
-    "count": 2
-   },
-   {
-    "make": "Chevrolet",
-    "model": "LUV",
-    "years": "1997\u20132005",
-    "count": 2
-   },
-   {
     "make": "Chevrolet",
     "model": "K2500",
     "years": "1990\u20132000",
@@ -558,13 +546,13 @@
    },
    {
     "make": "Chevrolet",
-    "model": "V3500",
-    "years": "1990\u20131991",
+    "model": "C1500",
+    "years": "1990\u20132002",
     "count": 2
    },
    {
     "make": "Chevrolet",
-    "model": "C2500",
+    "model": "K3500",
     "years": "1990\u20132000",
     "count": 2
    },
@@ -576,14 +564,26 @@
    },
    {
     "make": "Chevrolet",
-    "model": "C1500",
-    "years": "1990\u20132002",
+    "model": "K1500",
+    "years": "1990\u20131999",
     "count": 2
    },
    {
     "make": "Chevrolet",
-    "model": "Avalanche 1500",
+    "model": "Avalanche 2500",
     "years": "2002\u20132006",
+    "count": 2
+   },
+   {
+    "make": "Cadillac",
+    "model": "Escalade EXT",
+    "years": "2002\u20132013",
+    "count": 2
+   },
+   {
+    "make": "Chevrolet",
+    "model": "C2500",
+    "years": "1990\u20132000",
     "count": 2
    }
   ]
@@ -611,14 +611,8 @@
     "count": 1
    },
    {
-    "make": "Chevrolet",
-    "model": "Silverado 2500",
-    "years": "2016\u20132018",
-    "count": 1
-   },
-   {
-    "make": "Chevrolet",
-    "model": "Silverado 2500 HD",
+    "make": "GMC",
+    "model": "Sierra 3500 HD",
     "years": "2015\u20132019",
     "count": 1
    },
@@ -629,9 +623,15 @@
     "count": 1
    },
    {
-    "make": "GMC",
-    "model": "Sierra 3500 HD",
-    "years": "2015\u20132019",
+    "make": "Chevrolet",
+    "model": "Silverado 1500",
+    "years": "2014\u20132018",
+    "count": 1
+   },
+   {
+    "make": "Chevrolet",
+    "model": "Silverado 2500",
+    "years": "2016\u20132018",
     "count": 1
    },
    {
@@ -642,14 +642,14 @@
    },
    {
     "make": "Chevrolet",
-    "model": "Silverado 1500",
-    "years": "2014\u20132018",
+    "model": "Silverado 2500 HD",
+    "years": "2015\u20132019",
     "count": 1
    },
    {
     "make": "Ford",
-    "model": "F-150",
-    "years": "2015\u20132023",
+    "model": "F-250 Super Duty",
+    "years": "2017\u20132022",
     "count": 1
    }
   ]
