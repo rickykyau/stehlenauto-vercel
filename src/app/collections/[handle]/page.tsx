@@ -36,7 +36,7 @@ import {
 } from "@/lib/fitment/sub-model";
 import { getDimensionOptions, getDimensionsForVehicle } from "@/lib/fitment/dimensions";
 import type { SubModelAnswer, SubModelGroup } from "@/lib/garage/types";
-import { breadcrumbJsonLd, itemListJsonLd, jsonLdString } from "@/lib/seo/jsonld";
+import { breadcrumbJsonLd, collectionPageJsonLd, jsonLdString } from "@/lib/seo/jsonld";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://stehlenauto.com";
@@ -550,27 +550,22 @@ export default async function CollectionPage({
           ),
         }}
       />
-      {/* Cycle 14Z post-deploy (Priya F-13 MEDIUM): ItemList JSON-LD makes
-          this collection eligible for Google's product-carousel rich result.
-          Only emit when there are products on the page so the schema isn't
-          empty when filters return zero hits. */}
-      {collection.products.length > 0 ? (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: jsonLdString(
-              itemListJsonLd(
-                collection.products.map((p) => ({
-                  handle: p.handle,
-                  name: p.title,
-                })),
-                SITE_URL,
-                collection.title,
-              ),
-            ),
-          }}
-        />
-      ) : null}
+      {/* CollectionPage with the visible products as its ItemList (product
+          carousel eligibility + tells AI engines this is a category page). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLdString(
+            collectionPageJsonLd({
+              name: collection.title,
+              description: collection.description?.trim() || undefined,
+              path: `/collections/${collection.handle}`,
+              baseUrl: SITE_URL,
+              items: collection.products.map((p) => ({ handle: p.handle, name: p.title })),
+            }),
+          ),
+        }}
+      />
       {/* Hero — Cycle 14AP-fix2 (Diana round 2 per owner): the prior 5:1
           banner + warm-cream text-section combo read as a "guillotine"
           cut (image fragment up top, unrelated text below) AND rendered

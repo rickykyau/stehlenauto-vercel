@@ -1,86 +1,47 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Icons } from "@/components/ui/icons";
+import { CATEGORIES } from "@/lib/catalog/mock";
+import { getAllInstallGuides } from "@/lib/install";
 import { howToJsonLd, jsonLdString } from "@/lib/seo/jsonld";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://stehlenauto.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://stehlenauto.com";
 
 export const metadata: Metadata = {
   title: "Install Guides",
   description:
-    "Step-by-step PDFs, torque specs, and hardware diagrams for every Stehlen product.",
+    "Step-by-step install guides for tonneau covers, trailer hitches, bull guards, running boards, grilles, headlights, bed mats, roof racks and more — tools, time and what to check.",
   alternates: { canonical: "/help/install" },
 };
 
-// Cycle 14c (Mike-3 BLOCKER): the 4 cards used to link to /help/install/<slug>
-// routes that don't exist (404). Cycle 14b "fixed" the PDP→hub link but left
-// these dead. Until per-product PDFs are wired (warehouse to provide), point
-// every card at the contact page so customers reach a real human / phone
-// number instead of a 404.
-const GUIDES = [
-  {
-    title: "Door-Frame Mount Roof Rack",
-    sub: "Talk to install support · 951-332-7000",
-    href: "/help/contact",
-  },
-  {
-    title: "Modular Steel Bumper",
-    sub: "Talk to install support · 951-332-7000",
-    href: "/help/contact",
-  },
-  {
-    title: "Lock & Roll-Up Tonneau",
-    sub: "Talk to install support · 951-332-7000",
-    href: "/help/contact",
-  },
-  {
-    title: "LED Bed Light Kit",
-    sub: "Talk to install support · 951-332-7000",
-    href: "/help/contact",
-  },
-];
+const nameFor = (handle: string) => CATEGORIES.find((c) => c.slug === handle)?.name ?? handle;
 
-const STEPS = [
-  ["1", "Unbox and inventory hardware against the included packing list."],
-  ["2", "Mount door-frame brackets at marked positions; hand-tighten only."],
-  ["3", "Lift assembled rack onto vehicle (2 people) and seat onto brackets."],
-  ["4", "Torque all bolts to 18 ft-lb in the sequence shown on the spec card."],
-  ["5", "Verify torque after 100 miles, then again at 500 miles."],
-];
+export default function InstallGuidesPage() {
+  const guides = getAllInstallGuides();
+  // One HowTo per category guide — the format AI answers and Google quote
+  // for "how do I install a …" questions. Built from data/install-guides.json.
+  const howTo = jsonLdString(
+    guides.map(({ handle, guide }) => ({
+      ...howToJsonLd(
+        guide.title,
+        `How to install ${nameFor(handle).toLowerCase()}: ${guide.difficulty.toLowerCase()} install, about ${guide.timeMinutes} minutes.`,
+        guide.steps.map((text, i) => ({ position: i + 1, text })),
+        SITE_URL,
+        `/help/install#${handle}`,
+      ),
+      totalTime: `PT${guide.timeMinutes}M`,
+      tool: guide.tools.map((name) => ({ "@type": "HowToTool", name })),
+    })),
+  );
 
-// Cycle 14Z post-deploy (Priya F-14 LOW): HowTo schema on the example install
-// (door-frame roof rack) makes the page eligible for Google's "How-to" rich
-// result and AI Overview citations. All step content is statically defined
-// in this file (no user input) → safe to inline.
-const howToHtml = jsonLdString(
-  howToJsonLd(
-    "Install a Door-Frame Mount Roof Rack",
-    "Five-step bolt-on install for a Stehlen door-frame mount roof rack — no drilling required.",
-    STEPS.map(([n, t]) => ({ position: Number(n), text: String(t) })),
-    SITE_URL,
-    "/help/install",
-  ),
-);
-
-export default function InstallGuidePage() {
   return (
     <main>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger -- HowTo, server-built static
-        dangerouslySetInnerHTML={{ __html: howToHtml }}
+        // eslint-disable-next-line react/no-danger -- HowTo from our own guide data; jsonLdString escapes "<"
+        dangerouslySetInnerHTML={{ __html: howTo }}
       />
-      <section
-        style={{
-          background: "var(--color-surface)",
-          borderBottom: "1px solid var(--color-border)",
-        }}
-      >
-        <div
-          className="container-x"
-          style={{ paddingTop: 64, paddingBottom: 56 }}
-        >
+      <section style={{ background: "var(--color-surface)", borderBottom: "1px solid var(--color-border)" }}>
+        <div className="container-x" style={{ paddingTop: 64, paddingBottom: 48 }}>
           <div className="eyebrow" style={{ marginBottom: 8 }}>
             INSTALL GUIDES
           </div>
@@ -98,155 +59,108 @@ export default function InstallGuidePage() {
             <br />
             RIGHT THE FIRST TIME.
           </h1>
-          <p
-            style={{
-              color: "var(--color-muted)",
-              fontSize: 16,
-              marginTop: 16,
-              maxWidth: 580,
-            }}
-          >
-            Every Stehlen part ships with a printed guide. Download the PDF
-            ahead of time, queue up the install video, and you&apos;ll have it
-            on in an afternoon.
+          <p style={{ color: "var(--color-muted)", fontSize: 16, marginTop: 16, maxWidth: 640, lineHeight: 1.6 }}>
+            General install steps for each type of part we sell. Your product&apos;s page and the instruction
+            sheet in the box have the specifics for your exact part — time, hardware, torque values and whether
+            drilling is needed — so follow those where they differ. Stuck? Call install support at{" "}
+            <a href="tel:+19513327000" style={{ color: "var(--color-foreground)" }}>
+              951-332-7000
+            </a>{" "}
+            (Mon–Fri, 9–5 PT).
           </p>
+          <nav aria-label="Install guides" style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 24 }}>
+            {guides.map(({ handle }) => (
+              <a
+                key={handle}
+                href={`#${handle}`}
+                style={{
+                  padding: "6px 12px",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-sm)",
+                  fontSize: 13,
+                }}
+              >
+                {nameFor(handle)}
+              </a>
+            ))}
+          </nav>
         </div>
       </section>
 
-      <section
-        className="container-x grid grid-cols-1 md:grid-cols-[1fr_320px]"
-        style={{ paddingTop: 56, paddingBottom: 80, gap: 48 }}
-      >
-        <div>
-          <h2
-            className="mono"
+      <div className="container-x" style={{ paddingTop: 48, paddingBottom: 80, display: "grid", gap: 40 }}>
+        {guides.map(({ handle, guide }) => (
+          <section
+            key={handle}
+            id={handle}
+            aria-labelledby={`${handle}-title`}
             style={{
-              fontSize: 14,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              marginBottom: 16,
-            }}
-          >
-            EXAMPLE · DOOR-FRAME ROOF RACK
-          </h2>
-          <div
-            style={{
+              scrollMarginTop: 96,
               background: "var(--color-surface)",
               border: "1px solid var(--color-border)",
               borderRadius: "var(--radius-md)",
-              padding: 32,
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
+              padding: 28,
             }}
           >
-            {STEPS.map(([n, t]) => (
-              <div
-                key={n}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "44px 1fr",
-                  gap: 12,
-                  alignItems: "baseline",
-                }}
-              >
-                <span
-                  className="mono"
+            <h2
+              id={`${handle}-title`}
+              style={{
+                fontFamily: "var(--font-display)",
+                textTransform: "uppercase",
+                letterSpacing: "0.04em",
+                fontSize: 22,
+                marginBottom: 8,
+              }}
+            >
+              {guide.title}
+            </h2>
+            <p className="mono" style={{ color: "var(--color-muted)", fontSize: 12, letterSpacing: "0.08em", marginBottom: 20 }}>
+              {guide.difficulty.toUpperCase()} · ABOUT {guide.timeMinutes} MIN ·{" "}
+              {guide.peopleNeeded === 1 ? "SOLO INSTALL" : `${guide.peopleNeeded} PEOPLE`}
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_260px]" style={{ gap: 28 }}>
+              <div>
+                <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 10 }}>Steps</h3>
+                <ol style={{ paddingLeft: 20, display: "grid", gap: 10, lineHeight: 1.6, fontSize: 14 }}>
+                  {guide.steps.map((s) => (
+                    <li key={s}>{s}</li>
+                  ))}
+                </ol>
+                {guide.warnings.length > 0 && (
+                  <>
+                    <h3 style={{ fontSize: 14, fontWeight: 600, margin: "20px 0 10px" }}>Before you start</h3>
+                    <ul style={{ paddingLeft: 20, display: "grid", gap: 8, lineHeight: 1.6, fontSize: 14, color: "var(--color-muted)" }}>
+                      {guide.warnings.map((w) => (
+                        <li key={w}>{w}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+              <aside>
+                <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 10 }}>Tools</h3>
+                <ul style={{ paddingLeft: 20, display: "grid", gap: 6, fontSize: 14, color: "var(--color-muted)" }}>
+                  {guide.tools.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+                <Link
+                  href={`/collections/${handle}`}
                   style={{
-                    fontSize: 18,
-                    color: "var(--color-primary)",
-                    fontWeight: 700,
+                    display: "inline-block",
+                    marginTop: 20,
+                    padding: "10px 14px",
+                    border: "1px solid var(--color-border)",
+                    borderRadius: "var(--radius-sm)",
+                    fontSize: 13,
                   }}
                 >
-                  0{n}
-                </span>
-                <span style={{ fontSize: 15, lineHeight: 1.6 }}>{t}</span>
-              </div>
-            ))}
-          </div>
-
-          <div
-            style={{
-              marginTop: 24,
-              padding: 16,
-              background: "var(--color-surface-2)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "var(--radius-md)",
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              fontSize: 13,
-            }}
-          >
-            <Icons.alert size={16} />
-            <span>
-              <strong>Need a hand?</strong> Call our techs at{" "}
-              <a
-                href="tel:+19513327000"
-                style={{ color: "var(--color-primary)" }}
-              >
-                951-332-7000
-              </a>{" "}
-              Mon–Fri 9–5 PST.
-            </span>
-          </div>
-        </div>
-
-        <aside style={{ alignSelf: "start" }}>
-          <h2
-            className="mono"
-            style={{
-              fontSize: 14,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              marginBottom: 16,
-            }}
-          >
-            ALL GUIDES
-          </h2>
-          <div
-            style={{
-              background: "var(--color-surface)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "var(--radius-md)",
-              overflow: "hidden",
-            }}
-          >
-            {GUIDES.map((g, i) => (
-              <Link
-                key={g.title}
-                href={g.href}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: 16,
-                  borderBottom:
-                    i < GUIDES.length - 1
-                      ? "1px solid var(--color-border)"
-                      : 0,
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 500 }}>
-                    {g.title}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: "var(--color-muted)",
-                      marginTop: 2,
-                    }}
-                  >
-                    {g.sub}
-                  </div>
-                </div>
-                <Icons.external size={14} />
-              </Link>
-            ))}
-          </div>
-        </aside>
-      </section>
+                  Shop {nameFor(handle).toLowerCase()} →
+                </Link>
+              </aside>
+            </div>
+          </section>
+        ))}
+      </div>
     </main>
   );
 }

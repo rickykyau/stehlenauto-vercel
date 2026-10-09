@@ -12,7 +12,7 @@ import {
 import { complementsFor } from "@/lib/catalog/complements";
 import { getReviewsForHandle, mergeNativeReviews } from "@/lib/reviews";
 import { getApprovedNativeReviews } from "@/lib/reviews/native";
-import { getInstallGuide } from "@/lib/install";
+import { drillingFromDescription, getInstallGuide } from "@/lib/install";
 import { RecentlyViewedTracker } from "@/components/commerce/recently-viewed-tracker";
 import { RecentlyViewedStrip } from "@/components/commerce/recently-viewed-strip";
 import { PRODUCTS } from "@/lib/catalog/mock";
@@ -144,7 +144,10 @@ export default async function PdpPage({
     nativeReviews,
     handle,
   );
-  const installGuide = getInstallGuide(product.categoryHandle);
+  const categoryGuide = getInstallGuide(product.categoryHandle);
+  const installGuide = categoryGuide
+    ? { ...categoryGuide, drillRequired: drillingFromDescription(product.descriptionHtml) }
+    : null;
   const relatedRaw = relatedResult.products;
   // Heading on the rail switches based on whether every card actually fits.
   const relatedAllFit = relatedResult.allFitVehicle;

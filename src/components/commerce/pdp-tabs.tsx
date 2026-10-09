@@ -1004,6 +1004,7 @@ export function PdpTabs({
                         ? "Solo install"
                         : `${installGuide.peopleNeeded} people`}
                     </span>
+                    {installGuide.drillRequired !== null && (
                     <span
                       className="mono"
                       style={{
@@ -1023,6 +1024,7 @@ export function PdpTabs({
                         ? "Drilling required"
                         : "No drilling"}
                     </span>
+                    )}
                   </div>
 
                   {/* Optional install video */}
@@ -1160,7 +1162,7 @@ export function PdpTabs({
                     {product.title}
                   </strong>{" "}
                   ship inside the box. For a quick overview, visit our{" "}
-                  <Link href="/help/install" style={{ color: "var(--color-primary)" }}>
+                  <Link href={`/help/install${product.categoryHandle ? `#${product.categoryHandle}` : ""}`} style={{ color: "var(--color-primary)" }}>
                     install help center
                   </Link>{" "}
                   or call 951-332-7000.
@@ -1210,11 +1212,11 @@ export function PdpTabs({
                 CALL 951-332-7000
               </a>
               <Link
-                href="/help/install"
+                href={`/help/install${product.categoryHandle ? `#${product.categoryHandle}` : ""}`}
                 className="btn btn-block"
                 style={{ marginTop: 8 }}
               >
-                INSTALL HELP CENTER
+                FULL INSTALL GUIDE
               </Link>
             </div>
           </>

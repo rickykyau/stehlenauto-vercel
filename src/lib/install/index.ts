@@ -16,7 +16,9 @@ export type InstallGuide = {
   difficulty: "Very Easy" | "Easy" | "Moderate" | "Advanced";
   timeMinutes: number;
   peopleNeeded: number;
-  drillRequired: boolean;
+  /** Per product, from the listing text (drillingFromDescription); the
+   *  category guide can't know it. null = listing doesn't say. */
+  drillRequired: boolean | null;
   tools: string[];
   steps: string[];
   warnings: string[];
@@ -85,4 +87,25 @@ export function difficultyColor(
     case "Advanced":
       return "var(--color-destructive)";
   }
+}
+
+/**
+ * Whether a specific product needs drilling, from its own description
+ * (Highlights / Installation). Returns null when the listing doesn't say —
+ * better no badge than a category-level guess.
+ */
+export function drillingFromDescription(html: string | null | undefined): boolean | null {
+  const t = (html ?? "").replace(/<[^>]+>/g, " ").toLowerCase();
+  if (/\bno[- ]drill|no drilling|drill[- ]free|without drilling|no holes? to drill/.test(t)) return false;
+  if (/drilling (is )?required|requires? drilling|drill(ing)? required|with a drill|drill (\w+ ){0,3}holes?/.test(t)) return true;
+  return null;
+}
+
+
+/** Every category guide, in catalog order, for the /help/install hub. */
+export function getAllInstallGuides(): { handle: string; guide: InstallGuide }[] {
+  return Object.keys(manifest.by_category).map((handle) => ({
+    handle,
+    guide: getInstallGuide(handle)!,
+  }));
 }

@@ -43,6 +43,31 @@ export function itemListJsonLd(
   };
 }
 
+/**
+ * CollectionPage for category pages: tells search/AI engines the page is a
+ * category listing, with the product ItemList as its main entity.
+ */
+export function collectionPageJsonLd(opts: {
+  name: string;
+  description?: string;
+  path: string;
+  baseUrl: string;
+  items: ItemListEntry[];
+}) {
+  const url = `${opts.baseUrl}${opts.path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: opts.name,
+    ...(opts.description ? { description: opts.description } : {}),
+    url,
+    isPartOf: { "@type": "WebSite", name: "Stehlen Auto", url: opts.baseUrl },
+    ...(opts.items.length > 0
+      ? { mainEntity: itemListJsonLd(opts.items, opts.baseUrl, opts.name) }
+      : {}),
+  };
+}
+
 // Cycle 14Z post-deploy (Priya F-14 LOW): HowTo schema on the install guide
 // is eligible for AI Overview citation + the "How-to" rich result. The
 // torque-spec sequence we already display is exactly the structured-step
