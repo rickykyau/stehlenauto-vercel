@@ -103,3 +103,6 @@ marketing/feeds/openai/products.jsonl.gz
 marketing/feeds/openai/sample.json
 marketing/feeds/openai/report.txt
 .jlsql-creds
+
+# local archive of old QA screenshots (not deployed)
+_archive/
