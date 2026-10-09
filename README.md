@@ -17,7 +17,7 @@ Where things live (full map in [CLAUDE.md](CLAUDE.md#repository-layout-keep-it-t
 | Folder | What |
 |---|---|
 | `src/` | the website |
-| `config/` | test, database and Lighthouse configs |
+| `config/` | lint, test, database and Lighthouse configs |
 | `scripts/<area>/` | catalog, fitment, seo, reviews, ops, db maintenance scripts |
 | `data/` | data the site reads; `logs/`, `changes/`, `source/`, `exports/` for working files |
 | `docs/` | reference, runbooks, QA |

@@ -64,10 +64,9 @@ Read these BEFORE making decisions in their domain — they encode prior researc
 ```
 /                         ONLY files the tools require at the root:
                           package.json, pnpm-lock.yaml, tsconfig.json, next.config.ts,
-                          next-env.d.ts, postcss.config.mjs, eslint.config.mjs,
-                          vercel.json, .env.local, .env.example, .gitignore,
+                          next-env.d.ts, postcss.config.mjs, vercel.json, .env.local, .env.example, .gitignore,
                           .vercelignore, README.md, CLAUDE.md
-config/                   vitest, playwright, drizzle, lighthouse configs
+config/                   eslint, vitest, playwright, drizzle, lighthouse configs
                           (package.json scripts pass --config)
 .secrets/                 local credentials: GA4 token.json + oauth-credentials.json,
                           .jlsql-creds (gitignored, never deployed)
