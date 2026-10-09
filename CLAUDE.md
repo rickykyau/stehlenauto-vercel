@@ -59,7 +59,45 @@ Read these BEFORE making decisions in their domain — they encode prior researc
 - Universal products (51% of catalog) bypass all sub-model UI entirely
 - Color/finish is a style facet, NEVER part of fitment gate
 
-## Folder Structure
+## Repository Layout (keep it this way)
+
+```
+/                         ONLY files the tools require at the root:
+                          package.json, pnpm-lock.yaml, tsconfig.json, next.config.ts,
+                          next-env.d.ts, postcss.config.mjs, eslint.config.mjs,
+                          vercel.json, .env.local, .env.example, .gitignore,
+                          .vercelignore, README.md, CLAUDE.md
+config/                   vitest, playwright, drizzle, lighthouse configs
+                          (package.json scripts pass --config)
+.secrets/                 local credentials: GA4 token.json + oauth-credentials.json,
+                          .jlsql-creds (gitignored, never deployed)
+src/                      the website (see below)
+tests/unit, tests/e2e     vitest / playwright tests
+scripts/                  one-off and recurring maintenance scripts, by area:
+  catalog/  fitment/  seo/  reviews/  ops/  db/   (+ windows/ = JL-SQL scheduled tasks)
+data/                     top level = files the site or the build scripts READ
+                          (products_by_ymm, ymm_*, category_facts, ca_fitment_snapshot, …)
+  logs/                   run + rollback logs written by scripts
+  changes/                reviewed fix lists / plans fed to scripts
+  source/                 imported spreadsheets, audits, mappings
+  exports/                files produced for people (xlsx/csv/pdf)
+docs/                     reference, runbooks, qa, design handoffs, screenshots
+marketing/                analytics, email, feeds, plans; video/ = AI ad work
+                          (scripts, clips, seeds — excluded from deploys)
+docs/screenshots/archive-local/  old local QA screenshots (gitignored, never deployed)
+```
+
+**Stay organized (rules for every session):**
+- Never leave new files in the repo root. Scratch work goes in the session scratchpad, not the repo.
+- New script → the matching `scripts/<area>/` folder; resolve the repo root with
+  `path.resolve(__dirname, "../..")` (TS/JS) or `Path(__file__).resolve().parents[2]` (Python).
+- Script output: logs → `data/logs/`, fix lists/plans → `data/changes/`, inputs → `data/source/`,
+  anything for a person → `data/exports/`. Only files the site reads live at `data/` top level.
+- Screenshots → `docs/screenshots/<topic>/`. Credentials → `.secrets/`. AI video work → `marketing/video/`.
+- Next.js note: this Next version has breaking changes — read the relevant guide in
+  `node_modules/next/dist/docs/` before writing framework code and heed deprecation notices.
+
+### src/
 
 ```
 src/
@@ -83,6 +121,7 @@ src/
 │   ├── db/                    Drizzle schema + queries
 │   ├── analytics/             GA4, Klaviyo, Clarity wrappers
 │   ├── fitment/               YMM tree, sub-model logic
+│   ├── seo/                   JSON-LD, title tags, IndexNow
 │   └── utils/                 cn, formatters
 └── types/
 ```

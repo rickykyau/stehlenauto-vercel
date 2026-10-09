@@ -32,7 +32,7 @@ Data integrity handles also inspected: `2000-2007-toyota-tundra-sequoia-advanced
 
 **Evidence:** `data/amazon-reviews.json` lines 40-74. ASIN B07MDF528K mapped to handle `2000-2007-toyota-tundra-sequoia-advanced-bull-guard-matte-black`.
 
-**Suspected fix:** The ingest script (`scripts/ingest-amazon-reviews.ts`) matched this ASIN to the wrong Shopify handle. The correct ASIN for the Tundra/Sequoia bull guard must be re-identified, or this handle must be removed from `data/amazon-reviews.json` entirely until the correct match is found.
+**Suspected fix:** The ingest script (`scripts/reviews/ingest-amazon-reviews.ts`) matched this ASIN to the wrong Shopify handle. The correct ASIN for the Tundra/Sequoia bull guard must be re-identified, or this handle must be removed from `data/amazon-reviews.json` entirely until the correct match is found.
 
 **Regression risk:** All 31 mapped handles should be audited for ASIN-to-handle accuracy. If the ingest logic used fuzzy string matching, other handles may also carry wrong-product review bundles.
 

@@ -6,7 +6,7 @@ import path from "node:path";
  * Cycle 14AR-fix32 (owner): per-application fitment lookup keyed by product
  * handle. Source of truth: data/fitment_by_handle.json — built by inverting
  * data/products_by_ymm.json (which is built from CA fitment data via
- * scripts/build-ymm-index.py).
+ * scripts/fitment/build-ymm-index.py).
  *
  * Why this exists: the previous flat-list metafield schema (years/makes/
  * models as independent arrays) lost cross-product validity. A product that

@@ -41,6 +41,6 @@ jobs:
             ${{ steps.preview.outputs.url }}/vehicle/ford-f-150
             ${{ steps.preview.outputs.url }}/about
             ${{ steps.preview.outputs.url }}/legal/warranty
-          configPath: ./lighthouserc.json
+          configPath: ./config/lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true

@@ -57,8 +57,8 @@ load_dotenv(BASE_DIR / ".env")
 
 BREVO_API_KEY   = os.getenv("BREVO_API_KEY")
 PROPERTY_ID     = os.getenv("GA4_PROPERTY_ID", "529120634")
-OAUTH_CREDS_FILE = os.getenv("GA4_OAUTH_CREDENTIALS", str(BASE_DIR / "oauth-credentials.json"))
-TOKEN_FILE       = str(BASE_DIR / "token.json")
+OAUTH_CREDS_FILE = os.getenv("GA4_OAUTH_CREDENTIALS", str(BASE_DIR / ".secrets" / "oauth-credentials.json"))
+TOKEN_FILE       = str(BASE_DIR / ".secrets" / "token.json")
 SCOPES           = ["https://www.googleapis.com/auth/analytics.readonly"]
 
 OUTPUT_DIR = BASE_DIR / "data" / "analytics"

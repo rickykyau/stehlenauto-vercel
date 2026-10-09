@@ -64,32 +64,32 @@ data/ca_fitment_snapshot.json
 .claude/scheduled_tasks.lock
 
 # v13 full-quality masters — keep local only, share versions are committed
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v13.mp4
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v13-silent.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v13.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v13-silent.mp4
 
 # v14 full-quality masters — keep local only, share is committed
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v14.mp4
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v14-silent.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v14.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v14-silent.mp4
 
 # v15 full-quality masters — keep local only, share is committed
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v15.mp4
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v15-silent.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v15.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v15-silent.mp4
 
 # v16 full-quality masters — keep local only, share is committed
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v16.mp4
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v16-silent.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v16.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v16-silent.mp4
 
 # v17 full-quality masters — keep local only, share is committed
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v17.mp4
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v17-silent.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v17.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v17-silent.mp4
 
 # v18 full-quality masters — keep local only, share is committed
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v18.mp4
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v18-silent.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v18.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v18-silent.mp4
 
 # v19 full-quality masters — keep local only
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v19.mp4
-public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v19-silent.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v19.mp4
+marketing/video/clips/stehlen-tacoma-tonneau-spot-v19-silent.mp4
 
 # Marketing — campaign metadata + any customer-data exports (PII): never commit
 marketing/email/data/
@@ -104,5 +104,13 @@ marketing/feeds/openai/sample.json
 marketing/feeds/openai/report.txt
 .jlsql-creds
 
-# local archive of old QA screenshots (not deployed)
-_archive/
+# local archive of old QA screenshots (not in git, not deployed)
+docs/screenshots/archive-local/
+
+# AI video work files (frames, temp renders, seed images) — local only
+marketing/video/clips/frames-*/
+marketing/video/clips/.v*-tmp/
+marketing/video/seeds/
+
+# Local credentials (GA4 OAuth token, JL-SQL login) — never commit
+.secrets/

@@ -5,7 +5,7 @@ import path from "node:path";
 /**
  * Category FAQ + FAQPage schema for collection pages (AEO: AI answers quote
  * short, sourced Q&A). Every answer is built from data/category_facts.json
- * (scripts/build-category-facts.py — live collection membership + CA
+ * (scripts/seo/build-category-facts.py — live collection membership + CA
  * fitment) or from the /legal policy pages. No hand-written claims, and no
  * product/fitment counts (stakeholder rule).
  */

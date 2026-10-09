@@ -5,7 +5,7 @@ import type { SubModelGroup } from "@/lib/garage/types";
 
 /**
  * Cycle 14AQ — Per-vehicle dimension lookup, sourced from
- * data/ymm_dimensions.json (built by scripts/build-ymm-index.py from
+ * data/ymm_dimensions.json (built by scripts/fitment/build-ymm-index.py from
  * the ChannelAdvisor fitment snapshot).
  *
  * Replaces the hardcoded VEHICLE_BED_LENGTHS / VEHICLE_CAB_TYPES /

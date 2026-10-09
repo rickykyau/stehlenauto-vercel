@@ -7,14 +7,14 @@ import shippingMap from "@/../data/cb-shipping-methods.json";
  * Connected Business order-import file generator.
  *
  * Maps a Shopify order → the CB import .xlsx (one row per line item, header
- * row repeated columns) per data/stehlen website order template.xlsx.
+ * row repeated columns) per data/source/stehlen website order template.xlsx.
  *
  * - SalesRepOrderCode  = "stehlen-" + order number (e.g. #1007 → stehlen-1007)
  * - item name          = product metafield cb_integration.item_name (lowercased)
  * - shipping method    = cached CB tbl_ShippingMethodUpdate lookup by item name
  *                        (data/cb-shipping-methods.json), default "UPS ground"
  *   (web app has no live CB connection — refresh via
- *    scripts/refresh-cb-shipping-methods.py)
+ *    scripts/ops/refresh-cb-shipping-methods.py)
  */
 
 const SHIP_MAP = shippingMap as Record<string, string>;

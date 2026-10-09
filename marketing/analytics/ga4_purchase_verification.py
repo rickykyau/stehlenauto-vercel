@@ -47,8 +47,8 @@ from google.analytics.data_v1beta.types import (
 load_dotenv()
 
 PROPERTY_ID = os.getenv("GA4_PROPERTY_ID", "529120634")
-OAUTH_CREDS_FILE = os.getenv("GA4_OAUTH_CREDENTIALS", "./oauth-credentials.json")
-TOKEN_FILE = "./token.json"
+OAUTH_CREDS_FILE = os.getenv("GA4_OAUTH_CREDENTIALS", "./.secrets/oauth-credentials.json")
+TOKEN_FILE = "./.secrets/token.json"
 SCOPES = ["https://www.googleapis.com/auth/analytics.readonly"]
 
 # Look back further to catch test orders placed any time in the last 30 days

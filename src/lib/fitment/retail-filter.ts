@@ -9,14 +9,14 @@
  * Especial, Doble Cabina, GT Milenio) that don't belong in front of our
  * audience.
  *
- * Cycle 14AQ added the same blocklist to scripts/build-ymm-index.py so
+ * Cycle 14AQ added the same blocklist to scripts/fitment/build-ymm-index.py so
  * data/ymm_dimensions.json (fueling the picker) excludes them. This
  * module is the TypeScript counterpart for any RUNTIME render that
  * pulls subattributes directly from product.fitmentTable instead of
  * the pre-filtered ymm_dimensions index.
  *
  * Keep the two blocklists in sync. If a new fleet/foreign trim appears,
- * add it BOTH here and in scripts/build-ymm-index.py.
+ * add it BOTH here and in scripts/fitment/build-ymm-index.py.
  */
 
 const FLEET_TRIM_BLOCKLIST = new Set([

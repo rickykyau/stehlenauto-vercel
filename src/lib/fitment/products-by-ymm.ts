@@ -5,7 +5,7 @@ import path from "node:path";
 /**
  * Cycle 14AR-fix2 (QA-found BUG-14AR-3+4): canonical "what products fit
  * this YMM" lookup, sourced from data/products_by_ymm.json (built by
- * scripts/build-ymm-index.py from the CA fitment snapshot).
+ * scripts/fitment/build-ymm-index.py from the CA fitment snapshot).
  *
  * Used by the collection page server component to ensure that EVERY
  * confirmed-fit product is shown to the customer — not just the slice

@@ -15,7 +15,7 @@ It NEVER sends, schedules, pauses, or edits a campaign — it only reports and
 recommends. Adjustments stay a human decision (see the campaign-preflight
 standing goal). Pure stdlib so launchd runs it with system python3 — no venv.
 
-Secrets: BREVO_API_KEY from repo .env.local; GA4 OAuth from repo token.json
+Secrets: BREVO_API_KEY from repo .env.local; GA4 OAuth from repo .secrets/token.json
 (client_id/secret/refresh_token written by the google-auth flow).
 
 Usage:
@@ -34,7 +34,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 ENV_FILE = REPO / ".env.local"
-TOKEN_FILE = REPO / "token.json"
+TOKEN_FILE = REPO / ".secrets" / "token.json"
 
 OWNER_EMAIL = "rickykyau@gmail.com"
 SENDER = {"name": "Stehlen Daily Monitor", "email": "info@updates.stehlenauto.com"}

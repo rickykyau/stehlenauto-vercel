@@ -12,7 +12,7 @@ import path from "node:path";
  * Item Name only differs by bed length.
  *
  * Source: data/sibling_index.json built from the CA-sync snapshot by
- * scripts/build-sibling-index.ts. Re-run that script after every CA
+ * scripts/catalog/build-sibling-index.ts. Re-run that script after every CA
  * fitment sync.
  */
 export type Sibling = {

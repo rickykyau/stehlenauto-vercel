@@ -1,6 +1,6 @@
 # Tacoma Tonneau Spot — Finishing & Launch Runbook
 
-Final **visual** master: `public/videos/spot-clips/stehlen-tacoma-tonneau-spot-v6.mp4`
+Final **visual** master: `marketing/video/clips/stehlen-tacoma-tonneau-spot-v6.mp4`
 (31s · 1920×1080 · 24fps · silent by design). Temp-audio preview:
 `...-v6-tempaudio.mp4` (royalty-free placeholder — **swap for licensed audio before launch**).
 
@@ -64,4 +64,4 @@ The ad drives to the Tacoma PDP, which currently:
 - Do NOT say "2016+", "waterproof", "snow-load", or "Tacoma-specific" (it's a universal clamp-on).
 
 ## Build scripts (for re-renders)
-`scripts/gen-spot-seeds.ts` (Gemini seeds) · `scripts/kling-generate*.ts` (Kling clips) · `scripts/build-spot-v6.mjs` (assembly: trim/grade/grain/end-card/concat).
+`marketing/video/scripts/gen-spot-seeds.ts` (Gemini seeds) · `scripts/kling-generate*.ts` (Kling clips) · `marketing/video/scripts/build-spot-v6.mjs` (assembly: trim/grade/grain/end-card/concat).

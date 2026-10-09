@@ -1,6 +1,12 @@
-# Heavy AI render artifacts — never upload to a Vercel deploy. These are
-# intermediate video/seed files kept locally only (also excluded from git).
-# Without this, a local `vercel` deploy would upload 1.3 GB+ and likely fail.
-public/videos
-public/images/spot-seeds
-_archive
+# Never upload these with a Vercel deploy (not part of the website).
+# Ad-video production work: ~1.4 GB of clips, frames and seed images.
+marketing/video
+# Local archive of old QA screenshots.
+docs/screenshots/archive-local
+# Working data that the site doesn't read (logs, change lists, source files, exports).
+data/logs
+data/changes
+data/source
+data/exports
+# Local credentials
+.secrets

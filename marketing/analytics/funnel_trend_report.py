@@ -21,7 +21,7 @@ Usage:
   /tmp/gavenv/bin/python marketing/analytics/funnel_trend_report.py
   REPORT_DATE=2026-06-10 WEEKS=4 python marketing/analytics/funnel_trend_report.py
 
-Auth: GA4 OAuth via token.json + oauth-credentials.json in repo root
+Auth: GA4 OAuth via .secrets/token.json + .secrets/oauth-credentials.json
 (gitignored). BREVO_API_KEY + GA4_PROPERTY_ID from .env.local.
 """
 import os
@@ -74,7 +74,7 @@ def channel(sm: str) -> str:
 
 def _client():
     creds = Credentials.from_authorized_user_file(
-        str(BASE / "token.json"), ["https://www.googleapis.com/auth/analytics.readonly"]
+        str(BASE / ".secrets" / "token.json"), ["https://www.googleapis.com/auth/analytics.readonly"]
     )
     if not creds.valid and creds.expired and creds.refresh_token:
         creds.refresh(Request())

@@ -975,7 +975,7 @@ export function PdpTabs({
                       the customer's truck will look like once assembled —
                       Mike's "new customer 8/10" gap was partly about
                       missing visual install confidence. Gemini-generated
-                      via scripts/gen-install-heroes.ts. */}
+                      via scripts/catalog/gen-install-heroes.ts. */}
                   {installGuide.heroImageUrl && (
                     <div
                       style={{

@@ -6,7 +6,7 @@ ChatGPT merchant program ingests — *not* a Google Shopping feed).
 ## Build / refresh
 
 ```bash
-python3 scripts/build-openai-acp-feed.py
+python3 scripts/seo/build-openai-acp-feed.py
 ```
 
 Pulls all **active** Shopify products live and writes (this dir, gitignored):

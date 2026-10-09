@@ -11,7 +11,7 @@ import type {
  * CATEGORIES — reconciled to actual Shopify Storefront-API collection handles
  * after the cycle-3 catalog audit (1,322 products live across 36 collections).
  * Every slug here MUST be a real Shopify collection.handle. The audit script
- * (scripts/shopify-storefront-probe.ts) is the source of truth — re-run it any
+ * (scripts/ops/shopify-storefront-probe.ts) is the source of truth — re-run it any
  * time merchandising adds/renames a collection.
  *
  * Old guess-slugs that didn't exist: bed-lights, fender-flares, tail-lights,

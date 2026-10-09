@@ -4,14 +4,14 @@
   "universal": 0,
   "topVehicles": [
    {
-    "make": "Chevrolet",
-    "model": "Silverado 1500",
+    "make": "GMC",
+    "model": "Sierra 1500",
     "years": "1999\u20132026",
     "count": 40
    },
    {
-    "make": "GMC",
-    "model": "Sierra 1500",
+    "make": "Chevrolet",
+    "model": "Silverado 1500",
     "years": "1999\u20132026",
     "count": 40
    },
@@ -34,14 +34,14 @@
     "count": 26
    },
    {
-    "make": "GMC",
-    "model": "Sierra 2500 HD",
+    "make": "Chevrolet",
+    "model": "Silverado 2500 HD",
     "years": "2001\u20132026",
     "count": 24
    },
    {
-    "make": "Chevrolet",
-    "model": "Silverado 2500 HD",
+    "make": "GMC",
+    "model": "Sierra 2500 HD",
     "years": "2001\u20132026",
     "count": 24
    },
@@ -122,8 +122,8 @@
    },
    {
     "make": "Subaru",
-    "model": "Outback",
-    "years": "2010\u20132013, 2020\u20132026",
+    "model": "Legacy",
+    "years": "2015\u20132025",
     "count": 3
    }
   ],
@@ -144,7 +144,13 @@
   "topVehicles": [
    {
     "make": "Ford",
-    "model": "F-450 Super Duty",
+    "model": "F-250 Super Duty",
+    "years": "1999\u20132016",
+    "count": 18
+   },
+   {
+    "make": "Ford",
+    "model": "F-550 Super Duty",
     "years": "1999\u20132016",
     "count": 18
    },
@@ -156,13 +162,7 @@
    },
    {
     "make": "Ford",
-    "model": "F-250 Super Duty",
-    "years": "1999\u20132016",
-    "count": 18
-   },
-   {
-    "make": "Ford",
-    "model": "F-550 Super Duty",
+    "model": "F-450 Super Duty",
     "years": "1999\u20132016",
     "count": 18
    },
@@ -186,8 +186,8 @@
    },
    {
     "make": "Dodge",
-    "model": "Dakota",
-    "years": "1997\u20132010",
+    "model": "Durango",
+    "years": "1998\u20132009, 2011\u20132013",
     "count": 8
    }
   ]
@@ -252,6 +252,12 @@
   "topVehicles": [
    {
     "make": "Dodge",
+    "model": "Ram 3500",
+    "years": "2003\u20132010",
+    "count": 30
+   },
+   {
+    "make": "Dodge",
     "model": "Ram 1500",
     "years": "2002\u20132010",
     "count": 30
@@ -259,12 +265,6 @@
    {
     "make": "Dodge",
     "model": "Ram 2500",
-    "years": "2003\u20132010",
-    "count": 30
-   },
-   {
-    "make": "Dodge",
-    "model": "Ram 3500",
     "years": "2003\u20132010",
     "count": 30
    },
@@ -323,14 +323,14 @@
     "count": 24
    },
    {
-    "make": "GMC",
-    "model": "Sierra 2500 HD",
+    "make": "Chevrolet",
+    "model": "Silverado 2500 HD",
     "years": "2001\u20132018, 2020\u20132026",
     "count": 23
    },
    {
-    "make": "Chevrolet",
-    "model": "Silverado 2500 HD",
+    "make": "GMC",
+    "model": "Sierra 2500 HD",
     "years": "2001\u20132018, 2020\u20132026",
     "count": 23
    },
@@ -420,7 +420,7 @@
    },
    {
     "make": "Chevrolet",
-    "model": "Silverado 3500 HD",
+    "model": "Silverado 2500 HD",
     "years": "2007\u20132026",
     "count": 8
    }
@@ -444,19 +444,7 @@
    },
    {
     "make": "GMC",
-    "model": "Sierra 3500 HD",
-    "years": "2015\u20132019",
-    "count": 2
-   },
-   {
-    "make": "GMC",
     "model": "Sierra 2500 HD",
-    "years": "2015\u20132019",
-    "count": 2
-   },
-   {
-    "make": "Chevrolet",
-    "model": "Silverado 3500 HD",
     "years": "2015\u20132019",
     "count": 2
    },
@@ -467,15 +455,27 @@
     "count": 2
    },
    {
+    "make": "Chevrolet",
+    "model": "Silverado 2500 HD",
+    "years": "2015\u20132019",
+    "count": 2
+   },
+   {
     "make": "GMC",
     "model": "Sierra 1500",
     "years": "2014\u20132018",
     "count": 2
    },
    {
+    "make": "GMC",
+    "model": "Sierra 3500 HD",
+    "years": "2015\u20132019",
+    "count": 2
+   },
+   {
     "make": "Chevrolet",
-    "model": "Silverado 1500",
-    "years": "2014\u20132018",
+    "model": "Silverado 3500 HD",
+    "years": "2015\u20132019",
     "count": 2
    }
   ]
@@ -498,12 +498,6 @@
    },
    {
     "make": "Chevrolet",
-    "model": "Silverado 3500 HD",
-    "years": "2015\u20132025",
-    "count": 3
-   },
-   {
-    "make": "Chevrolet",
     "model": "Silverado 2500 HD",
     "years": "2015\u20132025",
     "count": 3
@@ -517,6 +511,12 @@
    {
     "make": "GMC",
     "model": "Sierra 3500 HD",
+    "years": "2015\u20132025",
+    "count": 3
+   },
+   {
+    "make": "Chevrolet",
+    "model": "Silverado 3500 HD",
     "years": "2015\u20132025",
     "count": 3
    },
@@ -539,9 +539,33 @@
   "universal": 1,
   "topVehicles": [
    {
+    "make": "Cadillac",
+    "model": "Escalade EXT",
+    "years": "2002\u20132013",
+    "count": 2
+   },
+   {
     "make": "Chevrolet",
-    "model": "Avalanche 1500",
-    "years": "2002\u20132006",
+    "model": "LUV",
+    "years": "1997\u20132005",
+    "count": 2
+   },
+   {
+    "make": "Chevrolet",
+    "model": "K2500",
+    "years": "1990\u20132000",
+    "count": 2
+   },
+   {
+    "make": "Chevrolet",
+    "model": "V3500",
+    "years": "1990\u20131991",
+    "count": 2
+   },
+   {
+    "make": "Chevrolet",
+    "model": "C2500",
+    "years": "1990\u20132000",
     "count": 2
    },
    {
@@ -558,32 +582,8 @@
    },
    {
     "make": "Chevrolet",
-    "model": "K2500",
-    "years": "1990\u20132000",
-    "count": 2
-   },
-   {
-    "make": "Chevrolet",
-    "model": "R3500",
-    "years": "1990\u20131991",
-    "count": 2
-   },
-   {
-    "make": "Chevrolet",
-    "model": "K1500",
-    "years": "1990\u20131999",
-    "count": 2
-   },
-   {
-    "make": "Chevrolet",
-    "model": "C2500",
-    "years": "1990\u20132000",
-    "count": 2
-   },
-   {
-    "make": "Chevrolet",
-    "model": "K3500",
-    "years": "1990\u20132000",
+    "model": "Avalanche 1500",
+    "years": "2002\u20132006",
     "count": 2
    }
   ]
@@ -606,13 +606,31 @@
   "topVehicles": [
    {
     "make": "GMC",
-    "model": "Sierra 3500 HD",
+    "model": "Sierra 2500 HD",
+    "years": "2015\u20132019",
+    "count": 1
+   },
+   {
+    "make": "Chevrolet",
+    "model": "Silverado 2500",
+    "years": "2016\u20132018",
+    "count": 1
+   },
+   {
+    "make": "Chevrolet",
+    "model": "Silverado 2500 HD",
     "years": "2015\u20132019",
     "count": 1
    },
    {
     "make": "GMC",
-    "model": "Sierra 2500 HD",
+    "model": "Sierra 1500",
+    "years": "2014\u20132018",
+    "count": 1
+   },
+   {
+    "make": "GMC",
+    "model": "Sierra 3500 HD",
     "years": "2015\u20132019",
     "count": 1
    },
@@ -624,32 +642,14 @@
    },
    {
     "make": "Chevrolet",
-    "model": "Silverado 2500",
-    "years": "2016\u20132018",
-    "count": 1
-   },
-   {
-    "make": "GMC",
-    "model": "Sierra 1500",
-    "years": "2014\u20132018",
-    "count": 1
-   },
-   {
-    "make": "Chevrolet",
     "model": "Silverado 1500",
     "years": "2014\u20132018",
     "count": 1
    },
    {
-    "make": "Chevrolet",
-    "model": "Silverado 2500 HD",
-    "years": "2015\u20132019",
-    "count": 1
-   },
-   {
     "make": "Ford",
-    "model": "F-350 Super Duty",
-    "years": "2017\u20132022",
+    "model": "F-150",
+    "years": "2015\u20132023",
     "count": 1
    }
   ]

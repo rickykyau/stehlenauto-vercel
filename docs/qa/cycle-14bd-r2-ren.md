@@ -52,7 +52,7 @@ Primary KEEP handle: `2007-2019-bmw-x5-x6-class-3-trailer-hitch-black-13077` (5 
 
 All 4 testable handles: PASS.
 
-**Defensive ingest guard:** `scripts/ingest-amazon-reviews.ts` line 163 filters image basenames: `.filter((basename) => basename.startsWith(\`${asin}_\`))`. Confirmed present. Future ingests will auto-reject cross-ASIN photos.
+**Defensive ingest guard:** `scripts/reviews/ingest-amazon-reviews.ts` line 163 filters image basenames: `.filter((basename) => basename.startsWith(\`${asin}_\`))`. Confirmed present. Future ingests will auto-reject cross-ASIN photos.
 
 ---
 
