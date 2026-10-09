@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { extractSpecRowsFromHtml } from "@/lib/catalog/spec-rows";
 import Link from "next/link";
 import { Icons } from "@/components/ui/icons";
 import { SpecRow } from "@/components/ui/spec-row";
@@ -21,59 +22,6 @@ import {
 } from "@/lib/fitment/retail-filter";
 import type { CatalogProduct, FitmentRow } from "@/lib/catalog/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
-
-/**
- * Cycle 14Z (Mike-O1 M-4): pull spec rows out of Shopify descriptionHtml.
- * Most product descriptions include a "Specifications" or "Specs" section
- * formatted as either a list of "Label: Value" lines or `<li><strong>Label
- * </strong> Value</li>` items. Extract the (label, value) pairs so the
- * SPECS tab can render a real table instead of "see description above".
- */
-function extractSpecRowsFromHtml(html: string): [string, string][] {
-  if (!html) return [];
-  const decoded = html
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, " ");
-
-  // Cycle 14Z (Mike-O2 N-5): the previous extractor stripped <strong> tags
-  // to newlines, which broke "<li><strong>MPN:</strong> 14017</li>" into
-  // three separate lines. Now: isolate the Specifications section first,
-  // then pull `<li><strong>Label:</strong> Value</li>` directly with a
-  // single regex.
-  const out: [string, string][] = [];
-
-  const specSection = decoded.match(
-    /<h[1-6][^>]*>\s*(?:Specifications?|Specs|Tech\s*Specs|Product\s*Specs)\s*<\/h[1-6]>([\s\S]*?)(?=<h[1-6][^>]*>|$)/i,
-  );
-  const scopeHtml = specSection ? specSection[1] : decoded;
-
-  const liRe = /<li[^>]*>\s*<strong>\s*([^<:]+?)\s*:?\s*<\/strong>\s*([\s\S]*?)<\/li>/gi;
-  let match: RegExpExecArray | null;
-  while ((match = liRe.exec(scopeHtml)) !== null) {
-    const label = match[1].replace(/<[^>]+>/g, "").trim();
-    const value = match[2].replace(/<[^>]+>/g, "").trim();
-    if (label && value && label.length < 60 && value.length < 200) {
-      out.push([label, value]);
-    }
-  }
-
-  if (out.length === 0) {
-    const plainRe = /<li[^>]*>\s*([A-Z][A-Za-z0-9 \-/&'()."]+?)\s*[:：]\s*([\s\S]*?)<\/li>/gi;
-    while ((match = plainRe.exec(scopeHtml)) !== null) {
-      const label = match[1].replace(/<[^>]+>/g, "").trim();
-      const value = match[2].replace(/<[^>]+>/g, "").trim();
-      if (label && value && label.length < 60 && value.length < 200) {
-        out.push([label, value]);
-      }
-    }
-  }
-
-  return out;
-}
 
 /**
  * Cycle 14AR-fix19 (owner): collapse contiguous-year rows that share the

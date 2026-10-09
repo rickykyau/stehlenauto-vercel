@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { productMetaTitle } from "@/lib/seo/product-title";
+import { extractSpecRowsFromHtml, specValue } from "@/lib/catalog/spec-rows";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -425,6 +426,10 @@ export default async function PdpPage({
     }
   }
 
+  const specRows = extractSpecRowsFromHtml(product.descriptionHtml || "");
+  const specBrand = specValue(specRows, "Brand");
+  const specMpn = specValue(specRows, "Part Number", "MPN");
+
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org/",
     "@type": "Product",
@@ -434,9 +439,12 @@ export default async function PdpPage({
       product.metaDescription ??
       `${product.title}. No-drill bolt-on fit. Free US shipping, 30-day returns, fitment guaranteed.`,
     sku: product.sku,
-    mpn: product.sku,
+    // Brand + MPN from the visible Specifications rows: CURT / Draw-Tite parts
+    // must not be labelled Stehlen Auto, and shoppers search the real part
+    // number ("CURT 13364"), not our warehouse code.
+    mpn: specMpn ?? product.sku,
     image: allAbsoluteImages.length > 0 ? allAbsoluteImages : undefined,
-    brand: { "@type": "Brand", name: "Stehlen Auto" },
+    brand: { "@type": "Brand", name: specBrand ?? "Stehlen Auto" },
     ...(fitmentAdditionalProperties.length > 0
       ? { additionalProperty: fitmentAdditionalProperties }
       : {}),
