@@ -51,7 +51,7 @@ $ApiVersion  = '2025-01'
 $AdminToken  = ''          # or env var SHOPIFY_ADMIN_TOKEN
 
 # Sales channels a listed product must be on (exact Shopify publication names).
-$Channels = @('Online Store', 'Point of Sale', 'Lovable', 'Google & YouTube', 'Stehlen Next.js Storefront')
+$Channels = @('Online Store', 'Point of Sale', 'Lovable', 'Google & YouTube', 'Stehlen Next.js Storefront', 'Shop')
 
 $SqlServer   = 'localhost'
 $SqlDatabase = 'JLDataMart'
