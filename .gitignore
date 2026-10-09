@@ -114,3 +114,7 @@ marketing/video/seeds/
 
 # Local credentials (GA4 OAuth token, JL-SQL login) — never commit
 .secrets/
+
+# Local backups containing customer/user data — keep out of git
+data/logs/clerk-user-migration-*.json
+data/logs/godaddy-dns-backup-*.json
