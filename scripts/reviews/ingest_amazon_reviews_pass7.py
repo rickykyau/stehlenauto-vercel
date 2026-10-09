@@ -31,14 +31,36 @@ PULL_ASINS = {
     "B07N9RCKXH",  # F-150 grey rubber bed mat -> black PVC mat handle
 }
 
+
+IMAGE_EXT = (".jpg", ".jpeg", ".png", ".webp")
+
+
+def safe_handoff_images(lp):
+    """Source paths for a handoff photo, confined to the handoff folder.
+
+    Only the file name from the CSV is used, looked up in P/images then P,
+    and anything that resolves outside P (or isn't an image) is skipped, so a
+    crafted path can't copy other files into public/reviews.
+    """
+    base = os.path.basename(str(lp))
+    if not base or not base.lower().endswith(IMAGE_EXT):
+        return base, []
+    root = os.path.realpath(P)
+    out = []
+    for folder in (os.path.join(P, "images"), P):
+        cand = os.path.realpath(os.path.join(folder, base))
+        if cand.startswith(root + os.sep) and os.path.isfile(cand):
+            out.append(cand)
+    return base, out
+
 def is_inferred(r): return str(r.get("rating_inferred")) in ("1", "True", "true")
 
 def copy_photos(asin, r):
     out = []
     for lp in (r.get("image_local_paths") or []):
-        base = os.path.basename(lp)
-        for cand in (os.path.join(P, lp), os.path.join(P, "images", base), os.path.join(P, base)):
-            if os.path.isfile(cand):
+        base, cands = safe_handoff_images(lp)
+        for cand in cands:
+            if True:
                 shutil.copy2(cand, os.path.join(photo_dst, base)); out.append(f"/reviews/{base}"); break
     return out
 

@@ -36,10 +36,32 @@ mapping = {m["asin"]: m for m in json.load(open(MAPPING)) if m.get("handles")}
 audit = {r["asin"]: r for r in csv.DictReader(open(AUDIT, encoding="utf-8-sig"))}
 
 
+
+IMAGE_EXT = (".jpg", ".jpeg", ".png", ".webp")
+
+
+def safe_handoff_images(lp):
+    """Source paths for a handoff photo, confined to the handoff folder.
+
+    Only the file name from the CSV is used, looked up in P/images then P,
+    and anything that resolves outside P (or isn't an image) is skipped, so a
+    crafted path can't copy other files into public/reviews.
+    """
+    base = os.path.basename(str(lp))
+    if not base or not base.lower().endswith(IMAGE_EXT):
+        return base, []
+    root = os.path.realpath(P)
+    out = []
+    for folder in (os.path.join(P, "images"), P):
+        cand = os.path.realpath(os.path.join(folder, base))
+        if cand.startswith(root + os.sep) and os.path.isfile(cand):
+            out.append(cand)
+    return base, out
+
 def copy_photo(lp):
-    base = os.path.basename(lp)
-    for cand in (os.path.join(P, lp), os.path.join(P, "images", base)):
-        if os.path.isfile(cand):
+    base, cands = safe_handoff_images(lp)
+    for cand in cands:
+        if True:
             dst = os.path.join(PHOTO_DST, base)
             if not os.path.exists(dst):
                 # Downscale: phone originals run 3-4 MB; the lightbox never needs >1600px.
