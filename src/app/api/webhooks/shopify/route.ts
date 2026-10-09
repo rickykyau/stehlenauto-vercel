@@ -25,10 +25,20 @@ async function recordPurchaseGA4(order: Record<string, unknown>): Promise<void> 
   const attrMap = new Map(noteAttrs.map((a) => [a.name, a.value]));
   const attr: PurchaseAttribution = {
     clientId: attrMap.get("_ga_cid") || null,
+    sessionId: attrMap.get("_ga_sid") || null,
     utmSource: attrMap.get("utm_source") || undefined,
     utmMedium: attrMap.get("utm_medium") || undefined,
     utmCampaign: attrMap.get("utm_campaign") || undefined,
   };
+  // Orders that didn't start in our storefront (Shopify theme, ChatGPT /
+  // Agentic checkout, Shop app) carry no _ga_cid. Shopify's own GA4 checkout
+  // pixel already records those purchases with their session, so sending ours
+  // too double-counted every order (18 GA4 purchases for 10 orders, Sep-Oct
+  // 2026). Only headless-storefront orders get the server-side event.
+  if (!attr.clientId) {
+    console.log("[shopify-webhook] GA4 purchase: skipped (no _ga_cid; Shopify pixel records it)");
+    return;
+  }
   const lineItems = Array.isArray(order.line_items)
     ? (order.line_items as Record<string, unknown>[])
     : [];
@@ -40,7 +50,9 @@ async function recordPurchaseGA4(order: Record<string, unknown>): Promise<void> 
   }));
   const status = await sendPurchaseToGA4(
     {
-      transactionId: String(order.name ?? order.order_number ?? order.id ?? ""),
+      // Same ID Shopify's checkout pixel sends (numeric order id), so GA4 can
+      // de-duplicate if both fire for a headless order.
+      transactionId: String(order.id ?? order.name ?? order.order_number ?? ""),
       value: Number(order.total_price ?? 0),
       currency: String(order.currency ?? "USD"),
       items,

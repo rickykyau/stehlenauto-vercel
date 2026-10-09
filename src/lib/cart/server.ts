@@ -9,7 +9,11 @@ import {
   CART_LINES_UPDATE,
   CART_QUERY,
 } from "@/lib/shopify/cart-queries";
-import { gaClientIdFromCookie } from "@/lib/analytics/ga-mp";
+import {
+  GA_SESSION_COOKIE,
+  gaClientIdFromCookie,
+  gaSessionIdFromCookie,
+} from "@/lib/analytics/ga-mp";
 import { getProduct } from "@/lib/catalog";
 import type { Cart, CartLine, Money } from "./types";
 
@@ -34,6 +38,8 @@ async function attributionAttributes(): Promise<{ key: string; value: string }[]
     const out: { key: string; value: string }[] = [];
     const cid = gaClientIdFromCookie(store.get("_ga")?.value);
     if (cid) out.push({ key: "_ga_cid", value: cid });
+    const sid = gaSessionIdFromCookie(store.get(GA_SESSION_COOKIE)?.value);
+    if (sid) out.push({ key: "_ga_sid", value: sid });
     const utmRaw = store.get(UTM_COOKIE)?.value;
     if (utmRaw) {
       try {

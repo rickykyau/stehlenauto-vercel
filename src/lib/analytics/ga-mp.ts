@@ -35,8 +35,25 @@ export function gaClientIdFromCookie(raw: string | undefined | null): string | n
   return /^\d+\.\d+$/.test(cid) ? cid : null;
 }
 
+/** Extract the GA4 session_id from the stream's `_ga_<STREAM>` cookie.
+ *  Old format "GS1.1.1700000000.5.1.1700000100.0.0.0" → 3rd segment;
+ *  new format "GS2.1.s1700000000$o5$g1$t1700000100$j0$l0$h0" → the `s` field.
+ *  Without it, a Measurement Protocol event joins the user but not the
+ *  session, so GA4 reports the purchase's source/medium as "(not set)". */
+export function gaSessionIdFromCookie(raw: string | undefined | null): string | null {
+  if (!raw) return null;
+  const v2 = raw.match(/^GS2\.\d+\.s(\d+)/);
+  if (v2) return v2[1];
+  const parts = raw.split(".");
+  return parts[0] === "GS1" && /^\d+$/.test(parts[2] ?? "") ? parts[2] : null;
+}
+
+/** Name of the GA4 session cookie for our stream: G-YS6SFM9QFD → `_ga_YS6SFM9QFD`. */
+export const GA_SESSION_COOKIE = `_ga_${GA4_ID.replace(/^G-/, "")}`;
+
 export type PurchaseAttribution = {
   clientId: string | null;
+  sessionId?: string | null;
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
@@ -73,6 +90,10 @@ export async function sendPurchaseToGA4(
     attr.clientId ?? `srv.${purchase.transactionId.replace(/[^0-9]/g, "") || "0"}`;
 
   const params: Record<string, unknown> = {
+    // session_id ties the purchase to the visit (and its source / gclid);
+    // engagement_time_msec makes GA4 count it as an engaged session hit.
+    ...(attr.sessionId ? { session_id: attr.sessionId } : {}),
+    engagement_time_msec: 1,
     transaction_id: purchase.transactionId,
     currency: purchase.currency,
     value: purchase.value,
