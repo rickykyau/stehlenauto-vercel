@@ -76,6 +76,7 @@ ${vehicleLines}
 ## Key pages
 - [Home](${base}/)
 - [All collections](${base}/collections)
+- [Shop by vehicle (every make and model we cover)](${base}/vehicles)
 - [Search](${base}/search?q=)
 - [Help center](${base}/help)
 - [Install guides](${base}/help/install)

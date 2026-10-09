@@ -11,6 +11,7 @@ const LINK_COLS = [
       { label: "Bull Guards & Grille Guards", href: "/collections/bull-guards-grille-guards" },
       { label: "Front Grilles", href: "/collections/front-grilles" },
       { label: "Headlights", href: "/collections/headlights" },
+      { label: "Shop by Vehicle", href: "/vehicles" },
       { label: "All Categories", href: "/collections" },
     ],
   },

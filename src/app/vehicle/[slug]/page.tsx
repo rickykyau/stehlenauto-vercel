@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { findVehicle } from "@/lib/fitment/vehicle-hubs";
 import { Icons } from "@/components/ui/icons";
 import { ProductCard } from "@/components/commerce/product-card";
 import { YmmButton } from "@/components/fitment/ymm-button";
@@ -90,6 +91,10 @@ function parseSlug(
       year: yearStr,
     };
   }
+  // Exact names from the fitment index ("Ford F-250 Super Duty", "Acura MDX")
+  // before falling back to title-casing the slug.
+  const known = findVehicle(remainder);
+  if (known) return { make: known.make, model: known.model, year: yearStr };
   // Fallback: split on first hyphen, treat as make-model.
   const parts = remainder.split("-");
   if (parts.length < 2) return null;
@@ -144,7 +149,9 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical: `/vehicle/${slug}` },
+    // Year URLs (/vehicle/2020-chevrolet-silverado-1500) render the same hub;
+    // point them at the make/model page so Google sees one page, not dupes.
+    alternates: { canonical: `/vehicle/${slug.replace(/^(19|20)\d{2}-/, "")}` },
     openGraph: {
       title,
       description,

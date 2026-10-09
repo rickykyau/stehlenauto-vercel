@@ -1,6 +1,7 @@
 import "server-only";
 import type { MetadataRoute } from "next";
 import { CATEGORIES, POPULAR_VEHICLES, PRODUCTS } from "@/lib/catalog/mock";
+import { getVehicleHubs } from "@/lib/fitment/vehicle-hubs";
 import {
   listShopifyCollections,
   listShopifyProducts,
@@ -63,14 +64,21 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
           priority: 0.8,
         }));
 
-  const vehicleEntries: MetadataRoute.Sitemap = POPULAR_VEHICLES.map((v) => ({
-    url: `${base}/vehicle/${v.make.toLowerCase()}-${v.model
-      .toLowerCase()
-      .replace(/\s+/g, "-")}`,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: 0.7,
-  }));
+  // Curated popular hubs + every make/model with enough fitting parts
+  // (src/lib/fitment/vehicle-hubs.ts), de-duplicated by slug.
+  const vehicleSlugs = new Set<string>([
+    ...POPULAR_VEHICLES.map((v) => `${v.make.toLowerCase()}-${v.model.toLowerCase().replace(/\s+/g, "-")}`),
+    ...getVehicleHubs().map((h) => h.slug),
+  ]);
+  const vehicleEntries: MetadataRoute.Sitemap = [
+    { url: `${base}/vehicles`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    ...[...vehicleSlugs].map((slug) => ({
+      url: `${base}/vehicle/${slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    })),
+  ];
 
   const policyEntries: MetadataRoute.Sitemap = POLICIES.map((slug) => ({
     url: `${base}/legal/${slug}`,
