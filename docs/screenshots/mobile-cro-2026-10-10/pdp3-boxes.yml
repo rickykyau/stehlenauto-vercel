@@ -1,0 +1,323 @@
+- generic [active] [ref=f31e1] [box=0,0,380,5568]:
+  - banner [ref=f31e2] [box=0,0,380,166]:
+    - generic "Announcements" [ref=f31e3] [box=0,0,380,32]:
+      - generic [ref=f31e4] [box=-83,0,4627,31]:
+        - generic [ref=f31e5] [box=-83,7,491,17]: FREE GROUND SHIPPING ON EVERY ORDER — 48 STATES · NO MINIMUM
+        - generic [ref=f31e6] [box=456,7,321,17]: FITMENT GUARANTEED OR YOUR MONEY BACK
+        - generic [ref=f31e7] [box=825,7,336,17]: IN-STOCK ORDERS SHIP WITHIN 1 BUSINESS DAY
+        - generic [ref=f31e8] [box=1209,7,219,17]: 30-DAY HASSLE-FREE RETURNS
+        - generic [ref=f31e9] [box=1476,7,491,17]: FREE GROUND SHIPPING ON EVERY ORDER — 48 STATES · NO MINIMUM
+        - generic [ref=f31e10] [box=2015,7,321,17]: FITMENT GUARANTEED OR YOUR MONEY BACK
+        - generic [ref=f31e11] [box=2383,7,336,17]: IN-STOCK ORDERS SHIP WITHIN 1 BUSINESS DAY
+        - generic [ref=f31e12] [box=2767,7,219,17]: 30-DAY HASSLE-FREE RETURNS
+        - generic [ref=f31e13] [box=3034,7,491,17]: FREE GROUND SHIPPING ON EVERY ORDER — 48 STATES · NO MINIMUM
+        - generic [ref=f31e14] [box=3573,7,321,17]: FITMENT GUARANTEED OR YOUR MONEY BACK
+        - generic [ref=f31e15] [box=3942,7,336,17]: IN-STOCK ORDERS SHIP WITHIN 1 BUSINESS DAY
+        - generic [ref=f31e16] [box=4325,7,219,17]: 30-DAY HASSLE-FREE RETURNS
+    - generic [ref=f31e17] [box=0,32,380,134]:
+      - generic [ref=f31e18] [box=0,32,380,68]:
+        - button "Open menu" [ref=f31e19] [cursor=pointer] [box=8,44,44,44]
+        - link "Stehlen Auto home" [ref=f31e20] [cursor=pointer] [box=117,44,114,44]:
+          - /url: /
+          - img "Stehlen Auto" [ref=f31e21] [box=121,56,106,20]
+        - generic [ref=f31e22] [box=304,52,60,28]:
+          - link "Search" [ref=f31e23] [cursor=pointer] [box=296,44,44,44]:
+            - /url: /search
+          - button "Cart" [ref=f31e24] [cursor=pointer] [box=328,44,44,44]:
+            - generic [ref=f31e25] [box=352,46,16,16]: "1"
+      - button "Change vehicle" [ref=f31e27] [cursor=pointer] [box=16,109,348,44]:
+        - generic [ref=f31e29] [box=47,122,90,17]: 2019 RAM 1500
+        - generic [ref=f31e30] [box=304,122,47,17]: CHANGE
+  - main [ref=f31e32] [box=0,166,380,3830]:
+    - navigation "Breadcrumb" [ref=f31e33] [box=0,166,380,75]:
+      - link "Home" [ref=f31e34] [cursor=pointer] [box=16,182,34,19]:
+        - /url: /
+      - link "Shop" [ref=f31e35] [cursor=pointer] [box=72,182,29,19]:
+        - /url: /collections
+      - link "Headlights" [ref=f31e36] [cursor=pointer] [box=123,182,61,19]:
+        - /url: /collections/headlights
+      - generic "2009-2018 Dodge Ram 1500/2500/3500 & 2019-2024 Ram 1500 Classic Crystal Headlights LED Light Bar - Black" [ref=f31e37] [box=16,207,220,19]: 2009-2018 Dodge Ram 1500/2500/3500…
+    - generic [ref=f31e38] [box=0,241,380,1564]:
+      - generic [ref=f31e40] [box=16,241,348,261]:
+        - img "2009-2018 Dodge Ram 1500/2500/3500 & 2019-2024 Ram 1500 Classic Crystal Headlights LED Light Bar - Black" [ref=f31e41] [box=16,241,348,261]
+        - generic [ref=f31e42] [box=28,465,40,25]: 1 / 9
+        - generic [ref=f31e43] [box=258,446,94,44]:
+          - button "Previous image" [ref=f31e44] [cursor=pointer] [box=258,446,44,44]
+          - button "Next image" [ref=f31e45] [cursor=pointer] [box=308,446,44,44]
+      - generic [ref=f31e46] [box=16,550,348,1207]:
+        - generic [ref=f31e47] [box=16,550,348,24]: "SKU: HLNB-RAM09LBW-JDMA"
+        - heading "2009-2018 Dodge Ram 1500/2500/3500 & 2019-2024 Ram 1500 Classic Crystal Headlights LED Light Bar - Black" [level=1] [ref=f31e49] [box=16,586,348,156]
+        - generic [ref=f31e50] [box=16,752,348,19]: 18 in stock
+        - generic [ref=f31e52] [box=16,787,348,56]: $175.00
+        - generic [ref=f31e54] [box=16,847,348,19]: or 4 interest-free payments of $43.75 with Affirm
+        - generic [ref=f31e56] [box=16,885,348,189]:
+          - generic [ref=f31e58] [box=33,902,314,24]: CONFIRMED FITMENT
+          - generic [ref=f31e62] [box=33,932,314,28]: Fits your 2019 Ram 1500
+          - generic [ref=f31e63] [box=33,966,314,17]: "Also fits: Ram 2500 · Ram 3500 · 2500 +1 more"
+          - generic [ref=f31e64] [box=33,991,314,19]: Engineered for direct bolt-on installation
+          - button "Change vehicle" [ref=f31e65] [cursor=pointer] [box=33,1013,80,44]
+        - generic [ref=f31e66] [box=16,1094,348,138]:
+          - generic [ref=f31e67] [box=31,1109,318,17]: WAREHOUSE FITMENT NOTE
+          - generic [ref=f31e68] [box=31,1134,318,83]: Will Fit Models With Factory Dual / Quad Style Headlights ; Requires 9005 / HB3 Bulbs For High Beams And H11 Bulbs For Low Beams ( Bulbs Not Included )
+        - generic [ref=f31e69] [box=16,1252,348,370]:
+          - generic [ref=f31e70] [box=16,1252,348,39]: UNIVERSAL FIT · NO SUB-MODEL CONFIG
+          - link "Fitment question? Call a tech · 951-332-7000" [ref=f31e72] [cursor=pointer] [box=16,1307,348,36]:
+            - /url: tel:+19513327000
+            - text: Fitment question? Call a tech ·
+            - generic [ref=f31e73] [box=272,1317,84,17]: 951-332-7000
+          - generic [ref=f31e74] [box=16,1353,348,184]:
+            - generic [ref=f31e75] [box=16,1353,348,56]:
+              - button "Decrease quantity" [ref=f31e76] [cursor=pointer] [box=17,1354,44,54]
+              - generic [ref=f31e77] [box=61,1371,36,22]: "1"
+              - button "Increase quantity" [ref=f31e78] [cursor=pointer] [box=97,1354,44,54]
+            - button "ADD TO CART · $175.00" [ref=f31e79] [cursor=pointer] [box=16,1417,348,56]
+            - button "Save for later" [ref=f31e80] [cursor=pointer] [box=16,1481,348,56]:
+              - generic [ref=f31e81] [box=186,1501,33,17]: SAVE
+          - button "Express checkout with Shop Pay, Apple Pay, Google Pay, or Affirm" [ref=f31e82] [cursor=pointer] [box=16,1549,348,44]:
+            - text: EXPRESS CHECKOUT
+            - generic [ref=f31e83] [box=167,1563,189,17]: · APPLE PAY · SHOP PAY · AFFIRM
+          - paragraph [ref=f31e84] [box=16,1605,348,17]: CONFIGURED FOR 2019 RAM 1500
+        - generic [ref=f31e85] [box=16,1646,348,111]:
+          - generic [ref=f31e88] [box=42,1646,305,20]:
+            - text: Free shipping ·
+            - strong [ref=f31e89] [box=136,1648,211,16]: Arrives Wed, Oct 14 – Tue, Oct 20
+          - generic [ref=f31e90] [box=16,1677,348,20]: 30-day hassle-free returns
+          - generic [ref=f31e93] [box=16,1707,348,20]: Lifetime structural warranty · 5-year finish
+          - generic [ref=f31e96] [box=16,1737,348,20]: Drilling-free install · 60–90 minutes with 2 people
+    - generic [ref=f31e99] [box=0,1805,380,771]:
+      - tablist [ref=f31e100] [box=16,1805,348,49]:
+        - tab "FITMENT" [selected] [ref=f31e101] [cursor=pointer] [box=16,1805,101,49]
+        - tab "FEATURES" [ref=f31e102] [cursor=pointer] [box=117,1805,113,49]
+        - tab "SPECS" [ref=f31e103] [cursor=pointer] [box=230,1805,87,49]
+        - tab "INSTALLATION" [ref=f31e104] [cursor=pointer] [box=317,1805,139,49]
+        - tab "SHIPPING" [ref=f31e105] [cursor=pointer] [box=455,1805,107,49]
+        - tab "WARRANTY" [ref=f31e106] [cursor=pointer] [box=563,1805,118,49]
+        - tab "WRITE A REVIEW" [ref=f31e107] [cursor=pointer] [box=681,1805,156,49]
+      - generic [ref=f31e109] [box=16,1886,348,546]:
+        - generic [ref=f31e111] [box=51,1901,298,56]:
+          - generic [ref=f31e112] [box=51,1901,298,17]: ✓ FITS YOUR 2019 RAM 1500
+          - generic [ref=f31e113] [box=51,1920,298,37]: Engineered for direct bolt-on installation. Backed by the Stehlen Fitment Guarantee.
+        - heading "VEHICLE COMPATIBILITY" [level=3] [ref=f31e114] [box=16,1988,348,17]
+        - generic [ref=f31e115] [box=16,2021,348,411]:
+          - generic [ref=f31e116] [box=16,2021,348,50]:
+            - generic [ref=f31e117] [box=31,2036,120,19]: 2009-2010
+            - generic [ref=f31e118] [box=151,2036,151,20]: Dodge Ram 1500
+            - generic [ref=f31e120] [box=302,2037,47,17]: FITS
+          - generic [ref=f31e122] [box=16,2081,348,50]:
+            - generic [ref=f31e123] [box=31,2097,120,19]: "2010"
+            - generic [ref=f31e124] [box=151,2096,151,20]: Dodge Ram 2500
+            - generic [ref=f31e126] [box=302,2097,47,17]: FITS
+          - generic [ref=f31e128] [box=16,2141,348,50]:
+            - generic [ref=f31e129] [box=31,2157,120,19]: "2010"
+            - generic [ref=f31e130] [box=151,2156,151,20]: Dodge Ram 3500
+            - generic [ref=f31e132] [box=302,2157,47,17]: FITS
+          - generic [ref=f31e134] [box=16,2201,348,50]:
+            - generic [ref=f31e135] [box=31,2217,120,19]: 2011-2018
+            - generic [ref=f31e136] [box=151,2216,151,20]: Ram 1500
+            - generic [ref=f31e138] [box=302,2218,47,17]: FITS
+          - generic [ref=f31e140] [box=16,2261,348,50]:
+            - generic [ref=f31e141] [box=31,2277,120,19]: 2019-2024
+            - generic [ref=f31e142] [box=151,2276,151,20]: Ram 1500 Classic
+            - generic [ref=f31e144] [box=302,2278,47,17]: FITS
+          - generic [ref=f31e146] [box=16,2321,348,50]:
+            - generic [ref=f31e147] [box=31,2337,120,19]: 2011-2018
+            - generic [ref=f31e148] [box=151,2336,151,20]: Ram 2500
+            - generic [ref=f31e150] [box=302,2338,47,17]: FITS
+          - generic [ref=f31e152] [box=16,2381,348,50]:
+            - generic [ref=f31e153] [box=31,2397,120,19]: 2011-2018
+            - generic [ref=f31e154] [box=151,2396,151,20]: Ram 3500
+            - generic [ref=f31e156] [box=302,2398,47,17]: FITS
+    - generic [ref=f31e158] [box=0,2576,380,950]:
+      - heading "SIMILAR PRODUCTS THAT FIT YOUR 2019 RAM 1500" [level=2] [ref=f31e159] [box=16,2576,348,32]
+      - generic [ref=f31e160] [box=16,2624,348,838]:
+        - link "Save for later 2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights Sequential LED - Chrome ✓ FITS YOUR 2019 RAM 1500 HLPNB-RAM09LSQ-AC 2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights Sequential LED - Chrome $218 or 4× $55 with Affirm" [ref=f31e161] [cursor=pointer] [box=16,2624,166,398]:
+          - /url: /products/09-18-dodge-ram-sequential-led-projector-headlights-chrome
+          - generic [ref=f31e162] [box=17,2625,164,164]:
+            - button "Save for later" [ref=f31e163] [box=137,2633,36,36]
+            - img "2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights Sequential LED - Chrome" [ref=f31e164] [box=20,2628,157,157]
+            - generic [ref=f31e165] [box=17,2727,164,62]: ✓ FITS YOUR 2019 RAM 1500
+          - generic [ref=f31e166] [box=17,2789,164,232]:
+            - generic [ref=f31e167] [box=31,2803,136,14]: HLPNB-RAM09LSQ-AC
+            - generic [ref=f31e168] [box=31,2827,136,105]: 2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights Sequential LED - Chrome
+            - generic [ref=f31e169] [box=31,2952,136,28]: $218
+            - generic [ref=f31e171] [box=31,2990,136,17]: or 4× $55 with Affirm
+        - link "Save for later 2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights - Black ✓ FITS YOUR 2019 RAM 1500 HLPNB-RAM09LSQ-AB 2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights - Black $210 or 4× $53 with Affirm" [ref=f31e172] [cursor=pointer] [box=198,2624,166,398]:
+          - /url: /products/09-18-dodge-ram-projector-headlights-sequential-led-turn-signal-black
+          - generic [ref=f31e173] [box=199,2625,164,164]:
+            - button "Save for later" [ref=f31e174] [box=319,2633,36,36]
+            - img "2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights - Black" [ref=f31e175] [box=202,2628,157,157]
+            - generic [ref=f31e176] [box=199,2727,164,62]: ✓ FITS YOUR 2019 RAM 1500
+          - generic [ref=f31e177] [box=199,2789,164,232]:
+            - generic [ref=f31e178] [box=213,2803,136,14]: HLPNB-RAM09LSQ-AB
+            - generic [ref=f31e179] [box=213,2827,136,88]: 2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights - Black
+            - generic [ref=f31e180] [box=213,2952,136,28]: $210
+            - generic [ref=f31e182] [box=213,2990,136,17]: or 4× $53 with Affirm
+        - link "Save for later 2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights LED - Black ✓ FITS YOUR 2019 RAM 1500 HLPNB-RAM09LBW-AB 2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights LED - Black 5 (3) $195 or 4× $49 with Affirm" [ref=f31e183] [cursor=pointer] [box=16,3038,166,424]:
+          - /url: /products/09-18-dodge-ram-projector-headlights-led-light-bar-black-dgpu09d
+          - generic [ref=f31e184] [box=17,3039,164,164]:
+            - button "Save for later" [ref=f31e185] [box=137,3047,36,36]
+            - img "2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights LED - Black" [ref=f31e186] [box=20,3042,157,157]
+            - generic [ref=f31e187] [box=17,3141,164,62]: ✓ FITS YOUR 2019 RAM 1500
+          - generic [ref=f31e188] [box=17,3203,164,258]:
+            - generic [ref=f31e189] [box=31,3217,136,14]: HLPNB-RAM09LBW-AB
+            - generic [ref=f31e190] [box=31,3241,136,105]: 2009-2024 Dodge Ram 1500 & 2009-2018 Dodge Ram 2500/3500 Projector Headlights LED - Black
+            - generic [ref=f31e191] [box=31,3366,136,16]: 5 (3)
+            - generic [ref=f31e199] [box=31,3392,136,28]: $195
+            - generic [ref=f31e201] [box=31,3430,136,17]: or 4× $49 with Affirm
+    - generic [ref=f31e202] [box=0,3526,380,255]:
+      - heading "Recently viewed" [level=2] [ref=f31e204] [box=16,3566,134,14]
+      - generic [ref=f31e205] [box=16,3595,348,145]:
+        - link "2015-2026 Ford F-150 6.5 ft Bed Tonneau Cover - Hard Tri-Fold 2015-2026 Ford F-150 6.5 ft Bed Tonneau Cover - Hard Tri-Fold $648.00" [ref=f31e206] [cursor=pointer] [box=16,3595,78,145]:
+          - /url: /products/2015-ford-f-150-6-5ft-bed-tonneau-cover-hard-tri-fold
+          - img "2015-2026 Ford F-150 6.5 ft Bed Tonneau Cover - Hard Tri-Fold" [ref=f31e208] [box=17,3596,76,76]
+          - generic [ref=f31e209] [box=17,3672,76,67]:
+            - generic [ref=f31e210] [box=25,3680,60,30]: 2015-2026 Ford F-150 6.5 ft Bed Tonneau Cover - Hard Tri-Fold
+            - generic [ref=f31e211] [box=25,3714,60,17]: $648.00
+        - link "2019-2026 Ram 1500 Crew Cab Rock Slider Side Steps - Texture Black 2019-2026 Ram 1500 Crew Cab Rock Slider Side Steps - Texture Black $326.00" [ref=f31e212] [cursor=pointer] [box=106,3595,78,145]:
+          - /url: /products/2019-ram-1500-crew-cab-rock-sliders-side-step-bars-texture-black
+          - img "2019-2026 Ram 1500 Crew Cab Rock Slider Side Steps - Texture Black" [ref=f31e214] [box=107,3596,76,76]
+          - generic [ref=f31e215] [box=107,3672,76,67]:
+            - generic [ref=f31e216] [box=115,3680,60,30]: 2019-2026 Ram 1500 Crew Cab Rock Slider Side Steps - Texture Black
+            - generic [ref=f31e217] [box=115,3714,60,17]: $326.00
+        - link "+ Discover more" [ref=f31e218] [cursor=pointer] [box=196,3595,78,91]:
+          - /url: /collections
+          - generic [ref=f31e219] [box=228,3608,14,28]: +
+          - generic [ref=f31e220] [box=204,3642,61,31]: Discover more
+        - link "+ Discover more" [ref=f31e221] [cursor=pointer] [box=286,3595,78,91]:
+          - /url: /collections
+          - generic [ref=f31e222] [box=318,3608,14,28]: +
+          - generic [ref=f31e223] [box=294,3642,61,31]: Discover more
+    - generic [ref=f31e225] [box=16,3780,348,152]:
+      - generic [ref=f31e226] [box=41,3805,298,18]: CALIFORNIA PROP 65 NOTICE
+      - paragraph [ref=f31e228] [box=41,3831,298,77]:
+        - text: This product can expose you to chemicals including chromium, which is known to the State of California to cause cancer. For more information, go to
+        - link "p65warnings.ca.gov" [ref=f31e229] [cursor=pointer] [box=41,3890,115,15]:
+          - /url: https://www.p65warnings.ca.gov
+        - text: .
+    - generic [ref=f31e231] [box=16,879,348,48]:
+      - generic [ref=f31e232] [box=16,883,129,40]:
+        - generic [ref=f31e233] [box=16,883,129,16]: 2009-2018 Dodge Ram…
+        - generic [ref=f31e234] [box=16,898,129,25]: $175
+      - button [ref=f31e235] [cursor=pointer] [box=155,879,209,48]: ADD TO CART
+  - contentinfo [ref=f31e236] [box=0,4076,380,1435]:
+    - generic [ref=f31e238] [box=0,4077,380,293]:
+      - generic [ref=f31e239] [box=16,4117,348,137]:
+        - generic [ref=f31e240] [box=16,4117,348,19]: NEWSLETTER
+        - heading "BUILD YOUR RIG WITH US." [level=3] [ref=f31e241] [box=16,4144,348,28]
+        - paragraph [ref=f31e242] [box=16,4180,348,74]: $25 off your first order over $200. Plus new-product drops, install guides, and customer build features.
+      - generic [ref=f31e244] [box=16,4287,348,44]:
+        - textbox "Email address" [ref=f31e245] [box=16,4287,217,44]:
+          - /placeholder: you@example.com
+        - button "SUBSCRIBE" [ref=f31e246] [cursor=pointer] [box=241,4287,123,44]
+    - generic [ref=f31e247] [box=0,4372,380,1022]:
+      - generic [ref=f31e248] [box=16,4420,348,84]:
+        - img "Stehlen Auto" [ref=f31e249] [box=16,4420,138,26]
+        - paragraph [ref=f31e250] [box=16,4462,348,42]: Heavy-duty vehicle accessories. Fitment guaranteed. Bolt-on engineering since 2015.
+      - generic [ref=f31e251] [box=16,4535,158,390]:
+        - generic [ref=f31e252] [box=16,4535,158,19]: SHOP
+        - list [ref=f31e253] [box=16,4568,158,357]:
+          - listitem [ref=f31e254] [box=16,4568,158,44]:
+            - link "Tonneau Covers" [ref=f31e255] [cursor=pointer] [box=16,4568,100,44]:
+              - /url: /collections/tonneau-covers
+          - listitem [ref=f31e256] [box=16,4620,158,44]:
+            - link "Trailer Hitches" [ref=f31e257] [cursor=pointer] [box=16,4620,89,44]:
+              - /url: /collections/trailer-hitches
+          - listitem [ref=f31e258] [box=16,4672,158,45]:
+            - link "Bull Guards & Grille Guards" [ref=f31e259] [cursor=pointer] [box=16,4673,158,44]:
+              - /url: /collections/bull-guards-grille-guards
+          - listitem [ref=f31e260] [box=16,4725,158,44]:
+            - link "Front Grilles" [ref=f31e261] [cursor=pointer] [box=16,4725,74,44]:
+              - /url: /collections/front-grilles
+          - listitem [ref=f31e262] [box=16,4777,158,44]:
+            - link "Headlights" [ref=f31e263] [cursor=pointer] [box=16,4777,66,44]:
+              - /url: /collections/headlights
+          - listitem [ref=f31e264] [box=16,4829,158,44]:
+            - link "Shop by Vehicle" [ref=f31e265] [cursor=pointer] [box=16,4829,99,44]:
+              - /url: /vehicles
+          - listitem [ref=f31e266] [box=16,4881,158,44]:
+            - link "All Categories" [ref=f31e267] [cursor=pointer] [box=16,4881,86,44]:
+              - /url: /collections
+      - generic [ref=f31e268] [box=206,4535,158,390]:
+        - generic [ref=f31e269] [box=206,4535,158,19]: SUPPORT
+        - list [ref=f31e270] [box=206,4568,158,356]:
+          - listitem [ref=f31e271] [box=206,4568,158,44]:
+            - link "Track Your Order" [ref=f31e272] [cursor=pointer] [box=206,4568,105,44]:
+              - /url: /track-order
+          - listitem [ref=f31e273] [box=206,4620,158,44]:
+            - link "Help Center" [ref=f31e274] [cursor=pointer] [box=206,4620,73,44]:
+              - /url: /help
+          - listitem [ref=f31e275] [box=206,4672,158,44]:
+            - link "Contact Us" [ref=f31e276] [cursor=pointer] [box=206,4672,68,44]:
+              - /url: /help/contact
+          - listitem [ref=f31e277] [box=206,4724,158,44]:
+            - link "Returns Policy" [ref=f31e278] [cursor=pointer] [box=206,4724,88,44]:
+              - /url: /legal/returns
+          - listitem [ref=f31e279] [box=206,4776,158,44]:
+            - link "Shipping" [ref=f31e280] [cursor=pointer] [box=206,4776,54,44]:
+              - /url: /legal/shipping
+          - listitem [ref=f31e281] [box=206,4828,158,44]:
+            - link "Fitment Guarantee" [ref=f31e282] [cursor=pointer] [box=206,4828,113,44]:
+              - /url: /legal/fitment-guarantee
+          - listitem [ref=f31e283] [box=206,4880,158,44]:
+            - link "Installation Guides" [ref=f31e284] [cursor=pointer] [box=206,4880,113,44]:
+              - /url: /help/install
+      - generic [ref=f31e285] [box=16,4957,158,389]:
+        - generic [ref=f31e286] [box=16,4957,158,19]: COMPANY
+        - list [ref=f31e287] [box=16,4989,158,148]:
+          - listitem [ref=f31e288] [box=16,4989,158,44]:
+            - link "About" [ref=f31e289] [cursor=pointer] [box=16,4989,37,44]:
+              - /url: /about
+          - listitem [ref=f31e290] [box=16,5041,158,44]:
+            - link "Account" [ref=f31e291] [cursor=pointer] [box=16,5041,51,44]:
+              - /url: /account
+          - listitem [ref=f31e292] [box=16,5093,158,44]:
+            - link "Sign In" [ref=f31e293] [cursor=pointer] [box=16,5093,42,44]:
+              - /url: /sign-in
+      - generic [ref=f31e294] [box=206,4957,158,389]:
+        - generic [ref=f31e295] [box=206,4957,158,19]: LEGAL
+        - list [ref=f31e296] [box=206,4989,158,356]:
+          - listitem [ref=f31e297] [box=206,4989,158,44]:
+            - link "Terms" [ref=f31e298] [cursor=pointer] [box=206,4989,38,44]:
+              - /url: /legal/terms
+          - listitem [ref=f31e299] [box=206,5041,158,44]:
+            - link "Privacy" [ref=f31e300] [cursor=pointer] [box=206,5041,46,44]:
+              - /url: /legal/privacy
+          - listitem [ref=f31e301] [box=206,5093,158,44]:
+            - link "Warranty" [ref=f31e302] [cursor=pointer] [box=206,5093,56,44]:
+              - /url: /legal/warranty
+          - listitem [ref=f31e303] [box=206,5145,158,44]:
+            - link "CCPA" [ref=f31e304] [cursor=pointer] [box=206,5145,35,44]:
+              - /url: /legal/ccpa
+          - listitem [ref=f31e305] [box=206,5197,158,44]:
+            - link "Prop 65" [ref=f31e306] [cursor=pointer] [box=206,5197,48,44]:
+              - /url: /legal/prop-65
+          - listitem [ref=f31e307] [box=206,5249,158,44]:
+            - link "Accessibility" [ref=f31e308] [cursor=pointer] [box=206,5249,78,44]:
+              - /url: /legal/accessibility
+          - listitem [ref=f31e309] [box=206,5301,158,44]:
+            - link "Image Credits" [ref=f31e310] [cursor=pointer] [box=206,5301,85,44]:
+              - /url: /legal/credits
+    - generic [ref=f31e312] [box=0,5394,380,117]:
+      - generic [ref=f31e313] [box=16,5414,348,37]: © 2026 Stehlen Auto. All Rights Reserved. 21912 Garcia Lane, Walnut, CA 91789.
+      - generic [ref=f31e314] [box=16,5468,354,24]:
+        - generic [ref=f31e315] [box=16,5468,42,24]: VISA
+        - generic [ref=f31e316] [box=66,5468,34,24]: MC
+        - generic [ref=f31e317] [box=108,5468,48,24]: AMEX
+        - generic [ref=f31e318] [box=164,5468,43,24]: DISC
+        - generic [ref=f31e319] [box=215,5468,44,24]: PYPL
+        - generic [ref=f31e320] [box=267,5468,47,24]: AFRM
+        - generic [ref=f31e321] [box=322,5468,47,24]: SHOP
+  - navigation "Primary" [ref=f31e322] [box=0,787,380,57]:
+    - generic [ref=f31e323] [box=0,788,380,56]:
+      - link "HOME" [ref=f31e324] [cursor=pointer] [box=0,788,76,56]:
+        - /url: /
+      - link "SEARCH" [ref=f31e326] [cursor=pointer] [box=76,788,76,56]:
+        - /url: /search
+      - button "Change vehicle" [ref=f31e328] [cursor=pointer] [box=152,788,76,56]:
+        - generic [ref=f31e331] [box=166,820,48,16]: GARAGE
+      - button "Cart" [ref=f31e332] [cursor=pointer] [box=228,788,76,56]:
+        - generic [ref=f31e333] [box=256,797,20,20]: "1"
+        - generic [ref=f31e335] [box=251,820,31,16]: CART
+      - link "ACCOUNT" [ref=f31e336] [cursor=pointer] [box=304,788,76,56]:
+        - /url: /sign-in
+  - alert [ref=f31e338] [box=-1,-1,1,1]

@@ -546,7 +546,7 @@ export function CartDrawer({
                 textAlign: "center",
               }}
             >
-              Shipping and discounts calculated at checkout.
+              Free ground shipping (lower 48). Tax and discounts at checkout.
             </p>
           </div>
         )}

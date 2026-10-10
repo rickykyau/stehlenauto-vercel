@@ -636,8 +636,8 @@ export default async function PdpPage({
           </div>
 
           <h1
+            className="pdp-title"
             style={{
-              fontSize: 26,
               fontWeight: 600,
               lineHeight: 1.2,
               marginBottom: 10,

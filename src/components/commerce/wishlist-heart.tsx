@@ -118,31 +118,47 @@ export function WishlistHeart({ handle }: { handle: string }) {
       aria-label={saved ? "Remove from saved" : "Save for later"}
       aria-pressed={saved}
       title={saved ? "Saved — tap to remove" : "Save for later"}
+      // 2026-10-10 (mobile CRO audit): 44x44 tap target (was 36x36) with the
+      // same 36px visual circle inside, offset so it sits where it always did.
       style={{
         position: "absolute",
-        top: 8,
-        right: 8,
-        width: 36,
-        height: 36,
-        minHeight: 36,
-        minWidth: 36,
-        borderRadius: 18,
-        background: saved
-          ? "rgba(245,168,35,0.95)"
-          : "rgba(10,10,10,0.6)",
-        border: saved
-          ? "1px solid var(--color-primary)"
-          : "1px solid rgba(255,255,255,0.2)",
-        color: saved ? "#0a0a0a" : "#fff",
+        top: 4,
+        right: 4,
+        width: 44,
+        height: 44,
+        minHeight: 44,
+        minWidth: 44,
+        padding: 0,
+        background: "transparent",
+        border: "none",
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
         cursor: busy ? "wait" : "pointer",
         zIndex: 2,
-        backdropFilter: "blur(4px)",
       }}
     >
-      <Icons.heart size={16} />
+      <span
+        aria-hidden
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 18,
+          background: saved
+            ? "rgba(245,168,35,0.95)"
+            : "rgba(10,10,10,0.6)",
+          border: saved
+            ? "1px solid var(--color-primary)"
+            : "1px solid rgba(255,255,255,0.2)",
+          color: saved ? "#0a0a0a" : "#fff",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backdropFilter: "blur(4px)",
+        }}
+      >
+        <Icons.heart size={16} />
+      </span>
     </button>
   );
 }

@@ -457,6 +457,16 @@ h4 { line-height: 1.3; }
 .pdp-gallery-main {
   aspect-ratio: 1;
 }
+/* PDP h1: full fitment title stays in the DOM (SEO); smaller on phones so a
+   5-line title doesn't push price + ATC further down (mobile CRO 2026-10-10). */
+.pdp-title {
+  font-size: 26px;
+}
+@media (max-width: 767px) {
+  .pdp-title {
+    font-size: 20px;
+  }
+}
 @media (max-width: 767px) {
   .pdp-gallery-main {
     aspect-ratio: 4 / 3;

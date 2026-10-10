@@ -54,8 +54,8 @@ function readSubmodelAnswersForCurrentVehicle(): Record<string, string> {
 /**
  * Mobile-only fixed-bottom ATC bar.
  *
- * Hidden by default; appears once the user scrolls past the in-page buy-box
- * (so we don't double the affordance above the fold).
+ * Visible whenever the in-page ATC button is off-screen (above or below) and
+ * hidden while it is on-screen, so the affordance never doubles up.
  *
  * Tapping it:
  *  - when the product is cleanly addable (in stock, fits, no unanswered
@@ -153,18 +153,25 @@ export function MobileStickyAtc({
       onScroll();
       return () => window.removeEventListener("scroll", onScroll);
     }
+    // 2026-10-10 (mobile CRO audit): on phones the in-page ATC sits ~1,250–
+    // 1,420px down (1.5+ screens) — a Shopping-ad visitor landing on the PDP
+    // saw no buy action at all on the first screen. Show the sticky from first
+    // paint whenever the real button is OFF-screen (below OR above) and hide
+    // it only while the real button is actually visible, so the two never
+    // double up but a buy action is always one thumb-tap away.
     let raf = 0;
     const check = () => {
       raf = 0;
-      // bottom <= 0 → the entire ATC button has scrolled above the viewport.
-      setVisible(anchor.getBoundingClientRect().bottom <= 0);
+      const r = anchor.getBoundingClientRect();
+      const inView = r.bottom > 0 && r.top < window.innerHeight;
+      setVisible(!inView);
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(check);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
-    check(); // initial state (hidden at scrollY=0; button is below the fold)
+    check(); // initial state: visible at scrollY=0 when the button is below the fold
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);

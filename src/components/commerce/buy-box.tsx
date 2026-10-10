@@ -269,6 +269,35 @@ export function BuyBox({
     }
   };
 
+  // 2026-10-10 (mobile CRO audit): an unanswered sub-model question used to
+  // grey out ATC + Express Checkout. On a phone the picker is often off-screen,
+  // so a disabled grey button read as "broken". Keep the buttons tappable and
+  // take the customer to the question instead. OOS + bed mismatch stay hard
+  // disabled (canAdd still gates the actual add).
+  const needsPickOnly = missingStrips.length > 0 && !outOfStock && !bedMismatch;
+  const focusPicker = () => {
+    const el = document.querySelector<HTMLElement>(
+      `[data-strip-group="${missingStrips[0]?.group}"]`,
+    );
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.animate?.(
+      [
+        { boxShadow: "0 0 0 0 rgba(245,168,35,0)" },
+        { boxShadow: "0 0 0 4px rgba(245,168,35,0.7)" },
+        { boxShadow: "0 0 0 0 rgba(245,168,35,0)" },
+      ],
+      { duration: 1200, iterations: 2 },
+    );
+  };
+  const onBuyTap = (opts?: { redirectToCheckout?: boolean }) => {
+    if (needsPickOnly) {
+      focusPicker();
+      return;
+    }
+    void onAdd(opts);
+  };
+
   const onAdd = async (opts?: { redirectToCheckout?: boolean }) => {
     setAdding(true);
     setPersistError(null);
@@ -371,7 +400,11 @@ export function BuyBox({
               ? productCabType
               : null;
         return (
-        <div key={s.group} style={{ marginBottom: 16 }}>
+        <div
+          key={s.group}
+          data-strip-group={s.group}
+          style={{ marginBottom: 16, borderRadius: "var(--radius-sm)" }}
+        >
           <div
             style={{
               display: "flex",
@@ -856,6 +889,24 @@ export function BuyBox({
         </span>
       </a>
 
+      {/* 2026-10-10 (mobile CRO audit): the shipping / returns rows sit far
+          below the ATC on phones (~1,650px down). Repeat the promise in one
+          line right where the buy decision happens. */}
+      {!outOfStock && (
+        <p
+          className="mono"
+          style={{
+            fontSize: 11,
+            letterSpacing: "0.04em",
+            color: "var(--color-muted)",
+            margin: "0 0 8px",
+            textAlign: "center",
+          }}
+        >
+          <span style={{ color: "var(--color-success)" }}>✓</span> Free shipping ·
+          Ships in 1 business day · 30-day free returns
+        </p>
+      )}
       <div className="buy-box-row" style={{ marginBottom: 12 }}>
         <div
           style={{
@@ -892,8 +943,8 @@ export function BuyBox({
         </div>
         <button
           type="button"
-          onClick={() => onAdd()}
-          disabled={adding || !canAdd}
+          onClick={() => onBuyTap()}
+          disabled={adding || (!canAdd && !needsPickOnly)}
           data-atc-anchor
           // Cycle 14X+ (owner): misfit no longer disables the button —
           // gift purchases / multi-vehicle households / friend-of-friend
@@ -905,13 +956,13 @@ export function BuyBox({
           className={explicitMisfit ? "btn btn-lg" : "btn btn-primary btn-lg"}
           style={{
             flex: 1,
-            opacity: !canAdd ? 0.6 : 1,
+            opacity: !canAdd && !needsPickOnly ? 0.6 : 1,
             background: explicitMisfit ? "transparent" : undefined,
             color: explicitMisfit ? "var(--color-foreground)" : undefined,
             borderColor: explicitMisfit
               ? "var(--color-border)"
               : undefined,
-            cursor: !canAdd ? "not-allowed" : "pointer",
+            cursor: !canAdd && !needsPickOnly ? "not-allowed" : "pointer",
           }}
         >
           {adding
@@ -942,16 +993,16 @@ export function BuyBox({
           checkout → wallet sheet appears on supported browsers. */}
       <button
         type="button"
-        onClick={() => onAdd({ redirectToCheckout: true })}
-        disabled={adding || !canAdd}
+        onClick={() => onBuyTap({ redirectToCheckout: true })}
+        disabled={adding || (!canAdd && !needsPickOnly)}
         className="btn btn-block"
         aria-label="Express checkout with Shop Pay, Apple Pay, Google Pay, or Affirm"
         style={{
           background: "#5a31f4",
           color: "#fff",
           borderColor: "#5a31f4",
-          opacity: !canAdd ? 0.5 : 1,
-          cursor: !canAdd ? "not-allowed" : "pointer",
+          opacity: !canAdd && !needsPickOnly ? 0.5 : 1,
+          cursor: !canAdd && !needsPickOnly ? "not-allowed" : "pointer",
           fontFamily: "var(--font-display)",
           letterSpacing: "0.04em",
           display: "inline-flex",
