@@ -102,7 +102,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-const DEFAULT_CODE = "WELCOME10";
+const DEFAULT_CODE = "BACK10";
+// Expired codes still sitting in old emails → swap to the live one, so a late
+// click never lands on a code Shopify refuses.
+const RETIRED_CODES = new Set(["WELCOME10", "DIRECT10"]);
 
 function titleCase(s: string): string {
   return s
@@ -127,7 +130,8 @@ export default async function WelcomeBackPage({
   const sp = await searchParams;
   const make = first(sp.make);
   const model = first(sp.model);
-  const code = (first(sp.code) || DEFAULT_CODE).toUpperCase();
+  const asked = (first(sp.code) || DEFAULT_CODE).toUpperCase();
+  const code = RETIRED_CODES.has(asked) ? DEFAULT_CODE : asked;
   const utm = first(sp.utm_content) || first(sp.utm_campaign);
 
   const hasVehicle = Boolean(make && model);
@@ -149,6 +153,8 @@ export default async function WelcomeBackPage({
   // with photos + review stars and pulls the shopper deeper into the site.
   let fitProducts: typeof PRODUCTS = [];
   let browseCats: typeof CATEGORIES = [];
+  // True when the vehicle had no matching parts and the grid shows best-sellers.
+  let genericPicks = false;
   if (hasVehicle) {
     const year = bestYearFor(make, model);
     const fitVehicle = { year: String(year), make: titleCase(make), model: titleCase(model) };
@@ -172,6 +178,17 @@ export default async function WelcomeBackPage({
       fitProducts = [...confirmed, ...rest].slice(0, 6);
     } catch {
       fitProducts = [];
+    }
+    // Few parts for this vehicle (cars, vans): never leave an empty grid.
+    if (fitProducts.length === 0) {
+      genericPicks = true;
+      try {
+        fitProducts = (await getBestSellers(8))
+          .filter((p) => p.inventory > 0 && !isEvOnlyVariant(p))
+          .slice(0, 6);
+      } catch {
+        fitProducts = [];
+      }
     }
     const avail = getAvailableCategoriesForMakeModel(make, model);
     browseCats = CATEGORIES.filter((c) => avail.has(c.slug)).slice(0, 6);
@@ -558,7 +575,7 @@ export default async function WelcomeBackPage({
                 className="eyebrow"
                 style={{ color: "var(--color-primary)" }}
               >
-                {hasVehicle
+                {hasVehicle && !genericPicks
                   ? `PICKED FOR YOUR ${titleCase(make).toUpperCase()} ${titleCase(model).toUpperCase()}`
                   : "POPULAR RIGHT NOW"}
               </span>
@@ -574,7 +591,7 @@ export default async function WelcomeBackPage({
                 margin: 0,
               }}
             >
-              {hasVehicle
+              {hasVehicle && !genericPicks
                 ? `Top upgrades for your ${vehicleLabel}.`
                 : "Best-selling upgrades."}
             </h2>

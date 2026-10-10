@@ -43,7 +43,7 @@ export function WelcomeBackInit({
 }) {
   useEffect(() => {
     if (code) {
-      // 14-day life matches the WELCOME10 window; path=/ so it covers checkout.
+      // 14-day life ≈ a campaign code's window; path=/ so it covers checkout.
       document.cookie = `stehlen_promo=${encodeURIComponent(
         code,
       )}; path=/; max-age=${60 * 60 * 24 * 14}; samesite=lax`;
