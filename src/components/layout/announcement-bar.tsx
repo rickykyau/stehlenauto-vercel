@@ -1,3 +1,5 @@
+import { HolidayAnnouncement } from "./holiday-announcement";
+
 const ITEMS = [
   "FREE GROUND SHIPPING ON EVERY ORDER — 48 STATES · NO MINIMUM",
   "FITMENT GUARANTEED OR YOUR MONEY BACK",
@@ -21,6 +23,7 @@ export function AnnouncementBar() {
       }}
       aria-label="Announcements"
     >
+      <HolidayAnnouncement />
       <div
         className="marquee-track"
         style={{

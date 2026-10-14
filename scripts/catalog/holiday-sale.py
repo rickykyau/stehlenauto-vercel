@@ -8,9 +8,12 @@ channel sends it to Merchant Center as a sale price). End puts the regular
 price back and restores the original compare-at.
 
 Owner rules (2026-10-14): Black Friday window Nov 20 - Dec 1 2026, max 15% off,
-in-season categories only (headlights, bull guards). Each item gets the deepest
-of 15 / 12 / 10% that still leaves >= 15% net margin after landed cost
-(EffectiveCost + EstShipping_C) and, for lighting, the 12% return drag.
+all categories (owner widened it from headlights + bull guards). Each item gets
+the deepest of 15 / 12 / 10% that still leaves >= 15% net margin after landed
+cost (EffectiveCost + EstShipping_C) and, for lighting, the 12% return drag;
+items that sell out in < 8 weeks at their 12-month pace stay full price.
+The plan's "collection" (black-friday-deals) is filled and published on the
+theme + stehlenauto.com at start, and unpublished at end.
 The plan file is built once and reviewed; this script only applies it.
 
     python3 scripts/catalog/holiday-sale.py start --plan data/changes/bf-2026-sale-plan.json [--dry]
@@ -85,6 +88,43 @@ def set_price(pid: str, vid: str, price: float, compare: float | None) -> list:
     return r["productVariantsBulkUpdate"]["userErrors"]
 
 
+CHANNELS = ("Online Store", "Stehlen Next.js Storefront")   # theme + stehlenauto.com
+
+
+def deals_collection(plan: dict, product_ids: list[str], mode: str, dry: bool) -> str:
+    """start: create/refresh the plan's deals collection with the products actually
+    on sale and publish it; end: unpublish it (kept for next year's reuse)."""
+    handle = plan.get("collection")
+    if not handle or dry:
+        return f"collection {handle or '-'} unchanged{' (dry run)' if dry else ''}"
+    pubs = [p["id"] for p in gql("{publications(first:20){nodes{id name}}}")["publications"]["nodes"]
+            if p["name"] in CHANNELS]
+    c = gql("query($h:String!){collectionByHandle(handle:$h){id}}", {"h": handle})["collectionByHandle"]
+    if mode == "end":
+        if c:
+            gql("mutation($id:ID!,$p:[PublicationInput!]!){publishableUnpublish(id:$id,input:$p){userErrors{message}}}",
+                {"id": c["id"], "p": [{"publicationId": x} for x in pubs]})
+        return f"collection {handle} unpublished"
+    if not c:
+        c = gql("""mutation($i:CollectionInput!){collectionCreate(input:$i){collection{id} userErrors{message}}}""",
+                {"i": {"title": plan.get("collection_title", "Black Friday Deals"), "handle": handle,
+                       "sortOrder": "BEST_SELLING",
+                       "descriptionHtml": plan.get("collection_description", "")}})["collectionCreate"]["collection"]
+    else:   # refresh membership: drop last year's / skipped products
+        keep = set(product_ids)
+        old = gql("query($id:ID!){collection(id:$id){products(first:250){nodes{id}}}}", {"id": c["id"]})
+        stale = [n["id"] for n in old["collection"]["products"]["nodes"] if n["id"] not in keep]
+        if stale:
+            gql("mutation($id:ID!,$p:[ID!]!){collectionRemoveProducts(id:$id,productIds:$p){userErrors{message}}}",
+                {"id": c["id"], "p": stale})
+    for i in range(0, len(product_ids), 250):
+        gql("mutation($id:ID!,$p:[ID!]!){collectionAddProducts(id:$id,productIds:$p){userErrors{message}}}",
+            {"id": c["id"], "p": product_ids[i:i + 250]})
+    gql("mutation($id:ID!,$p:[PublicationInput!]!){publishablePublish(id:$id,input:$p){userErrors{message}}}",
+        {"id": c["id"], "p": [{"publicationId": x} for x in pubs]})
+    return f"collection {handle}: {len(product_ids)} products, published"
+
+
 def main() -> None:
     mode = sys.argv[1] if len(sys.argv) > 1 else ""
     if mode not in ("start", "end") or not arg("--plan"):
@@ -94,6 +134,7 @@ def main() -> None:
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     log = (LOG_DIR / "holiday-sale.jsonl").open("a", encoding="utf-8")
     done = skipped = errors = 0
+    on_sale: list[str] = []
     for item in plan["items"]:
         if item["sale"] < item["price"] * (1 - MAX_DISCOUNT) - 0.005:
             sys.exit(f"plan breaks the {MAX_DISCOUNT:.0%} cap: {item['handle']}")
@@ -119,6 +160,8 @@ def main() -> None:
         errs = [] if dry else set_price(item["id"], v["id"], new_price, new_compare)
         errors += bool(errs)
         done += not errs
+        if not errs:
+            on_sale.append(item["id"])
         log.write(json.dumps({"at": datetime.now().isoformat(timespec="seconds"), "mode": mode, "dry": dry,
                               "handle": item["handle"], "from": price, "to": new_price,
                               "compare_at": new_compare, "errors": errs}) + "\n")
@@ -126,6 +169,7 @@ def main() -> None:
         # remember each product's original compare-at for the end run
         Path(arg("--plan")).write_text(json.dumps(plan, indent=1), encoding="utf-8")
     print(f"{mode}{' (dry run)' if dry else ''}: {done} changed, {skipped} skipped, {errors} errors")
+    print(deals_collection(plan, on_sale, mode, dry))
 
 
 if __name__ == "__main__":
