@@ -68,8 +68,8 @@ def cvr(price):
 # (regex on productType, multiplier). First match wins; 0 = exclude.
 CATEGORY = [
     (r"^headlight|^tail ?light", 1.0, None),          # return drag applied to margin instead
-    (r"bed mat|floor mat", 0, "exclude_low_aov"),
-    (r"tonneau.*(tri.?fold|hard)", 1.5, None),        # priced at/below Gator EFX, far below BAK
+    (r"bed mat|floor mat", 0.8, None),                # $100+ only (MIN_PRICE); 47 wks of stock, steady demand (2026-10-14)
+    (r"tonneau.*(tri.?fold|hard)", 1.25, None),       # priced at/below Gator EFX; was 1.5 - $222/0 conv in week 1
     (r"rock slider|roof (rack|basket)|running board|chase rack", 1.2, None),
     (r"tonneau", 0.7, None),                          # roll-up / hidden snap: no price edge
     (r"hitch", 1.0, None),                            # MC benchmark: mostly 10-55% under market
@@ -79,10 +79,32 @@ CATEGORY = [
 # 2025 US sales volume ranking (F-Series 801k, Silverado 577k, Ram 374k, Sierra 348k, Tacoma 275k)
 VEHICLE = [
     ("f150", r"\bf-?150\b", 1.15), ("silverado", r"\bsilverado\b", 1.15),
-    ("ram1500", r"\bram 1500\b", 1.15), ("tacoma", r"\btacoma\b", 1.1),
+    ("ram1500", r"\bram 1500\b", 1.2), ("tacoma", r"\btacoma\b", 1.1),     # Ram +33.7% Q3 2026 sales
     ("sierra", r"\bsierra\b", 1.1), ("tundra", r"\btundra\b", 1.0),
-    ("wrangler", r"\bwrangler\b", 1.0), ("frontier", r"\bfrontier\b", 0.9),
+    ("wrangler", r"\bwrangler\b", 1.0), ("maverick", r"\bmaverick\b", 1.0),  # Maverick +59.6% Q3 2026
+    ("frontier", r"\bfrontier\b", 0.9),
 ]
+# Seasonal demand by month (Jan..Dec) from our own all-channel CB unit sales 2023-2025:
+# month / average month, smoothed with neighbours, clamped 0.75-1.30 (built 2026-10-14).
+# First regex match on productType wins; unlisted categories = 1.0.
+SEASON = [
+    (r"tonneau", [0.92, 1.03, 1.16, 1.20, 1.14, 1.11, 1.10, 1.00, 0.88, 0.82, 0.80, 0.84]),
+    (r"hitch", [0.83, 0.97, 1.07, 1.04, 1.05, 1.10, 1.16, 1.14, 1.07, 0.96, 0.82, 0.79]),
+    (r"^headlight|^tail ?light", [1.08, 1.06, 1.05, 0.93, 0.84, 0.82, 0.84, 0.90, 1.01, 1.12, 1.18, 1.17]),
+    (r"bull guard|grille guard", [1.06, 1.12, 1.15, 1.05, 0.94, 0.87, 0.85, 0.87, 0.93, 1.01, 1.07, 1.09]),
+    (r"grille", [1.01, 1.17, 1.24, 1.13, 1.01, 0.97, 0.97, 0.95, 0.91, 0.88, 0.87, 0.91]),
+    (r"bed mat|floor mat", [0.93, 1.00, 1.09, 1.10, 1.03, 0.97, 0.95, 0.97, 1.03, 1.01, 0.97, 0.96]),
+    (r"running board|side step|nerf|rock slider", [0.87, 1.01, 1.07, 1.15, 1.17, 1.07, 1.01, 1.08, 1.12, 0.97, 0.76, 0.75]),
+    (r"chase rack", [1.04, 1.15, 1.10, 1.04, 1.07, 1.09, 1.04, 0.99, 0.98, 0.87, 0.77, 0.86]),
+]
+
+
+def season(ptype, month=None):
+    m = (month or date.today().month) - 1
+    for rx, curve in SEASON:
+        if re.search(rx, ptype):
+            return curve[m]
+    return 1.0
 # SKUs with >8% historical return rate (marketing/lead-gen/paid-search.md)
 RETURN_EXCLUDE = {"HLPLNB-TUN07FLED-AB", "HLPLNB-RAM06FLED-AB", "TBM-TIT16B-6.5-RB-V2", "TH-X507-C077-901"}
 
@@ -183,6 +205,7 @@ def plan(p, costs=None):
     if 100 <= price <= 200:
         bid *= 1.15                                   # owner call: buyers' $100-200 comfort zone
     bid *= depth(qty)
+    bid *= season(ptype)
     b = max([x for x in BUCKETS if x <= bid] or [BUCKETS[0]])
     labels["custom_label_3"] = f"bid_{round(b * 100):03d}"
     return labels, mf
