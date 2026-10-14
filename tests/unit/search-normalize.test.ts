@@ -32,13 +32,30 @@ describe("normalizeSearchQuery", () => {
 
 describe("normalizeSearchQuery — shopper spellings", () => {
   it("maps bull bar spellings to the title word", () => {
-    expect(normalizeSearchQuery("f150 bullbar").query).toBe("f150 bull");
+    expect(normalizeSearchQuery("f150 bullbar").query).toBe("f-150 bull");
     expect(normalizeSearchQuery("silverado bull-bar").query).toBe("silverado bull");
     expect(normalizeSearchQuery("ram push bar").query).toBe("ram bull");
   });
   it("fixes grill and tonneau typos without touching real words", () => {
     expect(normalizeSearchQuery("tacoma grill").query).toBe("tacoma grille");
-    expect(normalizeSearchQuery("f150 tonneu cover").query).toBe("f150 tonneau cover");
+    expect(normalizeSearchQuery("f150 tonneu cover").query).toBe("f-150 tonneau cover");
     expect(normalizeSearchQuery("two tone grille").query).toBe("two tone grille");
+  });
+});
+
+describe("normalizeSearchQuery — model numbers", () => {
+  it("hyphenates Ford F-/E-series like the titles", () => {
+    expect(normalizeSearchQuery("f150 bull bar").query).toBe("f-150 bull");
+    expect(normalizeSearchQuery("F 150 grille guard").query).toBe("F-150 grille guard");
+    expect(normalizeSearchQuery("2019 f250 tonneau")).toEqual({ query: "f-250 tonneau", year: 2019 });
+    expect(normalizeSearchQuery("e350 hitch").query).toBe("e-350 hitch");
+  });
+  it("leaves already-hyphenated and unrelated numbers alone", () => {
+    expect(normalizeSearchQuery("f-150 bull guard").query).toBe("f-150 bull guard");
+    expect(normalizeSearchQuery("curt 13150").query).toBe("curt 13150");
+    expect(normalizeSearchQuery("ram 1500 grille").query).toBe("ram 1500 grille");
+  });
+  it("splits ram1500", () => {
+    expect(normalizeSearchQuery("ram1500 running boards").query).toBe("ram 1500 running boards");
   });
 });

@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { onOpenCartDrawer } from "@/components/cart/cart-events";
 import { Icons } from "@/components/ui/icons";
 
 const QUICK_PROMPTS = [
@@ -64,6 +65,22 @@ export function ChatAssistant() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, status, open]);
+
+  // The open panel must never stand between the shopper and buying: Esc
+  // closes it, and Add to Cart / the cart drawer opening closes it (it used
+  // to sit above the drawer and swallow taps on Checkout).
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    const offCart = onOpenCartDrawer(() => setOpen(false));
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      offCart();
+    };
+  }, [open]);
 
   // The launcher floats over the page, and page content runs to within 16-32px
   // of the right edge, so no corner is always free (it covered the PDP "6' BED"
@@ -187,10 +204,12 @@ export function ChatAssistant() {
       style={{
         position: "fixed",
         bottom: 24,
-        right: 24,
-        zIndex: 100,
-        width: 400,
-        height: 600,
+        // Product pages: dock over the photo column (left), not the buy box.
+        ...(pathname?.startsWith("/products/") ? { left: 24 } : { right: 24 }),
+        // Below the cart drawer (70) so the drawer always wins.
+        zIndex: 60,
+        width: 380,
+        height: 560,
         maxHeight: "calc(100vh - 48px)",
         maxWidth: "calc(100vw - 32px)",
         background: "var(--color-background)",

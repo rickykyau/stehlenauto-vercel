@@ -1623,6 +1623,10 @@ export default async function PdpPage({
               style={{
                 color: "var(--color-foreground)",
                 textDecoration: "underline",
+                // 44px-tall tap area without moving the sentence's baseline
+                display: "inline-block",
+                padding: "14px 0",
+                margin: "-14px 0",
               }}
             >
               p65warnings.ca.gov

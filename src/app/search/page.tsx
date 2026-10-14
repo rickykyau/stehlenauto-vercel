@@ -80,13 +80,15 @@ export default async function SearchPage({
   // fall back to no-vehicle results with a notice, instead of an empty page.
   let filtered: typeof PRODUCTS = [];
   let vehicleFilterRelaxed = false;
+  // 48, not 24: in-stock matches ranked past 24 by relevance (behind old
+  // sold-out ones) still reach the in-stock-first sort below.
   if (query) {
     const scoped = vehicle
       ? `${query} ${vehicle.make} ${vehicle.model}`
       : query;
-    filtered = await searchProducts(scoped, 24);
+    filtered = await searchProducts(scoped, 48);
     if (filtered.length === 0 && vehicle) {
-      filtered = await searchProducts(query, 24);
+      filtered = await searchProducts(query, 48);
       vehicleFilterRelaxed = filtered.length > 0;
     }
   }

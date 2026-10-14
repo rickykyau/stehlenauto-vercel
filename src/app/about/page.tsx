@@ -269,7 +269,7 @@ export default function AboutPage() {
                 marginBottom: 6,
               }}
             >
-              CAREERS
+              CONTACT
             </div>
             <h3
               style={{
@@ -279,11 +279,11 @@ export default function AboutPage() {
                 letterSpacing: "-0.01em",
               }}
             >
-              Want to build with us?
+              Questions about a part or an order?
             </h3>
           </div>
           <Link
-            href="/careers"
+            href="/help/contact"
             className="btn"
             style={{
               background: "var(--color-background)",
@@ -291,7 +291,7 @@ export default function AboutPage() {
               color: "var(--color-foreground)",
             }}
           >
-            OPEN ROLES
+            GET IN TOUCH
           </Link>
         </div>
       </section>

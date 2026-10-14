@@ -26,6 +26,13 @@ export function normalizeSearchQuery(raw: string): NormalizedSearch {
   //  "bull bar" / "bullbar" / "bull-bar" / "push bar" → "bull", which matches
   //  both "Bull Bar" and "Bull Guard" titles ("bull bar" missed every in-stock
   //  Bull Guard); "grill" → "grille"; tonneau typos.
+  //  "f150" / "f 150" → "f-150": Shopify search tokenizes titles' "F-150"
+  //  as "f-150", so "f150 bull" matched 6 old sold-out guards and missed the
+  //  in-stock 2004–2023 F-150 one. Same for F-250…F-550 and E-150…E-350;
+  //  "ram1500" → "ram 1500".
+  q = q
+    .replace(/\b([fe])[\s-]?(150|250|350|450|550)\b/gi, (_, l: string, n: string) => `${l}-${n}`)
+    .replace(/\bram(1500|2500|3500)\b/gi, "ram $1");
   q = q
     .replace(/\b(bull[- ]?bars?|push[- ]?bars?)\b/gi, "bull")
     .replace(/\bgrills?\b/gi, "grille")

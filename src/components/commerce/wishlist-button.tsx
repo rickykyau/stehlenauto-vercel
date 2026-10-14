@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Icons } from "@/components/ui/icons";
+import { hasSignedInCookie } from "@/lib/clerk/session-cookie";
 import type { CatalogProduct } from "@/lib/catalog/types";
 
 export function WishlistButton({
@@ -17,6 +18,11 @@ export function WishlistButton({
   const [busy, setBusy] = useState(false);
 
   const toggle = async () => {
+    // Signed out: go straight to sign-in instead of firing a 401 first.
+    if (!hasSignedInCookie()) {
+      window.location.href = "/sign-in";
+      return;
+    }
     setBusy(true);
     try {
       if (saved) {

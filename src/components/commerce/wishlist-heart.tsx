@@ -1,5 +1,6 @@
 "use client";
 
+import { hasSignedInCookie } from "@/lib/clerk/session-cookie";
 import { useEffect, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 
@@ -65,9 +66,7 @@ export function WishlistHeart({ handle }: { handle: string }) {
       // Previously fired 401s on every anonymous save — noisy in
       // browser dev tools + dirty log lines on the server. Server-side
       // merge happens via /api/wishlist/merge once user signs in.
-      const hasClerkSession =
-        typeof document !== "undefined" &&
-        /(?:^|; )__session=/.test(document.cookie);
+      const hasClerkSession = hasSignedInCookie();
 
       // Cycle 14BG-fix1 (Mike gate-test BLOCKER): nudge previously
       // gated on `next.length === 1` (first-ever save). Playwright

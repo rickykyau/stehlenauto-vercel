@@ -868,7 +868,7 @@ export function BuyBox({
           alignItems: "center",
           justifyContent: "center",
           gap: 8,
-          height: 36,
+          height: 44,
           marginBottom: 10,
           background: "rgba(245,168,35,0.08)",
           border: "1px solid rgba(245,168,35,0.4)",

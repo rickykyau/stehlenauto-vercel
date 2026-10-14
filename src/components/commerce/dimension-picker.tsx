@@ -85,6 +85,13 @@ const COPY: Record<SubModelGroup, { ask: string; helper: string }> = {
   },
 };
 
+const LABEL: Record<SubModelGroup, string> = {
+  bed_length: "Bed length",
+  cab_type: "Cab",
+  trim: "Trim",
+  doors: "Doors",
+};
+
 export function DimensionPicker({
   categoryHandle: _categoryHandle,
   vehicle,
@@ -97,6 +104,7 @@ export function DimensionPicker({
   const params = useSearchParams();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [openGroup, setOpenGroup] = useState<SubModelGroup | null>(null);
 
   // Build a per-group options index from the strips prop so the URL parser
   // and canonicalize step can validate values without re-walking strips.
@@ -355,153 +363,110 @@ export function DimensionPicker({
 
   if (strips.length === 0) return null;
 
+  // Compact toolbar row (CLAUDE.md: the 4th filter is a toolbar chip, never a
+  // block above the grid). One pill per question; tapping it opens that
+  // question's options inline. Unanswered pills are outlined in yellow.
+  const openStrip = strips.find((s) => s.group === openGroup) ?? null;
   return (
     <section
       aria-label="Refine for your vehicle"
-      style={{
-        background: "var(--color-background)",
-        padding: "16px 0 24px",
-      }}
+      style={{ background: "var(--color-background)", padding: "4px 0" }}
     >
       <div className="container-x">
-        <div className={`dim-card${gated ? " dim-card-gated" : ""}`}>
-          <div
-            className="eyebrow"
-            style={{
-              color: gated ? "var(--color-primary)" : "var(--color-muted)",
-              marginBottom: 12,
-            }}
-          >
-            {gated ? "SELECTION REQUIRED" : "REFINE FOR YOUR VEHICLE"}
-          </div>
-          {!vehicle && (
-            <div style={{ marginBottom: 16 }}>
-              <button
-                type="button"
-                onClick={openYmmModal}
-                className="chip"
-                style={{ cursor: "pointer", fontSize: 12 }}
-              >
-                <Icons.truck size={10} /> SET YOUR VEHICLE FOR EXACT-FIT OPTIONS →
-              </button>
-            </div>
-          )}
-
-          {strips.map((s, idx) => {
+        <div className="dim-bar">
+          <span className="dim-bar-label">{gated ? "REQUIRED" : "REFINE"}</span>
+          {strips.map((s) => {
             const picked = picks[s.group];
-            const copy = COPY[s.group];
-            const isLast = idx === strips.length - 1;
+            const isOpen = openGroup === s.group;
             return (
-              <div
+              <button
                 key={s.group}
-                style={{
-                  marginBottom: isLast ? 0 : 24,
-                  paddingBottom: isLast ? 0 : 20,
-                  borderBottom: isLast
-                    ? "none"
-                    : "1px solid var(--color-border)",
-                }}
+                type="button"
+                className={`dim-pill${picked ? " dim-pill-done" : ""}`}
+                aria-expanded={isOpen}
+                aria-controls={`dim-panel-${s.group}`}
+                onClick={() => setOpenGroup(isOpen ? null : s.group)}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    gap: 12,
-                    flexWrap: "wrap",
-                    marginBottom: 8,
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: 17,
-                      fontWeight: 600,
-                      color: "var(--color-foreground)",
-                    }}
-                  >
-                    {copy.ask}
-                  </div>
-                  {picked && (
-                    <button
-                      type="button"
-                      onClick={() => onChange(s.group)}
-                      style={{
-                        background: "none",
-                        border: 0,
-                        color: "var(--color-primary)",
-                        cursor: "pointer",
-                        fontSize: 13,
-                        textDecoration: "underline",
-                        padding: 0,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Change
-                    </button>
-                  )}
-                </div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    color: "var(--color-muted)",
-                    marginBottom: 16,
-                    maxWidth: 680,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {copy.helper}
-                </div>
-                <div className="dim-chip-grid">
-                  {s.options.map((opt) => {
-                    const isPicked = picked === opt;
-                    return (
-                      <button
-                        key={opt}
-                        type="button"
-                        onClick={() => onPick(s.group, opt)}
-                        disabled={pending}
-                        aria-pressed={isPicked}
-                        className="dim-chip-btn"
-                      >
-                        {isPicked && <Icons.check size={12} />} {opt.toUpperCase()}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                {picked ? <Icons.check size={12} /> : null}
+                <span>
+                  {LABEL[s.group]}
+                  {picked ? `: ${picked}` : "?"}
+                </span>
+                <Icons.chevDown size={12} />
+              </button>
             );
           })}
-
-          {error && (
-            <div
-              role="alert"
-              style={{
-                marginTop: 12,
-                fontSize: 13,
-                color: "var(--color-destructive)",
-              }}
-            >
-              {error}
-            </div>
-          )}
-          {gated && (
-            <div style={{ marginTop: 16, fontSize: 13 }}>
-              <a
-                href={(() => {
-                  const sp = new URLSearchParams(params.toString());
-                  sp.set("skip", "1");
-                  return `${pathname}?${sp.toString()}`;
-                })()}
-                style={{
-                  color: "var(--color-muted-2)",
-                  textDecoration: "underline",
-                }}
-              >
-                Skip and browse all options
-              </a>
-            </div>
+          {!vehicle && (
+            <button type="button" onClick={openYmmModal} className="dim-pill">
+              <Icons.truck size={12} /> <span>Set vehicle</span>
+            </button>
           )}
         </div>
+
+        {openStrip && (
+          <div id={`dim-panel-${openStrip.group}`} className="dim-panel">
+            <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginBottom: 6 }}>
+              <div style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 600 }}>
+                {COPY[openStrip.group].ask}
+              </div>
+              {picks[openStrip.group] && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChange(openStrip.group);
+                    setOpenGroup(null);
+                  }}
+                  className="dim-clear"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+            <div style={{ fontSize: 13, color: "var(--color-muted)", marginBottom: 12, maxWidth: 680, lineHeight: 1.5 }}>
+              {COPY[openStrip.group].helper}
+            </div>
+            <div className="dim-chip-grid">
+              {openStrip.options.map((opt) => {
+                const isPicked = picks[openStrip.group] === opt;
+                return (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => {
+                      onPick(openStrip.group, opt);
+                      setOpenGroup(null);
+                    }}
+                    disabled={pending}
+                    aria-pressed={isPicked}
+                    className="dim-chip-btn"
+                  >
+                    {isPicked && <Icons.check size={12} />} {opt.toUpperCase()}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div role="alert" style={{ marginTop: 8, fontSize: 13, color: "var(--color-destructive)" }}>
+            {error}
+          </div>
+        )}
+        {gated && (
+          <div style={{ marginTop: 8, fontSize: 13 }}>
+            <a
+              href={(() => {
+                const sp = new URLSearchParams(params.toString());
+                sp.set("skip", "1");
+                return `${pathname}?${sp.toString()}`;
+              })()}
+              style={{ color: "var(--color-muted-2)", textDecoration: "underline" }}
+            >
+              Skip and browse all options
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );

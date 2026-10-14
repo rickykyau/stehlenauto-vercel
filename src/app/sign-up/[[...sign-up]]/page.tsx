@@ -73,11 +73,13 @@ export default function SignUpPage() {
             dividerText: { color: "#cfcfcf" },
             formFieldLabel: { color: "#ffffff", fontWeight: 600 },
             formFieldInput: {
+              minHeight: 44,
               background: "#1f1f1f",
               borderColor: "#2a2a2a",
               color: "#ffffff",
             },
             formButtonPrimary: {
+              minHeight: 44,
               background: "#f5a823",
               color: "#0a0a0a",
               fontWeight: 700,

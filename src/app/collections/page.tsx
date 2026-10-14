@@ -28,7 +28,12 @@ export default function CollectionsIndexPage() {
           marginBottom: 14,
         }}
       >
-        <Link href="/">Home</Link>
+        <Link
+          href="/"
+          style={{ display: "inline-flex", alignItems: "center", minHeight: 44, margin: "-12px 0", padding: "0 4px 0 0" }}
+        >
+          Home
+        </Link>
         <Icons.chevRight size={10} />
         <span style={{ color: "var(--color-foreground)" }}>Shop</span>
       </nav>

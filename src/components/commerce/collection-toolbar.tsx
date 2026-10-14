@@ -120,12 +120,14 @@ export function CollectionToolbar({
           flexWrap: "wrap",
         }}
       >
+        {/* Phones: the vehicle + show-non-fitting chips share one scrollable
+            row (they used to stack and push the grid ~120px down). */}
         <div
+          className="dim-bar w-full md:w-auto"
           style={{
             display: "flex",
             gap: 8,
             alignItems: "center",
-            flexWrap: "wrap",
           }}
         >
           {/* Cycle 14AY-fix1 (Ren R2 BUG-R2-001 MINOR): both toolbar
@@ -161,6 +163,8 @@ export function CollectionToolbar({
                 minHeight: 44,
                 display: "inline-flex",
                 alignItems: "center",
+                flex: "0 0 auto",
+                whiteSpace: "nowrap",
               }}
             >
               <Icons.truck size={10} />{" "}
@@ -172,7 +176,12 @@ export function CollectionToolbar({
                        "GARAGE · SHOWING ALL" is unambiguous: vehicle is
                        still in the garage; filter is off by choice. */
                     `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · SHOWING ALL`
-                  : `FILTERING FOR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · TAP TO CHANGE`}
+                  : (
+                    <>
+                      <span className="md:hidden">{`FITS ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · CHANGE`}</span>
+                      <span className="hidden md:inline">{`FILTERING FOR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} · TAP TO CHANGE`}</span>
+                    </>
+                  )}
             </button>
           ) : (
             <button
@@ -235,6 +244,8 @@ export function CollectionToolbar({
                 minHeight: 44,
                 display: "inline-flex",
                 alignItems: "center",
+                flex: "0 0 auto",
+                whiteSpace: "nowrap",
                 fontWeight: showAllProducts ? 700 : 400,
               }}
             >
@@ -251,7 +262,9 @@ export function CollectionToolbar({
           className="w-full md:w-auto"
           style={{ display: "flex", gap: 8, alignItems: "center" }}
         >
-          {mobileFilters}
+          {/* wrapper owns md:hidden — the drawer button's .btn display rule
+              beat its own md:hidden, so desktop showed a duplicate FILTERS */}
+          {mobileFilters && <div className="flex flex-1 md:hidden">{mobileFilters}</div>}
           <select
             value={currentSort}
             onChange={(e) => onSortChange(e.target.value)}
@@ -277,8 +290,8 @@ export function CollectionToolbar({
               aria-label="Grid view"
               aria-pressed={view === "grid"}
               style={{
-                width: 36,
-                height: 36,
+                width: 44,
+                height: 44,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -300,8 +313,8 @@ export function CollectionToolbar({
               aria-label="List view"
               aria-pressed={view === "list"}
               style={{
-                width: 36,
-                height: 36,
+                width: 44,
+                height: 44,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

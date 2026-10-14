@@ -8,7 +8,7 @@ import { CategoryFaq } from "@/components/pages/category-faq";
 // — Googlebot would index every typo as a soft-404. Now: known
 // CATEGORIES + small marketing-handle whitelist render normally;
 // everything else returns notFound().
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -507,6 +507,13 @@ export default async function CollectionPage({
     "fender-flares",
   ]);
   if (!collection) {
+    // Seasonal collections exist on Shopify only while their promo runs
+    // (holiday-sale.py publishes black-friday-deals Nov 20 and unpublishes it
+    // Dec 2). Outside the window, old links land on Best Sellers, not a 404.
+    const SEASONAL_FALLBACK: Record<string, string> = {
+      "black-friday-deals": "/collections/best-sellers",
+    };
+    if (SEASONAL_FALLBACK[handle]) redirect(SEASONAL_FALLBACK[handle]);
     if (!KNOWN_COLLECTION_HANDLES.has(handle)) {
       notFound();
     }
@@ -587,6 +594,8 @@ export default async function CollectionPage({
             "";
           return (
             <div
+              className="coll-hero"
+              data-has-image={hero.image ? "" : undefined}
               style={{
                 position: "relative",
                 width: "100%",
@@ -707,7 +716,8 @@ export default async function CollectionPage({
                       removed), so SEO keyword value is preserved. */}
                   {explainer && (
                     <p
-                      className="hidden md:block"
+                      className="hidden md:block coll-hero-explainer"
+                      title={explainer}
                       style={{
                         color: "rgba(255,255,255,0.72)",
                         fontSize: 15,

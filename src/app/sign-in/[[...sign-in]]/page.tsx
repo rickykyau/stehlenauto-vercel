@@ -49,6 +49,8 @@ export default function SignInPage() {
           Track orders, manage your garage, and keep your fitment data with you.
         </p>
       </header>
+      {/* reserve the widget's height so the page doesn't jump when Clerk mounts */}
+      <div style={{ minHeight: 520, width: "100%", display: "flex", justifyContent: "center" }}>
       <SignIn
         appearance={{
           variables: {
@@ -85,11 +87,13 @@ export default function SignInPage() {
             dividerText: { color: "#cfcfcf" },
             formFieldLabel: { color: "#ffffff", fontWeight: 600 },
             formFieldInput: {
+              minHeight: 44,
               background: "#1f1f1f",
               borderColor: "#2a2a2a",
               color: "#ffffff",
             },
             formButtonPrimary: {
+              minHeight: 44,
               background: "#f5a823",
               color: "#0a0a0a",
               fontWeight: 700,
@@ -115,6 +119,7 @@ export default function SignInPage() {
           },
         }}
       />
+      </div>
     </main>
   );
 }

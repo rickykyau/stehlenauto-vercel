@@ -243,7 +243,7 @@ export function Header({
               <span
                 className="mono"
                 style={{
-                  fontSize: 10,
+                  fontSize: 11,
                   color: "var(--color-muted)",
                   letterSpacing: "0.12em",
                 }}
@@ -427,7 +427,7 @@ export function Header({
                 <span
                   className="mono"
                   style={{
-                    fontSize: 9,
+                    fontSize: 11,
                     letterSpacing: "0.1em",
                     color: "var(--color-muted)",
                   }}

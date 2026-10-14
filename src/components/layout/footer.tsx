@@ -256,7 +256,7 @@ export function Footer() {
                 key={p}
                 className="mono"
                 style={{
-                  fontSize: 9,
+                  fontSize: 11,
                   padding: "4px 8px",
                   border: "1px solid var(--color-border)",
                   color: "var(--color-muted)",
