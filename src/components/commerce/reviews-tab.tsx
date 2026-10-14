@@ -176,7 +176,7 @@ export function ReviewsTab({ bundle }: { bundle: AmazonReviewBundle }) {
               Bought this and want to share your install? Email us a photo + your story.
             </span>
             <a
-              href="mailto:reviews@stehlenauto.com?subject=My%20Stehlen%20Review"
+              href="mailto:info@stehlenauto.com?subject=My%20Stehlen%20Review"
               className="mono"
               style={{
                 display: "inline-flex",

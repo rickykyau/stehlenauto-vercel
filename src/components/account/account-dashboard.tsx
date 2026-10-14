@@ -855,8 +855,8 @@ function AddressesTab() {
             951-332-7000
           </a>{" "}
           or email{" "}
-          <a href="mailto:support@stehlenauto.com" style={{ color: "var(--color-primary)" }}>
-            support@stehlenauto.com
+          <a href="mailto:info@stehlenauto.com" style={{ color: "var(--color-primary)" }}>
+            info@stehlenauto.com
           </a>
           .
         </div>

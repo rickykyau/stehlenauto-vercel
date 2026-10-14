@@ -37,7 +37,7 @@ const POLICIES: Record<string, PolicyContent> = {
       {
         heading: "How to claim",
         body: [
-          "Email warranty@stehlenauto.com with your order number, photos, and a brief description. We'll review within 1 business day and ship a replacement at no cost. No paperwork, no hoops.",
+          "Email info@stehlenauto.com with your order number, photos, and a brief description. We'll review within 1 business day and ship a replacement at no cost. No paperwork, no hoops.",
         ],
       },
     ],
@@ -90,7 +90,7 @@ const POLICIES: Record<string, PolicyContent> = {
       {
         heading: "What we need from you",
         body: [
-          "Confirm your YMM matches the listing. Snap a photo of the misfit. Email fitment@stehlenauto.com or use the chat. We'll handle the rest.",
+          "Confirm your YMM matches the listing. Snap a photo of the misfit. Email info@stehlenauto.com or use the chat. We'll handle the rest.",
         ],
       },
     ],
@@ -148,7 +148,7 @@ const POLICIES: Record<string, PolicyContent> = {
       {
         heading: "Your rights",
         body: [
-          "Email privacy@stehlenauto.com to request a data export, correction, or deletion. We respond within 30 days.",
+          "Email info@stehlenauto.com to request a data export, correction, or deletion. We respond within 30 days.",
         ],
       },
     ],
@@ -188,7 +188,7 @@ const POLICIES: Record<string, PolicyContent> = {
       {
         heading: "Right to know",
         body: [
-          "You can request a record of every category of personal information we've collected about you in the past 12 months by emailing privacy@stehlenauto.com.",
+          "You can request a record of every category of personal information we've collected about you in the past 12 months by emailing info@stehlenauto.com.",
         ],
       },
       {
@@ -235,7 +235,7 @@ const POLICIES: Record<string, PolicyContent> = {
       {
         heading: "Found a problem?",
         body: [
-          "Email accessibility@stehlenauto.com with the page URL and what didn't work. We aim to fix or work-around within 5 business days.",
+          "Email info@stehlenauto.com with the page URL and what didn't work. We aim to fix or work-around within 5 business days.",
         ],
       },
     ],
@@ -266,7 +266,7 @@ const POLICIES: Record<string, PolicyContent> = {
       {
         heading: "Reporting an issue",
         body: [
-          "If you believe we've used your image without proper attribution, please email credits@stehlenauto.com and we will resolve it within 1 business day.",
+          "If you believe we've used your image without proper attribution, please email info@stehlenauto.com and we will resolve it within 1 business day.",
         ],
       },
     ],

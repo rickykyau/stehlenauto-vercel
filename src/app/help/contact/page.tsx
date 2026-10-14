@@ -18,9 +18,9 @@ const CHANNELS = [
   {
     Icon: Icons.mail,
     label: "EMAIL",
-    value: "support@stehlenauto.com",
+    value: "info@stehlenauto.com",
     sub: "We reply within 1 business day",
-    href: "mailto:support@stehlenauto.com",
+    href: "mailto:info@stehlenauto.com",
   },
   {
     Icon: Icons.chat,
