@@ -1097,7 +1097,7 @@ export default async function PdpPage({
                   Fits your {vehicle.year} {vehicle.make} {vehicle.model} —
                   pick your{" "}
                   {requiredStrips
-                    .map((s) => s.label.toLowerCase().replace(/^your truck's\s*/, ""))
+                    .map((s) => s.label.toLowerCase().replace(/^your (truck|vehicle)['’]s\s*/, ""))
                     .join(" + ")}{" "}
                   to confirm.
                 </div>

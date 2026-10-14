@@ -65,6 +65,60 @@ export function ChatAssistant() {
     }
   }, [messages, status, open]);
 
+  // The launcher floats over the page, and page content runs to within 16-32px
+  // of the right edge, so no corner is always free (it covered the PDP "6' BED"
+  // chip and the tech-line link). While any control (button, input, chip,
+  // text link) sits under it, fade it out so it never blocks a tap; it comes
+  // back as soon as the spot is clear.
+  const fabRef = useRef<HTMLButtonElement>(null);
+  const [fabCovering, setFabCovering] = useState(false);
+  useEffect(() => {
+    if (open) return;
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const fab = fabRef.current;
+      if (!fab || getComputedStyle(fab).display === "none") return;
+      const r = fab.getBoundingClientRect();
+      const pad = 6;
+      const pts: [number, number][] = [
+        [r.left - pad, r.top - pad],
+        [r.right + pad, r.top - pad],
+        [r.left - pad, r.bottom + pad],
+        [r.right + pad, r.bottom + pad],
+        [(r.left + r.right) / 2, (r.top + r.bottom) / 2],
+        [r.left - pad, (r.top + r.bottom) / 2],
+        [(r.left + r.right) / 2, r.top - pad],
+      ];
+      const covering = pts.some(([x, y]) =>
+        document.elementsFromPoint(x, y).some((el) => {
+          if (fab.contains(el)) return false;
+          const ctl = el.closest(
+            "button, input, select, textarea, label, summary, [role=button], [role=radio], [role=tab], [role=checkbox], a",
+          );
+          if (!ctl || fab.contains(ctl)) return false;
+          // Big card links (product tiles, category images) are fine to float
+          // over; small controls and text links are not.
+          return ctl.tagName !== "A" || ctl.getBoundingClientRect().height < 90;
+        }),
+      );
+      setFabCovering((prev) => (prev === covering ? prev : covering));
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(check);
+    };
+    schedule();
+    const t = window.setInterval(schedule, 1200); // content that loads/moves without a scroll
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.clearInterval(t);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [open, pathname]);
+
   const send = (text: string) => {
     const trimmed = text.trim();
     if (!trimmed) return;
@@ -75,6 +129,7 @@ export function ChatAssistant() {
   if (!open) {
     return (
       <button
+        ref={fabRef}
         type="button"
         onClick={() => {
           setOpen(true);
@@ -82,30 +137,17 @@ export function ChatAssistant() {
         }}
         aria-label="Open chat"
         className="chat-fab"
+        data-covering={fabCovering ? "true" : undefined}
         style={{
-          position: "fixed",
           // Lift above the mobile sticky ATC bar when present (var set by
           // <MobileStickyAtc>; falls back to 24 elsewhere). Jordan regression.
           // Cycle 14BG: also lift above the mobile bottom nav (Jordan F-1).
           bottom:
-            "calc(var(--stehlen-sticky-atc-height, 0px) + var(--stehlen-bottom-nav-height, 0px) + 24px)",
-          right: 16,
-          zIndex: 80,
-          background: "var(--color-primary)",
-          color: "var(--color-background)",
-          border: 0,
-          width: 60,
-          height: 60,
-          borderRadius: 30,
-          boxShadow:
-            "0 12px 40px rgba(245,168,35,0.35), 0 4px 16px rgba(0,0,0,0.4)",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+            "calc(var(--stehlen-sticky-atc-height, 0px) + var(--stehlen-bottom-nav-height, 0px) + 16px)",
         }}
       >
-        <Icons.chat size={26} sw={2.4} />
+        <Icons.chat size={22} sw={2.4} />
+        <span className="chat-fab__label">Ask RIG</span>
         {unread > 0 && (
           <span
             style={{
