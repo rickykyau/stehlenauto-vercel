@@ -52,19 +52,6 @@ const STATUS_COLOR: Record<string, string> = {
   Cancelled: "var(--color-destructive)",
 };
 
-const SAMPLE_ADDRESSES = [
-  {
-    label: "HOME · DEFAULT SHIPPING",
-    name: "Mike Rodriguez",
-    line1: "2418 W Cactus Rd",
-    city: "Phoenix",
-    state: "AZ",
-    zip: "85029",
-    phone: "(602) 555-0188",
-    isDefault: true,
-  },
-];
-
 export function AccountDashboard({
   firstName,
   email,
@@ -845,61 +832,34 @@ function AddressesTab() {
         >
           SAVED ADDRESSES
         </h2>
-        <button type="button" className="btn btn-primary">
-          <Icons.plus size={14} /> ADD ADDRESS
-        </button>
       </div>
+      {/* Shipping addresses live in Shopify checkout (and Shop Pay), not here —
+          this tab used to show a hard-coded sample address to every customer. */}
       <div
-        className="grid grid-cols-1 md:grid-cols-2"
-        style={{ gap: 16 }}
+        style={{
+          background: "var(--color-surface)",
+          border: "1px solid var(--color-border)",
+          borderRadius: "var(--radius-md)",
+          padding: 20,
+          fontSize: 14,
+          lineHeight: 1.6,
+        }}
       >
-        {SAMPLE_ADDRESSES.map((a, i) => (
-          <div
-            key={i}
-            style={{
-              background: "var(--color-surface)",
-              border: `1px solid ${a.isDefault ? "var(--color-primary)" : "var(--color-border)"}`,
-              borderRadius: "var(--radius-md)",
-              padding: 20,
-              position: "relative",
-            }}
-          >
-            {a.isDefault && (
-              <span
-                className="badge badge-best"
-                style={{ position: "absolute", top: 12, right: 12 }}
-              >
-                DEFAULT
-              </span>
-            )}
-            <div
-              className="mono"
-              style={{
-                fontSize: 10,
-                color: "var(--color-muted)",
-                letterSpacing: "0.14em",
-                marginBottom: 8,
-              }}
-            >
-              {a.label}
-            </div>
-            <div style={{ fontSize: 14, fontWeight: 600 }}>{a.name}</div>
-            <div
-              style={{
-                fontSize: 13,
-                color: "var(--color-muted)",
-                marginTop: 6,
-                lineHeight: 1.6,
-              }}
-            >
-              {a.line1}
-              <br />
-              {a.city}, {a.state} {a.zip}
-              <br />
-              {a.phone}
-            </div>
-          </div>
-        ))}
+        <div style={{ fontWeight: 600, marginBottom: 6 }}>
+          Your shipping address is entered at checkout
+        </div>
+        <div style={{ color: "var(--color-muted)" }}>
+          Checkout remembers it for next time (Shop Pay saves it across stores). Need to
+          change the address on an order that hasn&apos;t shipped? Call{" "}
+          <a href="tel:9513327000" style={{ color: "var(--color-primary)" }}>
+            951-332-7000
+          </a>{" "}
+          or email{" "}
+          <a href="mailto:support@stehlenauto.com" style={{ color: "var(--color-primary)" }}>
+            support@stehlenauto.com
+          </a>
+          .
+        </div>
       </div>
     </div>
   );
