@@ -7,6 +7,7 @@ import { Icons } from "@/components/ui/icons";
 import { SpecRow } from "@/components/ui/spec-row";
 import { Stars } from "@/components/ui/stars";
 import { YmmButton } from "@/components/fitment/ymm-button";
+import { fitCaveat } from "@/lib/fitment/match";
 import { renderShopifyHtml } from "@/lib/utils/render-shopify-html";
 import { ReviewsTab } from "./reviews-tab";
 import { ReviewForm } from "./review-form";
@@ -401,6 +402,11 @@ export function PdpTabs({
                     <div className="mono" style={{ fontSize: 11, letterSpacing: "0.14em", color: "var(--color-success)", fontWeight: 700 }}>
                       ✓ FITS YOUR {vehicle.year} {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()}
                     </div>
+                    {fitCaveat(product.fitmentTable) && (
+                      <div style={{ fontSize: 12, color: "var(--color-primary)", marginTop: 2, fontWeight: 600 }}>
+                        Except {fitCaveat(product.fitmentTable)} models — check the note before ordering.
+                      </div>
+                    )}
                     <div style={{ fontSize: 12, color: "var(--color-muted)", marginTop: 2 }}>
                       Engineered for direct bolt-on installation. Backed by the Stehlen Fitment Guarantee.
                     </div>

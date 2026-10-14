@@ -17,10 +17,14 @@ export function MobileFilterDrawer({
   filters,
   vehicle,
   totalProducts,
+  inline = false,
 }: {
   filters: FilterGroup[];
   vehicle?: Vehicle;
   totalProducts: number;
+  /** Rendered inside the collection toolbar row (beside Sort) instead of as
+   *  its own full-width bar above the grid. */
+  inline?: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -40,9 +44,9 @@ export function MobileFilterDrawer({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="md:hidden btn btn-block"
+        className={inline ? "md:hidden btn flex-1" : "md:hidden btn btn-block"}
         style={{
-          marginBottom: 16,
+          marginBottom: inline ? 0 : 16,
           height: 44,
           display: "flex",
           alignItems: "center",

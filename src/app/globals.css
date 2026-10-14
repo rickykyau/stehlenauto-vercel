@@ -41,7 +41,7 @@
    * the warmer bg without crashing into body-text weight. */
   --color-section-light: #e6e0d6;
   --color-section-light-fg: #0a0a0a;
-  --color-section-light-muted: #8a8278;
+  --color-section-light-muted: #5f584f; /* ≥5:1 on --color-section-light (was #8a8278, 3:1) */
   /* Cycle 14AP (Diana): warm-tinted secondary text used on
    * --color-surface-warm sections (collection-page hero, reactivation
    * banner). The default --color-muted (#a0a0a0) is cool-grey and reads

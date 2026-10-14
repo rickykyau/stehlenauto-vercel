@@ -1,3 +1,4 @@
+import { stripSystemNotes } from "./note-cleanup";
 import type {
   FitmentApplication,
   FitmentSubattributes,
@@ -19,7 +20,8 @@ import type {
  * JSON fields are returned as a JSON-encoded string and must be parsed.
  */
 export function parseFitmentTable(p: ProductNode): FitmentTable | null {
-  const notesHtml = (p.fitmentNotes?.value ?? "").trim() || null;
+  // Ops notes ("[Fitment derived from CB item data …]") never reach shoppers.
+  const notesHtml = stripSystemNotes((p.fitmentNotes?.value ?? "").trim());
   const subattributes = parseSubattributes(p.fitmentSubattributes);
   // Cycle 14AS Step E: per-application records are the schema-correct
   // fitment data. Flat-list metafields (years/makes/models) are deleted

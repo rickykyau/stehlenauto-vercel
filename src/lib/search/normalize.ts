@@ -2,7 +2,7 @@
  * Turn what shoppers type into a query Shopify's search can match.
  *
  *  - "class iii hitch"        → "class 3 hitch"  (titles say "Class 3")
- *  - "chase rack/bull bar"    → "(chase rack) OR (bull bar)"
+ *  - "chase rack/bull bar"    → "(chase rack) OR bull"
  *  - "2020 silverado hitch"   → query "silverado hitch" + year 2020.
  *    Titles carry ranges ("2019-2024 …"), so a bare year never matches in
  *    Shopify; callers filter the results by fitment year instead.
@@ -21,6 +21,15 @@ export function normalizeSearchQuery(raw: string): NormalizedSearch {
   let q = raw.trim().replace(/\s+/g, " ");
 
   q = q.replace(/\bclass\s+(i{1,3}|iv|v)\b/gi, (_, r: string) => `class ${ROMAN[r.toLowerCase()]}`);
+
+  // Common shopper spellings → the words our titles use.
+  //  "bull bar" / "bullbar" / "bull-bar" / "push bar" → "bull", which matches
+  //  both "Bull Bar" and "Bull Guard" titles ("bull bar" missed every in-stock
+  //  Bull Guard); "grill" → "grille"; tonneau typos.
+  q = q
+    .replace(/\b(bull[- ]?bars?|push[- ]?bars?)\b/gi, "bull")
+    .replace(/\bgrills?\b/gi, "grille")
+    .replace(/\b(tonneu|tonnaeu|tonnue|tonnau|tonnea|toneau|tonaeu|tonno|tono)\b/gi, "tonneau");
 
   let year: number | null = null;
   const thisYear = new Date().getFullYear();

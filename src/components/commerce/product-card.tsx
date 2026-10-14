@@ -22,6 +22,10 @@ export function ProductCard({
   // trust erosion. Source: CatalogProduct.inventory (mirrors PDP
   // buy-box logic at buy-box.tsx:180 `inventory <= 0`).
   const outOfStock = inventory <= 0;
+  // Year can be blank (make+model-only context, e.g. /welcome-back from an email).
+  const vehicleName = vehicle
+    ? [vehicle.year, vehicle.make.toUpperCase(), vehicle.model.toUpperCase()].filter(Boolean).join(" ")
+    : "";
 
   return (
     <Link
@@ -64,7 +68,7 @@ export function ProductCard({
             className="mono"
             style={{
               padding: "3px 8px",
-              fontSize: 9,
+              fontSize: 10,
               fontWeight: 700,
               letterSpacing: "0.14em",
               background: "rgba(20,20,20,0.92)",
@@ -137,7 +141,7 @@ export function ProductCard({
               color: fits ? "var(--color-background)" : "var(--color-foreground)",
             }}
           >
-            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em" }}>
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em" }}>
               {/* Cycle 14AW (Jordan F-NEW-2): the misfit ribbon was bare
                   "✗ DOES NOT FIT" with no vehicle reference, while the
                   fits ribbon names the year+make+model. A red badge with
@@ -147,8 +151,8 @@ export function ProductCard({
                   signal is unambiguous: this part doesn't fit YOUR
                   truck, not that the part is bad. */}
               {fits
-                ? `✓ FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
-                : `✗ DOES NOT FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
+                ? `✓ FITS YOUR ${vehicleName}`
+                : `✗ DOES NOT FIT YOUR ${vehicleName}`}
             </span>
           </div>
         )}
@@ -168,12 +172,11 @@ export function ProductCard({
               borderTop: "1px solid var(--color-border-2)",
             }}
           >
-            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em" }}>
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em" }}>
               {/* Cycle 14AW (Jordan F-NEW-2 follow-on): also include
                   vehicle.year here for parity with the FITS / DOES NOT
                   FIT ribbons. */}
-              CHECK FITMENT FOR YOUR {vehicle.year}{" "}
-              {vehicle.make.toUpperCase()} {vehicle.model.toUpperCase()}
+              CHECK FITMENT FOR YOUR {vehicleName}
             </span>
           </div>
         )}
@@ -192,9 +195,10 @@ export function ProductCard({
         <div
           className="mono"
           style={{
-            fontSize: 9,
-            color: "var(--color-muted-2)",
-            letterSpacing: "0.12em",
+            // ≥11px + #a0a0a0 (≈7:1 on the card) — was 9px at 3.4:1.
+            fontSize: 11,
+            color: "var(--color-muted)",
+            letterSpacing: "0.08em",
           }}
         >
           {sku}
@@ -215,7 +219,7 @@ export function ProductCard({
             <span
               key={c}
               className="chip"
-              style={{ height: 20, padding: "0 7px", fontSize: 9 }}
+              style={{ height: 22, padding: "0 7px", fontSize: 11 }}
             >
               {c}
             </span>
@@ -232,7 +236,7 @@ export function ProductCard({
             <span
               className="mono"
               style={{
-                fontSize: 10,
+                fontSize: 11,
                 color: "var(--color-muted)",
                 letterSpacing: "0.06em",
               }}

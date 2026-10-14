@@ -174,8 +174,8 @@ export function Footer() {
                   aria-label={s.name}
                   className="mono"
                   style={{
-                    width: 36,
-                    height: 36,
+                    width: 44,
+                    height: 44,
                     border: "1px solid var(--color-border)",
                     borderRadius: "var(--radius-sm)",
                     display: "flex",
@@ -220,6 +220,7 @@ export function Footer() {
                       display: "inline-flex",
                       alignItems: "center",
                       minHeight: 44,
+                      minWidth: 44,
                     }}
                   >
                     {it.label}

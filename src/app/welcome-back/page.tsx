@@ -135,6 +135,14 @@ export default async function WelcomeBackPage({
   const utm = first(sp.utm_content) || first(sp.utm_campaign);
 
   const hasVehicle = Boolean(make && model);
+  // Exact year only when the link itself carries one. Emails send make+model
+  // only — the "best" coverage year below is a merchandising probe, never the
+  // shopper's truck, so it must not be saved or shown as "your 2004 F-150".
+  const urlYearNum = Number(first(sp.year));
+  const urlYear =
+    hasVehicle && Number.isInteger(urlYearNum) && urlYearNum >= 1950 && urlYearNum <= new Date().getUTCFullYear() + 2
+      ? urlYearNum
+      : undefined;
   const vehicleLabel = hasVehicle ? `${titleCase(make)} ${titleCase(model)}` : "";
   // Mirror the sitemap/email vehicle-slug derivation → /vehicle/[slug] hub
   // (which already handles year selection + shows parts that fit).
@@ -156,7 +164,7 @@ export default async function WelcomeBackPage({
   // True when the vehicle had no matching parts and the grid shows best-sellers.
   let genericPicks = false;
   if (hasVehicle) {
-    const year = bestYearFor(make, model);
+    const year = urlYear ?? bestYearFor(make, model);
     const fitVehicle = { year: String(year), make: titleCase(make), model: titleCase(model) };
     // The email targets a make/model, not an exact year. Show make/model-relevant,
     // in-stock products that are NOT a confirmed misfit and NOT an EV-only variant
@@ -212,9 +220,16 @@ export default async function WelcomeBackPage({
     const r = REVIEW_BY_HANDLE[p.handle];
     return r && r.count > 0 ? { ...p, rating: r.rating, reviews: r.count } : p;
   });
-  const fitVehicleForCard = hasVehicle
-    ? { year: String(bestYearFor(make, model)), make: titleCase(make), model: titleCase(model) }
-    : undefined;
+  // Without an exact year the grid was picked at a coverage-probe year, so the
+  // cards must not claim "fits"/"doesn't fit" — show the neutral make+model
+  // ribbon and let the PDP (where the shopper picks their year) give the verdict.
+  if (hasVehicle && !urlYear && !genericPicks) {
+    fitProducts = fitProducts.map((p) => ({ ...p, fits: undefined }));
+  }
+  const fitVehicleForCard =
+    hasVehicle && !genericPicks
+      ? { year: urlYear ? String(urlYear) : "", make: titleCase(make), model: titleCase(model) }
+      : undefined;
 
   return (
     <main style={{ background: "var(--color-background)" }}>
@@ -222,7 +237,8 @@ export default async function WelcomeBackPage({
         code={code}
         make={hasVehicle ? titleCase(make) : undefined}
         model={hasVehicle ? titleCase(model) : undefined}
-        year={hasVehicle ? bestYearFor(make, model) : undefined}
+        year={urlYear}
+        staleGuessYear={hasVehicle && !urlYear ? bestYearFor(make, model) : undefined}
         utm={utm}
       />
 

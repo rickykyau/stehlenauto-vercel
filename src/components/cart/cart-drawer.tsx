@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 import type { Cart } from "@/lib/cart/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
-import { checkFitment } from "@/lib/fitment/match";
+import { checkFitment, fitCaveat } from "@/lib/fitment/match";
 import type { SubModelAnswer } from "@/lib/garage/types";
 import { onOpenCartDrawer } from "./cart-events";
 
@@ -137,6 +137,9 @@ export function CartDrawer({
     [lines, vehicle, subModelAnswers],
   );
   const allFit = vehicle && fitments.length > 0 && fitments.every((f) => f === true);
+  // Sub-variant exception per line ("EcoBoost") — a "fits" line must say it.
+  const caveats = lines.map((l, i) => (fitments[i] === true ? fitCaveat(l.fitmentTable) : null));
+  const anyCaveat = caveats.some(Boolean);
   // Cycle 14AU F-3 (Jordan): make MIXED FITMENT actionable — count
   // misfit lines and surface the first misfit's index for scroll-anchor.
   const misfitCount = fitments.filter((f) => f === false).length;
@@ -218,6 +221,8 @@ export function CartDrawer({
               borderBottom: "1px solid var(--color-border)",
               background: anyMisfit
                 ? "rgba(239,68,68,0.08)"
+                : allFit && anyCaveat
+                  ? "rgba(245,168,35,0.08)"
                 : allFit
                   ? "rgba(34,197,94,0.08)"
                   : "var(--color-surface-2)",
@@ -230,6 +235,8 @@ export function CartDrawer({
                 letterSpacing: "0.1em",
                 color: anyMisfit
                   ? "var(--color-destructive)"
+                  : allFit && anyCaveat
+                    ? "var(--color-primary)"
                   : allFit
                     ? "var(--color-success)"
                     : "var(--color-muted)",
@@ -243,7 +250,7 @@ export function CartDrawer({
                     // banner copy "ALL ITEMS CONFIRMED FIT" so the drawer
                     // (first touchpoint) and the full cart (second
                     // touchpoint) speak the same trust language.
-                    `ALL ITEMS CONFIRMED FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                    `${anyCaveat ? "ALL ITEMS FIT" : "ALL ITEMS CONFIRMED FIT"} YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}${anyCaveat ? " — CHECK THE NOTE BELOW" : ""}`
                   : anyUnknown
                     ? `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} — REVIEW EACH ITEM`
                     : `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
@@ -354,26 +361,34 @@ export function CartDrawer({
                     {vehicle && (() => {
                       const fit = fitments[idx];
                       const bg =
-                        fit === true
+                        fit === true && caveats[idx]
+                          ? "rgba(245,168,35,0.15)"
+                          : fit === true
                           ? "rgba(34,197,94,0.15)"
                           : fit === false
                             ? "rgba(239,68,68,0.15)"
                             : "rgba(245,168,35,0.15)";
                       const fg =
-                        fit === true
+                        fit === true && caveats[idx]
+                          ? "var(--color-primary)"
+                          : fit === true
                           ? "var(--color-success)"
                           : fit === false
                             ? "var(--color-destructive)"
                             : "var(--color-primary)";
                       const border =
-                        fit === true
+                        fit === true && caveats[idx]
+                          ? "1px solid rgba(245,168,35,0.4)"
+                          : fit === true
                           ? "1px solid rgba(34,197,94,0.4)"
                           : fit === false
                             ? "1px solid rgba(239,68,68,0.4)"
                             : "1px solid rgba(245,168,35,0.4)";
                       const label =
                         fit === true
-                          ? "✓ FITS"
+                          ? caveats[idx]
+                            ? `✓ FITS · NOT FOR ${caveats[idx]!.toUpperCase()}`
+                            : "✓ FITS"
                           : fit === false
                             ? "✗ DOES NOT FIT"
                             : "VERIFY FITMENT ON PDP";

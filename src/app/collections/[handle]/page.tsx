@@ -773,12 +773,22 @@ export default async function CollectionPage({
         vehicle={vehicle}
         showAllProducts={showAllProducts}
         makeMismatchLabel={makeScopeLabel}
+        mobileFilters={
+          collection.products.length > 0 ? (
+            <MobileFilterDrawer
+              inline
+              filters={filters}
+              vehicle={vehicle}
+              totalProducts={collection.totalProducts}
+            />
+          ) : undefined
+        }
       />
 
       {/* Body — always rendered; DimensionPicker is a nudge, not a gate. */}
       <div
-        className="container-x grid grid-cols-1 md:grid-cols-[264px_1fr]"
-        style={{ gap: 32, paddingTop: 24, paddingBottom: 64 }}
+        className="container-x grid grid-cols-1 md:grid-cols-[264px_1fr] pt-3 md:pt-6"
+        style={{ gap: 32, paddingBottom: 64 }}
       >
         {/* Cycle 14Z (Mike-O3 NEW-1): hide the filter sidebar entirely when
             the collection has 0 products — showing facet counts like "5'
@@ -793,13 +803,7 @@ export default async function CollectionPage({
         <div style={collection.products.length === 0 ? { gridColumn: "1 / -1" } : undefined}>
           {/* Mobile filter drawer (Mike F-35): mobile customers had no way to
               filter at all; sidebar was hidden md:block. */}
-          {collection.products.length > 0 && (
-            <MobileFilterDrawer
-              filters={filters}
-              vehicle={vehicle}
-              totalProducts={collection.totalProducts}
-            />
-          )}
+
           {/* Cycle 14AO (owner): collection grid now hides confirmed
               mismatches by default whenever a vehicle is set. The honest
               messaging splits three ways:

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, useTransition } from "react";
+import { useCallback, useState, useTransition, type ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
@@ -22,6 +22,7 @@ export function CollectionToolbar({
   totalProducts,
   showAllProducts = false,
   makeMismatchLabel = null,
+  mobileFilters,
 }: {
   vehicle?: Vehicle;
   totalProducts: number;
@@ -41,6 +42,8 @@ export function CollectionToolbar({
    * because there's nothing meaningful to toggle.
    */
   makeMismatchLabel?: string | null;
+  /** Phone-only filter trigger rendered beside the sort select (one row). */
+  mobileFilters?: ReactNode;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -111,9 +114,9 @@ export function CollectionToolbar({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingTop: 12,
-          paddingBottom: 12,
-          gap: 12,
+          paddingTop: 10,
+          paddingBottom: 10,
+          gap: 8,
           flexWrap: "wrap",
         }}
       >
@@ -242,12 +245,17 @@ export function CollectionToolbar({
           )}
         </div>
 
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        {/* Phones: Filters + Sort share one row so the first product cards
+            reach the first screen. */}
+        <div
+          className="w-full md:w-auto"
+          style={{ display: "flex", gap: 8, alignItems: "center" }}
+        >
+          {mobileFilters}
           <select
             value={currentSort}
             onChange={(e) => onSortChange(e.target.value)}
-            className="select"
-            style={{ width: 220 }}
+            className="select flex-1 min-w-0 md:flex-none md:w-[220px]"
             aria-label="Sort by"
           >
             {SORT_OPTIONS.map((o) => (

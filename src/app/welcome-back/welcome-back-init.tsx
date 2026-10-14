@@ -8,8 +8,9 @@ import { useEffect } from "react";
  *  1. Drop a non-httpOnly `stehlen_promo` cookie so the server cart auto-applies
  *     the code at checkout (see lib/cart/server.ts applyPromoCode) — the
  *     customer never has to copy/paste it.
- *  2. Seed the `stehlen_vehicle` garage cookie from the email's make/model/year
- *     params so every PDP the shopper opens already knows their truck and shows
+ *  2. Seed the `stehlen_vehicle` garage cookie — ONLY when the link carries an
+ *     exact year (emails send make+model only; a guessed year showed every
+ *     reader "2004 Ford F-150") — so every PDP already knows their truck and shows
  *     the green "✓ FITS YOUR <vehicle>" verdict — instead of the cold
  *     "VERIFY FITMENT" state they used to land on (P0-2). Format mirrors
  *     lib/garage/cookies.ts writeVehicleCookie ({id, year, make, model}) so the
@@ -32,13 +33,17 @@ export function WelcomeBackInit({
   make,
   model,
   year,
+  staleGuessYear,
   utm,
 }: {
   code: string;
   make?: string;
   model?: string;
-  /** Latest catalog year for make/model, computed server-side. */
+  /** Exact year from the link's `year=` param — never a guessed year. */
   year?: number;
+  /** The coverage-probe year older builds saved as the shopper's vehicle; a
+   *  cookie that exactly matches it (same make/model) is cleared. */
+  staleGuessYear?: number;
   utm?: string;
 }) {
   useEffect(() => {
@@ -62,6 +67,34 @@ export function WelcomeBackInit({
       )}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
     }
 
+    // Undo the old guessed-year seed (e.g. "2004 Ford F-150" for every F-150
+    // reader). Only an exact make/model/guess-year match is cleared.
+    if (!year && staleGuessYear && make && model) {
+      const raw = document.cookie
+        .split(";")
+        .map((c) => c.trim())
+        .find((c) => c.startsWith(`${VEHICLE_COOKIE}=`));
+      try {
+        const v = raw
+          ? (JSON.parse(decodeURIComponent(raw.slice(VEHICLE_COOKIE.length + 1))) as {
+              year?: string;
+              make?: string;
+              model?: string;
+            })
+          : null;
+        if (
+          v &&
+          String(v.year) === String(staleGuessYear) &&
+          v.make?.toLowerCase() === make.toLowerCase() &&
+          v.model?.toLowerCase() === model.toLowerCase()
+        ) {
+          document.cookie = `${VEHICLE_COOKIE}=; path=/; max-age=0; samesite=lax`;
+        }
+      } catch {
+        /* unreadable cookie — leave it */
+      }
+    }
+
     try {
       const w = window as unknown as {
         gtag?: (...a: unknown[]) => void;
@@ -75,7 +108,7 @@ export function WelcomeBackInit({
     } catch {
       /* analytics is best-effort */
     }
-  }, [code, make, model, utm]);
+  }, [code, make, model, year, staleGuessYear, utm]);
 
   return null;
 }

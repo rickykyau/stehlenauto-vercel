@@ -96,9 +96,14 @@ export default async function SearchPage({
   // fits-first (FITS → VERIFY → DOES NOT FIT, Shopify relevance within
   // each bucket, per Cycle 14AU F-1). Price sort overrides globally.
   const painted = withFitment(filtered, vehicle, subModelAnswers);
+  // Sold-out items always sit after in-stock ones (a sold-out bull guard was
+  // the first "f150 bull bar" result).
+  const soldOut = (p: { inventory: number }) => (p.inventory > 0 ? 0 : 1);
   const displayProducts = sortParam
-    ? [...painted].sort((a, b) =>
-        sortParam === "price-asc" ? a.price - b.price : b.price - a.price,
+    ? [...painted].sort(
+        (a, b) =>
+          soldOut(a) - soldOut(b) ||
+          (sortParam === "price-asc" ? a.price - b.price : b.price - a.price),
       )
     : painted
         .map((p, idx) => ({ p, idx }))
@@ -108,6 +113,9 @@ export default async function SearchPage({
           const ra = rank(a.p.fits);
           const rb = rank(b.p.fits);
           if (ra !== rb) return ra - rb;
+          const sa = soldOut(a.p);
+          const sb = soldOut(b.p);
+          if (sa !== sb) return sa - sb;
           return a.idx - b.idx;
         })
         .map(({ p }) => p);
@@ -124,15 +132,12 @@ export default async function SearchPage({
           borderBottom: "1px solid var(--color-border)",
         }}
       >
-        <div
-          className="container-x"
-          style={{ paddingTop: 36, paddingBottom: 24 }}
-        >
+        <div className="container-x pt-4 pb-4 md:pt-9 md:pb-6">
           <SearchInput defaultQuery={query} />
           {!empty && (
             <div
               style={{
-                marginTop: 20,
+                marginTop: 14,
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "baseline",
@@ -143,7 +148,9 @@ export default async function SearchPage({
               <h1
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: 36,
+                  // Phones: ≤24px so results reach the first screen.
+                  fontSize: "clamp(22px, 5.6vw, 36px)",
+                  lineHeight: 1.1,
                   textTransform: "uppercase",
                   letterSpacing: "-0.01em",
                 }}
@@ -153,7 +160,7 @@ export default async function SearchPage({
                 &rdquo;
               </h1>
               <span
-                className="mono"
+                className={vehicle ? "mono" : "mono hidden md:inline"}
                 style={{
                   fontSize: 11,
                   letterSpacing: "0.1em",
@@ -315,8 +322,8 @@ export default async function SearchPage({
         </div>
       ) : (
         <div
-          className="container-x"
-          style={{ paddingTop: 32, paddingBottom: 64 }}
+          className="container-x pt-4 md:pt-8"
+          style={{ paddingBottom: 64 }}
         >
           {/* Did you mean */}
           {vehicleFilterRelaxed && (
@@ -490,10 +497,12 @@ export default async function SearchPage({
           {/* Cycle 5 (Mike): "MATCHES IN: …" used to render even when the
               query had 0 results, contradicting the "NO RESULTS" banner above
               it. Hide when there's nothing to match. */}
+          {/* Phones: category chips pushed every result below the first
+              screen — desktop only (the header menu covers categories). */}
           {filtered.length > 0 && (
             <div
+              className="hidden md:flex"
               style={{
-                display: "flex",
                 gap: 6,
                 flexWrap: "wrap",
                 marginBottom: 20,

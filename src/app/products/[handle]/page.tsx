@@ -35,6 +35,8 @@ import { getCurrentVehicle } from "@/lib/garage/server";
 import { getSubModelAnswers } from "@/lib/garage/server";
 import {
   checkFitment,
+  fitCaveat,
+  fitsOnceBedPicked,
   getFitmentReason,
   sharesVehicleAudience,
   withFitment,
@@ -208,6 +210,8 @@ export default async function PdpPage({
   // garage gets DOES NOT FIT on a 6.5ft tonneau (bed-length gate).
   const productFits = checkFitment(product, vehicle ?? null, subModelAnswers);
   const productWithFit = { ...product, fits: productFits };
+  // Sub-variant exception on a YMM fit ("Will not fit EcoBoost").
+  const fitException = productFits === true ? fitCaveat(product.fitmentTable) : null;
 
   // Cycle 14O (admin): warehouse-verified fitment note for this product.
   // 103 products covered by the merch-team CSV. When present, shown
@@ -289,6 +293,13 @@ export default async function PdpPage({
     subModelAnswers.some((a) => a.group === s.group && a.value),
   );
   const fullyConfirmed = productFits === true && allStripsAnswered;
+  // Vehicle matches; only the bed-length pick is outstanding → show the
+  // "pick your bed length" prompt, not "we haven't verified this part".
+  const pendingBedPick =
+    productFits === undefined &&
+    !allStripsAnswered &&
+    requiredStrips.some((st) => st.group === "bed_length") &&
+    fitsOnceBedPicked(product, vehicle ?? null, subModelAnswers);
 
   // Cycle 7 (owner): real image gallery from Shopify, not the featured image
   // duplicated 4 times. The adapter dedupes by URL and falls back to
@@ -772,9 +783,14 @@ export default async function PdpPage({
             {vehicle && fullyConfirmed ? (
               <div
                 style={{
-                  background:
-                    "linear-gradient(135deg, rgba(34,197,94,0.15) 0%, rgba(34,197,94,0.05) 100%)",
-                  border: "1px solid rgba(34,197,94,0.5)",
+                  // Amber when the fit carries a sub-variant exception
+                  // ("not for EcoBoost") — never an unqualified green ✓.
+                  background: fitException
+                    ? "linear-gradient(135deg, rgba(245,168,35,0.14) 0%, rgba(245,168,35,0.04) 100%)"
+                    : "linear-gradient(135deg, rgba(34,197,94,0.15) 0%, rgba(34,197,94,0.05) 100%)",
+                  border: fitException
+                    ? "1px solid rgba(245,168,35,0.55)"
+                    : "1px solid rgba(34,197,94,0.5)",
                   borderRadius: "var(--radius-md)",
                   padding: 16,
                   position: "relative",
@@ -788,7 +804,7 @@ export default async function PdpPage({
                     left: 0,
                     height: "100%",
                     width: 4,
-                    background: "var(--color-success)",
+                    background: fitException ? "var(--color-primary)" : "var(--color-success)",
                   }}
                 />
                 <div
@@ -804,7 +820,7 @@ export default async function PdpPage({
                       width: 24,
                       height: 24,
                       borderRadius: "50%",
-                      background: "var(--color-success)",
+                      background: fitException ? "var(--color-primary)" : "var(--color-success)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -819,16 +835,30 @@ export default async function PdpPage({
                     style={{
                       fontSize: 11,
                       letterSpacing: "0.14em",
-                      color: "var(--color-success)",
+                      color: fitException ? "var(--color-primary)" : "var(--color-success)",
                       fontWeight: 700,
                     }}
                   >
-                    CONFIRMED FITMENT
+                    {fitException ? "FITS — WITH AN EXCEPTION" : "CONFIRMED FITMENT"}
                   </span>
                 </div>
                 <div style={{ fontSize: 18, fontWeight: 600 }}>
                   Fits your {vehicle.year} {vehicle.make} {vehicle.model}
+                  {fitException ? ` — except ${fitException}` : ""}
                 </div>
+                {fitException && (
+                  <div style={{ fontSize: 13, color: "var(--color-muted)", marginTop: 4 }}>
+                    Not for {fitException} models.{" "}
+                    {warehouseNote?.notes ? (
+                      <a href="#warehouse-note" style={{ color: "var(--color-primary)", textDecoration: "underline" }}>
+                        See the fitment note
+                      </a>
+                    ) : (
+                      "Check the compatibility table below"
+                    )}{" "}
+                    before ordering.
+                  </div>
+                )}
                 {/* Cycle 14X+ post-sync (Jordan F-2): when the metafield
                     confirms a single cab type for this product, surface
                     it inline so the buyer doesn't have to scroll to the
@@ -1026,7 +1056,7 @@ export default async function PdpPage({
                   SHOP PARTS FOR YOUR {vehicle.make.toUpperCase()} →
                 </Link>
               </div>
-            ) : vehicle && productWithFit.fits === true && !allStripsAnswered ? (
+            ) : vehicle && (productWithFit.fits === true || pendingBedPick) && !allStripsAnswered ? (
               // Cycle 14g (Mike-7 MAJOR F-10): when title-match is positive
               // but a required sub-model strip (bed length, cab type) is
               // unanswered, the previous neutral "we haven't verified, call

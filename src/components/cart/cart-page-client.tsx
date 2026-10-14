@@ -7,7 +7,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 import type { Cart } from "@/lib/cart/types";
 import type { Vehicle } from "@/components/ui/vehicle-pill";
-import { checkFitment } from "@/lib/fitment/match";
+import { checkFitment, fitCaveat } from "@/lib/fitment/match";
 import type { SubModelAnswer } from "@/lib/garage/types";
 
 export function CartPageClient({
@@ -162,6 +162,9 @@ export function CartPageClient({
     [lines, vehicle, subModelAnswers],
   );
   const allFit = vehicle && fitments.length > 0 && fitments.every((f) => f === true);
+  // Sub-variant exception per line ("EcoBoost") — a "fits" line must say it.
+  const caveats = lines.map((l, i) => (fitments[i] === true ? fitCaveat(l.fitmentTable) : null));
+  const anyCaveat = caveats.some(Boolean);
   const anyMisfit = vehicle && fitments.some((f) => f === false);
   const anyUnknown = vehicle && fitments.some((f) => f === undefined);
   const discount = promoApplied ? subtotal * 0.1 : 0;
@@ -313,11 +316,15 @@ export function CartPageClient({
               style={{
                 background: anyMisfit
                   ? "rgba(239,68,68,0.08)"
+                  : allFit && anyCaveat
+                    ? "rgba(245,168,35,0.08)"
                   : allFit
                     ? "rgba(34,197,94,0.08)"
                     : "var(--color-surface-2)",
                 border: anyMisfit
                   ? "1px solid rgba(239,68,68,0.4)"
+                  : allFit && anyCaveat
+                    ? "1px solid rgba(245,168,35,0.4)"
                   : allFit
                     ? "1px solid rgba(34,197,94,0.3)"
                     : "1px solid var(--color-border)",
@@ -345,6 +352,8 @@ export function CartPageClient({
                   letterSpacing: "0.08em",
                   color: anyMisfit
                     ? "var(--color-destructive)"
+                    : allFit && anyCaveat
+                      ? "var(--color-primary)"
                     : allFit
                       ? "var(--color-success)"
                       : "var(--color-muted)",
@@ -364,7 +373,7 @@ export function CartPageClient({
                        PDP's "CONFIRMED FITMENT" — a customer who saw
                        green on the PDP should see green confidence in
                        the cart too. */
-                    ? `ALL ITEMS CONFIRMED FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                    ? `${anyCaveat ? "ALL ITEMS FIT" : "ALL ITEMS CONFIRMED FIT"} YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}${anyCaveat ? " — CHECK THE NOTE BELOW" : ""}`
                     : anyUnknown
                       ? `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()} — REVIEW EACH ITEM`
                       : `GARAGE: ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
@@ -473,21 +482,27 @@ export function CartPageClient({
                         letterSpacing: "0.08em",
                         borderRadius: "var(--radius-sm)",
                         background:
-                          fitments[idx] === true
+                          fitments[idx] === true && caveats[idx]
+                            ? "rgba(245,168,35,0.12)"
+                            : fitments[idx] === true
                             ? "rgba(34,197,94,0.12)"
                             : "rgba(239,68,68,0.12)",
                         color:
-                          fitments[idx] === true
+                          fitments[idx] === true && caveats[idx]
+                            ? "var(--color-primary)"
+                            : fitments[idx] === true
                             ? "var(--color-success)"
                             : "var(--color-destructive)",
                         border:
-                          fitments[idx] === true
+                          fitments[idx] === true && caveats[idx]
+                            ? "1px solid rgba(245,168,35,0.4)"
+                            : fitments[idx] === true
                             ? "1px solid rgba(34,197,94,0.4)"
                             : "1px solid rgba(239,68,68,0.4)",
                       }}
                     >
                       {fitments[idx] === true
-                        ? `✓ FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`
+                        ? `✓ FITS YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}${caveats[idx] ? ` — CHECK: NOT FOR ${caveats[idx]!.toUpperCase()}` : ""}`
                         : `✗ DOES NOT FIT YOUR ${vehicle.year} ${vehicle.make.toUpperCase()} ${vehicle.model.toUpperCase()}`}
                     </div>
                   )}

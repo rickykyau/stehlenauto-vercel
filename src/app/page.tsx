@@ -657,7 +657,7 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
-          <Link href="/welcome-back" className="btn btn-sm">
+          <Link href="/welcome-back" className="btn btn-sm" style={{ minHeight: 44 }}>
             CLAIM 10% RETURNING-CUSTOMER OFFER →
           </Link>
         </div>

@@ -361,7 +361,16 @@ export default function SupportPage() {
             </h3>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            <Link href="/help/contact" className="btn">
+            {/* Dark outline on the yellow panel — white-on-yellow was 2:1. */}
+            <Link
+              href="/help/contact"
+              className="btn"
+              style={{
+                color: "var(--color-primary-foreground)",
+                borderColor: "var(--color-primary-foreground)",
+                fontWeight: 700,
+              }}
+            >
               MESSAGE
             </Link>
             <a

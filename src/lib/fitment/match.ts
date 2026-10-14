@@ -526,6 +526,74 @@ function notesIndicateExclusion(
 }
 
 /**
+ * The vehicle matches but checkFitment is holding the verdict only because the
+ * shopper hasn't picked a bed length yet (title names one, e.g. "5 Ft Bed").
+ * The PDP should then say "Fits your 2021 Tacoma — pick your bed length",
+ * not "We haven't verified this part for your vehicle". Re-runs the full
+ * check with the product's own bed length as the answer, so every exclusion
+ * and note rule still applies.
+ */
+export function fitsOnceBedPicked(
+  product: Parameters<typeof checkFitment>[0],
+  vehicle: Vehicle | null | undefined,
+  subModelAnswers?: SubModelAnswer[] | null,
+): boolean {
+  if (!vehicle) return false;
+  if (subModelAnswers?.some((a) => a.group === "bed_length")) return false;
+  if (checkFitment(product, vehicle, subModelAnswers) !== undefined) return false;
+  const beds = extractBedLengths([product.title ?? "", product.fitTitle ?? ""].join(" "));
+  if (beds.length !== 1) return false;
+  return (
+    checkFitment(product, vehicle, [
+      ...(subModelAnswers ?? []),
+      { group: "bed_length", value: beds[0]! },
+    ]) === true
+  );
+}
+
+/**
+ * A YMM "fits" verdict can still carry a sub-variant exception the garage
+ * can't capture (engine, trim, EV, bed option): "Will not fit EcoBoost".
+ * checkFitment deliberately keeps those green (notesIndicateExclusion →
+ * "ignore"), so every surface that says "fits" must also say the exception.
+ * Returns a short label ("EcoBoost", "Lightning / Heritage") or null.
+ */
+const SUB_VARIANT_TOKENS: [RegExp, string][] = [
+  [/\becoboost\b/, "EcoBoost"],
+  [/\blightning\b/, "Lightning"],
+  [/\bheritage\b/, "Heritage"],
+  [/\braptor\b/, "Raptor"],
+  [/\btrx\b/, "TRX"],
+  [/\bpower wagon\b/, "Power Wagon"],
+  [/\bzr2\b/, "ZR2"],
+  [/\bdiesel\b/, "diesel"],
+  [/\bhybrid\b/, "hybrid"],
+  [/\b(electric|ev)\b/, "electric"],
+  [/\brambox\b/, "RamBox"],
+  [/\bcarbon ?(pro|fiber)? bed\b/, "carbon bed"],
+  [/\b(dually|dual rear wheels?|drw)\b/, "dually"],
+  [/\bfactory[- ](installed )?(receiver|hitch|tow)/, "factory receiver"],
+];
+
+export function fitCaveat(table: FitmentTable | null | undefined): string | null {
+  if (!table) return null;
+  const engines = (table.subattributes?.engineExclusions ?? []).filter(Boolean);
+  const found: string[] = [...engines];
+  const text = (table.notesHtml ?? "").toLowerCase().replace(/<[^>]+>/g, " ");
+  const exclusionRegex =
+    /\b(will not fit|won['’]?t fit|does not fit|doesn['’]?t fit|not compatible with|not for)\b([^.;!?\n]+)/g;
+  let m: RegExpExecArray | null;
+  while ((m = exclusionRegex.exec(text)) !== null) {
+    const clause = m[2] ?? "";
+    for (const [re, label] of SUB_VARIANT_TOKENS) {
+      if (re.test(clause) && !found.some((f) => f.toLowerCase() === label.toLowerCase()))
+        found.push(label);
+    }
+  }
+  return found.length ? found.slice(0, 3).join(" / ") : null;
+}
+
+/**
  * Fitment check used everywhere we render a product card / cart line /
  * similar-products rail.
  *

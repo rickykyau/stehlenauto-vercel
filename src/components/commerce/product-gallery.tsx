@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { Icons } from "@/components/ui/icons";
+import { ImageZoomViewer } from "./image-zoom-viewer";
 
 export function ProductGallery({
   images,
@@ -12,6 +13,8 @@ export function ProductGallery({
   alt: string;
 }) {
   const [idx, setIdx] = useState(0);
+  // Full-screen zoom viewer (tap / click the main photo).
+  const [zoomOpen, setZoomOpen] = useState(false);
   const safeImages = images.length > 0 ? images : [];
   const total = safeImages.length;
   const current = safeImages[idx];
@@ -125,6 +128,42 @@ export function ProductGallery({
           priority
           style={{ objectFit: "contain" }}
         />
+        {/* Whole-photo hit area → full-screen zoom. Sits under the counter
+            and arrow buttons so those keep working. */}
+        <button
+          type="button"
+          onClick={() => setZoomOpen(true)}
+          aria-label={`Zoom photo ${idx + 1} of ${total}`}
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "transparent",
+            border: 0,
+            padding: 0,
+            cursor: "zoom-in",
+          }}
+        />
+        <span
+          aria-hidden="true"
+          className="mono"
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            fontSize: 11,
+            letterSpacing: "0.08em",
+            color: "#fff",
+            background: "rgba(0,0,0,0.6)",
+            padding: "5px 8px",
+            borderRadius: 2,
+            pointerEvents: "none",
+          }}
+        >
+          <Icons.search size={12} /> TAP TO ZOOM
+        </span>
         <div
           className="mono"
           style={{
@@ -137,6 +176,7 @@ export function ProductGallery({
             padding: "4px 8px",
             borderRadius: 2,
             letterSpacing: "0.08em",
+            pointerEvents: "none",
           }}
         >
           {idx + 1} / {total}
@@ -170,6 +210,17 @@ export function ProductGallery({
           </div>
         )}
       </div>
+      {zoomOpen && (
+        <ImageZoomViewer
+          images={safeImages}
+          alt={alt}
+          startIndex={idx}
+          onClose={(last) => {
+            setIdx(last);
+            setZoomOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }

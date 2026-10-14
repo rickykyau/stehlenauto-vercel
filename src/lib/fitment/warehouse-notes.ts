@@ -1,6 +1,7 @@
 import "server-only";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { stripSystemNotes } from "./note-cleanup";
 
 /**
  * Cycle 14O (admin): warehouse-verified fitment notes for 103 products.
@@ -163,5 +164,7 @@ export async function getWarehouseNote(
   const map = await load();
   const raw = map[handle];
   if (!raw) return null;
-  return { ...raw, notes: normalizeNoteHtml(raw.notes) };
+  const notes = stripSystemNotes(raw.notes);
+  if (!notes) return null;
+  return { ...raw, notes: normalizeNoteHtml(notes) };
 }

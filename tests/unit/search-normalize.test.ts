@@ -8,7 +8,7 @@ describe("normalizeSearchQuery", () => {
   });
 
   it("splits slash alternatives into OR", () => {
-    expect(normalizeSearchQuery("chase rack/bull bar").query).toBe("(chase rack) OR (bull bar)");
+    expect(normalizeSearchQuery("chase rack/bull bar").query).toBe("(chase rack) OR bull");
   });
 
   it("leaves model and number slashes alone", () => {
@@ -27,5 +27,18 @@ describe("normalizeSearchQuery", () => {
 
   it("does not treat part numbers as years", () => {
     expect(normalizeSearchQuery("curt 13364").year).toBeNull();
+  });
+});
+
+describe("normalizeSearchQuery — shopper spellings", () => {
+  it("maps bull bar spellings to the title word", () => {
+    expect(normalizeSearchQuery("f150 bullbar").query).toBe("f150 bull");
+    expect(normalizeSearchQuery("silverado bull-bar").query).toBe("silverado bull");
+    expect(normalizeSearchQuery("ram push bar").query).toBe("ram bull");
+  });
+  it("fixes grill and tonneau typos without touching real words", () => {
+    expect(normalizeSearchQuery("tacoma grill").query).toBe("tacoma grille");
+    expect(normalizeSearchQuery("f150 tonneu cover").query).toBe("f150 tonneau cover");
+    expect(normalizeSearchQuery("two tone grille").query).toBe("two tone grille");
   });
 });

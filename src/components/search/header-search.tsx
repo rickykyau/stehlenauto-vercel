@@ -159,6 +159,8 @@ export function HeaderSearch() {
           }}
           aria-label="Search"
         />
+        {/* Hidden once there's text — the native clear "×" sits there. */}
+        {!q && (
         <span
           className="mono"
           style={{
@@ -177,6 +179,7 @@ export function HeaderSearch() {
         >
           ⌘ K
         </span>
+        )}
       </form>
 
       {/* Cycle 14AE (Mike-O14AE N-4 FAIL): the dropdown survived a
