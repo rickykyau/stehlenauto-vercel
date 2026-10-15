@@ -64,7 +64,13 @@ function bestYearFor(make: string, model: string): number {
     if (!models) continue;
     let count = 0;
     for (const [m, handles] of Object.entries(models)) {
-      if (m.toLowerCase() === ml) count += Array.isArray(handles) ? handles.length : 0;
+      const lm = m.toLowerCase();
+      // Also count longer catalog names of the same truck ("F-250" → "F-250
+      // Super Duty", "Ram 1500" → "Ram 1500 Classic"); emails carry the short
+      // name, and exact-only probed F-250 at 1997, before the Super Duty parts
+      // most of the catalog carries. EV names stay out (P0-1 above).
+      const sameTruck = lm === ml || (lm.startsWith(`${ml} `) && !/lightning|\bev\b|electric/.test(lm));
+      if (sameTruck) count += Array.isArray(handles) ? handles.length : 0;
     }
     // strict > keeps the EARLIEST year of a coverage plateau (mid-range),
     // avoiding the sparse newest/EV edge on ties.
