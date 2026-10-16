@@ -31,6 +31,8 @@ const LINK_COLS = [
     h: "COMPANY",
     items: [
       { label: "About", href: "/about" },
+      // Shopify Collabs application page (creator program, 2026-10-16).
+      { label: "Become a Creator", href: "https://stehlenauto.myshopify.com/pages/collab" },
       { label: "Account", href: "/account" },
       { label: "Sign In", href: "/sign-in" },
     ],
