@@ -1,0 +1,5 @@
+{"run": "2026-10-09", "applied": false, "errors": [], "changes": []}
+{"run": "2026-10-09", "applied": false, "errors": [], "changes": []}
+{"run": "2026-10-09", "applied": false, "errors": ["Google Ads: https://googleads.googleapis.com/v23/customers/4449235809/googleAds:search -> 400: {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v23.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n     "], "changes": []}
+{"run": "2026-10-09", "applied": false, "errors": [], "changes": []}
+{"run": "2026-10-09", "applied": false, "errors": [], "changes": []}

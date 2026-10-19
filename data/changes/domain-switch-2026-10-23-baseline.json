@@ -1,0 +1,785 @@
+{
+ "built": "2026-10-18T19:26:25",
+ "products": [
+  {
+   "handle": "09-14-ford-f-150-full-led-projector-headlights-sequential-signal-black",
+   "ai_sessions": 11,
+   "ai_orders": 1
+  },
+  {
+   "handle": "1999-2007-chevrolet-silverado-gmc-sierra-stepside-6-5-ft-bed-hidden-snap-soft-roll-up-tonneau-cover",
+   "ai_sessions": 7,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2019-chevy-silverado-gmc-sierra-6-5ft-hard-tri-fold-tonneau-cover",
+   "ai_sessions": 7,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2019-2025-subaru-forester-2-trailer-hitch-receiver-curt-13409",
+   "ai_sessions": 3,
+   "ai_orders": 1
+  },
+  {
+   "handle": "1997-2004-ford-f-150-f-250-6-5-hidden-snap-tonneau-cover-403307",
+   "ai_sessions": 2,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2005-2022-toyota-tacoma-access-cab-oe-style-running-boards-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2007-2014-cadillac-escalade-front-grille-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2010-2018-ram-2500-3500-crew-cab-low-profile-roof-basket-drill-free-steel-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2011-2014-chrysler-300-honeycomb-mesh-front-grille-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2014-2019-toyota-highlander-2-trailer-hitch-receiver-curt-13200",
+   "ai_sessions": 2,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2007-2010-ford-explorer-sport-trac-mesh-front-grille-black",
+   "ai_sessions": 1,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2013-2016-audi-a4-s4-rs-style-honeycomb-mesh-grille-black",
+   "ai_sessions": 1,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2019-2024-ram-1500-86-oe-style-aluminum-running-boards-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2019-2024-toyota-rav4-rav4-prime-2-trailer-hitch-curt-13416",
+   "ai_sessions": 0,
+   "ai_orders": 1
+  },
+  {
+   "handle": "2022-gmc-hummer-ev-pickup-rubber-truck-bed-mat-lightweight-v2",
+   "ai_sessions": 0,
+   "ai_orders": 1
+  },
+  {
+   "handle": "05-11-toyota-tacoma-black-projector-headlights-w-led-light-bar",
+   "ai_sessions": 6,
+   "ai_orders": 0
+  },
+  {
+   "handle": "04-05-honda-civic-crystal-headlights-sequential-led-bar-black",
+   "ai_sessions": 6,
+   "ai_orders": 0
+  },
+  {
+   "handle": "09-14-ford-f-150-full-led-projector-headlights-black-fdpu09c-00",
+   "ai_sessions": 5,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2002-2008-dodge-ram-1500-2003-2009-ram-2500-3500-6-5-ft-bed-hidden-snap-soft-roll-up-tonneau-cover",
+   "ai_sessions": 5,
+   "ai_orders": 0
+  },
+  {
+   "handle": "05-06-toyota-tundra-crystal-headlights-w-sequential-led-black-4pc",
+   "ai_sessions": 4,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2000-2005-chevy-impala-front-grille-matte-black-replacement-1",
+   "ai_sessions": 4,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2001-2003-ford-f-150-5-5-roll-up-tonneau-cover-w-led-bed-lights",
+   "ai_sessions": 4,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2005-2010-chrysler-300-honeycomb-mesh-front-grille-matte-black",
+   "ai_sessions": 4,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2006-2010-hummer-h3-advanced-series-bull-guard-w-led-light-bar",
+   "ai_sessions": 4,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2007-2009-toyota-camry-projector-headlights-w-sequential-led-bar-black",
+   "ai_sessions": 4,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2015-2023-ford-f-150-super-duty-86-oe-style-running-boards-matte-black",
+   "ai_sessions": 4,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2019-2024-silverado-sierra-86-oe-style-running-boards-matte-black",
+   "ai_sessions": 4,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2024-2025-toyota-tacoma-5-bed-low-profile-hard-tri-fold-cover",
+   "ai_sessions": 4,
+   "ai_orders": 0
+  },
+  {
+   "handle": "02-05-dodge-ram-full-led-projector-headlights-w-light-bar-black",
+   "ai_sessions": 3,
+   "ai_orders": 0
+  },
+  {
+   "handle": "07-14-chevy-silverado-crystal-black-headlights-no-amber",
+   "ai_sessions": 3,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2002-2005-dodge-ram-rivet-style-mesh-front-grille-black-abs",
+   "ai_sessions": 3,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2006-2008-lexus-is250-is350-mesh-front-grille-emblem-matte-black",
+   "ai_sessions": 3,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2009-2018-ram-1500-2500-3500-crew-cab-2019-2024-ram-1500-classic-rock-slider-side-step-bars-texture-black",
+   "ai_sessions": 3,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2016-2023-toyota-tacoma-full-led-projector-headlights-factory-led-drl-models-black-w-amber",
+   "ai_sessions": 3,
+   "ai_orders": 0
+  },
+  {
+   "handle": "universal-2-receiver-hitch-step-matte-black-hs207-31bk",
+   "ai_sessions": 3,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2019-2026-ram-1500-crew-cab-low-profile-roof-basket-system-drill-free-steel-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2007-2018-jeep-wrangler-jk-4-door-modular-side-step-bars-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "05-11-toyota-tacoma-projector-headlights-sequential-led-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "07-13-toyota-tundra-08-15-sequoia-chrome-led-headlights-sequential",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "07-13-toyota-tundra-08-17-sequoia-full-led-projector-headlights-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "09-18-dodge-ram-chrome-crystal-headlights-sequential-led-turn-signal",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "1997-2004-ford-f-150-flareside-6-5-ft-rubber-bed-mat-aa038-v2",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2001-2003-ford-f-150-5-5-bed-hidden-snap-roll-up-tonneau-cover",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2001-2003-ford-f-150-5-5-bed-roll-up-tonneau-cover-mpn-503311",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2002-2005-audi-a4-s4-b6-rs-style-honeycomb-front-grille-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2004-2006-toyota-tundra-double-cab-6-2-ft-bed-hidden-snap-soft-roll-up-tonneau-cover",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2005-2007-dodge-dakota-front-grille-matte-black-mesh-style",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2005-2011-toyota-tacoma-front-grille-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2005-2015-toyota-tacoma-6-ft-bed-lock-roll-up-tonneau-cover",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2008-2012-nissan-pathfinder-advanced-series-bull-guard-w-skid-plate-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2008-2017-buick-enclave-hex-style-all-weather-rubber-floor-mats-4pc",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2009-2014-acura-tsx-super-white-led-halo-projector-headlights-hid-type-matte-black-w-amber",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2010-2013-hyundai-sonata-horizontal-front-grille-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2011-2020-toyota-sienna-full-led-projector-headlights-w-sequential-led-bar-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2013-2024-ram-1500-honeycomb-rebel-style-front-grille-black-abs",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2014-2021-toyota-tundra-crew-cab-low-profile-roof-basket-system",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2015-2022-chevrolet-colorado-crew-cab-low-profile-roof-basket-drill-free-steel-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2015-2022-chevrolet-colorado-gmc-canyon-crew-cab-rock-slider-side-step-bars-texture-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2015-2022-chevy-colorado-crew-cab-low-profile-roof-basket-steel",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2015-ford-f-150-8ft-bed-rubber-truck-bed-mat-diamond-plate",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2019-2023-ford-ranger-supercrew-rock-slider-side-step-bars-texture-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2019-2026-chevrolet-silverado-1500-gmc-sierra-1500-6-6-ft-bed-lock-roll-up-tonneau-cover",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2021-2023-ford-f-150-badgeless-front-grille-glossy-black-abs",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2023-2026-chevrolet-colorado-gmc-canyon-crew-cab-low-profile-roof-basket-system-drill-free-steel-matte-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2010-2014-ford-mustang-full-led-projector-headlights-w-sequential-led-bar-black",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2022-2026-toyota-tundra-5-5ft-bed-rubber-mat-lightweight-v2",
+   "ai_sessions": 2,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2000-2011-dodge-ram-dakota-5-5-ft-rubber-bed-mat-aa006-v2",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "09-18-dodge-ram-projector-headlights-sequential-led-turn-signal-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "1995-2004-toyota-tacoma-1989-1994-pickup-6-ft-bed-hidden-snap-soft-roll-up-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2010-2018-jeep-wrangler-jk-bull-guard-w-led-light-bar-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2014-2021-toyota-tundra-projector-headlights-sequential-led-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "01-04-toyota-tacoma-crystal-headlights-6pc-led-light-bar-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "01-04-toyota-tacoma-crystal-headlights-w-sequential-led-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "02-05-dodge-ram-full-led-projector-headlights-chrome-led-bar",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "02-22-dodge-ram-1500-2500-3500-6-5-ft-bed-mat-w-rambox",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "03-06-chevy-silverado-avalanche-black-led-sequential-headlights-4pc",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "03-06-chevy-silverado-avalanche-led-crystal-headlights-chrome-4pc",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "03-06-chevy-silverado-avalanche-projector-headlights-led-bar-black-4pc",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "04-07-chevy-silverado-sierra-5-8-hard-tri-fold-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "04-08-ford-f-150-crystal-headlights-sequential-led-signal-chrome",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "05-06-toyota-tundra-black-crystal-headlights-w-led-light-bar-4pc",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "05-08-nissan-frontier-pathfinder-front-grille-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "05-11-toyota-tacoma-crystal-headlights-sequential-led-bar-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "06-08-dodge-ram-black-projector-headlights-w-led-light-bar-amber",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "06-08-dodge-ram-full-led-projector-headlights-chrome-dgpu06c",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "06-11-honda-civic-4dr-sequential-led-crystal-headlights-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "07-14-chevy-silverado-gmc-sierra-6-5-hidden-snap-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "07-18-chevy-silverado-gmc-sierra-ext-cab-modular-step-bars-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "07-21-toyota-tundra-sequoia-advanced-bull-guard-w-led-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "09-14-ford-f-150-black-projector-headlights-sequential-led-fdpu09ds-06",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "09-14-ford-f-150-chrome-led-projector-headlights-w-amber-light-bar",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "09-14-ford-f-150-full-led-projector-headlights-sequential-chrome",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "09-22-dodge-ram-1500-5500-crew-cab-oe-style-running-boards",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "09-22-dodge-ram-1500-5500-crew-cab-oe-style-running-boards-silver",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "1983-2011-ford-ranger-mazda-b-series-6-roll-up-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "1989-2004-toyota-tacoma-pickup-6-bed-roll-up-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "1995-2004-toyota-tacoma-6ft-bed-hard-tri-fold-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "1999-2002-chevrolet-silverado-crystal-headlights-parking-lights-4pc-set-w-sequential-led-bar-chrome",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "1999-2005-volkswagen-jetta-mk4-horizontal-front-grille-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "1999-2006-gmc-sierra-yukon-xl-led-crystal-headlights-chrome",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2000-2006-toyota-tundra-6-2-hard-tri-fold-tonneau-cover-243326",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2002-2005-audi-a4-s4-b6-front-grille-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2004-2008-ford-f-150-mesh-rivet-style-front-grille-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2004-2008-ford-f-150-vertical-style-front-grille-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2004-2012-nissan-titan-crew-cab-5-5-ft-bed-hidden-snap-soft-roll-up-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2004-2014-ford-f-150-lincoln-mark-lt-styleside-6-5-ft-bed-eva-foam-truck-bed-mat-interlocking-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2004-2014-ford-f-150-long-bed-8-pvc-bed-mat-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2005-2015-toyota-tacoma-6-ft-bed-hidden-snap-soft-roll-up-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2006-2010-dodge-charger-front-grille-mesh-style-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2006-2010-ford-explorer-sport-trac-advanced-series-bull-guard-w-built-in-led-light-bar-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2006-2011-mercedes-benz-ml-class-3-trailer-hitch-13342",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2007-2009-toyota-tundra-mesh-front-grille-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2007-2013-gmc-sierra-1500-2007-2014-2500-3500-hd-full-led-projector-headlights-black-w-amber",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2007-2014-gmc-sierra-oem-crystal-headlights-black-gmsr07-03",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2007-2014-gmc-yukon-yukon-xl-front-grille-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2007-2014-toyota-fj-cruiser-front-grille-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2007-2018-chevrolet-silverado-gmc-sierra-crew-cab-rock-slider-side-step-bars-texture-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2008-2013-nissan-altima-coupe-class-1-trailer-hitch-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2009-2015-honda-pilot-bull-guard-w-led-light-bar-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2009-2022-dodge-ram-crystal-headlights-chrome-quad-style",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2009-2022-dodge-ram-full-led-projector-headlights-black-amber",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2009-2022-ram-1500-76-oe-style-running-boards-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2010-2011-toyota-camry-front-grille-chrome-mesh-style",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2010-2011-toyota-camry-mesh-front-grille-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2010-2018-ram-2500-3500-4500-5500-big-horn-style-chrome-grille",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2010-2018-ram-dodge-2500-3500-advanced-series-bull-guard-texture-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2011-2014-chrysler-300-vertical-front-grille-chrome-finish",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2011-2016-jeep-grand-cherokee-dodge-durango-bull-guard-led-r203-201bk",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2012-2015-toyota-tacoma-projector-headlights-sequential-led-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2014-2021-toyota-tundra-full-led-projector-headlights-black-amber",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2015-2022-chevy-colorado-gmc-canyon-6-bed-soft-roll-up-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2015-2022-chevy-colorado-gmc-canyon-advanced-bull-guard-led-bar",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2015-2023-ford-f-150-2017-2022-super-duty-supercrew-rock-slider-side-step-bars-texture-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2016-nissan-titan-6-5-bed-rubber-truck-bed-mat-diamond-plate",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2017-2026-ford-f-250-f-350-super-duty-crew-cab-low-profile-roof-basket-system-drill-free-steel-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2017-honda-ridgeline-rubber-truck-bed-mat-diamond-plate-style",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2017-honda-ridgeline-rubber-truck-bed-mat-lightweight-v2",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2018-2023-subaru-crosstrek-trailer-hitch-ball-mount-combo",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2019-2024-ram-2500-3500-8ft-bed-rubber-truck-bed-mat-tlaps-v2",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2019-2026-ram-1500-5-7-ft-bed-hidden-snap-soft-roll-up-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2019-dodge-ram-5-8ft-bed-hard-tri-fold-tonneau-cover-low-profile",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2020-2026-ford-explorer-lincoln-aviator-class-3-trailer-hitch-receiver-2-inch",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2021-2023-ford-f150-badgeless-front-grille-w-led-light-bar-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2021-2024-toyota-venza-2-trailer-hitch-receiver-class-3",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2021-2025-jeep-grand-cherokee-l-2-trailer-hitch-receiver-class-3",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2022-2023-tesla-model-x-all-weather-hex-rubber-floor-mats-6pc-set",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2022-2025-nissan-frontier-crew-cab-low-profile-roof-basket-drill-free-steel-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2022-2026-toyota-tundra-crewmax-low-profile-roof-basket-system-drill-free-steel-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2022-ford-f-150-lightning-5-7ft-bed-tonneau-cover-lock-roll-up",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2023-2026-honda-cr-v-low-profile-roof-basket-system-drill-free-steel-matte-black",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2023-chevy-colorado-gmc-canyon-5-bed-low-profile-hard-tri-fold-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "2023-chevy-colorado-gmc-canyon-5-bed-low-profile-roll-up-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "88-98-chevy-gmc-c10-ck-crystal-headlights-w-led-light-bar-chrome",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "94-03-chevy-s10-gmc-sonoma-isuzu-hombre-6-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "99-07-chevy-silverado-gmc-sierra-6-5-roll-up-tonneau-cover",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  },
+  {
+   "handle": "rubber-truck-bed-mat-for-dakota-raider-6-5-bed-grey",
+   "ai_sessions": 1,
+   "ai_orders": 0
+  }
+ ]
+}

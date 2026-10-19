@@ -1,0 +1,273 @@
+<div class="help-center">
+  <div class="help-center__search">
+    <h2>How can we help you?</h2>
+    <input type="text" id="help-search" placeholder="Search for answers..." class="help-center__search-input" oninput="filterHelp(this.value)">
+  </div>
+
+  <div class="help-center__categories">
+    <div class="help-category" onclick="toggleCategory(this)">
+      <div class="help-category__header">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18M9 21V9"></path></svg>
+        <h3>Orders &amp; Account</h3>
+        <span class="help-category__toggle">+</span>
+      </div>
+      <div class="help-category__content">
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">How do I place an order?</div>
+          <div class="help-faq__a">Browse our catalog, select the product that fits your vehicle, choose any available options (color, size), and click "Add to Cart." When ready, click the cart icon and proceed to checkout. You'll enter your shipping and payment information to complete the order.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">How do I track my order?</div>
+          <div class="help-faq__a">Once your order ships, you'll receive a confirmation email with a tracking number and link. You can also log into your account and view order status under "My Orders." Most orders include real-time tracking updates.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">Can I modify or cancel my order?</div>
+          <div class="help-faq__a">If your order hasn't shipped yet, contact us immediately at <a href="mailto:info@stehlenauto.com">info@stehlenauto.com</a> or call <a href="tel:909-895-4522">909-895-4522</a>. We'll do our best to accommodate changes. Once an order has shipped, it cannot be modified — but you can initiate a return after delivery.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">How do I create an account?</div>
+          <div class="help-faq__a">Click the account icon in the top right corner and select "Create Account." You'll need your name, email, and a password. Having an account lets you track orders, save your vehicle info, and check out faster.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-category" onclick="toggleCategory(this)">
+      <div class="help-category__header">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        <h3>Shipping &amp; Delivery</h3>
+        <span class="help-category__toggle">+</span>
+      </div>
+      <div class="help-category__content">
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">How much does shipping cost?</div>
+          <div class="help-faq__a">
+<strong>Shipping is FREE on all orders!</strong> We offer complimentary standard shipping to all 48 contiguous US states. No minimum purchase required.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">How long does shipping take?</div>
+          <div class="help-faq__a">Most orders ship within 1-3 business days. Standard delivery typically takes 5-10 business days depending on your location. Larger items like bull guards and chase racks may require freight shipping which can take 7-14 business days.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">Do you ship to Alaska, Hawaii, or internationally?</div>
+          <div class="help-faq__a">Currently, we ship to the 48 contiguous United States. For Alaska, Hawaii, or international shipping inquiries, please contact us at <a href="mailto:info@stehlenauto.com">info@stehlenauto.com</a> for a custom shipping quote.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">My order shows delivered but I haven't received it</div>
+          <div class="help-faq__a">First, check around your property and with neighbors. Carriers sometimes mark packages delivered slightly early. If you still can't locate it after 24 hours, contact us with your order number and we'll investigate with the carrier and work to resolve the issue.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-category" onclick="toggleCategory(this)">
+      <div class="help-category__header">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10h18M3 14h18M9 18l-3 4M15 18l3 4M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"></path></svg>
+        <h3>Fitment &amp; Compatibility</h3>
+        <span class="help-category__toggle">+</span>
+      </div>
+      <div class="help-category__content">
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">How do I know if a product fits my vehicle?</div>
+          <div class="help-faq__a">Every product listing includes the compatible year, make, and model in the title and description. Use our vehicle selector at the top of the page to filter products specifically for your truck. If you're unsure, contact us with your vehicle details and we'll confirm fitment.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">What does "Universal Fit" mean?</div>
+          <div class="help-faq__a">Universal fit products are designed to work with most full-size trucks and SUVs. Items like chase racks and tire carriers use adjustable mounting systems. Always check the product description for specific bed size or frame requirements.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">I ordered the wrong fitment. What do I do?</div>
+          <div class="help-faq__a">Contact us within 30 days of delivery. If the product is unused and in original packaging, we can arrange an exchange for the correct fitment. Return shipping may apply — see our Returns Policy for details.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-category" onclick="toggleCategory(this)">
+      <div class="help-category__header">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"></path></svg>
+        <h3>Installation</h3>
+        <span class="help-category__toggle">+</span>
+      </div>
+      <div class="help-category__content">
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">Do your products require professional installation?</div>
+          <div class="help-faq__a">Most of our products are designed for DIY installation with basic hand tools. Bull guards, side steps, and tonneau covers typically take 1-3 hours. Chase racks and more complex accessories may take 3-5 hours. We include installation hardware and instructions with every order.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">Do you provide installation instructions?</div>
+          <div class="help-faq__a">Yes! Every product ships with detailed installation instructions. Many products also have installation video guides available — check the product page or contact us if you need additional guidance.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">What tools do I need for installation?</div>
+          <div class="help-faq__a">Most installations require basic tools: socket set, wrenches, screwdrivers, and possibly a drill. Specific tool requirements are listed in the installation instructions included with each product. Having a second person to help hold parts in place is recommended for larger items like bull guards and chase racks.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-category" onclick="toggleCategory(this)">
+      <div class="help-category__header">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 14l-4 4m0 0l4 4m-4-4h11a4 4 0 000-8h-1"></path></svg>
+        <h3>Returns &amp; Refunds</h3>
+        <span class="help-category__toggle">+</span>
+      </div>
+      <div class="help-category__content">
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">What is your return policy?</div>
+          <div class="help-faq__a">We accept returns within 30 days of delivery for unused, uninstalled products in their original packaging. A 15% restocking fee may apply. Contact us at <a href="mailto:info@stehlenauto.com">info@stehlenauto.com</a> to initiate a return and receive a Return Authorization (RA) number.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">How long do refunds take?</div>
+          <div class="help-faq__a">Once we receive and inspect your return, refunds are processed within 5-7 business days. The refund will be issued to your original payment method. Please allow an additional 3-5 business days for the refund to appear on your statement.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">What if my product arrives damaged?</div>
+          <div class="help-faq__a">If your product arrives damaged, take photos of the damage and packaging immediately. Contact us within 48 hours at <a href="mailto:info@stehlenauto.com">info@stehlenauto.com</a> with your order number and photos. We'll arrange a replacement or full refund at no cost to you.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-category" onclick="toggleCategory(this)">
+      <div class="help-category__header">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        <h3>Warranty</h3>
+        <span class="help-category__toggle">+</span>
+      </div>
+      <div class="help-category__content">
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">What warranty do you offer?</div>
+          <div class="help-faq__a">All Stehlen products come with a <strong>1-year limited warranty</strong> against defects in materials and workmanship. The warranty covers manufacturing defects under normal use — it does not cover damage from accidents, misuse, improper installation, or normal wear and tear.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">How do I file a warranty claim?</div>
+          <div class="help-faq__a">Visit our <a href="/pages/warranty">Warranty page</a> and fill out the warranty registration form with your order details, product info, and description of the issue. Include photos if possible. Our team will review your claim within 2-3 business days.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-category" onclick="toggleCategory(this)">
+      <div class="help-category__header">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"></rect><path d="M1 10h22"></path></svg>
+        <h3>Payment &amp; Pricing</h3>
+        <span class="help-category__toggle">+</span>
+      </div>
+      <div class="help-category__content">
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">What payment methods do you accept?</div>
+          <div class="help-faq__a">We accept all major credit cards (Visa, Mastercard, American Express, Discover), PayPal, Apple Pay, Google Pay, and Shop Pay. All transactions are processed securely through Shopify's encrypted payment system.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">Do you offer financing or payment plans?</div>
+          <div class="help-faq__a">Yes! Through Shop Pay Installments, you can split your purchase into 4 interest-free payments on qualifying orders. The option will appear at checkout if your order qualifies.</div>
+        </div>
+        <div class="help-faq">
+          <div class="help-faq__q" onclick="toggleFaq(event, this)">Are prices listed in USD?</div>
+          <div class="help-faq__a">Yes, all prices on stehlenauto.com are listed in US Dollars (USD) and include no hidden fees. The price you see is the price you pay — plus free shipping on every order!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="help-center__contact">
+    <h2>Still Need Help?</h2>
+    <p>Our team is available Monday - Friday, 9:00 AM - 6:00 PM PST</p>
+    <div class="help-center__contact-options">
+      <a href="mailto:info@stehlenauto.com" class="help-contact-card">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        <strong>Email Us</strong>
+        <span>info@stehlenauto.com</span>
+      </a>
+      <a href="tel:909-895-4522" class="help-contact-card">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+        <strong>Call Us</strong>
+        <span>(909) 895-4522</span>
+      </a>
+      <a href="#" class="help-contact-card" onclick="if(window.Tawk_API)Tawk_API.maximize();return false;">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+        <strong>Live Chat</strong>
+        <span>Chat with us now</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleCategory(el) {
+  if(event.target.closest('.help-faq__q')) return;
+  el.classList.toggle('help-category--open');
+}
+function toggleFaq(e, el) {
+  e.stopPropagation();
+  el.parentElement.classList.toggle('help-faq--open');
+}
+function filterHelp(query) {
+  query = query.toLowerCase();
+  document.querySelectorAll('.help-faq').forEach(faq => {
+    const text = faq.textContent.toLowerCase();
+    faq.style.display = !query || text.includes(query) ? '' : 'none';
+  });
+  if(query) {
+    document.querySelectorAll('.help-category').forEach(c => c.classList.add('help-category--open'));
+  }
+}
+</script>
+
+<style>
+.help-center { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+.help-center__search { text-align: center; margin-bottom: 40px; }
+.help-center__search h2 { font-size: 1.6rem; font-weight: 700; color: #1E2326; margin-bottom: 16px; }
+.help-center__search-input {
+  width: 100%; max-width: 500px; padding: 14px 20px; border: 2px solid #e5e5e5;
+  border-radius: 50px; font-size: 1rem; outline: none; transition: border-color 0.2s;
+}
+.help-center__search-input:focus { border-color: #F39C12; }
+
+.help-category { border: 1px solid #e5e5e5; border-radius: 10px; margin-bottom: 12px; overflow: hidden; cursor: pointer; }
+.help-category__header {
+  display: flex; align-items: center; gap: 14px; padding: 18px 20px;
+  background: #fafafa; transition: background 0.15s;
+}
+.help-category:hover .help-category__header { background: #f5f5f5; }
+.help-category__header svg { stroke: #F39C12; flex-shrink: 0; }
+.help-category__header h3 { margin: 0; font-size: 1.05rem; font-weight: 600; color: #1E2326; flex: 1; }
+.help-category__toggle {
+  font-size: 1.4rem; font-weight: 300; color: #999; transition: transform 0.2s;
+  width: 24px; text-align: center;
+}
+.help-category--open .help-category__toggle { transform: rotate(45deg); }
+.help-category__content { display: none; padding: 0 20px 16px; }
+.help-category--open .help-category__content { display: block; }
+
+.help-faq { border-bottom: 1px solid #f0f0f0; }
+.help-faq:last-child { border-bottom: none; }
+.help-faq__q {
+  padding: 14px 0; font-weight: 500; color: #333; cursor: pointer;
+  display: flex; align-items: center; font-size: 0.95rem;
+}
+.help-faq__q::before { content: '›'; margin-right: 10px; color: #F39C12; font-size: 1.2rem; transition: transform 0.2s; }
+.help-faq--open .help-faq__q::before { transform: rotate(90deg); }
+.help-faq__q:hover { color: #F39C12; }
+.help-faq__a {
+  display: none; padding: 0 0 14px 22px; font-size: 0.9rem;
+  line-height: 1.6; color: #555;
+}
+.help-faq--open .help-faq__a { display: block; }
+.help-faq__a a { color: #F39C12; text-decoration: underline; }
+
+.help-center__contact { text-align: center; background: #fafafa; border-radius: 12px; padding: 40px 20px; margin-top: 40px; }
+.help-center__contact h2 { font-size: 1.3rem; font-weight: 700; color: #1E2326; margin-bottom: 8px; }
+.help-center__contact p { color: #666; margin-bottom: 24px; font-size: 0.9rem; }
+.help-center__contact-options { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.help-contact-card {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 24px 28px; background: #fff; border: 1px solid #e5e5e5; border-radius: 10px;
+  text-decoration: none; color: #333; transition: border-color 0.2s, box-shadow 0.2s;
+  min-width: 180px;
+}
+.help-contact-card:hover { border-color: #F39C12; box-shadow: 0 2px 12px rgba(243,156,18,0.15); }
+.help-contact-card svg { stroke: #F39C12; }
+.help-contact-card strong { font-size: 0.95rem; }
+.help-contact-card span { font-size: 0.8rem; color: #888; }
+
+@media (max-width: 600px) {
+  .help-center__contact-options { flex-direction: column; align-items: center; }
+  .help-contact-card { width: 100%; max-width: 280px; }
+}
+</style>

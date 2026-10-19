@@ -1,0 +1,63 @@
+{% comment %}
+  Footer Trust Bar — physical address, phone, security badges
+  Shows on all pages above the main footer
+{% endcomment %}
+
+<div id="stehlen-footer-trust">
+  <div class="stehlen-footer-trust__inner">
+    <div class="stehlen-footer-trust__badges">
+      <div class="stehlen-footer-trust__badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>Secure Checkout</span>
+      </div>
+      <div class="stehlen-footer-trust__badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+        <span>Authorized Dealer</span>
+      </div>
+      <div class="stehlen-footer-trust__badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        <span>Safe Payment</span>
+      </div>
+    </div>
+    <div class="stehlen-footer-trust__contact">
+      <span>Stehlen Auto | Phone: (909) 895-4112 | Fontana, CA</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  #stehlen-footer-trust {
+    background: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+    padding: 20px 20px;
+  }
+  .stehlen-footer-trust__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .stehlen-footer-trust__badges {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 12px;
+  }
+  .stehlen-footer-trust__badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.8125rem;
+    color: #1A3F22;
+    font-weight: 500;
+  }
+  .stehlen-footer-trust__badge svg { color: #1A3F22; }
+  .stehlen-footer-trust__contact {
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.75rem;
+    color: #666;
+  }
+  @media screen and (max-width: 749px) {
+    .stehlen-footer-trust__badges { flex-direction: column; gap: 12px; align-items: center; }
+  }
+</style>

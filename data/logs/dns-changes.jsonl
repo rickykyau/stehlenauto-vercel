@@ -1,0 +1,1 @@
+{"date":"2026-10-09","change":"GoDaddy add CNAME shop -> shops.myshopify.com ttl 600","rollback":"DELETE /v1/domains/stehlenauto.com/records/CNAME/shop"}

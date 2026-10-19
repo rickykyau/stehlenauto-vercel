@@ -1,0 +1,368 @@
+{%- comment -%}
+  Category & Vehicle Navigation Bar
+  Row 1: My Vehicle (from localStorage, year-aware fitment filter)
+  Row 2: Shop by Category (collection navigation)
+  Row 3: Shop by Make (collection navigation)
+  My Vehicle and Make are mutually exclusive.
+{%- endcomment -%}
+
+{%- assign skip_handles = 'all,frontpage,digital-goods-vat-tax,vehicles-and-parts-example-products' | split: ',' -%}
+
+<style>
+  .filter-bar-wrapper {
+    position: relative; top: 0; z-index: 20;
+    background: var(--color-background, #fff);
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--color-border, #e5e5e5);
+    margin-bottom: 16px;
+  }
+  .filter-row {
+    display: flex; align-items: center; gap: 8px; padding: 5px 0; position: relative;
+  }
+  .filter-row__label {
+    font-weight: 600; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--color-foreground);
+    white-space: nowrap; min-width: 80px; flex-shrink: 0;
+  }
+  .filter-row__scroll {
+    display: flex; gap: 8px; overflow-x: auto;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none; flex: 1; padding-right: 20px;
+  }
+  .filter-row__scroll::-webkit-scrollbar { display: none; }
+  .filter-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; background: var(--color-background, #fff);
+    border: 1.5px solid var(--color-border, #ddd); border-radius: 20px;
+    color: var(--color-foreground); text-decoration: none;
+    font-weight: 500; font-size: 13px; transition: all 0.15s ease;
+    cursor: pointer; font-family: inherit; white-space: nowrap; flex-shrink: 0;
+  }
+  .filter-btn:hover:not(:disabled) {
+    border-color: #F39C12; background: rgba(243,156,18,0.05);
+  }
+  .filter-btn--active, a.filter-btn--active, button.filter-btn--active {
+    background: #F39C12 !important; border-color: #F39C12 !important; color: #fff !important;
+  }
+  .filter-btn--active:hover, a.filter-btn--active:hover, button.filter-btn--active:hover {
+    background: #E67E22 !important; border-color: #E67E22 !important; color: #fff !important;
+  }
+  .filter-btn--active .filter-btn__icon { color: #fff !important; }
+  .filter-btn:disabled, .filter-btn--disabled {
+    opacity: 0.4; cursor: not-allowed; pointer-events: none;
+  }
+  .filter-btn__icon { width: 16px; height: 16px; color: #F39C12; flex-shrink: 0; }
+  .product-grid__item.filter-hidden { display: none !important; }
+
+  /* My Vehicle row */
+  .filter-row--myvehicle { display: none; } /* hidden until JS shows it */
+  .my-vehicle-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; background: var(--color-background, #fff);
+    border: 1.5px solid #F39C12; border-radius: 20px;
+    color: #F39C12; font-weight: 600; font-size: 13px;
+    cursor: pointer; white-space: nowrap; transition: all 0.15s ease;
+    text-decoration: none;
+  }
+  .my-vehicle-pill:hover { background: rgba(243,156,18,0.05); }
+  .my-vehicle-pill--active {
+    background: #F39C12 !important; color: #fff !important;
+  }
+  .my-vehicle-pill--active:hover { background: #E67E22 !important; }
+  .my-vehicle-pill__close {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: rgba(255,255,255,0.3); font-size: 12px; line-height: 1;
+    cursor: pointer; margin-left: 2px;
+  }
+  .my-vehicle-pill--active .my-vehicle-pill__close { color: #fff; }
+  .my-vehicle-pill__close:hover { background: rgba(255,255,255,0.5); }
+
+  @media (max-width: 749px) {
+    .filter-bar-wrapper { padding: 8px 12px; }
+    .filter-row__label { font-size: 11px; min-width: 65px; }
+    .filter-btn { font-size: 12px; padding: 5px 10px; }
+    .my-vehicle-pill { font-size: 12px; padding: 5px 10px; }
+  }
+</style>
+
+<div class="filter-bar-wrapper">
+  <!-- Row 1: My Vehicle (hidden if no vehicle saved) -->
+  <div class="filter-row filter-row--myvehicle" id="filter-vehicle-row">
+    <span class="filter-row__label">My Vehicle:</span>
+    <div class="filter-row__scroll">
+      <div class="my-vehicle-pill" id="filter-vehicle-pill" role="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17h14M7 11l2-5h6l2 5M4 17a1 1 0 01-1-1v-3l1-2h16l1 2v3a1 1 0 01-1 1M7.5 17a1.5 1.5 0 100 3 1.5 1.5 0 000-3zM16.5 17a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>
+        <span id="filter-vehicle-text"></span>
+        <span class="my-vehicle-pill__close" id="filter-vehicle-clear" title="Clear vehicle">✕</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Shop by Category -->
+  <div class="filter-row">
+    <span class="filter-row__label">Shop by:</span>
+    <div class="filter-row__scroll">
+      <a href="/collections/all" class="filter-btn category-filter-btn" data-handle="all">All</a>
+      {%- for collection in collections -%}
+        {%- assign is_vehicle = false -%}
+        {%- assign is_skip = false -%}
+        {%- if collection.handle contains '-parts' -%}{%- assign is_vehicle = true -%}{%- endif -%}
+        {%- for sh in skip_handles -%}
+          {%- if collection.handle == sh -%}{%- assign is_skip = true -%}{%- endif -%}
+        {%- endfor -%}
+        {%- unless is_vehicle or is_skip -%}
+          {%- if collection.products_count > 0 -%}
+            <a href="/collections/{{ collection.handle }}" class="filter-btn category-filter-btn" data-handle="{{ collection.handle }}">
+              {%- if collection.handle contains 'bull' or collection.handle contains 'grille' -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 6v6c0 5.5 3.5 10 8 12 4.5-2 8-6.5 8-12V6l-8-4z"/><path d="M8 11h8M8 14h8M8 8h8"/></svg>
+              {%- elsif collection.handle contains 'side' or collection.handle contains 'nerf' or collection.handle contains 'step' -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="18" width="20" height="4" rx="1"/><rect x="5" y="14" width="14" height="3" rx="1"/><path d="M6 14V10M18 14V10"/></svg>
+              {%- elsif collection.handle contains 'tonneau' or collection.handle contains 'cover' -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 14h18v6H3z"/><path d="M5 14V8h14v6"/><path d="M7 11h10M7 8l5-3 5 3"/></svg>
+              {%- elsif collection.handle contains 'chase' or collection.handle contains 'rack' or collection.handle contains 'sport-bar' -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18h16"/><path d="M6 18V8h12v10"/><path d="M6 8l6-4 6 4"/><circle cx="8" cy="5" r="1.5" fill="currentColor"/><circle cx="16" cy="5" r="1.5" fill="currentColor"/></svg>
+              {%- elsif collection.handle contains 'hitch' or collection.handle contains 'trailer' -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="15" r="3"/><path d="M12 12V4"/><path d="M5 4h14"/><path d="M5 4v4h14V4"/></svg>
+              {%- else -%}
+                <svg class="filter-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg>
+              {%- endif -%}
+              {{ collection.title }}
+            </a>
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <!-- Row 3: Shop by Make -->
+  <div class="filter-row">
+    <span class="filter-row__label">Vehicle:</span>
+    <div class="filter-row__scroll">
+      {%- for collection in collections -%}
+        {%- if collection.handle contains '-parts' and collection.products_count > 0 -%}
+          {%- assign make_name = collection.title | remove: ' Parts' -%}
+          <a href="/collections/{{ collection.handle }}" class="filter-btn vehicle-filter-btn" data-handle="{{ collection.handle }}">
+            {{ make_name }}
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  function init() {
+    var saved = localStorage.getItem('selectedVehicle');
+    var row = document.getElementById('filter-vehicle-row');
+    var pill = document.getElementById('filter-vehicle-pill');
+    var textEl = document.getElementById('filter-vehicle-text');
+    var clearBtn = document.getElementById('filter-vehicle-clear');
+    if (!row || !pill || !textEl) return;
+
+    var vehicle = null;
+    try { vehicle = saved ? JSON.parse(saved) : null; } catch(e) {}
+
+    /* Show/hide My Vehicle row */
+    if (vehicle && vehicle.year && vehicle.make && vehicle.model) {
+      row.style.display = 'flex';
+      /* Issue #2: Show full vehicle name in the pill */
+      textEl.textContent = vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model;
+    } else {
+      row.style.display = 'none';
+      return;
+    }
+
+    var isMyVehicleActive = false;
+    var currentHandle = (window.location.pathname.match(/\/collections\/([^\/\?]+)/) || [])[1] || 'all';
+    var isVehicleMakePage = currentHandle.endsWith('-parts');
+    var isSearchPage = window.location.pathname.includes('/search');
+
+    /* Issue #4: Auto-activate My Vehicle filter when arriving from vehicle selection
+       (hash has year= or myvehicle=1, or on search page with saved vehicle) */
+    var shouldAutoActivate = window.location.hash.includes('myvehicle=1') ||
+                             window.location.hash.includes('year=') ||
+                             (isSearchPage && vehicle);
+
+    /* Highlight category row */
+    document.querySelectorAll('.category-filter-btn').forEach(function(btn) {
+      if (isVehicleMakePage || shouldAutoActivate) {
+        btn.classList.toggle('filter-btn--active', btn.dataset.handle === 'all');
+      } else {
+        btn.classList.toggle('filter-btn--active', btn.dataset.handle === currentHandle);
+      }
+    });
+
+    /* Highlight vehicle row */
+    document.querySelectorAll('.vehicle-filter-btn').forEach(function(btn) {
+      btn.classList.toggle('filter-btn--active', btn.dataset.handle === currentHandle);
+    });
+
+    /* My Vehicle pill click — toggle fitment filter */
+    pill.addEventListener('click', function(e) {
+      if (e.target === clearBtn || e.target.closest('.my-vehicle-pill__close')) return;
+      
+      if (pill.classList.contains('my-vehicle-pill--active')) {
+        /* Deactivate — remove filter */
+        pill.classList.remove('my-vehicle-pill--active');
+        showAllProducts();
+        restoreCategoryButtons();
+      } else {
+        /* Activate — apply fitment filter */
+        pill.classList.add('my-vehicle-pill--active');
+        /* Deselect any vehicle-make button by navigating to /collections/all if on a make page */
+        if (isVehicleMakePage) {
+          window.location.href = '/collections/all#myvehicle=1';
+          return;
+        }
+        applyFitmentFilter(vehicle);
+      }
+    });
+
+    /* Clear button — remove saved vehicle */
+    clearBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      localStorage.removeItem('selectedVehicle');
+      row.style.display = 'none';
+      showAllProducts();
+      restoreCategoryButtons();
+      /* Update header button text */
+      var headerText = document.querySelector('.my-vehicle-btn span, [id*="vehicle"] span');
+      if (headerText) headerText.textContent = 'SELECT YOUR VEHICLE';
+    });
+
+    /* Vehicle row clicks — deactivate My Vehicle */
+    document.querySelectorAll('.vehicle-filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        pill.classList.remove('my-vehicle-pill--active');
+      });
+    });
+
+    /* Issue #4: Auto-activate if conditions met */
+    if (shouldAutoActivate) {
+      pill.classList.add('my-vehicle-pill--active');
+      /* Run filter multiple times to catch late-rendering products */
+      function runFilter() {
+        applyFitmentFilter(vehicle);
+      }
+      runFilter();
+      setTimeout(runFilter, 300);
+      setTimeout(runFilter, 800);
+      setTimeout(runFilter, 1500);
+      setTimeout(runFilter, 3000);
+      /* Also watch for DOM changes (infinite scroll, lazy loading) */
+      var gridEl = document.querySelector('.product-grid, .results-list, .collection-wrapper');
+      if (gridEl) {
+        var obs = new MutationObserver(function() { applyFitmentFilter(vehicle); });
+        obs.observe(gridEl, { childList: true, subtree: true });
+      }
+    }
+
+    /* Issue #3: Fitment filter — properly check BOTH make AND year range */
+    function applyFitmentFilter(v) {
+      var year = parseInt(v.year);
+      var make = v.make.toLowerCase();
+      var model = v.model.toLowerCase();
+      /* Try multiple selectors to find product items */
+      var items = document.querySelectorAll('.product-grid__item');
+      if (!items.length) items = document.querySelectorAll('.product-grid > li');
+      if (!items.length) items = document.querySelectorAll('[data-product-id]');
+      if (!items.length) items = document.querySelectorAll('li[class*="product"]');
+      console.log('[Fitment] Filtering for ' + year + ' ' + make + ' ' + model + ', found ' + items.length + ' items');
+      var hidden = 0;
+      
+      items.forEach(function(item) {
+        var text = item.textContent.toLowerCase();
+        var shouldHide = false;
+        
+        /* Check make match (or universal) */
+        var isUniversal = text.includes('universal');
+        var makeMatch = isUniversal || text.includes(make);
+        /* Also check alternate names */
+        if (!makeMatch && make === 'chevy') makeMatch = text.includes('chevrolet');
+        if (!makeMatch && make === 'chevrolet') makeMatch = text.includes('chevy');
+        if (!makeMatch && make === 'mercedes-benz') makeMatch = text.includes('mercedes');
+        if (!makeMatch && make === 'vw') makeMatch = text.includes('volkswagen');
+        if (!makeMatch && make === 'volkswagen') makeMatch = text.includes('vw');
+        
+        if (!makeMatch) {
+          shouldHide = true;
+        } else {
+          /* Check year range — must match */
+          var rangeMatch = text.match(/(\d{4})\s*[-–]\s*(\d{4})/);
+          var plusMatch = !rangeMatch && text.match(/(\d{4})\+/);
+          
+          if (rangeMatch) {
+            var start = parseInt(rangeMatch[1]);
+            var end = parseInt(rangeMatch[2]);
+            if (year < start || year > end) shouldHide = true;
+          } else if (plusMatch) {
+            if (year < parseInt(plusMatch[1])) shouldHide = true;
+          } else if (!isUniversal) {
+            shouldHide = true;
+          }
+        }
+
+        if (shouldHide) {
+          item.style.setProperty('display', 'none', 'important');
+          item.classList.add('filter-hidden');
+          hidden++;
+        } else {
+          item.style.removeProperty('display');
+          item.classList.remove('filter-hidden');
+        }
+      });
+      console.log('[Fitment] Hidden ' + hidden + ' of ' + items.length + ' products');
+
+      /* Grey out category buttons that have zero visible products */
+      updateCategoryAvailability();
+    }
+
+
+    function updateCategoryAvailability() {
+      var visibleItems = document.querySelectorAll('.product-grid__item:not(.filter-hidden), .product-grid > li:not(.filter-hidden)');
+      var visibleText = '';
+      visibleItems.forEach(function(item) { visibleText += ' ' + item.textContent.toLowerCase(); });
+
+      document.querySelectorAll('.category-filter-btn').forEach(function(btn) {
+        var handle = btn.dataset.handle;
+        if (handle === 'all') {
+          /* "All" stays enabled if any products visible */
+          btn.classList.toggle('filter-btn--disabled', visibleItems.length === 0);
+          btn.style.pointerEvents = visibleItems.length === 0 ? 'none' : '';
+          return;
+        }
+        /* Check if any visible product text contains keywords from this category */
+        var btnText = btn.textContent.toLowerCase().trim();
+        var keywords = btnText.split(/\s*[&,]\s*|\s+/);
+        var hasMatch = keywords.some(function(kw) {
+          if (kw.length < 3) return false; /* skip short words */
+          return visibleText.includes(kw);
+        });
+        btn.classList.toggle('filter-btn--disabled', !hasMatch);
+        btn.style.pointerEvents = hasMatch ? '' : 'none';
+      });
+    }
+
+    function restoreCategoryButtons() {
+      document.querySelectorAll('.category-filter-btn').forEach(function(btn) {
+        btn.classList.remove('filter-btn--disabled');
+        btn.style.pointerEvents = '';
+      });
+    }
+
+    function showAllProducts() {
+      document.querySelectorAll('.product-grid__item, .product-grid > li, [data-product-id]').forEach(function(item) {
+        item.classList.remove('filter-hidden');
+        item.style.removeProperty('display');
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>

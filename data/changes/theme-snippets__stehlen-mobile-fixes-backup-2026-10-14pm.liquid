@@ -1,0 +1,282 @@
+{% comment %}
+  Phone fixes for the whole storefront (2026-10-14). Loaded last in <head> so these
+  rules win. Owner rule: every change must work on phones — add new phone CSS here.
+  Revert = remove the render line in layout/theme.liquid.
+{% endcomment %}
+<style id="stehlen-mobile-fixes">
+/* ===== STEHLEN — phone fixes (2026-10-14). Loaded last so it wins. ===== */
+
+/* Product tabs: text was dark grey on the dark page at every width */
+.stehlen-tabs__btn { color: #a8a8a8 !important; }
+.stehlen-tabs__btn--active, .stehlen-tabs__btn:hover { color: #fff !important; }
+.stehlen-tabs__nav { border-bottom-color: #333 !important; }
+.stehlen-tabs__panel h1, .stehlen-tabs__panel h2, .stehlen-tabs__panel h3, .stehlen-tabs__panel h4 { color: #fff !important; }
+.stehlen-tabs__panel p, .stehlen-tabs__panel li { color: #d4d4d4 !important; }
+.stehlen-tabs__panel strong { color: #fff !important; }
+/* Product description section headings (Highlights, Fitment, …) */
+#MainContent .product-details h2, #MainContent .product-details h3, #MainContent .product-details h4,
+#MainContent .stehlen-tabs__panel h2, #MainContent .stehlen-tabs__panel h3, #MainContent .stehlen-tabs__panel h4 { color: #fff !important; }
+/* Product card "View product" link was nearly invisible */
+.product-card .stehlen-card-cta .stehlen-card-cta__view, .stehlen-card-cta .stehlen-card-cta__view { color: #f2f2f2 !important; }
+
+/* Product card titles were #666 on the dark card */
+.product-card .text-block p, .product-card .text-block a { color: #e8e6e0 !important; }
+
+/* Cart drawer: dark-text colour scheme on a dark panel (all widths) */
+.cart-drawer__dialog .cart-drawer__heading,
+.cart-drawer__dialog .cart-items__title,
+.cart-drawer__dialog text-component,
+.cart-drawer__dialog .cart__total-label,
+.cart-drawer__dialog .cart__total-value,
+.cart-drawer__dialog td span:not(button *),
+.cart-drawer__dialog small a { color: #f2f2f2 !important; }
+.cart-drawer__dialog .cart__total-value { font-weight: 700; }
+.quantity-selector input, .cart-drawer__dialog input[type=number], .product-details input[type=number] { color: #f2f2f2 !important; -webkit-text-fill-color: #f2f2f2; opacity: 1 !important; }
+
+/* Fitment summary card (built by stehlen-mobile-fixes JS on product pages) */
+.sx-fit { margin: 4px 0 4px; border: 1px solid #3a3a3a; border-radius: 6px; background: #17191c; padding: 14px 14px 12px; }
+.sx-fit__title { font: 700 13px/1.2 var(--font-heading--family, sans-serif); letter-spacing: .08em; text-transform: uppercase; color: #f5a823; margin: 0 0 8px; }
+.sx-fit ul { list-style: none; margin: 0; padding: 0; }
+.sx-fit li { position: relative; padding: 3px 0 3px 22px; color: #f2f2f2; font-size: 15px; line-height: 1.35; }
+.sx-fit li::before { content: '✓'; position: absolute; left: 2px; top: 3px; color: #4ade80; font-weight: 700; }
+.sx-fit li.sx-fit__more { display: none; }
+.sx-fit.is-open li.sx-fit__more { display: block; }
+.sx-fit__toggle { background: none; border: 0; padding: 6px 0 0; color: #f5a823; font-size: 14px; text-decoration: underline; cursor: pointer; }
+.sx-fit__no { margin: 10px 0 0; padding: 8px 10px; border-left: 3px solid #f59e0b; background: #2a2216; color: #f3e3c4; font-size: 14px; line-height: 1.4; }
+.sx-fit__no strong { color: #fbbf24; }
+.sx-fit__check { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 46px; margin-top: 12px; border: 1px solid #f5a823; border-radius: 4px; background: transparent; color: #f5a823; font: 700 14px/1 var(--font-heading--family, sans-serif); letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+.sx-fit--fits { border-color: #2f6b3c; background: #12261a; }
+.sx-fit--nofit { border-color: #8a2b2b; background: #2a1414; }
+.sx-fit__verdict { font-size: 15px; font-weight: 600; margin: 0 0 8px; }
+.sx-fit--fits .sx-fit__verdict { color: #86efac; }
+.sx-fit--nofit .sx-fit__verdict { color: #fca5a5; }
+
+@media screen and (min-width: 750px) { .sx-fit { display: none !important; } }
+
+@media screen and (max-width: 749px) {
+  .sx-dup-desc, .sx-hide-m { display: none !important; }
+  /* Cart drawer: item list was squeezed into a faded 200px scroll box; scroll the whole drawer instead */
+  .cart-drawer__items { flex: 0 0 auto !important; max-height: none !important; overflow: visible !important; -webkit-mask-image: none !important; mask-image: none !important; }
+  /* Header: stop the floating header covering the top of product / collection pages */
+  .header[transparent] { position: relative !important; }
+  body:has(.header[transparent]) .content-for-layout > .shopify-section:first-child { margin-top: 0 !important; }
+  /* Logo: smaller so it clears the garage button; show it on pages without the inverse logo */
+  .header-logo__image-container--inverse::before,
+  .header-logo__image-container--original::before { width: 132px !important; height: 27px !important; }
+  .header-logo:not(:has(.header-logo__image-container--inverse)) .header-logo__image-container--original {
+    display: flex !important; width: auto !important; height: auto !important; overflow: visible !important; align-items: center;
+  }
+  .header-logo:not(:has(.header-logo__image-container--inverse)) .header-logo__image-container--original::before {
+    content: ''; display: block; background: url({{ 'stehlen-logo.png' | asset_url }}) left center / contain no-repeat;
+  }
+
+  /* Product page: one full-width column (the fitment box was making a second column) */
+  .product-details { flex-direction: column !important; flex-wrap: nowrap !important; }
+  .product-details > * { width: 100% !important; max-width: 100% !important; flex: 0 0 auto !important; }
+  .product-details > .stehlen-fitment { display: none !important; }
+  .product-information__grid { gap: 8px !important; }
+  .product-details .group-block-content { gap: 8px !important; }
+  #MainContent .product-details h1 { margin-bottom: 2px !important; }
+  #MainContent .product-details h1, .product-details h1 { font-size: 20px !important; line-height: 1.15 !important; letter-spacing: 0.01em !important; }
+  .stehlen-policy { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .stehlen-policy__item { flex-direction: column; text-align: center; font-size: 11px !important; padding: 8px 4px !important; }
+  .stehlen-tabs { padding: 0 16px !important; margin: 24px 0 !important; }
+
+  /* Collection + search: the desktop 2-column layout pushed the product grid off-screen */
+  .collection-wrapper > *, .collection-wrapper.grid > * { grid-column: 1 / -1 !important; }
+  .collection-wrapper, .collection-wrapper.grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .main-collection-grid { display: block !important; padding: 0 12px !important; }
+  .main-collection-grid > * { width: 100% !important; }
+  ul.product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+  /* Card photo filled only the top of a tall grey box */
+  .product-card .card-gallery { aspect-ratio: 1 / 1 !important; height: auto !important; background: #fff !important; }
+  .product-card .card-gallery slideshow-component,
+  .product-card .card-gallery slideshow-container,
+  .product-card .card-gallery slideshow-slides,
+  .product-card .card-gallery .product-media-container,
+  .product-card .card-gallery .product-media,
+  .product-card .card-gallery slideshow-slide { height: 100% !important; }
+  .product-card .card-gallery img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+  .product-card .text-block p { font-size: 13px !important; line-height: 1.35 !important; }
+  .stehlen-card-cta__view { font-size: 11px !important; }
+  /* Search filter rows: scroll inside the row, not the whole page */
+  .filter-bar-wrapper, .filter-row { max-width: 100vw !important; width: 100% !important; box-sizing: border-box; }
+  .filter-row__scroll { overflow-x: auto !important; -webkit-overflow-scrolling: touch; min-width: 0 !important; }
+  /* Home hero: the "Find parts for your vehicle" box sat off-screen to the right */
+  .hero__two-col { grid-template-columns: minmax(0, 1fr) !important; }
+  .hero__two-col > .hero__content-wrapper, .hero__two-col > .hero__col-right { grid-column: 1 / -1 !important; }
+  .hero__two-col > .hero__col-right { grid-row: 2 !important; }
+  .hero__media-wrapper, .hero__content-wrapper { max-width: 100vw !important; }
+  .hero__two-col .hero__content-wrapper { padding: 28px 16px 16px !important; }
+  .hero__two-col .hero__col-right { width: 100% !important; padding: 0 16px 24px !important; box-sizing: border-box; }
+  .hero h1 { font-size: 50px !important; line-height: 0.98 !important; }
+  /* Home categories: odd last tile spans the row (no empty slot); readable labels */
+  .resource-list--grid > .resource-list__item:last-child:nth-child(odd) { grid-column: 1 / -1 !important; }
+  #stehlen-value-props .vp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .stehlen-card-title__name { font-size: 14px !important; }
+  .stehlen-card-title__link { font-size: 12px !important; }
+  html, body { overflow-x: hidden; }
+}
+
+/* Phone sticky Add to Cart bar (built by the product-page script) */
+.sx-bar { display: none; }
+@media screen and (max-width: 749px) {
+  .sx-bar { display: flex; align-items: center; gap: 12px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+    padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); background: #121417; border: 0;
+    box-shadow: none; transform: translateY(110%); transition: transform .2s ease; }
+  .sx-bar.is-on { transform: none; }
+  .sx-bar__price { display: none; }
+  .sx-bar--price .sx-bar__price { display: block;
+    flex: 0 0 auto; color: #f5a823; font: 700 22px/1 'Barlow Condensed', var(--font-heading--family), sans-serif; white-space: nowrap; }
+  .sx-bar__btn { flex: 1 1 auto; min-height: 46px; border: 0; border-radius: 4px; background: #f5a823; color: #111;
+    font: 800 15px/1 'Barlow Condensed', var(--font-heading--family), sans-serif; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+  .sx-bar__btn:disabled { background: #3a3d42; color: #aaa; }
+  body.sx-bar-on { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
+}
+</style>
+<script>
+  // Phones: open the cart drawer after Add to Cart so Checkout is one tap away
+  // (desktop keeps the theme setting). Only for product-form adds that succeeded.
+  document.addEventListener('cart:update', function (e) {
+    var d = e.detail && e.detail.data;
+    if (!d || d.didError || d.source !== 'product-form-component') return;
+    if (!window.matchMedia('(max-width: 749px)').matches || /^\/cart/.test(location.pathname)) return;
+    setTimeout(function () {
+      var drawer = document.querySelector('cart-drawer-component');
+      if (drawer && typeof drawer.open === 'function') drawer.open();
+    }, 350);
+  });
+</script>
+{% if template.name == 'product' %}
+<script>
+(function () {
+  // Product pages only. Builds a clear "Fits" card next to the buy button from the
+  // product's own fitment list (the FITMENT section of its description).
+  function run() {
+    var pd = document.querySelector('.product-details');
+    var dataEl = document.getElementById('stehlen-product-desc-data');
+    if (!pd || !dataEl || pd.querySelector('.sx-fit')) return;
+    var html = '';
+    try { html = JSON.parse(dataEl.textContent) || ''; } catch (e) { return; }
+    var doc = new DOMParser().parseFromString('<div>' + html + '</div>', 'text/html');
+    var fits = [], noFit = '';
+    var heads = doc.querySelectorAll('h1,h2,h3,h4,h5,strong,b,p');
+    var fitHead = null;
+    for (var i = 0; i < heads.length; i++) {
+      if (/^\s*fitment\s*:?\s*$/i.test(heads[i].textContent)) { fitHead = heads[i]; break; }
+    }
+    if (fitHead) {
+      var el = fitHead.closest('p') && fitHead.tagName !== 'P' ? fitHead.closest('p') : fitHead;
+      el = el.nextElementSibling;
+      while (el && !/^H[1-5]$/.test(el.tagName)) {
+        if (el.tagName === 'UL' || el.tagName === 'OL') {
+          el.querySelectorAll('li').forEach(function (li) { var t = li.textContent.trim(); if (t) fits.push(t); });
+        } else if (/will not fit/i.test(el.textContent)) {
+          noFit = el.textContent.replace(/^\s*will not fit\s*:?\s*/i, '').trim();
+        }
+        el = el.nextElementSibling;
+      }
+    }
+    if (!fits.length) return;
+
+    var esc = function (s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+    // Verdict for a saved vehicle — positive only (tag naming varies, so never claim "won't fit")
+    var verdict = '', cls = '';
+    try {
+      var v = JSON.parse(localStorage.getItem('stehlen-vehicle') || localStorage.getItem('stehlen_vehicle') || 'null');
+      var tagsEl = document.getElementById('stehlen-product-tags-data');
+      var tags = tagsEl ? JSON.parse(tagsEl.textContent).map(function (t) { return String(t).toLowerCase(); }) : [];
+      if (v && v.make && v.model) {
+        var mm = (v.make + ' ' + v.model).toLowerCase();
+        var hasVeh = tags.some(function (t) { return t === mm || t.indexOf(mm + ' ') === 0; });
+        var hasYear = !v.year || tags.indexOf(String(v.year)) !== -1;
+        var name = [v.year, v.make, v.model].filter(Boolean).join(' ');
+        if (hasVeh && hasYear) { verdict = '✓ Fits your ' + esc(name); cls = ' sx-fit--fits'; }
+        else { verdict = 'Check the list below for your ' + esc(name); }
+      }
+    } catch (e) {}
+
+    var SHOW = 4;
+    var li = fits.map(function (f, k) { return '<li' + (k >= SHOW ? ' class="sx-fit__more"' : '') + '>' + esc(f) + '</li>'; }).join('');
+    var card = '<div class="sx-fit' + cls + '">' +
+      (verdict ? '<p class="sx-fit__verdict">' + verdict + '</p>' : '') +
+      '<p class="sx-fit__title">Fits these vehicles</p><ul>' + li + '</ul>' +
+      (fits.length > SHOW ? '<button type="button" class="sx-fit__toggle">Show all ' + fits.length + ' vehicles</button>' : '') +
+      (noFit ? '<p class="sx-fit__no"><strong>Will not fit:</strong> ' + esc(noFit) + '</p>' : '') +
+      '</div>';
+
+    var buy = pd.querySelector('.buy-buttons-block');
+    var anchor = buy || pd.querySelector('.group-block-content > .group-block');
+    if (!anchor) return;
+    anchor.insertAdjacentHTML(buy ? 'beforebegin' : 'afterend', card);
+    var tg = pd.querySelector('.sx-fit__toggle');
+    if (tg) tg.addEventListener('click', function () {
+      var c = tg.closest('.sx-fit'); var open = c.classList.toggle('is-open');
+      tg.textContent = open ? 'Show fewer' : 'Show all ' + fits.length + ' vehicles';
+    });
+
+    // The description repeats in the tabs below; on phones keep only the tabs copy.
+    if (document.querySelector('.stehlen-tabs')) {
+      pd.querySelectorAll('rte-formatter, .text-block').forEach(function (t) {
+        if ((t.textContent || '').length > 400 && !t.closest('.sx-fit')) t.classList.add('sx-dup-desc');
+      });
+    }
+    // "Enter your vehicle at the top of the page" points at nothing on a phone.
+    document.querySelectorAll('.stehlen-tabs__panel p, .product-details p').forEach(function (p) {
+      if (/enter your vehicle at the top of the page/i.test(p.textContent)) p.classList.add('sx-hide-m');
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(run, 50); });
+  else setTimeout(run, 50);
+})();
+
+(function () {
+  // Phones: price + Add to Cart bar fixed to the bottom of the screen while the
+  // page's own Add to Cart button is off screen. Taps the real button, so variant,
+  // quantity, sold-out state and the cart drawer all behave exactly as normal.
+  function init() {
+    if (!window.matchMedia('(max-width: 749px)').matches || document.querySelector('.sx-bar')) return;
+    var pd = document.querySelector('.product-details');
+    var block = pd && pd.querySelector('.buy-buttons-block');
+    if (!block) return;
+    var realBtn = function () {
+      return [].slice.call(block.querySelectorAll('button')).filter(function (b) {
+        return /add to cart|sold out|unavailable/i.test(b.textContent);
+      })[0];
+    };
+    if (!realBtn()) return;
+    var bar = document.createElement('div');
+    bar.className = 'sx-bar';
+    bar.setAttribute('aria-hidden', 'true');
+    bar.innerHTML = '<span class="sx-bar__price"></span><button type="button" class="sx-bar__btn" tabindex="-1"></button>';
+    document.body.appendChild(bar);
+    var priceEl = bar.querySelector('.sx-bar__price'), btn = bar.querySelector('.sx-bar__btn');
+    function sync() {
+      var p = pd.querySelector('product-price .price, .price');
+      priceEl.textContent = p ? p.textContent.replace(/\s+/g, ' ').trim() : '';
+      var b = realBtn(); var sold = !b || b.disabled;
+      btn.disabled = sold;
+      btn.textContent = sold ? 'Sold out' : 'Add to cart';
+    }
+    sync();
+    new MutationObserver(sync).observe(pd, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['disabled'] });
+    btn.addEventListener('click', function () { var b = realBtn(); if (b && !b.disabled) b.click(); });
+    new IntersectionObserver(function (es) {
+      var show = !es[0].isIntersecting;
+      bar.classList.toggle('is-on', show);
+      document.body.classList.toggle('sx-bar-on', show);
+    }).observe(block);
+    // Show the price in the bar only once the page's own price has scrolled away,
+    // so the first screen never shows the price twice.
+    var pagePrice = pd.querySelector('product-price') || pd.querySelector('.price');
+    if (pagePrice) {
+      new IntersectionObserver(function (es) {
+        bar.classList.toggle('sx-bar--price', !es[0].isIntersecting && es[0].boundingClientRect.top < 0);
+      }).observe(pagePrice);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 120); });
+  else setTimeout(init, 120);
+})();
+</script>
+{% endif %}

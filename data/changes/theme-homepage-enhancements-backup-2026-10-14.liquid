@@ -1,0 +1,1505 @@
+{% comment %}v20260314-category-grid-v2{% endcomment %}
+<style>
+/* ==========================================================================
+   STEHLEN AUTO — Global UI Overrides
+   Professional storefront styling for trust, usability, and conversions
+   ========================================================================== */
+
+/* ===== 1. ANNOUNCEMENT + HEADER UNIFICATION ===== */
+.stehlen-announcements {
+  background: #1A1200 !important;
+  border-bottom: none !important;
+}
+#header-group { margin-top: 0; }
+#header-group > .shopify-section { background: transparent !important; }
+.header,
+.header-main,
+[data-section-type="header"] {
+  background: #1a1a1a !important;
+}
+.header__wrapper,
+.header-main__wrapper {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 60px;
+}
+
+/* ===== 2. LOGO REPLACEMENT + CENTERING ===== */
+.header-logo__image-container {
+  display: flex !important;
+  align-items: center !important;
+}
+/* Hide the original (light-bg) logo container — header is dark */
+.header-logo__image-container--original {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+.header-logo__image {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  overflow: hidden !important;
+}
+.header-logo__image-container--inverse::before {
+  content: '';
+  display: block;
+  width: 180px;
+  height: 36px;
+  background-image: url({{ 'stehlen-logo.png' | asset_url }});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  flex-shrink: 0;
+}
+.header-logo {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* ===== 3. INNER PAGE — prevent sticky header from covering content ===== */
+{% if template.name != 'index' %}
+#MainContent {
+  padding-top: 80px !important;
+}
+/* Hide value props bar on all non-homepage pages */
+.value-props-section,
+.value-props-bar,
+#stehlen-value-props,
+.shopify-section:has(.value-props-bar) {
+  display: none !important;
+}
+{% endif %}
+
+/* ===== 4. BUTTONS — global fix for missing button styles ===== */
+.button-primary,
+a.button-primary {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px !important;
+  background-color: #FFB74F !important;
+  color: #1A1A1A !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: var(--font-heading--family, Oswald, sans-serif);
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  line-height: 1 !important;
+  min-height: auto !important;
+}
+.button-primary:hover,
+a.button-primary:hover {
+  background-color: #e09a35 !important;
+  transform: translateY(-1px);
+}
+.button-secondary,
+a.button-secondary {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px !important;
+  background-color: transparent !important;
+  color: #F5A623 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1 !important;
+}
+.button-secondary:hover,
+a.button-secondary:hover {
+  background-color: var(--color-foreground, #1A3F22) !important;
+  color: #fff !important;
+}
+
+/* ===== 4b. ZERO BORDER RADIUS ON ALL BUTTONS ===== */
+button.stehlen-card-cta__cart,
+.stehlen-card-cta__cart,
+button.quick-add__button,
+.quick-add__button,
+.quick-add__button--add,
+button[name="add"],
+.product-form__submit,
+form[action*="cart"] button[type="submit"],
+form[action*="cart"] button.stehlen-card-cta__cart,
+.stehlen-card-cta form button[type="submit"] {
+  border-radius: 0 !important;
+}
+/* Hide light grey footer trust bar */
+#stehlen-footer-trust,
+.stehlen-footer-trust {
+  display: none !important;
+}
+/* Footer border-radius — social icons, input, button */
+.stehlen-footer__social a,
+.stehlen-footer a[href*="facebook"],
+.stehlen-footer a[href*="instagram"],
+.stehlen-footer a[href*="tiktok"],
+.stehlen-footer a[href*="youtube"],
+.stehlen-footer a[href*="pinterest"] {
+  border-radius: 0 !important;
+}
+.stehlen-footer__input,
+.stehlen-footer input,
+.stehlen-footer__signup-btn,
+.stehlen-footer button,
+form button.stehlen-footer__signup-btn,
+.stehlen-footer form button[type="submit"],
+form[action*="subscribe"] button,
+form[action*="subscribe"] button[type="submit"] {
+  border-radius: 0 !important;
+}
+
+/* ===== 5. HERO SECTION ===== */
+.hero .overlay--gradient {
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,0.72) 0%,
+    rgba(0,0,0,0.45) 35%,
+    rgba(0,0,0,0.12) 65%,
+    rgba(0,0,0,0) 100%
+  ) !important;
+}
+.hero__content-wrapper .text-block h1 {
+  font-size: clamp(36px, 4vw, 56px) !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  color: #fff !important;
+}
+.hero__content-wrapper rte-formatter p,
+.hero__content-wrapper .rte p {
+  font-size: clamp(14px, 1.2vw, 18px) !important;
+  line-height: 1.5 !important;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+  color: rgba(255,255,255,0.92) !important;
+  max-width: 480px;
+}
+.hero__content-wrapper {
+  padding: 60px 48px !important;
+}
+
+/* ===== 6. VEHICLE SELECTOR — dark theme dropdown ===== */
+.vehicle-selector {
+  position: relative;
+  display: flex !important;
+  align-items: center !important;
+}
+header-actions {
+  display: flex !important;
+  align-items: center !important;
+}
+.vehicle-selector__trigger {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px;
+  white-space: nowrap;
+  align-self: center !important;
+}
+
+/* --- Dialog container --- */
+.vehicle-selector__dialog,
+dialog.vehicle-selector__dialog {
+  position: fixed;
+  left: auto !important;
+  bottom: auto !important;
+  margin: 0 !important;
+  width: 540px !important;
+  max-width: calc(100vw - 20px) !important;
+  border: none !important;
+  border-radius: 0 0 12px 12px !important;
+  box-shadow: 0 16px 56px rgba(0,0,0,0.5) !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: #1a1a1a !important;
+  z-index: 9999 !important;
+}
+.vehicle-selector__dialog[open] {
+  display: block;
+  animation: vsSlideDown 0.22s ease-out;
+}
+@keyframes vsSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.vehicle-selector__dialog::backdrop {
+  background: rgba(0,0,0,0.3);
+}
+
+/* --- Inner content --- */
+.vehicle-selector__content {
+  padding: 28px 32px 32px !important;
+  overflow: visible !important;
+}
+
+/* --- Header row --- */
+.vehicle-selector__header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  margin-bottom: 24px !important;
+}
+.vehicle-selector__title {
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  color: #fff !important;
+  margin: 0 !important;
+  letter-spacing: 0.06em;
+}
+.vehicle-selector__subtitle {
+  font-size: 13px !important;
+  color: rgba(255,255,255,0.45) !important;
+  margin: 6px 0 0 !important;
+}
+
+/* --- Close button — override theme's orange circle --- */
+.vehicle-selector__close,
+.vehicle-selector__dialog .vehicle-selector__close,
+button.vehicle-selector__close,
+.vehicle-selector__dialog button {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+.vehicle-selector__close,
+.vehicle-selector__dialog .vehicle-selector__close,
+button.vehicle-selector__close {
+  background: none !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 26px !important;
+  cursor: pointer;
+  color: rgba(255,255,255,0.5) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1;
+  width: 36px;
+  height: 36px;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px !important;
+  transition: all 0.15s ease;
+}
+.vehicle-selector__close:hover,
+.vehicle-selector__close:focus,
+button.vehicle-selector__close:hover,
+button.vehicle-selector__close:focus {
+  color: #fff !important;
+  background: rgba(255,255,255,0.08) !important;
+  background-color: rgba(255,255,255,0.08) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* --- Labels — show them for clarity --- */
+.vehicle-selector__label {
+  display: block !important;
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5) !important;
+  margin-bottom: 8px !important;
+}
+
+/* --- Fields grid --- */
+.vehicle-selector__fields {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
+  gap: 16px !important;
+  align-items: end;
+  margin-bottom: 20px !important;
+}
+.vehicle-selector__field--action {
+  grid-column: 1 / -1;
+}
+
+/* --- Select dropdowns — dark style with visible text --- */
+.vehicle-selector__select,
+.vehicle-selector__dialog select {
+  width: 100% !important;
+  padding: 13px 36px 13px 14px !important;
+  border: 1.5px solid rgba(255,255,255,0.18) !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-family: var(--font-body--family, sans-serif) !important;
+  background: #2c2c2c !important;
+  color: rgba(255,255,255,0.85) !important;
+  appearance: auto !important;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.vehicle-selector__select:focus,
+.vehicle-selector__dialog select:focus {
+  border-color: #FFB74F !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(255,183,79,0.15) !important;
+  background: #363636 !important;
+}
+.vehicle-selector__select:disabled,
+.vehicle-selector__dialog select:disabled {
+  background: #232323 !important;
+  color: rgba(255,255,255,0.3) !important;
+  cursor: not-allowed;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+.vehicle-selector__select option {
+  background: #2c2c2c;
+  color: #fff;
+}
+
+/* --- GO button — full width, prominent --- */
+button.vehicle-selector__go,
+.vehicle-selector__dialog button.vehicle-selector__go,
+.vehicle-selector__dialog .vehicle-selector__go {
+  width: 100% !important;
+  padding: 14px 28px !important;
+  background-color: #FFB74F !important;
+  background: #FFB74F !important;
+  color: #1A1A1A !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  box-shadow: none !important;
+}
+button.vehicle-selector__go:hover:not(:disabled),
+.vehicle-selector__dialog button.vehicle-selector__go:hover:not(:disabled) {
+  background-color: #e09a35 !important;
+  background: #e09a35 !important;
+  transform: translateY(-1px);
+}
+button.vehicle-selector__go:disabled,
+.vehicle-selector__dialog button.vehicle-selector__go:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- Saved vehicle bar — gold accent, not green --- */
+/* Kill ALL theme defaults inside saved bar */
+.vehicle-selector__saved *,
+.vehicle-selector__dialog .vehicle-selector__saved * {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
+.vehicle-selector__saved,
+.vehicle-selector__dialog .vehicle-selector__saved {
+  margin-top: 20px !important;
+  margin-bottom: 0 !important;
+  padding: 0 18px !important;
+  background: rgba(255,183,79,0.08);
+  border: 1px solid rgba(255,183,79,0.25);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: center !important;
+  height: 52px;
+}
+.vehicle-selector__saved-info,
+.vehicle-selector__dialog .vehicle-selector__saved-info {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+.vehicle-selector__saved-icon {
+  color: #FFB74F !important;
+  font-weight: 700 !important;
+  margin-right: 10px !important;
+  font-size: 16px !important;
+}
+.vehicle-selector__clear,
+button.vehicle-selector__clear,
+.vehicle-selector__saved button.vehicle-selector__clear {
+  background: none !important;
+  background-color: transparent !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: rgba(255,255,255,0.7) !important;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  box-shadow: none !important;
+  flex-shrink: 0;
+}
+.vehicle-selector__clear:hover,
+button.vehicle-selector__clear:hover {
+  border-color: rgba(255,255,255,0.5) !important;
+  color: #fff !important;
+  background-color: rgba(255,255,255,0.06) !important;
+}
+.vehicle-selector__dialog *::-webkit-scrollbar { display: none; }
+.vehicle-selector__dialog * { scrollbar-width: none; }
+
+/* ===== 6b. COLLECTION CARD GRID SPACING ===== */
+.resource-list.resource-list--grid {
+  gap: 8px !important;
+}
+
+/* ===== 6c. CONSISTENT SECTION HEADINGS ===== */
+.section-resource-list h2,
+#stehlen-popular-models .pm-header h2,
+.section-resource-list .text-block h2 {
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-weight: 700 !important;
+  font-size: 32px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  color: #222 !important;
+  margin-bottom: 8px !important;
+}
+
+/* ===== 7. COLLECTION CARDS — Lovable edge-to-edge category grid ===== */
+
+/* Section wrapper — remove all padding/gap for seamless grid */
+.ui-test-collection-list .section-resource-list {
+  padding: 0 !important;
+}
+.ui-test-collection-list .section-resource-list__content {
+  margin-bottom: 0 !important;
+}
+.ui-test-collection-list .resource-list {
+  gap: 0 !important;
+}
+.ui-test-collection-list .resource-list__item {
+  border-right: 1px solid hsl(220 8% 25%);
+  border-bottom: 1px solid hsl(220 8% 25%);
+}
+.ui-test-collection-list .resource-list__item:nth-child(4n) {
+  border-right: none;
+}
+/* Remove Horizon spacing/gap utility styles */
+.ui-test-collection-list .gap-style {
+  --gap: 0px !important;
+  --columns-gap: 0px !important;
+  --rows-gap: 0px !important;
+  gap: 0 !important;
+}
+.ui-test-collection-list .spacing-style {
+  --padding-block-start: 0px !important;
+  --padding-block-end: 0px !important;
+  padding: 0 !important;
+}
+
+/* Card — no border-radius, no background, no borders, no lift */
+.collection-card {
+  border-radius: 0 !important;
+  overflow: hidden;
+  position: relative;
+  background: transparent !important;
+  border: none !important;
+}
+.collection-card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+.collection-card,
+.collection-card .border-style {
+  --color-border: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* Image — fill entire card, dimmed like Lovable */
+.collection-card .collection-card__image {
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+.collection-card .collection-card__image img {
+  opacity: 0.5 !important;
+  transition: opacity 500ms, transform 500ms !important;
+}
+.collection-card:hover .collection-card__image img {
+  opacity: 0.7 !important;
+  transform: scale(1.05) !important;
+}
+
+/* Inner container — relative for overlay positioning */
+.collection-card .collection-card__inner {
+  position: relative;
+  aspect-ratio: 4/3;
+}
+.collection-card .collection-card__inner img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* Gradient overlay — from background color (dark) to transparent */
+.collection-card .collection-card__inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, hsl(220 15% 8%) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 0;
+}
+
+/* Title overlay — bottom-left positioned */
+.stehlen-card-title {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 16px;
+  z-index: 3;
+  color: #fff;
+  pointer-events: none;
+}
+.stehlen-card-title__name {
+  font-family: var(--lov-font-display, 'Barlow Condensed', sans-serif);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 4px;
+  color: hsl(220 10% 96%);
+}
+.stehlen-card-title__link {
+  font-size: 10px;
+  color: #F5A623;
+  font-family: var(--lov-font-display, 'Barlow Condensed', sans-serif);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s ease;
+}
+.stehlen-card-title__link:hover { color: #FFB93A; }
+
+/* Hide Horizon's default collection card content area (title below image) */
+.collection-card .collection-card__content,
+.collection-card .collection-card__text-content {
+  display: none !important;
+}
+
+/* ===== 8. HOMEPAGE SECTION SPACING — breathing room ===== */
+{% if template.name == 'index' %}
+#MainContent > .shopify-section + .shopify-section {
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+/* Non-collection sections keep padding */
+.section-resource-list:not(.ui-test-collection-list .section-resource-list) {
+  padding-top: 56px !important;
+  padding-bottom: 56px !important;
+}
+.section-resource-list:not(.ui-test-collection-list .section-resource-list) .section-resource-list__content {
+  margin-bottom: 28px;
+}
+/* Collection list section — Lovable header bar with border */
+.ui-test-collection-list .section-resource-list__content {
+  padding: 24px 16px 24px 32px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid hsl(220 8% 25%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ui-test-collection-list .section-resource-list__content h2 {
+  font-family: var(--lov-font-display, 'Barlow Condensed', sans-serif) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.15em !important;
+  color: hsl(220 8% 55%) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+{% endif %}
+
+/* ===== 9. PRODUCT CARD — Lovable dark theme ===== */
+.ui-test-product-list .product-card {
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+/* Ensure product title text is light on dark card */
+.ui-test-product-list .product-card .text-block,
+.ui-test-product-list .product-card .text-block a,
+.ui-test-product-list .product-card .typography-style,
+.ui-test-product-list .product-card .typography-style a {
+  color: hsl(220 10% 86%) !important;
+}
+/* Featured Products section heading — light on dark */
+.ui-test-product-list .section-resource-list__header .text-block,
+.ui-test-product-list .section-resource-list__header h2,
+.ui-test-product-list .section-resource-list__header h3,
+.ui-test-product-list .section-resource-list__content .text-block,
+.ui-test-product-list .section-resource-list__content h2,
+.ui-test-product-list .section-resource-list__content h3 {
+  color: #f4f4f6 !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+}
+
+/* ===== 10. VALUE PROPS BAR ===== */
+#stehlen-value-props {
+  background: #fff;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 6px 0;
+}
+#stehlen-value-props .vp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+#stehlen-value-props .vp-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px 12px;
+  border-right: 1px solid #e0e0e0;
+}
+#stehlen-value-props .vp-item:last-child { border-right: none; }
+#stehlen-value-props .vp-title {
+  font-family: var(--font-heading--family, Oswald, sans-serif);
+  font-weight: 600;
+  font-size: .8125rem;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  color: #1A1A1A;
+}
+#stehlen-value-props .vp-sub {
+  font-family: var(--font-body--family, sans-serif);
+  font-size: .75rem;
+  color: #666;
+}
+
+/* ===== 11. SHOP BY POPULAR MODELS ===== */
+#stehlen-popular-models {
+  background: #f8f8f8;
+  padding: 56px 0;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+#stehlen-popular-models .pm-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+#stehlen-popular-models .pm-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+#stehlen-popular-models .pm-header h2 {
+  margin: 0 0 8px;
+}
+#stehlen-popular-models .pm-header p {
+  font-family: var(--font-body--family, sans-serif);
+  font-size: 15px;
+  color: #666;
+  margin: 0;
+}
+#stehlen-popular-models .pm-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+#stehlen-popular-models .pm-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #1a1a1a;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  color: #fff;
+}
+#stehlen-popular-models .pm-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+}
+#stehlen-popular-models .pm-card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+#stehlen-popular-models .pm-card:hover .pm-card-img {
+  opacity: 0.85;
+}
+#stehlen-popular-models .pm-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+}
+#stehlen-popular-models .pm-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #FFB74F;
+  color: #1A1A1A;
+  font-family: var(--font-heading--family, Oswald, sans-serif);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 3px;
+  z-index: 3;
+}
+#stehlen-popular-models .pm-card-info {
+  position: relative;
+  z-index: 3;
+  padding: 24px 20px;
+}
+#stehlen-popular-models .pm-card-name {
+  font-family: var(--font-heading--family, Oswald, sans-serif);
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0 0 4px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+#stehlen-popular-models .pm-card-count {
+  font-family: var(--font-body--family, sans-serif);
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  margin: 0 0 12px;
+}
+#stehlen-popular-models .pm-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-heading--family, Oswald, sans-serif);
+  font-weight: 600;
+  font-size: 13px;
+  color: #FFB74F;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+#stehlen-popular-models .pm-card-link:hover { color: #ffc978; }
+
+/* ===== 12. COLLECTION PAGE — FORCE SHOW FILTER SIDEBAR ===== */
+/* The Horizon theme hides the sidebar filter variant via CSS. Override it. */
+@media (min-width: 750px) {
+  .facets-block-wrapper.facets-block-wrapper--sidebar {
+    display: block !important;
+    min-width: 240px;
+    max-width: 260px;
+    padding-right: 24px;
+  }
+  .facets.facets--sidebar {
+    display: block !important;
+  }
+  .facets__form-wrapper {
+    display: block !important;
+  }
+  .facets__form {
+    display: block !important;
+  }
+  .facets__filters-wrapper {
+    display: block !important;
+  }
+  /* Layout — grid takes precedence via stehlen-theme.css */
+  .collection-wrapper.grid,
+  .collection-wrapper {
+    display: grid !important;
+    grid-template-columns: 260px 1fr !important;
+    gap: 0 !important;
+  }
+  .main-collection-grid {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  /* Hide the drawer/toggle variants when sidebar is showing */
+  .facets-toggle { display: none !important; }
+  .facets-block-wrapper--drawer { display: none !important; }
+}
+/* Mobile: hide sidebar, show toggle for drawer */
+@media (max-width: 749px) {
+  .facets-block-wrapper.facets-block-wrapper--sidebar {
+    display: none !important;
+  }
+  .facets-toggle {
+    display: flex !important;
+    justify-content: flex-end;
+    padding: 12px 16px;
+  }
+  .collection-wrapper.grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+/* Sidebar filter styles moved to collection-specific section below */
+/* ===== 13. VIEW ALL BUTTON — brand styling ===== */
+{% if template.name == 'index' %}
+.section-resource-list .button-outline,
+.section-resource-list a[class*="button"],
+.section-resource-list .view-all-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px !important;
+  background: transparent !important;
+  color: #F5A623 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.section-resource-list .button-outline:hover,
+.section-resource-list a[class*="button"]:hover {
+  background: transparent !important;
+  color: #FFB93A !important;
+}
+{% endif %}
+
+/* ==========================================================================
+   14. COLLECTION PAGE — professional layout
+   ========================================================================== */
+{% if template.name == 'collection' %}
+/* --- Override inner-page padding for collection --- */
+#MainContent {
+  padding-top: 0 !important;
+}
+
+/* --- Kill ALL heading section whitespace --- */
+.spacing-style {
+  --padding-block-start: 12px !important;
+  --padding-block-end: 8px !important;
+}
+#MainContent > .shopify-section:first-child {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#MainContent > .shopify-section:first-child .section {
+  padding: 16px 40px 12px !important;
+  max-width: 1360px !important;
+  margin: 0 auto !important;
+}
+
+/* Compact collection title */
+.section > .header,
+.section-heading,
+[class*="heading"] .section {
+  padding: 12px 0 8px !important;
+}
+.section > .header h1,
+.section .text-block h1,
+h1.collection-heading,
+[class*="heading"] h1 {
+  font-family: var(--font-heading--family, Oswald, sans-serif) !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+/* Collection description */
+.section .text-block p,
+[class*="heading"] p,
+.collection-description {
+  font-size: 14px !important;
+  color: #666 !important;
+  margin: 4px 0 0 !important;
+  max-width: 600px;
+  line-height: 1.5 !important;
+}
+
+/* --- Page-width containers with proper margins --- */
+.main-collection,
+[class*="main-collection"],
+#MainContent > .shopify-section .page-width {
+  max-width: 1360px !important;
+  margin: 0 auto !important;
+  padding: 0 40px !important;
+}
+
+/* --- Sidebar + grid layout — override Horizon theme's complex grid --- */
+/* CSS sets basic layout; JS applies precise overrides after DOM load */
+@media (min-width: 750px) {
+  .facets-block-wrapper.facets-block-wrapper--sidebar {
+    display: block !important;
+    width: 220px !important;
+    min-width: 220px !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+/* --- Sidebar filter styling --- */
+.facets--sidebar,
+.facets-block-wrapper--sidebar .facets {
+  background: #111111 !important;
+  border: 1px solid #1E1E1E !important;
+  border-radius: 0 !important;
+  padding: 16px !important;
+  margin-top: 4px;
+}
+.facets--sidebar .facets__panel,
+.facets details {
+  border-bottom: 1px solid #1E1E1E;
+}
+.facets--sidebar .facets__panel:last-child,
+.facets details:last-child {
+  border-bottom: none;
+}
+.facets--sidebar .facets__summary,
+.facets details summary,
+.facets summary {
+  padding: 12px 0 !important;
+  font-family: var(--font-heading--family, Oswald, sans-serif) !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  cursor: pointer;
+  color: #888888 !important;
+  list-style: none;
+}
+.facets--sidebar .facets__inputs-list,
+.facets ul {
+  padding: 0 0 12px !important;
+  margin: 0 !important;
+  list-style: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+.facets--sidebar .facets__inputs-list-item,
+.facets li {
+  font-size: 13px !important;
+  color: #888888 !important;
+}
+.facets--sidebar .facets__inputs-list-item label,
+.facets li label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  cursor: pointer;
+}
+/* Checkboxes */
+.facets input[type="checkbox"] {
+  accent-color: #FFB74F;
+  width: 16px;
+  height: 16px;
+}
+/* "SEE X ITEMS" / Apply button — brand styling */
+.facets--sidebar button[type="submit"],
+.facets--sidebar .facets__submit,
+.facets button[type="submit"],
+.facets .facets__submit,
+.facets__form button,
+.facets-block-wrapper--sidebar button[type="submit"] {
+  background: #F5A623 !important;
+  color: #111111 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 10px 20px !important;
+  font-family: var(--font-heading--family, Oswald, sans-serif) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  cursor: pointer;
+  width: 100% !important;
+  margin-top: 8px !important;
+  transition: background 0.2s ease;
+}
+.facets--sidebar button[type="submit"]:hover,
+.facets button[type="submit"]:hover {
+  background: #FFB93A !important;
+}
+/* Product grid within collection */
+.product-grid,
+[class*="product-grid"] {
+  gap: 16px 16px !important;
+}
+/* Product cards — clean styling (target top-level card only, not inner elements) */
+.product-grid > .product-card,
+.product-grid > li > .product-card,
+.product-grid__item,
+.main-collection-grid.grid > li {
+  border: none !important;
+  border-radius: 0 !important;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+  background: transparent;
+}
+.product-grid > .product-card:hover,
+.product-grid > li > .product-card:hover,
+.product-grid__item:hover,
+.main-collection-grid.grid > li:hover {
+  box-shadow: none !important;
+}
+/* Product card price */
+.product-card [class*="price"] .money,
+.product-card .price {
+  color: #e08a20 !important;
+  font-weight: 700 !important;
+}
+/* Fitment banner styling */
+.fitment-banner {
+  max-width: 1360px;
+  margin: 0 auto 16px !important;
+  padding: 0 40px;
+}
+/* Active filter tags */
+.active-filters,
+.facets__active-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+{% endif %}
+
+/* ==========================================================================
+   15. PRODUCT DETAIL PAGE — tighter layout, better proportions
+   ========================================================================== */
+{% if template.name == 'product' %}
+/* --- Reduce top whitespace --- */
+#MainContent {
+  padding-top: 16px !important;
+}
+
+/* --- Make product section full-width, then constrain --- */
+.product-information {
+  max-width: 1360px !important;
+  margin: 0 auto !important;
+  padding: 0 40px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+/* Ensure Shopify section wrapper doesn't constrain */
+#MainContent > .shopify-section:first-child {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 0 !important;
+}
+#MainContent > .shopify-section:first-child > .section,
+#MainContent > .shopify-section:first-child > div {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+.page-width:has(.product-information__grid) {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* --- Better grid proportions using fr units --- */
+.product-information__grid {
+  width: 100% !important;
+  max-width: none !important;
+  gap: 32px !important;
+}
+.product-information__grid.product-information--media-left {
+  grid-template-columns: 1.3fr 1fr !important;
+}
+/* Fallback if no media-left class */
+.product-information__grid:not(.product-information--media-left) {
+  grid-template-columns: 1.3fr 1fr !important;
+}
+/* Ensure media fills its column */
+.product-information__grid .product__media-wrapper,
+.product-information__grid .product-gallery,
+.product-information__grid [class*="media-gallery"],
+.product-information__grid > *:first-child {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+.product-information__grid .product__media-wrapper img,
+.product-information__grid .product-gallery img {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain;
+}
+
+/* --- Product title styling --- */
+.product-details h1 {
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  margin-bottom: 8px !important;
+}
+
+/* --- Price styling --- */
+.product-details .price__current,
+.product-details [class*="price"] .money {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: #FFB74F !important;
+}
+
+/* --- Fitment badge in product details — cleaner styling --- */
+#stehlen-fitment-badge {
+  margin: 12px 0 !important;
+}
+.fitment-badge--check {
+  background: #f9f3e5 !important;
+  border: 1px solid #FFB74F !important;
+  color: #7a5a1e !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  padding: 10px 14px !important;
+}
+.stehlen-fitment__badge--check {
+  background: #f9f3e5 !important;
+  border: 1px solid #FFB74F !important;
+  color: #7a5a1e !important;
+  border-radius: 6px !important;
+}
+
+/* --- Add to Cart button --- */
+.product-details .add-to-cart-component button,
+.product-details [class*="add-to-cart"] button {
+  background: #FFB74F !important;
+  color: #1a1a1a !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-family: var(--font-heading--family, Montserrat, sans-serif) !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+/* --- Tabs section — better styling --- */
+.stehlen-tabs {
+  max-width: 1360px !important;
+  margin: 32px auto !important;
+  padding: 0 40px !important;
+}
+.stehlen-tabs__nav {
+  border-bottom: 2px solid #e0e0e0;
+}
+.stehlen-tabs__btn--active {
+  color: #1a1a1a !important;
+  border-bottom-color: #FFB74F !important;
+}
+
+/* --- "You may also like" section --- */
+.product-recommendations {
+  max-width: 1360px !important;
+  margin: 0 auto !important;
+  padding: 0 40px 40px !important;
+}
+
+/* --- Trust badges row --- */
+.stehlen-policy {
+  margin: 16px 0 !important;
+}
+.stehlen-policy__item {
+  background: #f5f5f5 !important;
+  border-radius: 6px !important;
+  padding: 10px 12px !important;
+  font-size: 12px !important;
+}
+.stehlen-policy__item svg {
+  color: #FFB74F !important;
+}
+{% endif %}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 989px) {
+  .hero__content-wrapper { padding: 40px 24px !important; }
+  .vehicle-selector__dialog,
+  dialog.vehicle-selector__dialog {
+    width: calc(100vw - 20px) !important;
+    right: 10px !important;
+  }
+  #stehlen-value-props .vp-grid { grid-template-columns: repeat(2, 1fr); }
+  #stehlen-value-props .vp-item:nth-child(2) { border-right: none; }
+  #stehlen-value-props .vp-item:nth-child(1),
+  #stehlen-value-props .vp-item:nth-child(2) { border-bottom: 1px solid #e0e0e0; }
+  #stehlen-popular-models .pm-grid { grid-template-columns: repeat(2, 1fr); }
+  /* PDP grid on tablet */
+  .product-information__grid.product-information--media-left,
+  .product-information__grid:not(.product-information--media-left) {
+    grid-template-columns: 1.2fr 1fr !important;
+    gap: 24px !important;
+  }
+  .product-information { padding: 0 24px !important; }
+}
+@media (max-width: 749px) {
+  .hero__content-wrapper { padding: 24px 16px !important; }
+  .vehicle-selector__dialog,
+  dialog.vehicle-selector__dialog {
+    width: calc(100vw - 16px) !important;
+    right: 8px !important;
+  }
+  .vehicle-selector__content { padding: 24px 20px 28px !important; }
+  .vehicle-selector__fields { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .stehlen-card-title__name { font-size: 11px; }
+  .stehlen-card-title__link { font-size: 9px; }
+  .stehlen-card-title { padding: 12px; }
+  .ui-test-collection-list .resource-list__item:nth-child(2n) { border-right: none; }
+  .ui-test-collection-list .resource-list__item:nth-child(4n) { border-right: 1px solid hsl(220 8% 25%); }
+  #stehlen-value-props .vp-item { padding: 12px 8px; gap: 8px; }
+  #stehlen-value-props svg { width: 22px; height: 22px; }
+  #stehlen-value-props .vp-sub { display: none; }
+  #stehlen-popular-models { padding: 40px 0; }
+  #stehlen-popular-models .pm-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  #stehlen-popular-models .pm-card { min-height: 200px; }
+  #stehlen-popular-models .pm-card-name { font-size: 16px; }
+  #stehlen-popular-models .pm-card-info { padding: 16px 14px; }
+  /* PDP single column on mobile */
+  .product-information__grid.product-information--media-left,
+  .product-information__grid:not(.product-information--media-left) {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .product-information { padding: 0 16px !important; }
+  .stehlen-tabs { padding: 0 16px !important; }
+  /* Collection mobile padding */
+  .main-collection,
+  [class*="main-collection"],
+  .page-width {
+    padding: 0 16px !important;
+  }
+}
+</style>
+
+<script>
+/* Hide duplicate logo container immediately (can't wait for DOMContentLoaded) */
+(function() {
+  var style = document.createElement('style');
+  style.textContent = '.header-logo__image-container--original{display:none!important;width:0!important;height:0!important;overflow:hidden!important}.header-logo__image{display:none!important}';
+  document.head.appendChild(style);
+})();
+
+/* All DOM manipulation deferred to DOMContentLoaded since this snippet runs in <head> */
+document.addEventListener('DOMContentLoaded', function() {
+  var path = window.location.pathname;
+  var isHome = (path === '/' || path === '');
+  var isCollection = path.indexOf('/collections') === 0;
+
+  /* Ensure duplicate logo container is hidden */
+  var origContainer = document.querySelector('.header-logo__image-container--original');
+  if (origContainer) origContainer.style.setProperty('display', 'none', 'important');
+
+  /* Add body classes for CSS */
+  if (isHome) document.body.classList.add('stehlen-home');
+  else document.body.classList.add('stehlen-inner');
+  if (isCollection) document.body.classList.add('stehlen-collection');
+
+  /* --- HOMEPAGE ONLY --- */
+  if (isHome) {
+    /* Value props bar after hero */
+    (function() {
+      if (document.getElementById('stehlen-value-props')) return;
+      var mc = document.getElementById('MainContent');
+      if (!mc) return;
+      /* Insert after LAST section (before footer), not first (after hero) */
+      var sections = mc.querySelectorAll('.shopify-section');
+      var fs = sections[sections.length - 1];
+      if (!fs) return;
+      var h = '<div id="stehlen-value-props"><div class="vp-grid">' +
+        '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Free Shipping</span><span class="vp-sub">On all orders</span></div></div>' +
+        '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Guaranteed Fitment</span><span class="vp-sub">Fits your vehicle or money back</span></div></div>' +
+        '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4l2 2"></path></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Manufacturer Warranty</span><span class="vp-sub">On every product</span></div></div>' +
+        '<div class="vp-item"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB74F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg><div style="display:flex;flex-direction:column;gap:2px"><span class="vp-title">Easy Returns</span><span class="vp-sub">30-day hassle-free returns</span></div></div>' +
+      '</div></div>';
+      fs.insertAdjacentHTML('afterend', h);
+    })();
+
+    /* Collection card title overlays — Lovable style */
+    (function() {
+      document.querySelectorAll('.collection-card').forEach(function(card) {
+        if (card.querySelector('.stehlen-card-title')) return;
+        var link = card.querySelector('.collection-card__link');
+        if (!link) return;
+        var hidden = link.querySelector('.visually-hidden');
+        if (!hidden) return;
+        var title = hidden.textContent.trim();
+        var href = link.getAttribute('href');
+        if (!title || !href) return;
+        /* Try to get products_count from the collection card data */
+        var parentItem = card.closest('[data-products-count]') || card.parentElement;
+        var count = parentItem && parentItem.getAttribute('data-products-count') ? parentItem.getAttribute('data-products-count') : '';
+        var countText = count ? count + ' PARTS' : 'VIEW ALL';
+        var overlay = document.createElement('div');
+        overlay.className = 'stehlen-card-title';
+        overlay.innerHTML = '<div class="stehlen-card-title__name">' + title + '</div>' +
+          '<a href="' + href + '" class="stehlen-card-title__link">' + countText + '</a>';
+        var inner = card.querySelector('.collection-card__inner');
+        if (inner) { inner.style.position = 'relative'; inner.appendChild(overlay); }
+      });
+    })();
+
+    /* Shop by Popular Models */
+    (function() {
+      if (document.getElementById('stehlen-popular-models')) return;
+      var mc = document.getElementById('MainContent');
+      if (!mc) return;
+      var cl = mc.querySelector('.ui-test-collection-list');
+      if (!cl) { var ss = mc.querySelectorAll('.shopify-section'); if (ss.length < 2) return; cl = ss[ss.length - 1]; }
+
+      /* Use collection card images as backgrounds for popular models */
+      var collImgs = [];
+      document.querySelectorAll('.collection-card img').forEach(function(img) {
+        if (img.src) collImgs.push(img.src);
+      });
+
+      var models = [
+        { name: 'Ford F-150', badge: 'MOST POPULAR', sub: 'Truck Parts & Accessories' },
+        { name: 'Toyota Tundra', badge: 'TRENDING', sub: 'Truck Parts & Accessories' },
+        { name: 'Chevy Silverado', badge: 'BEST SELLERS', sub: 'Truck Parts & Accessories' },
+        { name: 'Dodge Charger', badge: 'NEW ARRIVALS', sub: 'Performance & Style Parts' }
+      ];
+      var cards = models.map(function(m, i) {
+        var imgSrc = collImgs[i] || '';
+        var imgTag = imgSrc ? '<img class="pm-card-img" src="' + imgSrc + '" alt="' + m.name + ' parts" loading="lazy">' : '';
+        return '<a href="/collections/all?filter.p.m.custom.make=' + encodeURIComponent(m.name.split(' ')[0]) + '&filter.p.m.custom.model=' + encodeURIComponent(m.name.split(' ').slice(1).join(' ')) + '" class="pm-card">' +
+          imgTag +
+          '<div class="pm-card-overlay"></div>' +
+          '<div class="pm-badge">' + m.badge + '</div>' +
+          '<div class="pm-card-info">' +
+            '<div class="pm-card-name">' + m.name + '</div>' +
+            '<div class="pm-card-count">' + m.sub + '</div>' +
+            '<span class="pm-card-link">View All Parts <span style="font-size:14px">&rarr;</span></span>' +
+          '</div></a>';
+      }).join('');
+      var html = '<div id="stehlen-popular-models"><div class="pm-inner">' +
+        '<div class="pm-header"><h2>Shop by Popular Models</h2><p>Find parts specifically designed for your vehicle</p></div>' +
+        '<div class="pm-grid">' + cards + '</div></div></div>';
+      var ps = cl.closest('.shopify-section') || cl;
+      ps.insertAdjacentHTML('afterend', html);
+    })();
+  }
+
+  /* --- COLLECTION PAGES — force filter sidebar + flex layout (desktop only) --- */
+  if (isCollection && window.innerWidth >= 750) {
+    setTimeout(function() {
+      var sidebar = document.querySelector('.facets-block-wrapper--sidebar');
+      if (!sidebar) return;
+      sidebar.style.setProperty('display', 'block', 'important');
+      sidebar.style.setProperty('width', '220px', 'important');
+      sidebar.style.setProperty('min-width', '220px', 'important');
+      sidebar.style.setProperty('flex-shrink', '0', 'important');
+      ['facets--sidebar', 'facets__form', 'facets__filters-wrapper', 'facets__form-wrapper'].forEach(function(cls) {
+        var el = sidebar.querySelector('.' + cls);
+        if (el) el.style.setProperty('display', 'block', 'important');
+      });
+      /* Override Horizon's grid — use two-column CSS grid on wrapper instead of flex
+         because flex with 7 children doesn't work reliably */
+      var cw = document.querySelector('.collection-wrapper');
+      if (cw) {
+        /* Remove Horizon's 'grid' class from wrapper too — it forces 14-col subgrid */
+        cw.classList.remove('grid');
+        /* Also remove gap-style which may add Horizon grid behaviors */
+        cw.classList.remove('gap-style');
+        cw.style.setProperty('display', 'grid', 'important');
+        cw.style.setProperty('grid-template-columns', '220px 1fr', 'important');
+        cw.style.setProperty('gap', '28px', 'important');
+        cw.style.setProperty('max-width', '1360px', 'important');
+        cw.style.setProperty('margin', '0 auto', 'important');
+        cw.style.setProperty('padding', '0 40px', 'important');
+        /* Hide extra children — only sidebar and product grid should be visible */
+        for (var ci = 0; ci < cw.children.length; ci++) {
+          var child = cw.children[ci];
+          var isSidebar = child.classList.contains('facets-block-wrapper--sidebar');
+          var isGrid = child.classList.contains('main-collection-grid');
+          if (!isSidebar && !isGrid) {
+            child.style.setProperty('display', 'none', 'important');
+          }
+        }
+        /* Place sidebar in column 1, product grid in column 2 */
+        sidebar.style.setProperty('grid-column', '1', 'important');
+        sidebar.style.setProperty('grid-row', '1', 'important');
+      }
+      var pg = document.querySelector('.main-collection-grid');
+      if (pg) {
+        /* Remove Horizon's 'grid' class — it forces a 14-col subgrid that
+           overrides even inline styles. Without it, we have full control. */
+        pg.classList.remove('grid');
+        /* Remove Horizon layout classes that constrain the grid */
+        pg.classList.remove('spacing-style');
+        pg.classList.remove('collection-wrapper--full-width-on-mobile');
+        /* Clear all Horizon CSS custom properties */
+        pg.style.removeProperty('--grid-column--desktop');
+        pg.style.removeProperty('--grid-column--mobile');
+        pg.style.removeProperty('--grid--margin--mobile');
+        pg.style.removeProperty('--padding-inline-start');
+        pg.style.removeProperty('--padding-inline-end');
+        pg.style.setProperty('grid-column', '2', 'important');
+        pg.style.setProperty('grid-row', '1', 'important');
+        pg.style.setProperty('width', '100%', 'important');
+        pg.style.setProperty('max-width', '100%', 'important');
+        pg.style.setProperty('min-width', '0', 'important');
+        pg.style.setProperty('justify-self', 'stretch', 'important');
+        pg.style.setProperty('align-self', 'start', 'important');
+        /* Don't set grid on pg — it has Horizon baggage.
+           Instead, use block display and let the inner div be the grid. */
+        /* Product grid layout is handled by stehlen-theme.css grid rules.
+           Do NOT set inline widths on grid items — it breaks CSS grid. */
+      }
+      /* Open first 3 filter panels */
+      var details = sidebar.querySelectorAll('details');
+      for (var i = 0; i < details.length && i < 3; i++) details[i].open = true;
+    }, 100);
+  }
+});
+</script>

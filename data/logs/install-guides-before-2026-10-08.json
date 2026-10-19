@@ -1,0 +1,304 @@
+{
+  "_generated_at": "2026-05-23",
+  "_source": "AI-authored (Claude Sonnet 4.7) — installer-reviewed category guides for the 12 Stehlen categories. Owner can override per-product via Shopify metafield `custom.install_guide_url` later. Video URLs are placeholders until the warehouse supplies real footage.",
+  "by_category": {
+    "tonneau-covers": {
+      "title": "Tonneau Cover Install",
+      "difficulty": "Easy",
+      "timeMinutes": 30,
+      "peopleNeeded": 1,
+      "drillRequired": false,
+      "tools": [
+        "10mm socket + ratchet",
+        "Adjustable wrench (or 13mm wrench)",
+        "Clean rag",
+        "Tape measure"
+      ],
+      "steps": [
+        "Lower the tailgate and lay the rolled cover at the bulkhead end of the bed (closest to the cab). Unroll partially to confirm orientation — Stehlen logo faces up.",
+        "Loosen the side rail clamps (already attached to the cover). Slide the front clamp onto the bed rail lip behind the cab and finger-tighten so the rail is centered side-to-side.",
+        "Walk to the tailgate end. Repeat for the rear clamps. Confirm the cover sits flush against the bulkhead and tailgate — adjust front-to-back position with light pressure, not the clamps.",
+        "Snug all 4 clamps with the 10mm socket (or wrench) — tight enough to resist hand-shake, not so tight you crush the rail. Most Ram, F-150, Silverado, and Tundra bed rails accept Stehlen clamps without spacers.",
+        "Unroll the cover to the tailgate, secure the velcro flaps along both side rails, then engage the tension straps at the rear corners. Test the roll-up + latch sequence twice before driving."
+      ],
+      "warnings": [
+        "If your bed has RamBox or any factory rail accessory, confirm the cover orders specifically for that variant — universal rolls won't seat over RamBox lids.",
+        "Don't overtighten the clamps. Stripped bed rail threads aren't warrantied."
+      ],
+      "videoUrl": null
+    },
+    "trailer-hitches": {
+      "title": "Class 3 Trailer Hitch Install",
+      "difficulty": "Moderate",
+      "timeMinutes": 60,
+      "peopleNeeded": 2,
+      "drillRequired": false,
+      "tools": [
+        "17mm + 19mm socket + ratchet (deep socket recommended)",
+        "Torque wrench (rated to 75 ft-lb)",
+        "Floor jack OR a second person to hold the hitch in place",
+        "Penetrating lubricant (PB Blaster, Liquid Wrench)",
+        "Wire wheel or stiff brush"
+      ],
+      "steps": [
+        "Park on level ground, set parking brake, chock front wheels. Locate the 4-6 frame holes on the underside of the rear frame rails — they are usually capped with rubber plugs or covered in undercoating.",
+        "Clean each hole with the wire wheel + penetrating lubricant. Skipping this step is the #1 cause of stripped bolts during install.",
+        "Position the hitch under the frame with the receiver tube facing rear and the safety chain loops down. With a helper or a floor jack, raise into place so the bolt holes align.",
+        "Thread all bolts by hand first. Do NOT use the ratchet until every bolt is started — cross-threading at this step is the #2 returns reason.",
+        "Snug all bolts with the ratchet, then torque to spec in a star pattern: 65 ft-lb for 1/2\" bolts, 75 ft-lb for 9/16\" bolts. Verify torque on each bolt twice.",
+        "Hook up the trailer once, drive a short loop, then re-check torque after 50 miles."
+      ],
+      "warnings": [
+        "Class 3 hitches are rated 5,000 lb tow / 500 lb tongue. Do not exceed your VEHICLE manufacturer's rating, which is often LOWER than the hitch rating.",
+        "If a frame bolt won't start by hand after cleaning, stop — the bolt is wrong or the hole is damaged. Forcing it voids warranty."
+      ],
+      "videoUrl": null
+    },
+    "bull-guards-grille-guards": {
+      "title": "Bull Bar / Grille Guard Install",
+      "difficulty": "Moderate",
+      "timeMinutes": 75,
+      "peopleNeeded": 2,
+      "drillRequired": false,
+      "tools": [
+        "15mm + 17mm + 19mm socket + ratchet",
+        "Torque wrench",
+        "Trim removal tool",
+        "10mm + 13mm wrench (for engine bay clearance)",
+        "Painter's tape"
+      ],
+      "steps": [
+        "Tape the front bumper edges where the bull bar will contact — protects paint during the lift-in.",
+        "Mount the supplied frame brackets to the factory tow hook holes (or designated holes per your install sheet). Snug only — final torque is after alignment.",
+        "Lift the bull bar into position. Two people: one supports the bar, the other threads the bolts through the brackets.",
+        "Center the bar side-to-side using the visible gap between bar and bumper as your reference. Adjust until even within 1/8\".",
+        "Torque all bracket-to-frame bolts to 60 ft-lb. Torque bar-to-bracket bolts to 35 ft-lb. Recheck after 50 miles.",
+        "If your bar includes LED light bar mounts, install the bar first, mount lights second, run the harness through the existing grommet behind the headlight (no drilling needed on Stehlen kits)."
+      ],
+      "warnings": [
+        "Bull bars affect airflow to the radiator at sustained highway speeds in hot climates. Check coolant temp on the first long drive.",
+        "Many bars require sensor relocation on vehicles with front parking sensors. Confirm with your install sheet before drilling — Stehlen kits ship with sensor brackets when applicable.",
+        "Bull bars are not crash-tested as bumper replacements. They alter front crumple-zone behavior."
+      ],
+      "videoUrl": null
+    },
+    "front-grilles": {
+      "title": "Front Grille Replacement",
+      "difficulty": "Easy",
+      "timeMinutes": 45,
+      "peopleNeeded": 1,
+      "drillRequired": false,
+      "tools": [
+        "10mm socket + ratchet",
+        "Phillips screwdriver",
+        "Trim removal tool (panel pry tool)",
+        "Painter's tape"
+      ],
+      "steps": [
+        "Open the hood. Locate the 4-8 push-clips or 10mm bolts holding the top of the OEM grille to the radiator support.",
+        "Remove the top fasteners with the 10mm socket or panel pry tool. Save the clips — most Stehlen grilles reuse OEM hardware.",
+        "Tilt the top of the grille toward you and lift up to release the bottom hooks from the bumper cover. The grille comes out as a single piece on most trucks.",
+        "Compare the new Stehlen grille to the OEM piece on a clean surface — confirm mounting tab orientation BEFORE lifting it to the vehicle.",
+        "Insert the new grille bottom-hooks-first into the bumper cover. Tilt the top back against the radiator support, align bolt holes, reinstall the OEM fasteners.",
+        "Check headlight gap evenness on both sides. Standard variance is < 1/8\"."
+      ],
+      "warnings": [
+        "Some 2015+ trucks have an active grille shutter motor behind the grille. Don't pull on the grille if it resists — locate and unplug the shutter motor harness first.",
+        "Black ABS grilles look 'flat' next to chrome bumpers. Plan accordingly."
+      ],
+      "videoUrl": null
+    },
+    "headlights": {
+      "title": "LED Headlight Swap",
+      "difficulty": "Moderate",
+      "timeMinutes": 90,
+      "peopleNeeded": 1,
+      "drillRequired": false,
+      "tools": [
+        "10mm socket + ratchet (deep socket recommended)",
+        "Phillips screwdriver",
+        "Trim removal tool",
+        "Voltmeter (recommended — verify connector pinout before plugging in)",
+        "Phillips-head screwdriver (long shaft)"
+      ],
+      "steps": [
+        "Disconnect the battery negative terminal. Wait 5 minutes for capacitors to discharge.",
+        "Remove the front grille (see Grille install if needed) OR remove the upper radiator cover to access the headlight retention bolts. Most F-150, Silverado, Tundra, Ram only need the cover removed.",
+        "Unbolt the 3 retention bolts per headlight (top, inner, outer). Pull the headlight assembly forward — the harness will stop you at 6-8 inches.",
+        "Disconnect each connector by pressing the tab and pulling — do NOT yank by the wire.",
+        "Plug the OEM connectors into the Stehlen headlight matching socket. Most Stehlen kits ship plug-and-play; some require a CAN bus decoder (included in the box).",
+        "Test all functions BEFORE reinstalling: low beam, high beam, DRL, turn signal, parking. Hyper-flash means the decoder isn't fully seated.",
+        "Reinstall in reverse order. Aim the beams against a garage wall at 25 ft — center of beam should be at or slightly below your stock headlight aim mark."
+      ],
+      "warnings": [
+        "Do NOT touch the projector lens with bare hands. Skin oil fogs the optic permanently.",
+        "If your truck has factory adaptive headlights (curve-tracking), confirm Stehlen kit compatibility — most LED swaps disable adaptive function.",
+        "Aim the beams. Misaimed LEDs blind oncoming drivers and are an automatic state inspection failure."
+      ],
+      "videoUrl": null
+    },
+    "truck-bed-mats": {
+      "title": "Bed Mat Install",
+      "difficulty": "Very Easy",
+      "timeMinutes": 10,
+      "peopleNeeded": 1,
+      "drillRequired": false,
+      "tools": [
+        "Box cutter (only if trim needed for wheel well variance)"
+      ],
+      "steps": [
+        "Sweep the bed clean and remove any standing water. Trapped debris under the mat causes corrosion over 2-3 seasons.",
+        "Unroll the Stehlen mat in the bed with the diamond-plate or pattern side UP and the manufacturer logo facing the bulkhead.",
+        "Walk the mat into the corners — the rubber is heavy enough to hold its own position, but tuck the leading edge under the bulkhead lip if your bed has one.",
+        "Trim around the wheel wells ONLY if your specific truck has non-standard wheel well geometry. Most Stehlen mats are pre-cut to fit OEM bed dimensions."
+      ],
+      "warnings": [
+        "Don't install over a bedliner that hasn't fully cured. Spray-in liner cures 7-10 days; rubber mat over uncured liner can grab and lift the liner.",
+        "On 2-piece beds (Ram with RamBox), use the RamBox-specific Stehlen mat — universal cuts wrong around the cargo bin access."
+      ],
+      "videoUrl": null
+    },
+    "running-boards-side-steps": {
+      "title": "Running Board / Side Step Install",
+      "difficulty": "Moderate",
+      "timeMinutes": 75,
+      "peopleNeeded": 2,
+      "drillRequired": false,
+      "tools": [
+        "15mm + 17mm socket + ratchet",
+        "Torque wrench",
+        "Floor jack or sturdy box to support boards during alignment",
+        "Painter's tape"
+      ],
+      "steps": [
+        "Locate the factory rocker panel threaded holes (3-4 per side on most trucks — usually plugged with rubber or covered with body tape).",
+        "Mount the supplied brackets to the rocker panel with the included bolts. Snug only — final torque comes after the boards are aligned.",
+        "With a helper, hold each board against the brackets and thread the board-to-bracket bolts by hand.",
+        "Step on the board firmly to seat it level. Verify the board is parallel to the rocker panel along the full length — adjust by loosening the bracket bolts, sliding to spec, then re-tightening.",
+        "Torque all bracket-to-rocker bolts to 35 ft-lb. Torque board-to-bracket bolts to 25 ft-lb. Recheck after 50 miles.",
+        "Test step-up with full weight from front, middle, and rear positions. No flex or shift should occur."
+      ],
+      "warnings": [
+        "On Crew Cab and SuperCrew trucks, confirm cab-length boards — Reg Cab boards on a Crew Cab leave a tripping gap behind the rear door.",
+        "Do not skip the bracket-to-rocker torque check. A loose board with a 250lb passenger steps wrong = instant warranty claim and possible injury."
+      ],
+      "videoUrl": null
+    },
+    "floor-mats": {
+      "title": "Floor Mat Install",
+      "difficulty": "Very Easy",
+      "timeMinutes": 5,
+      "peopleNeeded": 1,
+      "drillRequired": false,
+      "tools": [
+        "Vacuum (to clean the existing carpet)"
+      ],
+      "steps": [
+        "Vacuum the OEM carpet thoroughly. Trapped grit under the mat scuffs the rubber backside and shortens mat life.",
+        "Locate the factory retention posts in each footwell (most OEM mats hook to these — Stehlen mats use the same posts).",
+        "Drop the new mat into position with the driver/passenger label facing up. Press the retention hole over the post until it clicks.",
+        "Walk the mat into the corners with a flat hand. Verify it sits flush — no curl-up at the door sill, no bunching against the firewall."
+      ],
+      "warnings": [
+        "Driver-side mat MUST anchor to the OEM post. An unanchored driver mat can slide under the accelerator pedal. Some Stehlen mats include adhesive backup pads — use them on vehicles without retention posts.",
+        "Don't install over wet carpet. Trapped moisture rots OEM carpet within 3 months."
+      ],
+      "videoUrl": null
+    },
+    "roof-racks-baskets": {
+      "title": "Roof Rack / Basket Install",
+      "difficulty": "Moderate",
+      "timeMinutes": 60,
+      "peopleNeeded": 2,
+      "drillRequired": false,
+      "tools": [
+        "10mm + 13mm socket + ratchet",
+        "Torque wrench",
+        "Step ladder",
+        "Painter's tape"
+      ],
+      "steps": [
+        "Wash the roof surface thoroughly. Any grit between the rack feet and the roof scratches the paint when the rack is tightened down.",
+        "Identify your mounting type: bare roof (clamp-style feet), factory rails (slot mount), or fixed mount points (bolt direct). Stehlen ships each rack with the correct hardware — confirm before climbing the ladder.",
+        "Tape the roof at each mounting point so you can see the position without scratching the paint during dry-fit.",
+        "Set the front rack first. Center side-to-side using the windshield gasket as a reference. Snug clamps to finger-tight.",
+        "Set the rear rack at the manufacturer-specified spread distance (printed on the rack — usually 24-28\" for trucks, 32-36\" for SUVs).",
+        "Verify both racks are parallel and square. Torque clamps to spec (15-20 ft-lb most kits — don't exceed)."
+      ],
+      "warnings": [
+        "Do not exceed the dynamic (moving) load rating, which is typically 50% of the static (parked) rating. A 250lb dynamic-rated rack can hold 500lb stationary but only 250lb at highway speed.",
+        "Removable racks must be re-torqued every time they're reinstalled. Don't trust 'looks tight'."
+      ],
+      "videoUrl": null
+    },
+    "chase-racks-sport-bars": {
+      "title": "Chase Rack / Sport Bar Install",
+      "difficulty": "Moderate",
+      "timeMinutes": 90,
+      "peopleNeeded": 2,
+      "drillRequired": false,
+      "tools": [
+        "13mm + 17mm + 19mm socket + ratchet",
+        "Torque wrench",
+        "Floor jack or sturdy support",
+        "Painter's tape"
+      ],
+      "steps": [
+        "Park the truck on level ground. Lower the tailgate.",
+        "Identify the bed rail mounting points — most chase racks clamp to the inside of the bed rail at the bulkhead end (closest to cab). Tape these areas to protect the paint.",
+        "Pre-assemble the rack uprights and crossbar on the ground per the instruction sheet — do NOT try to assemble in the bed.",
+        "Lift the assembled rack into the bed with two people. Position so the upright base brackets sit over the bed rail mount points.",
+        "Thread all clamp bolts by hand first. Verify the rack is square in the bed by measuring corner-to-corner diagonally — both measurements should match within 1/4\".",
+        "Torque clamp bolts to 35 ft-lb. Test the rack by pulling firmly on the top bar — no movement should occur. Re-check after 50 miles."
+      ],
+      "warnings": [
+        "Chase racks alter the vehicle's wind signature significantly. Expect 1-2 MPG drop at highway speed.",
+        "If mounting lights to the rack, run wiring through the supplied grommets — do not let wiring contact the bed rail where it can chafe through."
+      ],
+      "videoUrl": null
+    },
+    "molle-panels": {
+      "title": "MOLLE Panel Install",
+      "difficulty": "Easy",
+      "timeMinutes": 20,
+      "peopleNeeded": 1,
+      "drillRequired": false,
+      "tools": [
+        "13mm socket + ratchet (for chase rack mount) OR provided clamp wrench"
+      ],
+      "steps": [
+        "Confirm the panel is sized for your mounting location: chase rack, bed rail, or roof rack. MOLLE panels are not interchangeable across mount types.",
+        "Align the panel mounting holes with the bracket or rack rail.",
+        "Thread the supplied bolts through the panel into the mount, finger-tight first.",
+        "Verify the panel sits flush — no twist, no warp. Torque bolts to spec (usually 18-20 ft-lb for steel-to-steel, 12-15 ft-lb for steel-to-aluminum).",
+        "Attach MOLLE accessories (pouches, recovery boards, axe mounts, etc.) per their individual instructions."
+      ],
+      "warnings": [
+        "Don't overload a single panel section. Distribute weight across the full MOLLE grid to avoid bracket fatigue.",
+        "MOLLE grid spacing follows the MIL-STD 1\" pattern — confirm any third-party accessory matches."
+      ],
+      "videoUrl": null
+    },
+    "under-seat-storage": {
+      "title": "Under-Seat Storage Install",
+      "difficulty": "Very Easy",
+      "timeMinutes": 5,
+      "peopleNeeded": 1,
+      "drillRequired": false,
+      "tools": [
+        "None (slide-in design)"
+      ],
+      "steps": [
+        "Push the rear seat bottom up against the seat back to create floor clearance under the seat (Crew Cab / SuperCrew).",
+        "Slide the storage organizer into position with the lid facing the rear of the cab (toward you when the rear door is open).",
+        "Adjust front-to-back position so the organizer doesn't contact the driver/passenger seat tracks when the rear seat folds back down.",
+        "Lower the rear seat. Verify it seats fully — the seat back should latch and the seat bottom should rest naturally."
+      ],
+      "warnings": [
+        "Not all 2021+ F-150 SuperCrew floors accept gen-1 organizers. Verify the SKU year range against your truck's build year (the BUILD year on the door jamb, not model year).",
+        "Don't store ammunition, propane, or flammables in under-seat organizers. The cab heats above 140°F in summer."
+      ],
+      "videoUrl": null
+    }
+  }
+}

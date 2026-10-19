@@ -1,0 +1,231 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "settings": {
+            "text": "<h1>ENGINEERED FOR THE<br>LONG HAUL</h1>",
+            "alignment": "left",
+            "type_preset": "h1"
+          }
+        },
+        "subheading": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Heavy-duty truck accessories built from cold-rolled steel. Bolt-on installation. No drilling. Guaranteed fitment for your vehicle.</p>",
+            "alignment": "left",
+            "type_preset": "rte"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "label": "SHOP ALL PARTS →",
+            "link": "shopify://collections/all",
+            "style_class": "button-primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "subheading",
+        "button"
+      ],
+      "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/hero-bullbar.jpg",
+        "content_direction": "column",
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "full-width",
+        "section_height": "large",
+        "color_scheme": "scheme-5",
+        "toggle_overlay": true,
+        "overlay_style": "gradient",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
+    "value_props": {
+      "type": "value-props",
+      "blocks": {
+        "prop1": {
+          "type": "prop",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "subtitle": "On all orders"
+          }
+        },
+        "prop2": {
+          "type": "prop",
+          "settings": {
+            "icon": "shield",
+            "title": "Guaranteed Fitment",
+            "subtitle": "Fits your vehicle or money back"
+          }
+        },
+        "prop3": {
+          "type": "prop",
+          "settings": {
+            "icon": "warranty",
+            "title": "Manufacturer Warranty",
+            "subtitle": "On every product"
+          }
+        },
+        "prop4": {
+          "type": "prop",
+          "settings": {
+            "icon": "return",
+            "title": "Easy Returns",
+            "subtitle": "30-day hassle-free returns"
+          }
+        }
+      },
+      "block_order": [
+        "prop1",
+        "prop2",
+        "prop3",
+        "prop4"
+      ],
+      "settings": {
+        "section_width": "page-width",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "blocks": {
+        "header_text": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>SHOP BY CATEGORY</h2>",
+            "alignment": "center",
+            "type_preset": "h2"
+          }
+        },
+        "static-collection-card": {
+          "type": "_collection-card",
+          "static": true,
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "header_text"
+      ],
+      "settings": {
+        "layout_type": "grid",
+        "columns": 4,
+        "mobile_columns": "2",
+        "gap": 0,
+        "columns_gap": 0,
+        "rows_gap": 0,
+        "section_width": "full-width",
+        "color_scheme": "scheme-2",
+        "padding-block-start": 0,
+        "padding-block-end": 0,
+        "collection_list": ["tonneau-covers", "trailer-hitches", "bull-guards-grille-guards", "truck-bed-mats", "front-grilles", "headlights", "running-boards-side-steps", "roof-racks-baskets"]
+      }
+    },
+    "featured_products": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "static": true,
+          "settings": {
+            "content_direction": "row",
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-end",
+            "gap": 12
+          },
+          "blocks": {
+            "header_text": {
+              "type": "_product-list-text",
+              "settings": {
+                "text": "<h2>Best Sellers</h2>",
+                "type_preset": "h3",
+                "alignment": "left"
+              }
+            },
+            "view_all_btn": {
+              "type": "_product-list-button",
+              "settings": {
+                "label": "View All",
+                "style_class": "button-secondary"
+              }
+            }
+          },
+          "block_order": [
+            "header_text",
+            "view_all_btn"
+          ]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 12
+          },
+          "blocks": {
+            "gallery": {
+              "type": "_product-card-gallery",
+              "settings": {
+                "image_ratio": "square"
+              }
+            },
+            "title": {
+              "type": "product-title",
+              "settings": {
+                "alignment": "left"
+              }
+            },
+            "price": {
+              "type": "price",
+              "settings": {
+                "alignment": "left",
+                "type_preset": "h5"
+              }
+            }
+          },
+          "block_order": [
+            "gallery",
+            "title",
+            "price"
+          ]
+        }
+      },
+      "settings": {
+        "collection": "best-sellers",
+        "layout_type": "grid",
+        "max_products": 8,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 20,
+        "rows_gap": 32,
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "value_props",
+    "collection_list",
+    "featured_products"
+  ]
+}
