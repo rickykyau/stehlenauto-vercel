@@ -7,7 +7,7 @@ import {
   REVIEW_STATUSES,
 } from "@/lib/admin/reviews";
 import { pingProduct } from "@/lib/seo/indexnow";
-import { nativeReviewsTag } from "@/lib/reviews/native";
+import { NATIVE_REVIEWS_TAG } from "@/lib/reviews/native";
 
 export const runtime = "nodejs";
 
@@ -40,9 +40,9 @@ export async function PATCH(req: NextRequest) {
   }
 
   if (result.handle) {
-    // The PDP's review list is cached for an hour; expire it now so the
-    // change shows on the next page view.
-    revalidateTag(nativeReviewsTag(result.handle), { expire: 0 });
+    // Approved reviews are cached for a day; expire them now so the change
+    // shows on the next page view.
+    revalidateTag(NATIVE_REVIEWS_TAG, { expire: 0 });
     revalidatePath(`/products/${result.handle}`);
     // Approving a review changes the PDP's visible content (and its aggregate
     // rating), so push the page to IndexNow → Bing re-crawls it fast, which
