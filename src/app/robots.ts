@@ -48,6 +48,9 @@ const AI_CRAWLERS = [
   "CCBot",
   "Amazonbot",
   "Meta-ExternalAgent",
+  // Meta AI / Muse: user-triggered page fetches + Meta's search index
+  "Meta-ExternalFetcher",
+  "meta-webindexer",
   "cohere-ai",
   "DuckAssistBot",
 ];
