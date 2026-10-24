@@ -26,6 +26,10 @@ import { buildReviewRequestEmail, type ReviewRequestItem } from "./request-email
 const DELAY_DAYS = 10;
 const DAILY_LOOKBACK_DAYS = 60; // don't cold-email ancient orders in daily mode
 const MAX_PAGES = 20;
+// Judge.me (installed 2026-10-24 ~1:40 PM PT) now sends the review ask, so its
+// reviews reach Shopify's catalog (Meta Muse, ChatGPT, Shop). Orders fulfilled
+// from then on are left to Judge.me; this sender only finishes the earlier ones.
+const JUDGEME_HANDOFF_MS = Date.parse("2026-10-24T20:00:00Z");
 
 type OrderNode = {
   id: string;
@@ -136,6 +140,7 @@ export async function runReviewRequests(opts: {
     if (!PAID.has(o.displayFinancialStatus)) continue;
     const fa = fulfilledAt(o);
     if (fa == null) continue;
+    if (fa >= JUDGEME_HANDOFF_MS) continue; // Judge.me asks these buyers
     // Daily mode enforces the "installed it" delay; backfill ignores it.
     if (opts.mode === "daily" && fa > delayCutoff) continue;
 
