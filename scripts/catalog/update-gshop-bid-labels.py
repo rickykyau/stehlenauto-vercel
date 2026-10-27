@@ -11,12 +11,16 @@ The Ads campaign "Shopping - Standard - All Products - Tiered" subdivides its
 product groups on custom_label_3 and sets one max CPC per bucket (bid_070 = $0.70),
 so re-running this script re-prices the whole campaign without touching Ads.
 
-Bid = price x expected CVR x net margin / profit cushion x category x vehicle x stock.
+Bid = price x expected CVR x net margin / profit cushion x category x vehicle x stock x demand.
 Net margin comes from CB cost (--cost-csv: ItemName,EffectiveCost,EstShipping_C, exported
 from JLDataMart.shopify.vInventoryItem); without it every product uses DEFAULT_MARGIN.
+Demand comes from CB all-channel units sold in the last 365 days (--sales-csv: ItemName,Qty,
+from JLConceptsProduction18). Ad money goes to what actually sells: Oct 8-26 only 11% of spend
+reached the 100 products that sell 50+/yr and 23% went to products with no sales in a year.
+Without --sales-csv every product gets demand 1.0 (the pre-2026-10-26 formula).
 Assumptions are documented in docs/runbooks/google-shopping-bids.md (2026-10-08 research).
 
-Usage:  python3 scripts/catalog/update-gshop-bid-labels.py [--cost-csv F] [--log-dir D]  # dry run
+Usage:  python3 scripts/catalog/update-gshop-bid-labels.py [--cost-csv F] [--sales-csv F] [--log-dir D]  # dry run
         python3 scripts/catalog/update-gshop-bid-labels.py --apply ...                 # write
 Shopify credentials: env SHOPIFY_SHOP_URL / SHOPIFY_ADMIN_TOKEN, else .env.local.
 Scheduled daily on JL-SQL by scripts/windows/Sync-GShopBidLabels.ps1.
@@ -29,7 +33,7 @@ import re
 import sys
 import time
 import urllib.request
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -46,6 +50,9 @@ MIN_PRICE = 100              # sub-$100 items can't pay back a ~$0.60+ click
 THIN_STOCK = 5               # < 5 units = thin_stock
 LIGHTING_ENABLED = True      # set False if the headlight moisture defect is unresolved
 LIGHTING_MIN_QTY = 12        # only advertise lighting where stock is deep
+PROVEN_UNITS = 50            # 50+ sold/yr on all channels = proven seller
+PROVEN_MIN_PRICE = 40        # proven sellers may advertise below MIN_PRICE (hitch steps: 922/yr at $57)
+NEW_DAYS = 120               # listed less than this long: no sales history yet, test at low bids
 
 
 def depth(qty):
@@ -55,6 +62,17 @@ def depth(qty):
     if qty >= 12: return 1.0
     if qty >= THIN_STOCK: return 0.9
     return 0.7
+
+
+def demand(units, age_days):
+    """All-channel units sold in the last 365 days -> multiplier (None = no sales data)."""
+    if units is None: return 1.0
+    if units >= 100: return 1.5
+    if units >= PROVEN_UNITS: return 1.3
+    if units >= 20: return 1.1
+    if units >= 5: return 0.8
+    if units >= 1: return 0.5
+    return 0.6 if age_days < NEW_DAYS else 0.0     # 0.0 = sold nothing in a year: exclude
 
 
 def cvr(price):
@@ -69,7 +87,7 @@ def cvr(price):
 CATEGORY = [
     (r"^headlight|^tail ?light", 1.0, None),          # return drag applied to margin instead
     (r"bed mat|floor mat", 0.8, None),                # $100+ only (MIN_PRICE); 47 wks of stock, steady demand (2026-10-14)
-    (r"tonneau.*(tri.?fold|hard)", 1.25, None),       # priced at/below Gator EFX; was 1.5 - $222/0 conv in week 1
+    (r"tonneau.*(tri.?fold|hard)", 1.0, None),        # was 1.5 then 1.25; $355 / 368 clicks / 0 sales Oct 8-26 - let demand decide
     (r"rock slider|roof (rack|basket)|running board|chase rack", 1.2, None),
     (r"tonneau", 0.7, None),                          # roll-up / hidden snap: no price edge
     (r"hitch", 1.0, None),                            # MC benchmark: mostly 10-55% under market
@@ -123,6 +141,12 @@ def env():
     return out
 
 
+def load_sales(path):
+    """ItemName -> units sold (all channels) in the last 365 days."""
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        return {r["ItemName"].strip().upper(): float(r["Qty"] or 0) for r in csv.DictReader(f)}
+
+
 def load_costs(path):
     """ItemName -> landed cost (EffectiveCost + EstShipping_C)."""
     with open(path, newline="", encoding="utf-8-sig") as f:
@@ -147,7 +171,7 @@ def gql(shop, tok, query, variables=None):
 
 def fetch(shop, tok):
     q = """query($c:String){products(first:200,after:$c,query:"status:active"){pageInfo{hasNextPage endCursor}
-      nodes{id handle title productType totalInventory variants(first:1){nodes{price}}
+      nodes{id handle title productType totalInventory createdAt variants(first:1){nodes{price}}
       cb:metafield(namespace:"cb_integration",key:"item_name"){value}
       metafields(namespace:"%s",first:20){nodes{key value}}}}}""" % NS
     out, cur = [], None
@@ -167,13 +191,16 @@ def vehicle(title):
     return "other", 0.9
 
 
-def plan(p, costs=None):
+def plan(p, costs=None, sales=None):
     price = float(p["variants"]["nodes"][0]["price"])
     qty = max(p["totalInventory"] or 0, 0)
     ptype = (p["productType"] or "").lower()
     sku = ((p.get("cb") or {}).get("value") or "").upper()
     mf = {m["key"]: m["value"] for m in p["metafields"]["nodes"]}
     vkey, vmult = vehicle(p["title"])
+    units = None if sales is None else sales.get(sku, 0)
+    age = (datetime.now(timezone.utc) - datetime.fromisoformat(p["createdAt"].replace("Z", "+00:00"))).days
+    dmult = demand(units, age)
     labels = {
         "custom_label_0": f"v_{vkey}",
         "custom_label_1": "oos" if qty == 0 else "thin_stock" if qty < THIN_STOCK else "instock",
@@ -183,7 +210,9 @@ def plan(p, costs=None):
     if qty == 0: reason = "exclude_oos"
     elif labels["custom_label_2"] != "ok": reason = "exclude_dry_pocket"
     elif sku in RETURN_EXCLUDE or sku.endswith("-901") or "visor" in ptype: reason = "exclude_returns"
-    elif price < MIN_PRICE: reason = "exclude_low_aov"
+    elif price < MIN_PRICE and not (units and units >= PROVEN_UNITS and price >= PROVEN_MIN_PRICE):
+        reason = "exclude_low_aov"
+    elif dmult == 0: reason = "exclude_no_sales"
     elif re.search(r"^headlight|^tail ?light", ptype) and (not LIGHTING_ENABLED or qty < LIGHTING_MIN_QTY):
         reason = "exclude_lighting"
     cost = (costs or {}).get(sku)
@@ -206,6 +235,7 @@ def plan(p, costs=None):
         bid *= 1.15                                   # owner call: buyers' $100-200 comfort zone
     bid *= depth(qty)
     bid *= season(ptype)
+    bid *= dmult
     b = max([x for x in BUCKETS if x <= bid] or [BUCKETS[0]])
     labels["custom_label_3"] = f"bid_{round(b * 100):03d}"
     return labels, mf
@@ -220,6 +250,9 @@ def main():
     costs = load_costs(arg("--cost-csv")) if arg("--cost-csv") else None
     if costs is not None and len(costs) < 100:
         sys.exit(f"cost file has {len(costs)} rows - aborting")
+    sales = load_sales(arg("--sales-csv")) if arg("--sales-csv") else None
+    if sales is not None and len(sales) < 100:
+        sys.exit(f"sales file has {len(sales)} rows - aborting")
     log_dir = Path(arg("--log-dir") or ROOT / "data/logs")
     e = env()
     shop = e["SHOPIFY_SHOP_URL"].replace("https://", "").rstrip("/")
@@ -229,7 +262,7 @@ def main():
         sys.exit("0 products read - aborting")
     writes, log, dist = [], [], collections.Counter()
     for p in products:
-        labels, old = plan(p, costs)
+        labels, old = plan(p, costs, sales)
         dist[labels["custom_label_3"]] += 1
         for k, v in labels.items():
             if old.get(k) != v:
@@ -241,6 +274,9 @@ def main():
     if costs is not None:
         missing = sum(1 for p in products if ((p.get("cb") or {}).get("value") or "").upper() not in costs)
         print(f"cost rows {len(costs)}, products without CB cost (default margin) {missing}")
+    if sales is not None:
+        print(f"sales rows {len(sales)}, products with 0 sales in 365 days "
+              f"{sum(1 for p in products if ((p.get('cb') or {}).get('value') or '').upper() not in sales)}")
     print(f"{len(products)} products, {len(writes)} label changes{'' if apply else ' (dry run)'}")
     if not apply or not writes:
         return

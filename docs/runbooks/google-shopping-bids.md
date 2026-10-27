@@ -33,10 +33,15 @@ python3 scripts/catalog/update-gshop-bid-labels.py [--cost-csv cost.csv] --apply
 
 ## Formula (2026-10-08)
 
-`bid = price × CVR(price) × net margin / 1.25 × category × vehicle × stock depth`, rounded
+`bid = price × CVR(price) × net margin / 1.25 × category × vehicle × stock depth × demand`, rounded
 down to a bucket — i.e. each product bids for a ROAS 25% above its own breakeven (1 / margin).
 ×1.15 for $100–200 items (owner call: buyers' comfort zone).
 
+- **Demand (added 2026-10-26):** CB all-channel units sold in the last 365 days. 100+ ×1.5, 50–99 ×1.3,
+  20–49 ×1.1, 5–19 ×0.8, 1–4 ×0.5. 0 sold: excluded (`exclude_no_sales`), except products listed under
+  120 days ago (×0.6, still building history). Proven sellers (50+/yr) may advertise down to $40 despite
+  the $100 floor. Why: Oct 8–26 only 11% of spend reached the 100 products selling 50+/yr, while 23% went
+  to products with no sales in a year. Tri-fold ×1.25 → ×1.0 (368 clicks, 0 sales).
 - **Margin (real, per product):** (Shopify price − CB EffectiveCost − EstShipping_C) / price.
   2026-10-08: median 31.7%, p10–p90 28.3–33.8%; tri-folds lowest (28.5%). Lighting minus 12%
   for returns. < 10% net → excluded. Products missing from CB fall back to 31.7%.

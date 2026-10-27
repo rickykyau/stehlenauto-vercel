@@ -6,9 +6,11 @@
  WHAT IT DOES
    1. Exports landed cost (EffectiveCost + EstShipping_C) per ItemName from
       [JLDataMart].[shopify].[vInventoryItem] to a CSV.
-   2. Runs update-gshop-bid-labels.py with that CSV. The Python script reads
+   2. Exports units sold per ItemName over the last 365 days, all channels, from
+      [JLConceptsProduction18] (CustomerSalesOrderDetail, non-voided orders).
+   3. Runs update-gshop-bid-labels.py with both CSVs. The Python script reads
       price / stock / product type from Shopify, computes each product's bid
-      bucket from its REAL margin, and writes the Google Shopping custom labels
+      bucket from its REAL margin and REAL sales, and writes the Google Shopping custom labels
       (mm-google-shopping.custom_label_0..3) - only labels that changed.
    The Google Ads campaign "Shopping - Standard - All Products - Tiered" bids per
    custom_label_3 bucket, so this re-prices the campaign daily with no Ads edits.
@@ -16,7 +18,8 @@
 
  SAFETY
    * Read-only against CB. Writes only Google Shopping label metafields.
-   * Aborts if the cost export has < 100 rows (failed query, not a real catalog).
+   * Aborts if the cost or sales export has < 100 rows (failed query, not a real catalog);
+     the labels then stay as they were.
    * -DryRun prints the bucket summary and writes nothing.
    * Every run appends a timestamped log under $LogDir.
 
@@ -28,7 +31,7 @@
 
  EXIT CODES
    0 = success (or dry run)
-   1 = aborted: cost export returned < 100 rows
+   1 = aborted: cost or sales export returned < 100 rows
    2 = configuration error (token, python, SQL)
    3 = Python run reported errors
 ================================================================================
@@ -44,6 +47,7 @@ $ShopDomain  = 'http-stehlenauto-com.myshopify.com'
 $AdminToken  = ''                                  # or env var SHOPIFY_ADMIN_TOKEN
 $SqlServer   = 'localhost'
 $SqlDatabase = 'JLDataMart'
+$SalesDatabase = 'JLConceptsProduction18'
 $ScriptDir   = 'C:\Apps\Scripts'
 $PyScript    = Join-Path $ScriptDir 'update-gshop-bid-labels.py'
 $Python      = ''                                  # '' = auto-detect (py launcher / python)
@@ -81,11 +85,35 @@ if ($tbl.Rows.Count -lt 100) { Log "ABORT: cost export returned $($tbl.Rows.Coun
 $tbl | Select-Object ItemName, EffectiveCost, EstShipping_C | Export-Csv -Path $CostCsv -NoTypeInformation -Encoding UTF8
 Log "Exported $($tbl.Rows.Count) cost rows"
 
-# --- 2. Recompute + write labels ---------------------------------------------------
+# --- 2. Export CB 365-day unit sales -------------------------------------------
+$SalesCsv = Join-Path $LogDir 'gshop-cb-sales.csv'
+try {
+    $conn = New-Object System.Data.SqlClient.SqlConnection "Server=$SqlServer;Database=$SalesDatabase;Integrated Security=True;TrustServerCertificate=True;Connect Timeout=30"
+    $conn.Open()
+    $sql = @'
+SELECT ii.ItemName, SUM(d.QuantityOrdered) AS Qty
+FROM CustomerSalesOrderDetail d
+JOIN CustomerSalesOrder o ON o.SalesOrderCode = d.SalesOrderCode
+JOIN InventoryItem ii ON ii.ItemCode = d.ItemCode
+WHERE o.SalesOrderDate >= DATEADD(day, -365, GETDATE()) AND o.SalesOrderDate <= GETDATE() AND o.IsVoided = 0
+GROUP BY ii.ItemName
+'@
+    $cmd = New-Object System.Data.SqlClient.SqlCommand ($sql, $conn)
+    $cmd.CommandTimeout = 300
+    $da  = New-Object System.Data.SqlClient.SqlDataAdapter ($cmd)
+    $sales = New-Object System.Data.DataTable
+    [void]$da.Fill($sales)
+    $conn.Close()
+} catch { Log "SQL error (sales): $($_.Exception.Message)"; exit 2 }
+if ($sales.Rows.Count -lt 100) { Log "ABORT: sales export returned $($sales.Rows.Count) rows"; exit 1 }
+$sales | Select-Object ItemName, Qty | Export-Csv -Path $SalesCsv -NoTypeInformation -Encoding UTF8
+Log "Exported $($sales.Rows.Count) sales rows"
+
+# --- 3. Recompute + write labels ---------------------------------------------------
 $env:SHOPIFY_SHOP_URL    = $ShopDomain
 $env:SHOPIFY_ADMIN_TOKEN = $AdminToken
 $env:PYTHONIOENCODING    = 'utf-8'
-$pyArgs = @($PyScript, '--cost-csv', $CostCsv, '--log-dir', $LogDir)
+$pyArgs = @($PyScript, '--cost-csv', $CostCsv, '--sales-csv', $SalesCsv, '--log-dir', $LogDir)
 if (-not $DryRun) { $pyArgs += '--apply' }
 if ((Split-Path $Python -Leaf) -eq 'py.exe') { $pyArgs = @('-3') + $pyArgs }
 
