@@ -282,7 +282,7 @@ export default async function HomePage() {
               }}
             >
               Heavy-duty vehicle accessories engineered from cold-rolled
-              steel. No drilling required. Fitment guaranteed for your
+              steel. Bolt-on install in your driveway. Fitment guaranteed for your
               vehicle.
             </p>
 

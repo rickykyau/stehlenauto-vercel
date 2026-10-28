@@ -451,7 +451,7 @@ export default async function PdpPage({
     // SEO (audit F-5): distinct from name — real body copy / benefit template.
     description:
       product.metaDescription ??
-      `${product.title}. No-drill bolt-on fit. Free US shipping, 30-day returns, fitment guaranteed.`,
+      `${product.title}. Bolt-on fit. Free US shipping, 30-day returns, fitment guaranteed.`,
     sku: product.sku,
     // Brand + MPN from the visible Specifications rows: CURT / Draw-Tite parts
     // must not be labelled Stehlen Auto, and shoppers search the real part
@@ -1352,7 +1352,14 @@ export default async function PdpPage({
               },
               {
                 Icon: Icons.truck,
-                text: "Drilling-free install · 60–90 minutes with 2 people",
+                // From this product's install guide + its own listing text
+                // (was a flat "Drilling-free · 60–90 min with 2 people" on
+                // every PDP; some hitches need drilling).
+                text: installGuide
+                  ? `${installGuide.difficulty} install · about ${installGuide.timeMinutes} min${
+                      installGuide.peopleNeeded > 1 ? ` with ${installGuide.peopleNeeded} people` : ""
+                    }${installGuide.drillRequired === false ? " · no drilling" : ""}`
+                  : "Bolt-on install · step-by-step guide",
               },
               // Cycle 14BE-fix4 → 14BE-fix1 Marcus #3: the "call a tech"
               // CTA was duplicated in this trust row AND inside the buy-box

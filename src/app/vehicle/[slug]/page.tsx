@@ -142,7 +142,7 @@ export async function generateMetadata({
   if (!v) return { title: "Vehicle" };
   const title = `${v.make} ${v.model} Accessories`;
   // Names the categories that actually fit (was a one-line template claiming
-  // "drilling-free" for every vehicle; many hitches and some guards drill).
+  // "drilling-free" for every vehicle; some trailer hitches need drilling).
   const hub = findVehicle(slug.replace(/^(19|20)\d{2}-/, ""));
   const family = hub ? null : getAvailableCategoriesForModelFamily(v.make, v.model);
   const from = hub?.from ?? family?.from;
@@ -587,8 +587,8 @@ export default async function VehicleHubPage({
             }}
           >
             {filterYear
-              ? `Showing parts engineered to bolt directly onto your ${filterYear} ${make} ${model}. No drilling. Fitment guaranteed.`
-              : `Bolt-on accessories engineered for every ${make} ${model} generation. No drilling. No guesswork. Pick a year and we'll handle the rest.`}
+              ? `Showing parts engineered to bolt directly onto your ${filterYear} ${make} ${model}. Easy install, fitment guaranteed.`
+              : `Bolt-on accessories engineered for every ${make} ${model} generation. Easy install. No guesswork. Pick a year and we'll handle the rest.`}
           </p>
           <div
             style={{
@@ -630,7 +630,7 @@ export default async function VehicleHubPage({
                 generations.length > 0 ? `${generations.length} GENERATION${generations.length === 1 ? "" : "S"}` : "MULTI-GENERATION",
                 "Bumper-to-bed coverage",
               ],
-              ["BOLT-ON", "No drilling"],
+              ["BOLT-ON", "Step-by-step guides"],
               ["LIFETIME", "Structural warranty"],
               ["FITMENT", "Guaranteed"],
             ].map(([k, v]) => (

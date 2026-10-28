@@ -110,7 +110,7 @@ export default function AboutPage() {
             }}
           >
             Heavy-duty vehicle accessories engineered from cold-rolled steel.
-            No drilling. No guesswork. Built right next to the rigs we sell
+            Bolt-on install. No guesswork. Built right next to the rigs we sell
             parts for.
           </p>
         </div>

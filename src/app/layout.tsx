@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     template: "%s | Stehlen Auto",
   },
   description:
-    "Heavy-duty vehicle accessories engineered from cold-rolled steel. No drilling required. Fitment guaranteed for your vehicle.",
+    "Heavy-duty vehicle accessories engineered from cold-rolled steel. Bolt-on install in your driveway. Fitment guaranteed for your vehicle.",
   keywords: [
     "vehicle accessories",
     "tonneau cover",

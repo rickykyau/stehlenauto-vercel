@@ -95,9 +95,19 @@ export function difficultyColor(
  * better no badge than a category-level guess.
  */
 export function drillingFromDescription(html: string | null | undefined): boolean | null {
-  const t = (html ?? "").replace(/<[^>]+>/g, " ").toLowerCase();
-  if (/\bno[- ]drill|no drilling|drill[- ]free|without drilling|no holes? to drill/.test(t)) return false;
-  if (/drilling (is )?required|requires? drilling|drill(ing)? required|with a drill|drill (\w+ ){0,3}holes?/.test(t)) return true;
+  const t = (html ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").toLowerCase();
+  // Spec row: "Drilling Required: No" / "Yes".
+  const spec = t.match(/drilling required:? (yes|no)\b/);
+  if (spec) return spec[1] === "yes";
+  // A drilling requirement counts unless a "no"/"without" sits just before it
+  // in the same clause: "no tools or drilling required", "no cutting or
+  // drilling required" are drop-in / bolt-on listings, not drill jobs.
+  const POSITIVE = /drilling (is )?required|requires? drilling|drill(ing)? required|with a drill|drill (\w+ ){0,3}holes?/g;
+  for (const m of t.matchAll(POSITIVE)) {
+    const before = t.slice(Math.max(0, m.index - 45), m.index);
+    if (!/\b(no|without)\b[^.;:]*$/.test(before)) return true;
+  }
+  if (/\bno[- ]drill|drill[- ]free|no holes? to drill|\b(no|without)\b[^.;:]{0,40}\bdrill/.test(t)) return false;
   return null;
 }
 

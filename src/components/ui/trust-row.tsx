@@ -18,8 +18,8 @@ const ITEMS = [
   },
   {
     Icon: Icons.truck,
-    head: "BUILT FOR BUILDS",
-    sub: "Bolt-on. Drilling-free.",
+    head: "EASY INSTALL",
+    sub: "Bolt-on, step-by-step guides",
   },
 ];
 
