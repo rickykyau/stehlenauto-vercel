@@ -93,6 +93,8 @@ export type SendResult = {
 export async function runReviewRequests(opts: {
   mode: "daily" | "backfill";
   days?: number;
+  /** Backfill only: ask just this order ("1007" or "#1007"), any age. */
+  order?: string;
   dryRun?: boolean;
   nowMs?: number;
 }): Promise<SendResult> {
@@ -106,7 +108,10 @@ export async function runReviewRequests(opts: {
   const createdFloor = new Date(now - lookbackDays * 86400_000)
     .toISOString()
     .slice(0, 10);
-  const q = `fulfillment_status:fulfilled AND created_at:>=${createdFloor}`;
+  const onlyOrder = opts.mode === "backfill" && opts.order ? `#${opts.order.replace(/^#/, "")}` : null;
+  const q = onlyOrder
+    ? `fulfillment_status:fulfilled AND name:${onlyOrder}`
+    : `fulfillment_status:fulfilled AND created_at:>=${createdFloor}`;
 
   // --- gather candidate orders ---
   const candidates: OrderNode[] = [];
@@ -136,6 +141,7 @@ export async function runReviewRequests(opts: {
   const plans: SendPlan[] = [];
   for (const o of candidates) {
     if (o.test) continue;
+    if (onlyOrder && o.name !== onlyOrder) continue;
     if (!o.email) continue;
     if (!PAID.has(o.displayFinancialStatus)) continue;
     const fa = fulfilledAt(o);

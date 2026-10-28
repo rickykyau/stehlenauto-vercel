@@ -12,6 +12,7 @@ export const maxDuration = 120;
  *   - GET from owner browser, gated by requireAdmin (Clerk owner):
  *       ?mode=backfill&days=90&dryRun=1   → preflight the one-time backfill
  *       ?mode=backfill&days=90            → actually send the backfill
+ *       ?mode=backfill&order=1007[&dryRun=1] → ask one order an earlier run missed
  *
  * Idempotent: review_request_sends dedupes, so re-running never double-emails.
  */
@@ -24,10 +25,11 @@ export async function GET(req: NextRequest) {
   const mode = url.searchParams.get("mode") === "backfill" ? "backfill" : "daily";
   const dryRun = url.searchParams.get("dryRun") === "1";
   const days = Number(url.searchParams.get("days")) || undefined;
+  const order = url.searchParams.get("order") || undefined;
 
   // Cron may only run the daily mode. Backfill / dryRun are owner-only.
   if (isCron) {
-    if (mode !== "daily") {
+    if (mode !== "daily" || order) {
       return NextResponse.json(
         { error: "cron may only run daily mode" },
         { status: 403 },
@@ -41,7 +43,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const result = await runReviewRequests({ mode, days, dryRun });
+    const result = await runReviewRequests({ mode, days, order, dryRun });
     console.log(
       `[review-requests] ${mode}${dryRun ? " (dry-run)" : ""} — scanned ${result.scanned}, eligible ${result.eligible}, alreadySent ${result.alreadySent}, sent ${result.sent}, failed ${result.failed}`,
     );
