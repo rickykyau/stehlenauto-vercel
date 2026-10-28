@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   // honest, scannable in tabs, and avoids the double-brand awkwardness.
   title: "Our Story",
   description:
-    "Bolt-on engineering since 2015. Cold-rolled steel vehicle accessories — direct from the factory floor.",
+    "Stehlen Auto has sold bolt-on truck and SUV accessories since 2015. Based in Walnut, California, we ship from our warehouses in California, Nevada and Texas.",
   alternates: { canonical: "/about" },
 };
 

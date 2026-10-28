@@ -89,3 +89,102 @@ export function getAvailableCategoriesForMakeModel(
   }
   return found;
 }
+
+/**
+ * Categories for a model family: "Silverado" covers "Silverado 1500",
+ * "Silverado 2500 HD", … (hub URLs like /vehicle/chevrolet-silverado have no
+ * exact key in the index).
+ */
+export function getAvailableCategoriesForModelFamily(
+  make: string,
+  model: string,
+): { cats: Set<string>; from?: number; to?: number } {
+  const idx = load();
+  const mk = make.toLowerCase();
+  const md = model.toLowerCase();
+  const cats = new Set<string>();
+  let from: number | undefined;
+  let to: number | undefined;
+  for (const key of Object.keys(idx)) {
+    const [year, km, kmodel] = key.split("|");
+    if (km?.toLowerCase() !== mk) continue;
+    const m = kmodel?.toLowerCase() ?? "";
+    if (m !== md && !m.startsWith(`${md} `)) continue;
+    const y = Number(year);
+    from = from === undefined ? y : Math.min(from, y);
+    to = to === undefined ? y : Math.max(to, y);
+    for (const h of idx[key] ?? []) {
+      const cat = handleToCategory(h);
+      if (cat) cats.add(cat);
+    }
+  }
+  return { cats, from, to };
+}
+
+/** Every category with at least one product fitting any model of `make`. */
+export function getAvailableCategoriesForMake(make: string): Set<string> {
+  const idx = load();
+  const m = make.toLowerCase();
+  const found = new Set<string>();
+  for (const key of Object.keys(idx)) {
+    if (key.split("|")[1]?.toLowerCase() !== m) continue;
+    for (const h of idx[key] ?? []) {
+      const cat = handleToCategory(h);
+      if (cat) found.add(cat);
+    }
+  }
+  return found;
+}
+
+/** The make's spelling in the fitment index ("gmc" → "GMC"), if it has one. */
+export function canonicalMakeName(make: string): string | undefined {
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
+  const m = norm(make);
+  for (const key of Object.keys(load())) {
+    const name = key.split("|")[1];
+    if (name && norm(name) === m) return name;
+  }
+  return undefined;
+}
+
+const SHORT_LABEL: Record<string, string> = {
+  "tonneau-covers": "tonneau covers",
+  "trailer-hitches": "trailer hitches",
+  "bull-guards-grille-guards": "bull guards",
+  "front-grilles": "grilles",
+  headlights: "headlights",
+  "truck-bed-mats": "bed mats",
+  "running-boards-side-steps": "running boards",
+  "floor-mats": "floor mats",
+  "roof-racks-baskets": "roof racks",
+  "chase-racks-sport-bars": "chase racks",
+  "molle-panels": "MOLLE panels",
+};
+
+/**
+ * Meta description for a vehicle or make page, naming the categories that
+ * actually fit it (Bing flags the old one-line template as too short). Drops
+ * categories until it fits in a SERP snippet.
+ */
+export function fittedCategoriesDescription(cats: Set<string>, subject: string): string {
+  const labels = Object.keys(SHORT_LABEL)
+    .filter((slug) => cats.has(slug))
+    .map((slug) => SHORT_LABEL[slug]!);
+  const tail = "Matched to your exact year before checkout. Free shipping, 30-day returns.";
+  // Pages with one or two categories come out short; spend the room on a
+  // fuller version of the same promise instead.
+  const longTail =
+    "Every part is matched to your exact year before checkout, with free shipping and 30-day free returns.";
+  const withTail = (lead: string) => {
+    const long = `${lead} ${longTail}`;
+    return long.length <= 160 ? long : `${lead} ${tail}`;
+  };
+  for (let n = Math.min(labels.length, 4); n >= 1; n--) {
+    const list = labels.slice(0, n);
+    const joined =
+      list.length > 1 ? `${list.slice(0, -1).join(", ")} and ${list[list.length - 1]}` : list[0]!;
+    const text = withTail(`${joined[0]!.toUpperCase()}${joined.slice(1)} for ${subject}.`);
+    if (text.length <= 160) return text;
+  }
+  return withTail(`Accessories for ${subject}.`);
+}

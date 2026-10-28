@@ -3,7 +3,8 @@ import { Icons } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: "Get in touch with Stehlen Auto support, sales, or wholesale.",
+  description:
+    "Contact Stehlen Auto by phone at 951-332-7000, email info@stehlenauto.com or live chat, Mon–Fri 9–5 PST. Help with fitment, orders, returns and wholesale.",
   alternates: { canonical: "/help/contact" },
 };
 

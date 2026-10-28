@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 type PolicyContent = {
   title: string;
+  /** Short subtitle shown on the page. */
   description: string;
   updated: string;
   sections: { heading: string; body: string[] }[];
@@ -273,6 +274,31 @@ const POLICIES: Record<string, PolicyContent> = {
   },
 };
 
+// Search snippet per policy. The on-page subtitles are punchy one-liners that
+// Bing flags as too short for a meta description.
+const META_DESCRIPTIONS: Record<string, string> = {
+  warranty:
+    "Stehlen Auto-brand parts carry a lifetime structural warranty, a 5-year finish warranty and a 2-year hardware warranty. What's covered and how to file a claim.",
+  returns:
+    "Return any unused part within 30 days of delivery with a free prepaid FedEx label, for any reason. Full refund to your card, or store credit with a 10% bonus.",
+  "fitment-guarantee":
+    "If a part listed for your year, make, model and sub-model doesn't fit, Stehlen Auto pays return shipping and refunds 100%. What's covered and how to claim.",
+  shipping:
+    "Free ground shipping on every order to the lower 48, no minimum. In-stock orders ship within 1 business day and arrive in 2–6 business days. Expedited options.",
+  privacy:
+    "What Stehlen Auto collects (account, saved vehicles, orders, analytics), the cookies we use, and how to get a copy of your data or delete it. We don't sell it.",
+  terms:
+    "Stehlen Auto's terms of service in plain English: using stehlenauto.com, reviews you post, pricing errors, and liability for incorrectly installed parts.",
+  ccpa:
+    "California residents: how to request the personal information Stehlen Auto holds about you or ask us to delete it. We don't sell your personal information.",
+  "prop-65":
+    "California Proposition 65 warning: some Stehlen Auto products can expose you to chemicals including chromium, known to the State of California to cause cancer.",
+  accessibility:
+    "Stehlen Auto tests its storefront against WCAG 2.2 AA for keyboard, screen reader and low-vision use. Report a problem and we aim to fix it in 5 business days.",
+  credits:
+    "Credits for the Creative Commons vehicle photos used on the Stehlen Auto storefront, our product photo policy, and how to report an image attribution issue.",
+};
+
 export function generateStaticParams() {
   return Object.keys(POLICIES).map((slug) => ({ slug }));
 }
@@ -287,7 +313,8 @@ export async function generateMetadata({
   if (!p) return { title: "Policy" };
   return {
     title: p.title,
-    description: p.description,
+    description: META_DESCRIPTIONS[slug] ?? p.description,
+    alternates: { canonical: `/legal/${slug}` },
   };
 }
 

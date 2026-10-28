@@ -12,7 +12,9 @@ import ymmTreeData from "@/../data/ymm_tree.json";
 import { searchProducts } from "@/lib/catalog";
 import {
   getAvailableCategoriesForMakeModel,
+  getAvailableCategoriesForModelFamily,
   getAvailableCategoriesForVehicle,
+  fittedCategoriesDescription,
 } from "@/lib/catalog/vehicle-categories";
 import { withFitment } from "@/lib/fitment/match";
 import { getCurrentVehicle, getSubModelAnswers } from "@/lib/garage/server";
@@ -139,7 +141,16 @@ export async function generateMetadata({
   const v = parseSlug(slug);
   if (!v) return { title: "Vehicle" };
   const title = `${v.make} ${v.model} Accessories`;
-  const description = `Bolt-on accessories engineered for every ${v.make} ${v.model}. Drilling-free fitment guaranteed.`;
+  // Names the categories that actually fit (was a one-line template claiming
+  // "drilling-free" for every vehicle; many hitches and some guards drill).
+  const hub = findVehicle(slug.replace(/^(19|20)\d{2}-/, ""));
+  const family = hub ? null : getAvailableCategoriesForModelFamily(v.make, v.model);
+  const from = hub?.from ?? family?.from;
+  const to = hub?.to ?? family?.to;
+  const description = fittedCategoriesDescription(
+    hub ? getAvailableCategoriesForMakeModel(hub.make, hub.model) : family!.cats,
+    `the ${from && to ? `${from === to ? from : `${from}–${to}`} ` : ""}${hub ? `${hub.make} ${hub.model}` : `${v.make} ${v.model}`}`,
+  );
   // Cycle 14Z (Priya O-4 HIGH): vehicle hubs are heavily linked from
   // long-tail "F-150 accessories" search clusters. Without OG/Twitter,
   // shares to truck-owner Reddit / FB groups all collapse to the homepage

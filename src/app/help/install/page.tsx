@@ -9,7 +9,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://stehlenauto.com";
 export const metadata: Metadata = {
   title: "Install Guides",
   description:
-    "Step-by-step install guides for tonneau covers, trailer hitches, bull guards, running boards, grilles, headlights, bed mats, roof racks and more — tools, time and what to check.",
+    "Step-by-step install guides for tonneau covers, trailer hitches, bull guards, running boards, grilles, headlights, bed mats and roof racks: tools, time, checks.",
   alternates: { canonical: "/help/install" },
 };
 

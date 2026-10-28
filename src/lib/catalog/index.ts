@@ -152,7 +152,7 @@ function adapt(p: ProductNode): CatalogProduct {
   // SERP snippets, Product schema, and AI-Overview grounding.
   const metaDescription = metaDescriptionFromHtml(
     p.descriptionHtml || p.description || "",
-    `${p.title}. Free US shipping & 30-day returns. No-drill bolt-on fit, fitment guaranteed.`,
+    `${p.title}. Free US shipping & 30-day returns. Fitment guaranteed.`,
   );
 
   return {

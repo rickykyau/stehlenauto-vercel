@@ -1,4 +1,9 @@
 import type { Metadata } from "next";
+import {
+  canonicalMakeName,
+  fittedCategoriesDescription,
+  getAvailableCategoriesForMake,
+} from "@/lib/catalog/vehicle-categories";
 import { CategoryFaq } from "@/components/pages/category-faq";
 // Cycle 14AY (Ren R1 BUG-002 P2): notFound() reinstated for unknown
 // slugs that aren't on a small whitelist of marketing handles. The
@@ -53,6 +58,13 @@ export async function generateStaticParams() {
 // only knows about the 12 real category slugs. Map synthetic handles to
 // proper titles so the browser tab + SEO + breadcrumbs are correct.
 const SYNTHETIC_COLLECTION_META: Record<string, { title: string; description: string }> = {
+  // Was falling through to the handle-derived "All" title, which Bing flags
+  // as too short (and every ?category= / ?make= view canonicalizes here).
+  all: {
+    title: "Shop All Truck & SUV Accessories",
+    description:
+      "Every Stehlen Auto part in one place: tonneau covers, trailer hitches, bull guards, running boards, bed mats, headlights and more. Filter by your vehicle.",
+  },
   "best-sellers": {
     title: "Best Sellers — Top Vehicle Accessories",
     description: "Top-selling Stehlen Auto parts this month — bolt-on, fitment-guaranteed.",
@@ -60,6 +72,11 @@ const SYNTHETIC_COLLECTION_META: Record<string, { title: string; description: st
   "new-arrivals": {
     title: "New Arrivals — Latest Vehicle Accessories",
     description: "The newest additions to the Stehlen Auto catalog.",
+  },
+  "gifts-for-truck-owners": {
+    title: "Gifts for Truck Owners",
+    description:
+      "Gift ideas for truck and SUV owners: practical Stehlen Auto accessories matched to their exact vehicle, with free shipping and 30-day free returns.",
   },
   sale: {
     title: "On Sale — Vehicle Accessories",
@@ -117,11 +134,12 @@ export async function generateMetadata({
   // Cycle 14Z (Mike-O2 N-3): make-based collection slugs from the megamenu
   // (ford-parts, chevy-parts, dodge-parts, ram-parts, etc.) all returned the
   // generic "Collection" title. Derive a real title from the handle.
-  const makeMatch = handle.match(/^([a-z]+)-parts$/);
+  const makeMatch = handle.match(/^([a-z]+(?:-[a-z]+)?)-parts$/);
   if (makeMatch) {
-    const make = makeMatch[1].replace(/^./, (c) => c.toUpperCase());
+    const raw = makeMatch[1] === "chevy" ? "chevrolet" : makeMatch[1];
+    const make = canonicalMakeName(raw) ?? raw.replace(/^./, (c) => c.toUpperCase());
     const t = `${make} Vehicle Accessories`;
-    const d = `Bolt-on accessories for every ${make} vehicle — fitment guaranteed, free shipping.`;
+    const d = fittedCategoriesDescription(getAvailableCategoriesForMake(make), `${make} vehicles`);
     return {
       title: t,
       description: d,
@@ -155,7 +173,7 @@ export async function generateMetadata({
   const CATEGORY_META: Record<string, { title: string; desc: string }> = {
     "tonneau-covers": {
       title: "Tonneau Covers — Hard & Soft Truck Bed Covers",
-      desc: "Hard tri-fold & roll-up tonneau covers for F-150, Silverado, Ram 1500, Tacoma & more. No-drill fit, free shipping, fitment guaranteed.",
+      desc: "Hard tri-fold & roll-up tonneau covers for F-150, Silverado, Ram 1500, Tacoma & more. Bolt-on and clamp-on fit, free shipping, fitment guaranteed.",
     },
     "trailer-hitches": {
       title: "Trailer Hitches — Class 1–4 Receivers",
@@ -163,7 +181,7 @@ export async function generateMetadata({
     },
     "bull-guards-grille-guards": {
       title: "Bull Guards & Grille Guards w/ LED Light Bars",
-      desc: "Steel bull bars & grille guards with LED light bars for F-150, Silverado, Ram, 4Runner & Tundra. Front-end protection, bolt-on, no drilling.",
+      desc: "Steel bull bars & grille guards with LED light bars for F-150, Silverado, Ram, 4Runner & Tundra. Front-end protection that bolts to the frame.",
     },
     "front-grilles": {
       title: "Front Grilles — Mesh, Honeycomb & Vertical",

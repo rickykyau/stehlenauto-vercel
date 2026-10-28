@@ -5,7 +5,7 @@ import { Icons } from "@/components/ui/icons";
 export const metadata: Metadata = {
   title: "Track Your Order",
   description:
-    "Track your Stehlen order without signing in. Enter your order number and email.",
+    "Track your Stehlen Auto order without signing in or creating an account. Enter your order number and the email you used at checkout to see its status.",
   alternates: { canonical: "/track-order" },
   robots: { index: true, follow: true },
 };

@@ -9,7 +9,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Shop All Categories",
   description:
-    "Browse every Stehlen Auto category — bumpers, roof racks, tonneau covers, lighting, and more. Fitment guaranteed.",
+    "Browse every Stehlen Auto category: tonneau covers, trailer hitches, bull guards, running boards, grilles, headlights, bed mats, floor mats and roof racks.",
   alternates: { canonical: "/collections" },
 };
 

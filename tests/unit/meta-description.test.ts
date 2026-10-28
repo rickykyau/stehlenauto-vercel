@@ -13,10 +13,21 @@ describe("metaDescriptionFromHtml", () => {
   });
 
   it("ends on the last sentence boundary that fits", () => {
-    const s1 = "Hard tri-fold tonneau cover for the 2007-2016 Toyota Tundra with a 6.5 ft bed and factory rail system.";
+    const s1 =
+      "Hard tri-fold tonneau cover for the 2007-2016 Toyota Tundra with a 6.5 ft bed, factory rail system, and a matte black finish.";
     const html = `<p>${s1} It installs in about 30 minutes with no drilling and folds forward for full bed access.</p>`;
     const out = metaDescriptionFromHtml(html, FB);
     expect(out).toBe(s1);
+    expect(out.length).toBeLessThanOrEqual(158);
+  });
+
+  it("word-truncates instead of stopping at a short first sentence", () => {
+    const s1 = "This Advanced Series bull guard is built for the 2010-2018 Jeep Wrangler JK.";
+    const s2 = "It pairs a heavy-duty steel frame with a built-in LED light bar in a matte black finish.";
+    const out = metaDescriptionFromHtml(`<p>${s1} ${s2}</p>`, FB);
+    expect(out.startsWith(`${s1} It pairs`)).toBe(true);
+    expect(out.endsWith("…")).toBe(true);
+    expect(out.length).toBeGreaterThanOrEqual(120);
     expect(out.length).toBeLessThanOrEqual(158);
   });
 

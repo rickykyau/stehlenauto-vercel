@@ -5,7 +5,7 @@ import { Icons } from "@/components/ui/icons";
 export const metadata: Metadata = {
   title: "Support",
   description:
-    "Fitment help, install guides, returns, shipping, and warranty info. Get straight answers, fast.",
+    "Stehlen Auto support: check that a part fits your vehicle, find install guides, track an order, start a return, and read our shipping and warranty policies.",
   alternates: { canonical: "/help" },
 };
 

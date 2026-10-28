@@ -9,7 +9,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Shop by Vehicle — Truck & SUV Accessories by Make and Model",
   description:
-    "Find accessories that fit your truck or SUV: tonneau covers, bull guards, running boards, trailer hitches, bed mats and more for Ford, Chevrolet, GMC, Ram, Toyota, Nissan and others.",
+    "Find accessories that fit your truck or SUV: tonneau covers, bull guards, running boards and trailer hitches for Ford, Chevrolet, GMC, Ram, Toyota and more.",
   alternates: { canonical: "/vehicles" },
 };
 
